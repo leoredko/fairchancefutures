@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Tab Wrangler</h1>
+      <p id="status">loading...</p>
+    </div>
+    <button id="sweep" class="ghost">Sweep now</button>
+  </header>
+
+  <nav class="tabs">
+    <button data-view="review" class="active">Review</button>
+    <button data-view="archive">Archive</button>
+    <button data-view="settings">Settings</button>
+  </nav>
+
+  <section id="review" class="view">
+    <div id="proposals"></div>
+    <button id="applyAll" class="primary wide" hidden>Apply everything</button>
+  </section>
+
+  <section id="archive" class="view" hidden>
+    <input id="search" type="search" placeholder="Search archived tabs">
+    <div id="archiveList"></div>
+    <button id="clearArchive" class="ghost wide">Clear archive</button>
+  </section>
+
+  <section id="settings" class="view" hidden>
+    <div id="actionSettings"></div>
+    <label class="row"><span>Sweep every (min)</span><input id="sweepMinutes" type="number" min="1" max="120"></label>
+    <label class="row"><span>Unload after (min)</span><input id="discardAfterMinutes" type="number" min="1" max="1440"></label>
+    <label class="row"><span>Archive after (hours)</span><input id="archiveAfterHours" type="number" min="1" max="2160"></label>
+    <label class="row"><span>Min tabs per group</span><input id="minGroupSize" type="number" min="2" max="20"></label>
+    <label class="col"><span>Never touch URLs containing</span>
+      <textarea id="protectedPatterns" rows="3" placeholder="one per line"></textarea>
+    </label>
+    <button id="save" class="primary wide">Save settings</button>
+    <button id="export" class="ghost wide">Export data (JSON)</button>
+    <p class="stats" id="stats"></p>
+  </section>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

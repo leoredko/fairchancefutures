@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Wrangler",
+  "version": "0.1.0",
+  "description": "A local agent that keeps Chrome tabs under control: dedupe, discard cold tabs, archive stale ones, group by domain.",
+  "permissions": ["tabs", "tabGroups", "storage", "alarms"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Tab Wrangler"
+  }
+}
