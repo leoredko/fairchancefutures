@@ -57,7 +57,7 @@ New York only, because the identifiers are.
 | --- | --- |
 | Inside | A DIN (`28-A-1187`) or a NYSID (`00000011L`), then a PIN you choose |
 | Family | The code printed on the letter that came in the mail, then a PIN |
-| Staff | A staff ID, then a PIN |
+| Coordinator | Nothing. They arrive already signed in to the vendor case plan system |
 
 Any DIN starting `28` signs in and opens a case on the spot: 2028 has not
 happened, so those cannot belong to a real person. Anything outside that range
