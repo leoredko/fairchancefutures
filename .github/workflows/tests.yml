@@ -1,9 +1,15 @@
 name: tests
 
 on:
+  # pull_request already covers every branch that has a PR open. Listing all
+  # branches under push too would run the matrix twice on every push.
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   pytest:
