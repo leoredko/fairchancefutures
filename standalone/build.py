@@ -30,6 +30,7 @@ def rules() -> dict:
     from app.letters import DISPUTE_TEMPLATE, REPORT_REQUEST_TEMPLATE
     from app.questions import INSIDE_QUESTIONS, STAFF_QUESTIONS, teaching_for
     from app.report import LINE_FORMAT, SCANNER_NOTE
+    from app.lessons import CURRICULUM, TOTAL_MINUTES
     from app.scores import EXPLAINERS, MODELS, USE_LABEL, summary_line
     from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS
     from app.triage import PATH, STATE_LABEL, State
@@ -86,6 +87,33 @@ def rules() -> dict:
             ],
             "explainers": [dict(e) for e in EXPLAINERS],
         },
+        # The credit course, generated rather than retyped, so the single
+        # file cannot drift from the tested one. A card's citation is resolved
+        # here rather than in the browser: the shell should never have to know
+        # what a fact key is.
+        "lessons": [
+            {
+                "slug": l.slug,
+                "title": l.title,
+                "minutes": l.minutes,
+                "hook": l.hook,
+                "urgentFor": list(l.urgent_for),
+                "cards": [
+                    {"title": c.title, "body": c.body, "aside": c.aside,
+                     "cited": c.cited, "url": c.source_url}
+                    for c in l.cards
+                ],
+                "check": {
+                    "prompt": l.check.prompt,
+                    "choices": [{"value": ch.value, "label": ch.label}
+                                for ch in l.check.choices],
+                    "answer": l.check.answer,
+                    "why": l.check.why,
+                },
+            }
+            for l in CURRICULUM
+        ],
+        "courseMinutes": TOTAL_MINUTES,
         "scan": {"lineFormat": LINE_FORMAT, "note": SCANNER_NOTE},
     }
 

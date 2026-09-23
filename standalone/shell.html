@@ -829,7 +829,11 @@ function guard(role) {
 }
 
 function bar(who, extra) {
+  // Always reachable. The course is the part of this product that keeps
+  // working after somebody goes home, so it is never more than one tap away.
   return '<div class="bar"><span class="wordmark">Bridge</span>' +
+    (APP === "inside"
+      ? '<a class="pill" href="#/inside/learn">Learn</a>' : "") +
     '<span class="who">' + esc(who) + '</span>' +
     '<div class="right">' + (extra || "") +
     (APP === "staff" ? "" :
@@ -923,6 +927,285 @@ route(/^\/inside\/teach$/, () => {
       'Keep going</button>' +
     '<div class="notes-always"><a class="btn quiet" href="#/inside/intake/2">' +
       '&larr; Back</a></div>' +
+    '</div></div>';
+});
+
+
+/* ---------- the credit course, mirroring app/lessons.py --------------- */
+//
+// Progress is per card rather than per lesson. A tablet session ends when the
+// dayroom closes, and losing four screens of reading to that is how somebody
+// decides an app is not worth starting.
+
+function lessonBySlug(slug) {
+  return RULES.lessons.filter((l) => l.slug === slug)[0] || null;
+}
+
+function lessonScreens(l) { return l.cards.length + 1; }
+
+function progressFor(c, slug) {
+  const store = c.lessons || {};
+  const row = store[slug] || {};
+  return {
+    card: row.card || 0,
+    done: !!row.done,
+    answered: row.answered || "",
+    doneOn: row.doneOn || "",
+  };
+}
+
+function markCard(c, slug, n) {
+  if (!c.lessons) c.lessons = {};
+  const row = c.lessons[slug] || {};
+  // Furthest reached, not latest: paging back to re-read costs nothing.
+  row.card = Math.max(row.card || 0, n);
+  c.lessons[slug] = row;
+  save();
+}
+
+function markAnswered(c, slug, choice) {
+  if (!c.lessons) c.lessons = {};
+  const row = c.lessons[slug] || {};
+  const first = !row.done;
+  row.answered = choice;
+  row.done = true;
+  if (first) {
+    row.doneOn = new Date().toISOString().slice(0, 10);
+    // An event with nobody attached does not go on this timeline. This one has
+    // a person and a date: they did it, today.
+    (c.timeline = c.timeline || []).push({
+      text: "You finished the lesson on " +
+        lessonBySlug(slug).title.toLowerCase(),
+      actor: "You",
+      on: new Date().toLocaleDateString(undefined,
+        { month: "long", day: "numeric" }),
+      done: true,
+    });
+  }
+  c.lessons[slug] = row;
+  save();
+}
+
+function courseStanding(c) {
+  const total = RULES.lessons.length;
+  const done = RULES.lessons.filter((l) => progressFor(c, l.slug).done).length;
+  const left = RULES.lessons
+    .filter((l) => !progressFor(c, l.slug).done)
+    .reduce((sum, l) => sum + l.minutes, 0);
+  return {
+    done: done,
+    total: total,
+    percent: total ? Math.round((done * 100) / total) : 0,
+    finished: done === total,
+    minutesLeft: left,
+  };
+}
+
+function nextLesson(c) {
+  const started = RULES.lessons.filter((l) => {
+    const r = progressFor(c, l.slug);
+    return r.card > 0 && !r.done;
+  });
+  if (started.length) return started[0];
+  const state = c.state || "";
+  const urgent = RULES.lessons.filter((l) =>
+    (l.urgentFor || []).indexOf(state) >= 0 && !progressFor(c, l.slug).done);
+  if (urgent.length) return urgent[0];
+  const rest = RULES.lessons.filter((l) => !progressFor(c, l.slug).done);
+  return rest.length ? rest[0] : null;
+}
+
+route(/^\/inside\/learn$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const st = courseStanding(c);
+  const nxt = nextLesson(c);
+  return '<div class="tablet">' + bar(c.name + " · the course") +
+    '<div class="pane"><h1>Learn about credit.</h1>' +
+    '<p class="lede">' + RULES.lessons.length + ' lessons, about ' +
+      RULES.courseMinutes + ' minutes in total. It saves where you stop, so ' +
+      'you can put the tablet down mid-sentence and pick it up tomorrow.</p>' +
+    '<div class="card ' + (st.finished ? "good" : "accent") + '">' +
+      '<div class="row"><span class="strong">' +
+      (st.finished ? "You have finished all " + st.total + "."
+        : st.done ? st.done + " of " + st.total + " done"
+        : "Nothing started yet") +
+      '</span><span class="tag teal" style="margin-left:auto">' +
+      st.percent + '%</span></div>' +
+      '<div class="track"><span style="width:' + st.percent + '%"></span></div>' +
+      (st.finished
+        ? '<a class="btn" href="#/inside/learn/finished">See what you covered</a>'
+        : nxt
+          ? '<span class="small">About ' + st.minutesLeft +
+            ' minutes left.</span><a class="btn" href="#/inside/learn/' +
+            nxt.slug + '">' + (st.done ? "Carry on with " : "Start with ") +
+            esc(nxt.title.toLowerCase()) + '</a>'
+          : "") +
+      '</div>' +
+    RULES.lessons.map((l) => {
+      const r = progressFor(c, l.slug);
+      const tag = r.done ? '<span class="tag teal">Done</span>'
+        : r.card > 0 ? '<span class="tag amber">' + r.card + ' of ' +
+            lessonScreens(l) + '</span>'
+        : (l.urgentFor || []).indexOf(c.state || "") >= 0
+          ? '<span class="tag amber">For you now</span>' : "";
+      return '<a class="card' + (r.done ? " soft" : "") +
+        '" href="#/inside/learn/' + l.slug +
+        '" style="text-decoration:none;color:inherit">' +
+        '<div class="row"><span class="strong">' + esc(l.title) + '</span>' +
+        '<span style="margin-left:auto">' + tag + '</span></div>' +
+        '<span class="small">' + esc(l.hook) + '</span>' +
+        '<span class="tiny">' + l.minutes + ' minutes · ' +
+        lessonScreens(l) + ' screens</span></a>';
+    }).join("") +
+    '<div class="card soft"><span class="strong">Where the facts come from' +
+      '</span><span class="small">Every rule in this course names the law or ' +
+      'the agency it comes from, and the date somebody checked it.</span>' +
+      '<a class="btn ghost" href="#/citations">See the full list</a></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/learn\/([a-z-]+)$/, (slug) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const at = progressFor(subject(), slug).card;
+  return go("#/inside/learn/" + slug + "/" +
+    Math.min(at, l.cards.length)), "";
+});
+
+route(/^\/inside\/learn\/([a-z-]+)\/(\d+)$/, (slug, n) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const c = subject();
+  const at = Math.max(0, Math.min(+n, l.cards.length));
+  markCard(c, slug, at);
+  const total = lessonScreens(l);
+  const r = progressFor(c, slug);
+
+  const head = '<div class="tablet">' + bar(l.title) +
+    '<div class="pane">' +
+    '<div class="row" style="gap:8px;align-items:center">' +
+    '<div class="track" style="flex:1"><span style="width:' +
+      Math.round(((at + 1) * 100) / total) + '%"></span></div>' +
+    '<span class="tiny">' + (at + 1) + ' of ' + total + '</span></div>' +
+    '<p class="tiny">Saved as you go. Close this and it opens here again.</p>';
+
+  if (at === l.cards.length) {
+    return head + '<h1>One question before you go.</h1>' +
+      '<p class="lede">' + esc(l.check.prompt) + '</p>' +
+      l.check.choices.map((ch) =>
+        '<label class="card accent" style="cursor:pointer">' +
+        '<input type="radio" name="choice" value="' + esc(ch.value) + '"' +
+        (r.answered === ch.value ? " checked" : "") + '>' +
+        '<span class="strong">' + esc(ch.label) + '</span></label>').join("") +
+      '<p class="tiny">Nothing is scored and nobody sees your answer. The ' +
+        'explanation is the same either way.</p>' +
+      '<button class="btn wide" onclick="answerLesson(\'' + slug +
+        '\')">Answer</button>' +
+      '<div class="row"><a class="btn ghost" href="#/inside/learn/' + slug +
+        '/' + (at - 1) + '">Back</a>' +
+      '<a class="btn ghost" href="#/inside/learn">Stop for now</a></div>' +
+      '</div></div>';
+  }
+
+  const card = l.cards[at];
+  return head + '<h1>' + esc(card.title) + '</h1>' +
+    '<p class="lede">' + esc(card.body) + '</p>' +
+    (card.aside
+      ? '<div class="card accent"><span class="small">' + esc(card.aside) +
+        '</span></div>' : "") +
+    (card.cited
+      ? '<div class="card soft"><span class="tiny">Where this comes from: ' +
+        esc(card.cited) + '</span></div>' : "") +
+    '<a class="btn wide" href="#/inside/learn/' + slug + '/' + (at + 1) + '">' +
+      (at + 1 === total - 1 ? "Last one, then a question" : "Next") + '</a>' +
+    '<div class="row">' +
+    (at > 0 ? '<a class="btn ghost" href="#/inside/learn/' + slug + '/' +
+      (at - 1) + '">Back</a>' : "") +
+    '<a class="btn ghost" href="#/inside/learn">Stop for now</a>' +
+    (slug === "no-single-score"
+      ? '<a class="btn ghost" href="#/inside/learn/scores">Every score model</a>'
+      : "") +
+    '</div></div></div>';
+});
+
+function answerLesson(slug) {
+  const picked = document.querySelector('input[name="choice"]:checked');
+  if (!picked) return;
+  markAnswered(subject(), slug, picked.value);
+  go(courseStanding(subject()).finished
+    ? "#/inside/learn/finished" : "#/inside/learn/" + slug + "/done");
+}
+
+route(/^\/inside\/learn\/([a-z-]+)\/done$/, (slug) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const c = subject();
+  const r = progressFor(c, slug);
+  const st = courseStanding(c);
+  const nxt = nextLesson(c);
+  const chosen = l.check.choices.filter((ch) => ch.value === r.answered)[0];
+  // Right and wrong get the same explanation, and nothing on screen says
+  // wrong. A verdict in front of whoever is waiting for the tablet teaches
+  // people to stop answering.
+  return '<div class="tablet">' + bar(l.title) +
+    '<div class="pane">' +
+    '<div class="card good"><h1 style="margin:0">That\'s ' + st.done +
+      ' of ' + st.total + '.</h1>' +
+      '<div class="track"><span style="width:' + st.percent + '%"></span></div>' +
+      '<span class="small">' + esc(l.title) + ' is done and saved.</span></div>' +
+    '<div class="card accent">' +
+      (chosen ? '<span class="tiny">You answered: ' +
+        esc(chosen.label.toLowerCase()) + '</span>' : "") +
+      '<h3>' + (r.answered === l.check.answer
+        ? "That's the one." : "Here's the thing worth knowing.") + '</h3>' +
+      '<p class="small">' + esc(l.check.why) + '</p></div>' +
+    (nxt ? '<div class="card"><span class="strong">Next: ' + esc(nxt.title) +
+      '</span><span class="small">' + esc(nxt.hook) + '</span>' +
+      '<a class="btn" href="#/inside/learn/' + nxt.slug + '">Keep going</a>' +
+      '</div>' : "") +
+    '<div class="card soft"><span class="strong">Or stop here</span>' +
+      '<span class="small">' + st.minutesLeft + ' minutes left in the course, ' +
+      'whenever you want it.</span><div class="row">' +
+      '<a class="btn ghost" href="#/inside/learn">All lessons</a>' +
+      '<a class="btn ghost" href="#/inside/case">My case</a></div></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/learn\/finished$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const st = courseStanding(c);
+  if (!st.finished) return go("#/inside/learn"), "";
+  return '<div class="tablet">' + bar(c.name + " · the course") +
+    '<div class="pane">' +
+    '<div class="card good" style="text-align:center">' +
+      '<h1 style="margin:0">You finished the whole course.</h1>' +
+      '<p class="lede">All ' + st.total + ' lessons. About ' +
+      RULES.courseMinutes + ' minutes of it. You know more about how credit ' +
+      'actually works than most people who have never been inside.</p></div>' +
+    '<div class="card accent"><h3>This is not a certificate and it is worth ' +
+      'more than one</h3><p class="small">Nobody can take this back off you, ' +
+      'it does not expire, and it does not show up on any record. The next ' +
+      'time somebody tries to sell you a credit repair package, or a landlord ' +
+      'quotes you a number, you will know what you are looking at.</p></div>' +
+    '<div class="card"><span class="strong">What you covered</span>' +
+      RULES.lessons.map((l) =>
+        '<a class="rung" href="#/inside/learn/' + l.slug + '/0" ' +
+        'style="text-decoration:none;color:inherit"><div>' +
+        '<div class="small strong">' + esc(l.title) + '</div>' +
+        '<div class="tiny">' + esc(l.hook) + '</div></div></a>').join("") +
+      '</div>' +
+    '<div class="card soft"><span class="strong">The one thing to do with it ' +
+      'this week</span><span class="small">Ask your coordinator where your ' +
+      'birth certificate and Social Security card stand. That is the first ' +
+      'lesson, it has a real deadline, and it is the only part of this that ' +
+      'somebody else has to start for you.</span>' +
+      '<div class="row"><a class="btn" href="#/inside/case">Back to my case</a>' +
+      '<a class="btn ghost" href="#/inside/learn">All lessons</a></div></div>' +
     '</div></div>';
 });
 
