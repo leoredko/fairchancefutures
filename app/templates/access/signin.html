@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Bridge, sign in{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">New York State</span>
+  </div>
+
+  <form class="pane" method="post" action="/signin" autocomplete="off">
+    <h1>Your number</h1>
+    <p class="lede">Your DIN or your NYSID. Either one works.</p>
+
+    {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
+
+    <input class="choice" name="identifier" inputmode="text" autocapitalize="characters"
+           autocomplete="off" spellcheck="false" autofocus
+           placeholder="98-A-0004" value="{{ identifier or '' }}"
+           style="font-family: ui-monospace, monospace; letter-spacing: .08em">
+
+    <button class="btn wide" type="submit">Next</button>
+
+    <div class="card dashed">
+      <span class="strong">Dashes and spaces don't matter.</span>
+      <span class="small">A DIN is two numbers, a letter, then four numbers.
+        A NYSID is eight numbers, sometimes with a letter on the end.</span>
+    </div>
+
+    <div class="notes">
+      <p class="tiny">Helping someone on the outside?
+        <a href="/helper">Use the code from the letter</a>.</p>
+      <p class="tiny">Staff? <a href="/staff-signin">Sign in here</a>.</p>
+    </div>
+  </form>
+</div>
+{% endblock %}

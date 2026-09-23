@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Inside, intake questions{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }} &middot; Kiosk 04</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <form class="pane" method="post" action="/inside/intake/{{ q.index }}">
+    <div class="progress">
+      <div class="track"><span style="width: {{ (100 * q.index / total)|round|int }}%"></span></div>
+      <span class="small">{{ q.index }} of {{ total }}</span>
+    </div>
+
+    <h1>{{ q.prompt }}</h1>
+    {% if q.helper %}<p class="lede">{{ q.helper }}</p>{% endif %}
+
+    <div class="choices">
+      {% for opt in q.options %}
+      <button class="choice {% if saved == opt.value %}selected{% endif %}"
+              name="{{ q.field }}" value="{{ opt.value }}" type="submit">
+        {{ opt.label }}
+        {% if opt.note %}<span class="note">{{ opt.note }}</span>{% endif %}
+      </button>
+      {% endfor %}
+    </div>
+
+    {% if q.reassurance %}
+    <div class="card dashed">
+      <span class="strong">{{ q.reassurance.title }}</span>
+      <span class="small">{{ q.reassurance.body }}</span>
+    </div>
+    {% endif %}
+
+    <div class="notes">
+      {% if q.index > 1 %}
+      <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; Back</a>
+      {% endif %}
+      <p class="note-design">Design note: {{ q.design_note }}</p>
+      {% if q.constraint %}<p class="note-build">Constraint: {{ q.constraint }}</p>{% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

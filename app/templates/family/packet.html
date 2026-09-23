@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Print the packet{% endblock %}
+{% block body %}
+<div class="desk" style="padding-top:32px; max-width:720px">
+  <h1>Print this, get it signed, mail it</h1>
+  <p class="lede" style="margin:10px 0 16px">One request covers all three
+    bureaus. One stamp.</p>
+  <pre class="letter">{{ draft.body }}</pre>
+  <div class="card soft" style="margin-top:16px">
+    {% for c in draft.citations %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
+  </div>
+  <p class="tiny" style="margin-top:12px">The SSN and date of birth lines are
+    blank on purpose. They are filled in by hand on the paper copy and never
+    typed into this app.</p>
+  <p style="margin-top:16px"><a class="btn" href="/family/task">Back</a></p>
+</div>
+{% endblock %}

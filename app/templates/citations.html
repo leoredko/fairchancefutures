@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}What we checked{% endblock %}
+{% block body %}
+<div class="bar"><span class="wordmark">Bridge</span>
+  <span class="pill">What we checked</span>
+  <div class="right"><a class="pill" href="/">Home</a>
+    <a class="pill" href="/roles">Roles and scope</a></div></div>
+
+<div class="desk" style="padding-top:28px; max-width:860px">
+  <h1>What we checked, and what we didn't</h1>
+  <p class="lede" style="margin:10px 0 24px">Every legal sentence this app says
+    comes from this list. Anything not on it renders as an open question instead
+    of a confident sentence. Primary sources only.</p>
+
+  <div class="stack">
+    {% for f in facts %}
+    <div class="card">
+      <span class="tag green">{{ f.source }}</span>
+      <p class="small">{{ f.statement }}</p>
+      <p class="tiny"><a href="{{ f.url }}">{{ f.url }}</a> &middot; checked
+        {{ f.checked_on }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card warn" style="margin-top:24px">
+    <h2>Still open</h2>
+    <p class="small">The app does not assert any of these. Where one would be
+      needed, it says so on the screen.</p>
+    {% for q in open_questions %}<p class="tiny">&middot; {{ q }}</p>{% endfor %}
+  </div>
+
+  <div class="card soft" style="margin-top:16px">
+    <h2>Bureau addresses</h2>
+    <p class="small">A dispute goes to all three. These move without
+      announcement, so each carries where it came from.</p>
+    {% for b in bureaus %}
+    <div class="rung">
+      <div>
+        <div class="small strong">{{ b.name }}</div>
+        {% for line in b.dispute_address %}<div class="tiny">{{ line }}</div>{% endfor %}
+        <div class="tiny"><a href="{{ b.source_url }}">source</a></div>
+        {% if b.note %}<div class="tiny" style="color:var(--rust)">{{ b.note }}</div>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

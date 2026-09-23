@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Family, your one task{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ auth.helper_name }} &middot; helping {{ client.first_name }}</span>
+      </div>
+
+  <div class="pane">
+    {% if task %}
+    <h1>One thing, this week.</h1>
+    <div class="card">
+      <span class="strong">Do this</span>
+      <span class="small">{{ task.headline }}</span>
+      <span class="tiny">{{ task.detail }}</span>
+      <a class="btn" href="{{ task.action_url }}">{{ task.action_label }}</a>
+      {% if task.skip_url %}
+      <form method="post" action="{{ task.skip_url }}">
+        <button class="btn quiet" type="submit">{{ task.skip_label }}</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <div class="card soft">
+      <span class="strong">Then nothing, for about three weeks.</span>
+      <span class="small">The report comes to your address. We'll text you once,
+        from this number, when it's about time to watch for it.</span>
+    </div>
+    {% else %}
+    <h1>Nothing for you right now.</h1>
+    <p class="lede">We'll text you once, from this number, when there is.</p>
+    {% endif %}
+
+    <div class="card">
+      <span class="strong">Already done</span>
+      {% for e in done %}
+      <div class="event"><div class="dot">&check;</div>
+        <div><div class="small strong">{{ e.text }}</div>
+             <div class="tiny">{{ e.on }}</div></div></div>
+      {% endfor %}
+    </div>
+
+    <div class="card dashed">
+      <span class="strong">You don't have to understand any of this.</span>
+      <span class="small">Ms. Reyes reads the report and decides what to do. Your
+        part is the mail.</span>
+    </div>
+
+    <div class="notes">
+      <p class="note-design">Design note: one task on screen at a time. A helper
+        with a to-do list of six items does none of them. This is the whole
+        design of this surface.</p>
+    </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+</div>
+{% endblock %}

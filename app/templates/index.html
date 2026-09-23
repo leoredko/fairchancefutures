@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Bridge{% endblock %}
+{% block body %}
+<div class="desk" style="padding-top:48px">
+  <h1 style="font-size:40px">Bridge</h1>
+  <p class="lede" style="margin:12px 0 8px">
+    Credit repair that starts before release. New York State.
+  </p>
+  <p class="small" style="margin-bottom:28px">
+    Three roles, three surfaces. Who can do what is set by physics and law, not
+    by preference, and each surface enforces its own limits server-side.
+  </p>
+
+  {% if session %}
+  <div class="card" style="margin-bottom:24px">
+    <span class="strong">You are signed in on the {{ session.role }} surface.</span>
+    <div class="row">
+      <a class="btn" href="/{{ 'staff' if session.role == 'staff' else session.role }}">Continue</a>
+      <a class="btn ghost" href="/signout">Sign out</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="grid three">
+    <div class="card">
+      <h2>Inside</h2>
+      <span class="tag">facility tablet</span>
+      <p class="small">Answer intake, see where you stand, watch named people
+        work your case, cancel a helper's authorization.</p>
+      <a class="btn" href="/signin">Sign in with your DIN or NYSID</a>
+    </div>
+    <div class="card">
+      <h2>Family</h2>
+      <span class="tag">phone</span>
+      <p class="small">Receive the mail, photograph the report, print and mail
+        letters. One task on screen at a time.</p>
+      <a class="btn" href="/helper">Use the code from the letter</a>
+    </div>
+    <div class="card">
+      <h2>Caseworker</h2>
+      <span class="tag">desktop</span>
+      <p class="small">Triage, read the report, approve letters, hold the
+        deadline across a full caseload.</p>
+      <a class="btn" href="/staff-signin">Staff sign in</a>
+    </div>
+  </div>
+
+  {% if demo_logins %}
+  <div class="card warn" style="margin-top:28px">
+    <h3>Demo logins</h3>
+    <p class="small">This build ships with a fictional caseload and no way to
+      create an account, so the seeded logins are listed here. Everybody picks
+      their own PIN the first time they sign in. Delete this card before
+      anything real goes near it.</p>
+    {% for login in demo_logins %}
+    <div class="row">
+      <span class="small strong" style="min-width:210px">{{ login.role }}</span>
+      <span class="small" style="font-family:ui-monospace,monospace">{{ login.how }}</span>
+      <span class="tiny">{{ login.who }}</span>
+      <a class="tiny" href="{{ login.url }}" style="margin-left:auto">open &rarr;</a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="card soft" style="margin-top:20px">
+    <h3>What this build assumes away</h3>
+    <p class="small">Facility and DOC approval, incumbent tablet vendor access,
+      bureau data agreements, funding for the counselor role, and the PII
+      compliance regime a real deployment would sit under. Signed off for class,
+      and said here rather than hidden.</p>
+    <h3 style="margin-top:8px">What it does not assume away</h3>
+    <p class="small">A person inside cannot verify identity online, and a helper
+      outside has no standing without a signed form. Those two shape the
+      product, and no waiver makes them disappear. They are enforced in
+      <span class="strong">app/surfaces.py</span> and
+      <span class="strong">app/authorization.py</span>.</p>
+    <p class="small"><a href="/roles">Roles, surfaces and scope &rarr;</a> &nbsp;
+      <a href="/citations">What we checked &rarr;</a> &nbsp;
+      <a href="/metrics">Accuracy metric &rarr;</a></p>
+  </div>
+</div>
+{% endblock %}

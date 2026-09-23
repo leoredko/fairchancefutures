@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Caseload action queue{% endblock %}
+{% block body %}
+<div class="bar">
+  <span class="wordmark">Bridge</span>
+  <span class="pill">Action queue</span>
+  <a class="pill" href="/roles">Roles and scope</a>
+  <a class="pill" href="/metrics">Accuracy</a>
+  <div class="right"><span class="who">Signed in as D. Reyes</span>
+    <span class="pill">{{ clients|length }} clients</span></div>
+</div>
+
+<div class="desk" style="padding-top:28px">
+  <h1>Needs you this week</h1>
+  <p class="small" style="margin:8px 0 20px">Sorted by what expires soonest, not
+    alphabetically.</p>
+
+  <table class="queue">
+    <thead><tr>
+      <th>Client</th><th>What's needed</th><th>Clock</th><th></th>
+    </tr></thead>
+    <tbody>
+    {% for c in clients %}
+      <tr class="{% if c.clock_sort < 0 %}overdue{% endif %}">
+        <td><div class="strong">{{ c.display_name }}</div>
+            <span class="tag {{ 'rust' if c.case_state == 'errors_present' else '' }}">{{ c.state_label }}</span></td>
+        <td>{{ c.needs }}</td>
+        <td class="small">{{ c.clock }}</td>
+        <td>{% if c.case_state == 'not_yet_triaged' %}
+              <a class="btn ghost" href="/staff/{{ c.id }}/triage">Triage</a>
+            {% else %}
+              <a class="btn ghost" href="/staff/{{ c.id }}">Open</a>
+            {% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="card dashed" style="margin-top:24px">
+    <p class="note-design">Design note: this is a work queue, not a roster.
+      Nothing sorts by name. The only ordering that matters is what expires first.</p>
+    <p class="note-build">Build note: the triage screen and the client detail
+      screen are the two staff screens in scope. Referrals and outcomes are not
+      built.</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,247 @@
+/* Bridge design tokens, lifted from the design deck.
+   No web fonts and no CDN: the tablet surface is offline-first and metered by
+   the minute, so the app makes zero outbound requests to render. */
+
+:root {
+  --ink: #1F1D1A;
+  --muted: #6B655D;
+  --border: #D9D4CB;
+  --track: #E8E3DA;
+  --surface: #FAF8F5;
+  --page: #FFFFFF;
+  --rust: #B4522A;
+  --blue: #26618F;
+  --green: #2F6B4F;
+  --danger: #8C2F1F;
+
+  --display: "Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+/* ---- shells ------------------------------------------------------------ */
+
+/* Tablet surface. Fixed frame, large targets, one question per screen. */
+.tablet {
+  width: min(768px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--page);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Phone surface. One task on screen at a time. */
+.phone {
+  width: min(430px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--page);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop surface. A work queue, never a roster. */
+.desk {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.bar {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bar .wordmark { font-family: var(--display); font-weight: 700; font-size: 19px; }
+.bar .who { font-size: 14px; color: var(--muted); }
+.bar .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+.pill {
+  font-size: 12.5px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pane {
+  flex-grow: 1;
+  padding: 34px 34px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+}
+.phone .pane { padding: 24px 22px 28px; gap: 18px; }
+
+/* ---- type -------------------------------------------------------------- */
+
+h1 { font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1.15; }
+.phone h1 { font-size: 27px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.2; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 16px; }
+.lede { font-size: 17px; color: var(--muted); }
+.small { font-size: 14px; color: var(--muted); }
+.tiny { font-size: 13px; color: var(--muted); }
+.strong { font-weight: 600; }
+
+/* ---- progress ---------------------------------------------------------- */
+
+.progress { display: flex; align-items: center; gap: 12px; }
+.track { flex-grow: 1; height: 8px; border-radius: 4px; background: var(--track); position: relative; }
+.track > span { position: absolute; inset: 0 auto 0 0; height: 8px; border-radius: 4px; background: var(--rust); }
+
+/* ---- choices, buttons -------------------------------------------------- */
+
+.choices { display: flex; flex-direction: column; gap: 14px; }
+
+.choice {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--page);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+.choice:hover, .choice:focus-visible { border-color: var(--ink); }
+.choice.selected { border-color: var(--ink); }
+.choice .note { display: block; font-size: 14.5px; font-weight: 400; color: var(--muted); margin-top: 7px; line-height: 1.45; }
+
+.btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--page);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 15px 22px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.btn.wide { width: 100%; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+.btn.quiet { background: transparent; color: var(--muted); border-color: transparent; padding: 10px 0; text-decoration: underline; }
+
+/* ---- cards ------------------------------------------------------------- */
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--page);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.card.soft { background: var(--surface); }
+.card.dashed { border-style: dashed; background: var(--surface); }
+.card.warn { border-color: var(--rust); }
+
+.grid { display: grid; gap: 16px; }
+.grid.two { grid-template-columns: 1fr 1fr; }
+.grid.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+
+/* ---- timeline ---------------------------------------------------------- */
+
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.event { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--track); }
+.event:last-child { border-bottom: 0; }
+.dot {
+  flex: 0 0 26px; height: 26px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+  background: var(--ink); color: var(--page);
+}
+.event.pending .dot { background: var(--page); color: var(--muted); border: 1px solid var(--border); }
+
+/* ---- table ------------------------------------------------------------- */
+
+.queue { width: 100%; border-collapse: collapse; background: var(--page); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.queue th { text-align: left; font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); font-weight: 600; }
+.queue td { padding: 16px; border-bottom: 1px solid var(--track); vertical-align: top; }
+.queue tr:last-child td { border-bottom: 0; }
+.queue tr.overdue td:first-child { box-shadow: inset 3px 0 0 var(--rust); }
+
+.tag { display: inline-block; font-size: 12.5px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); white-space: nowrap; }
+.tag.rust { border-color: var(--rust); color: var(--rust); }
+.tag.blue { border-color: var(--blue); color: var(--blue); }
+.tag.green { border-color: var(--green); color: var(--green); }
+
+/* ---- ladder ------------------------------------------------------------ */
+
+.rung { display: flex; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--page); }
+.rung.active { border-color: var(--ink); border-width: 2px; }
+.rung .n { font-family: var(--display); font-weight: 700; color: var(--muted); flex: 0 0 22px; }
+
+/* ---- letter ------------------------------------------------------------ */
+
+.letter {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  background: var(--page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+}
+textarea.letter { width: 100%; min-height: 380px; resize: vertical; }
+
+/* ---- notes ------------------------------------------------------------- */
+
+.notes { margin-top: auto; border-top: 1px dashed var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 9px; }
+.note-design { font-size: 13.5px; line-height: 1.45; color: var(--rust); }
+.note-build { font-size: 13.5px; line-height: 1.45; color: var(--blue); }
+
+.denied { border: 1px solid var(--danger); border-radius: var(--radius); padding: 18px; background: #FDF6F4; display: flex; flex-direction: column; gap: 8px; }
+.denied .what { font-weight: 600; color: var(--danger); }
+
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.spacer { margin-top: auto; }
+
+fieldset { border: 0; display: flex; flex-direction: column; gap: 14px; }
+legend { padding: 0; }
+input[type="radio"], input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--rust); }
+label.check { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; }
+
+.card > .tag, .stack > .tag { align-self: flex-start; }
+.notes .btn.quiet { align-self: flex-start; }
+
+/* The triage form is six questions on one screen, for a 30 to 45 minute
+   session. Tablet-sized targets would make it three scrolls long. */
+.compact fieldset { gap: 6px; margin-bottom: 4px; }
+.compact label.check { padding: 8px 12px; }
+.compact input[type="radio"], .compact input[type="checkbox"] { width: 17px; height: 17px; }
+.compact legend { margin-top: 10px; }

@@ -1,0 +1,15 @@
+# render.yaml — Render Blueprint. Point Render at this repo and it reads this.
+services:
+  - type: web
+    name: bridge-fcf
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: BRIDGE_DATA
+        value: /data/bridge.json
+    disk:
+      name: bridge-data
+      mountPath: /data
+      sizeGB: 1

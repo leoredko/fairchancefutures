@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Choose a PIN{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ identifier }}</span>
+  </div>
+
+  <form class="pane" method="post" autocomplete="off"
+        action="{% if role == 'inside' %}/signin/enroll{% elif role == 'family' %}/helper/enroll{% else %}/staff-signin/enroll{% endif %}">
+    <input type="hidden" name="normalized" value="{{ normalized }}">
+
+    <h1>Pick a PIN</h1>
+    <p class="lede">{{ pin_length }} numbers. You choose it, and nobody here can
+      see it once you do, not even your counselor.</p>
+
+    {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
+
+    <label class="small" for="pin">Your new PIN</label>
+    <input class="choice" id="pin" name="pin" type="password" inputmode="numeric"
+           pattern="[0-9]*" maxlength="{{ pin_length }}" autocomplete="new-password"
+           autofocus style="letter-spacing: .5em; font-size: 26px">
+
+    <label class="small" for="confirm">Type it once more</label>
+    <input class="choice" id="confirm" name="confirm" type="password" inputmode="numeric"
+           pattern="[0-9]*" maxlength="{{ pin_length }}" autocomplete="new-password"
+           style="letter-spacing: .5em; font-size: 26px">
+
+    <button class="btn wide" type="submit">Save my PIN</button>
+
+    <div class="card dashed">
+      <span class="strong">This tablet is shared.</span>
+      <span class="small">Don't use your birthday or any part of your own
+        number. Anyone holding your paperwork can read those.</span>
+      <span class="small">If you forget it, your counselor can clear it and you
+        pick a new one. They never get to see or choose it.</span>
+    </div>
+  </form>
+</div>
+{% endblock %}

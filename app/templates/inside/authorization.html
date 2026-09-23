@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Inside, who is helping you{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }} &middot; Kiosk 04</span>
+      </div>
+
+  <div class="pane">
+    <h1>Who is helping you</h1>
+
+    {% if auth and auth.is_live() %}
+    <div class="card">
+      <span class="strong">{{ auth.helper_name }}, since {{ auth.signed_on }}</span>
+      <span class="small">Expires {{ auth.expires_on }}. Rung {{ auth.rung.value }} of
+        the access ladder: {{ rung_label }}.</span>
+      <div class="row">
+        {% for s in scopes %}<span class="tag">{{ s }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="card dashed">
+      <span class="strong">Nobody gets more than they need</span>
+      <span class="small">Whoever helps you cannot open an account in your name,
+        take out credit, move money, or change your address. If a bureau ever
+        needs you to sign something extra, you see exactly what it says first.</span>
+      {% for f in forbidden %}<span class="tiny">&times; {{ f }}</span>{% endfor %}
+    </div>
+
+    <form method="post" action="/inside/authorization/revoke">
+      <button class="btn wide" type="submit">Cancel this authorization</button>
+    </form>
+    <p class="small">You can cancel from this screen without telling
+      {{ auth.helper_name }} first. Ms. Reyes is told the same day.</p>
+
+    {% else %}
+    <div class="card">
+      <span class="strong">No outside helper right now</span>
+      <span class="small">Ms. Reyes handles it through the program instead, using
+        the same form you already signed with her. A few steps run slower.
+        Nothing stops.</span>
+    </div>
+    <form method="post" action="/inside/authorization/name">
+      <div class="stack">
+        <label class="small" for="helper">Name someone you trust</label>
+        <input class="choice" id="helper" name="helper_name" placeholder="First name"
+               style="font-size:18px" required>
+        <button class="btn wide" type="submit">Send them the invitation</button>
+      </div>
+    </form>
+    {% endif %}
+
+    <div class="notes">
+      <p class="note-design">Design note: this screen asks who receives the mail.
+        It does NOT ask for a power of attorney. What the bureaus require varies
+        per person and is unknowable until you try, so the paperwork question is
+        handled later, by the caseworker, only for the people who hit it.</p>
+      <p class="note-build">Never make everyone pay the cost of the hardest case.
+        Start at the lightest rung, escalate only on a kickback.</p>
+    </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+</div>
+{% endblock %}

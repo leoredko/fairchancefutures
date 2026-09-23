@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Family, add the report{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">The report came</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <form class="pane" method="post" action="/family/report"
+        enctype="multipart/form-data">
+    <h1>Take photos of every page.</h1>
+    <p class="lede">Flat on a table, good light, one page per photo. Crooked is fine.</p>
+
+    <label class="check" for="pages">
+      <input id="pages" type="file" name="pages" accept="image/*" multiple capture="environment">
+      <span class="small">Take a photo, or pick from your camera roll</span>
+    </label>
+
+    {% if pages %}
+    <div class="card soft">
+      {% for p in pages %}
+      <div class="row"><span class="small strong">{{ p }}</span>
+        <span class="tag green" style="margin-left:auto">Added</span></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <button class="btn wide" type="submit">Send to Ms. Reyes</button>
+
+    <div class="card dashed">
+      <span class="strong">Can't photograph it?</span>
+      <span class="small">Bring it to Ms. Reyes and she'll enter it with you. No
+        photo is better than a bad one.</span>
+    </div>
+
+    <div class="card">
+      <span class="strong">Where this goes</span>
+      <span class="small">To Ms. Reyes and to {{ client.first_name }}. Not to us,
+        not to anyone else, and never to a company that wants to sell him
+        something.</span>
+    </div>
+
+    <div class="notes">
+      <p class="note-build">Build note: photo-to-text extraction is the one
+        genuinely hard engineering piece. This build does not attempt it. Pages
+        are stored by filename and the caseworker enters the findings, which is
+        the fallback the deck already specified. The rest of the app is
+        unaffected.</p>
+    </div>
+  </form>
+</div>
+{% endblock %}

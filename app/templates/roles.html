@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Roles, surfaces and scope{% endblock %}
+{% block body %}
+<div class="bar"><span class="wordmark">Bridge</span>
+  <span class="pill">Roles, surfaces and scope</span>
+  <div class="right"><a class="pill" href="/">Home</a></div></div>
+
+<div class="desk" style="padding-top:28px">
+  <h1>Three roles, three surfaces</h1>
+  <p class="lede" style="margin:10px 0 24px">Who can do what is set by physics
+    and law, not by preference. That is what splits the app. This page is
+    generated from the capability table the routers actually enforce.</p>
+
+  <div class="grid three">
+    {% for s in surfaces %}
+    <div class="card">
+      <h2>{{ s.title }}</h2>
+      <span class="tag">{{ s.device }}</span>
+      <p class="small strong">Can</p>
+      {% for c in s.can %}<p class="tiny">&middot; {{ c }}</p>{% endfor %}
+      <p class="small strong">Cannot</p>
+      {% for c in s.cannot %}<p class="tiny">&times; {{ c }}</p>{% endfor %}
+      <p class="tiny" style="color:var(--rust)">{{ s.rule }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="grid two" style="margin-top:24px; align-items:start">
+    <div class="card">
+      <h2>The access ladder</h2>
+      <p class="small">What a bureau asks for varies per person and cannot be
+        known in advance. So the app tries the cheapest rung first.</p>
+      {% for r in ladder %}
+      <div class="rung"><span class="n">{{ r.n }}</span>
+        <div><div class="small strong">{{ r.label }}</div>
+          <div class="tiny">{{ r.asks_for }}</div>
+          <div class="tiny">{{ r.cost }}</div></div></div>
+      {% endfor %}
+      <p class="tiny" style="color:var(--rust)">Never make everyone pay the cost
+        of the hardest case. Forcing a notary trip on someone who would have
+        cleared with a signature is how a tool gets abandoned at step one.</p>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2>Never grantable to a helper</h2>
+        <p class="small">Enforced in app/authorization.py. Constructing an
+          authorization with any of these raises, so no future screen can quietly
+          add one.</p>
+        <div class="row">{% for f in forbidden %}<span class="tag rust">{{ f }}</span>{% endfor %}</div>
+      </div>
+
+      <div class="card soft">
+        <h2>Assumed away, with sign-off</h2>
+        <p class="small">Facility and DOC approval, incumbent tablet vendor
+          access, bureau data agreements, funding for the counselor role, and the
+          PII compliance regime a real deployment would sit under. Said on a
+          slide rather than hoped past.</p>
+        <h2 style="margin-top:8px">Not assumed away</h2>
+        <p class="small">A person inside cannot verify identity online, and a
+          helper outside has no standing without a signed form. Those two shape
+          the product, and no waiver makes them disappear.</p>
+      </div>
+
+      <div class="card">
+        <h2>Verify before demo day</h2>
+        {% for v in verify %}<p class="tiny">&middot; {{ v }}</p>{% endfor %}
+        <p class="tiny" style="color:var(--rust)">Primary sources only. This is
+          the part that can go visibly wrong on stage. What has been checked is
+          at <a href="/citations">/citations</a>, with the source and the date
+          for each one.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
