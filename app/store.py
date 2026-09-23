@@ -84,6 +84,8 @@ class Client:
 @dataclass
 class State:
     clients: dict[str, Client] = field(default_factory=dict)
+    # Reports the coordinator scanned in, by client id.
+    reports: dict[str, list[dict]] = field(default_factory=dict)
     accounts: dict[str, dict] = field(default_factory=dict)
     # Cookie signing key. From BRIDGE_SECRET in a real deployment; generated
     # here so a restart does not sign everyone out mid-demo.
@@ -105,6 +107,7 @@ def _serialize() -> dict:
     return {
         "clients": {k: asdict(v) for k, v in STATE.clients.items()},
         "accounts": STATE.accounts,
+        "reports": STATE.reports,
         "secret": STATE.secret,
         "authorizations": STATE.authorizations,
         "drafts": STATE.drafts,
@@ -126,6 +129,7 @@ def load() -> bool:
     raw = json.loads(DATA_PATH.read_text())
     STATE.clients = {k: Client(**v) for k, v in raw.get("clients", {}).items()}
     STATE.accounts = raw.get("accounts", {})
+    STATE.reports = raw.get("reports", {})
     STATE.secret = raw.get("secret", "")
     STATE.authorizations = raw.get("authorizations", {})
     STATE.drafts = raw.get("drafts", {})
@@ -218,6 +222,24 @@ def account_for_client(client_id: str, role: str = "inside"):
         if raw["role"] == role and raw["subject_id"] == client_id:
             return Account(**raw)
     return None
+
+
+def stored_reports(client_id: str) -> list:
+    """The scanned reports, rebuilt as documents a person can read."""
+    from app.report import Account, CreditReport
+
+    out = []
+    for raw in STATE.reports.get(client_id, []):
+        data = dict(raw)
+        data["accounts"] = [Account(**a) for a in raw.get("accounts", [])]
+        out.append(CreditReport(**data))
+    return out
+
+
+def put_report(report) -> None:
+    from dataclasses import asdict as _asdict
+
+    STATE.reports.setdefault(report.client_id, []).append(_asdict(report))
 
 
 def review_log() -> ReviewLog:
@@ -390,6 +412,7 @@ def seed() -> None:
         default_helper_authorization("m-alvarez", "Rosa", today - timedelta(days=21))
     )
     STATE.drafts = {}
+    STATE.reports = {}
     STATE.review_log = {"reviewed": 0, "edited": 0}
     STATE.sync_queue = []
     _seed_accounts()

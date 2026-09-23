@@ -431,11 +431,11 @@ const RULES = {
  "insideQuestions": [
   {
    "index": 1,
-   "field": "has_bank_account",
-   "prompt": "Do you have a bank account right now?",
-   "helper": "Open, closed, frozen, joint with someone. Any of it counts as a yes.",
+   "field": "knows_score",
+   "prompt": "Do you know what your credit score is?",
+   "helper": "Most people don't. There is no wrong answer here.",
    "multi": false,
-   "design_note": "the easiest question first. The first screen is where people decide whether this is worth their time.",
+   "design_note": "starting with what somebody knows rather than what they have. A form that assumes you have seen a credit report is useless to somebody who never has.",
    "constraint": "",
    "reassurance": {
     "title": "Nothing here needs the internet.",
@@ -443,29 +443,58 @@ const RULES = {
    },
    "options": [
     {
-     "value": "yes",
-     "label": "Yes",
+     "value": "no",
+     "label": "No",
      "note": ""
     },
     {
-     "value": "no",
-     "label": "No",
+     "value": "roughly",
+     "label": "Roughly, but not exactly",
+     "note": ""
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
      "note": ""
     }
    ]
   },
   {
    "index": 2,
+   "field": "knows_how",
+   "prompt": "Do you know how to find out?",
+   "helper": "Again, no wrong answer. Most people outside don't either.",
+   "multi": false,
+   "design_note": "the answer to this decides how much explaining the next screen does. It is the only question here whose purpose is teaching rather than triage.",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "note": ""
+    },
+    {
+     "value": "some_idea",
+     "label": "I have some idea",
+     "note": ""
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 3,
    "field": "ever_had_account",
    "prompt": "Have you ever had a credit card, loan, or account in your name?",
-   "helper": "Before you came in counts. A guess is fine, we check it later.",
+   "helper": "Before you came in counts. A guess is fine, the report settles it.",
    "multi": false,
-   "design_note": "one question per screen, offline-first, large targets. Facility tablets are slow, shared, and often metered by the minute.",
-   "constraint": "no file upload and no identity verification happen on this surface. Both are physically impossible from inside, so neither is designed here.",
-   "reassurance": {
-    "title": "Nothing here needs the internet.",
-    "body": "Your answers save on the tablet and sync whenever it connects. Nothing is lost if you lose access for a week."
-   },
+   "design_note": "one question per screen, large targets. Facility tablets are slow, shared, and often metered by the minute.",
+   "constraint": "no camera and no identity check on this surface. The reports come back on paper and the coordinator scans them.",
+   "reassurance": null,
    "options": [
     {
      "value": "yes",
@@ -485,12 +514,34 @@ const RULES = {
    ]
   },
   {
-   "index": 3,
+   "index": 4,
+   "field": "has_bank_account",
+   "prompt": "Do you have a bank account right now?",
+   "helper": "Open, closed, frozen, joint with someone. Any of it is a yes.",
+   "multi": false,
+   "design_note": "this decides whether the first step is opening an account or using one. It is not a blocker either way.",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes",
+     "note": ""
+    },
+    {
+     "value": "no",
+     "label": "No",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 5,
    "field": "collections",
    "prompt": "Is anyone chasing you for money you owe?",
-   "helper": "A collector, a hospital, an old landlord. Not court fines, those come next.",
+   "helper": "A collector, a hospital, an old landlord. Not court fines, those are next.",
    "multi": false,
-   "design_note": "'I have no idea' is a real answer and the most common one. Forcing a guess here produces bad data and a worse path.",
+   "design_note": "'I have no idea' is a real answer and the most common one. Forcing a guess produces bad data and a worse path.",
    "constraint": "",
    "reassurance": null,
    "options": [
@@ -517,12 +568,12 @@ const RULES = {
    ]
   },
   {
-   "index": 4,
+   "index": 6,
    "field": "obligations",
    "prompt": "Do you owe anything the court ordered?",
    "helper": "Restitution, child support, fines and fees. Pick all that apply.",
    "multi": true,
-   "design_note": "these route to the obligations list, never to the credit path. Different mechanism, different screen. They matter, and they do not sit in a list pretending to be a credit card.",
+   "design_note": "these route to the obligations list, never to the credit path. They matter, and they do not sit in a list pretending to be a credit card.",
    "constraint": "",
    "reassurance": null,
    "options": [
@@ -544,55 +595,6 @@ const RULES = {
     {
      "value": "court_fines",
      "label": "Court fines or fees",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "index": 5,
-   "field": "helper_available",
-   "prompt": "Is there someone outside who can get your mail?",
-   "helper": "Your report comes on paper, to an address. Somebody has to be there when it lands.",
-   "multi": false,
-   "design_note": "this screen asks who receives the mail. It does NOT ask for a power of attorney. What the bureaus require varies per person and is unknowable until you try, so the paperwork question is handled later, by the caseworker, only for the people who hit it.",
-   "constraint": "a helper outside has no standing without a signed form. Answering yes here starts an invitation, it does not grant anything.",
-   "reassurance": null,
-   "options": [
-    {
-     "value": "yes",
-     "label": "Yes, someone I trust",
-     "note": "They get the mail and send us photos. Most of the time that's all that's needed. If a bureau asks for more, Ms. Reyes handles it from there."
-    },
-    {
-     "value": "no",
-     "label": "No, or I'd rather not ask anyone",
-     "note": "Ms. Reyes handles it through the program instead, using the same form you already signed with her. A few steps run slower. Nothing stops."
-    },
-    {
-     "value": "later",
-     "label": "I'll decide later",
-     "note": "Nothing is waiting on this answer."
-    }
-   ]
-  },
-  {
-   "index": 6,
-   "field": "wants_line_by_line",
-   "prompt": "When the report comes back, do you want to go through it line by line?",
-   "helper": "It takes about twenty minutes with Ms. Reyes. It is how errors get found.",
-   "multi": false,
-   "design_note": "an error finding requires a person who recognizes their own accounts. Nobody else can do this step, which is why it is asked rather than assumed.",
-   "constraint": "",
-   "reassurance": null,
-   "options": [
-    {
-     "value": "yes",
-     "label": "Yes, go through it with me",
-     "note": ""
-    },
-    {
-     "value": "summary",
-     "label": "Just tell me what matters",
      "note": ""
     }
    ]
@@ -819,6 +821,36 @@ const RULES = {
    "source": "CFPB, Quarterly Consumer Credit Trends: Public Records",
    "statement": "Under the National Consumer Assistance Plan, from July 2017 civil public records needed a name, address, and SSN or date of birth to appear on a credit file. Civil judgments disappeared from credit reports almost entirely and tax liens fell by about half.",
    "url": "https://www.consumerfinance.gov/data-research/research-reports/quarterly-consumer-credit-trends-public-records-credit-scores-and-credit-performance/",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681g(a)(1)(A)",
+   "statement": "A consumer can require the agency to leave the first five digits of their Social Security number out of their own file disclosure. On request, with proof of identity, the agency SHALL truncate it. This is a right, not a courtesy, and it is why the report can be read on a shared tablet at all.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681g",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681g(a)(1)",
+   "statement": "A file disclosure does not have to include a credit score. The statute expressly excludes credit scores and other risk predictors from what must be disclosed. So the free report a person gets by mail shows the file, and may show no number at all.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681g",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "CFPB, What is a credit score?; myFICO, FICO Score Versions",
+   "statement": "There is no single credit score. A score depends on which model produced it, which bureau's file it was run against, and the day it was calculated. Most scores run 300 to 850, but the industry-specific FICO scores that car lenders and card issuers use run 250 to 900, so the same number means different things.",
+   "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-score-en-315/",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "myFICO, FICO Score Versions",
+   "statement": "On FICO Score 9, a third-party collection that has been paid off no longer counts against the consumer at all, and an unpaid medical collection counts for less than other debt. Older versions still in wide use do not do either, which is why paying a collection can move one score and leave another unchanged.",
+   "url": "https://www.myfico.com/credit-education/credit-scores/fico-score-versions",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "myFICO, FICO Score Versions",
+   "statement": "Mortgage lending uses older FICO versions, and a different one per bureau: Score 2 at Experian, Score 4 at TransUnion, Score 5 at Equifax. Improving the FICO 8 a free app shows does not necessarily move any of them.",
+   "url": "https://www.myfico.com/credit-education/credit-scores/fico-score-versions",
    "checked": "2026-09-23"
   },
   {

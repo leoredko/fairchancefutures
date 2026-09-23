@@ -188,8 +188,8 @@ def test_staff_sessions_last_a_shift_and_kiosk_sessions_do_not():
 # --- the doors, end to end -------------------------------------------------
 
 @pytest.mark.parametrize("url,expect", [
-    ("/inside", "Your number"),
-    ("/inside/case", "Your number"),
+    ("/inside", "DIN number or NYS ID"),
+    ("/inside/case", "DIN number or NYS ID"),
     ("/family", "Your code"),
     ("/family/task", "Your code"),
 ])
@@ -236,7 +236,7 @@ def test_signing_out_ends_it(client):
     sign_in_inside(client)
     assert client.get("/inside/case").status_code == 200
     client.get("/signout")
-    assert "Your number" in client.get("/inside/case").text
+    assert "DIN number or NYS ID" in client.get("/inside/case").text
 
 
 def test_an_unknown_number_does_not_pretend_to_work(client):

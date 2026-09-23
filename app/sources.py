@@ -126,6 +126,69 @@ FACTS: dict[str, Fact] = {
             "credit-performance/",
         checked_on=CHECKED,
     ),
+    "ssn_truncation_right": Fact(
+        key="ssn_truncation_right",
+        statement=(
+            "A consumer can require the agency to leave the first five digits "
+            "of their Social Security number out of their own file disclosure. "
+            "On request, with proof of identity, the agency SHALL truncate it. "
+            "This is a right, not a courtesy, and it is why the report can be "
+            "read on a shared tablet at all."
+        ),
+        source="15 U.S.C. 1681g(a)(1)(A)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681g",
+        checked_on=CHECKED,
+    ),
+    "no_score_in_the_disclosure": Fact(
+        key="no_score_in_the_disclosure",
+        statement=(
+            "A file disclosure does not have to include a credit score. The "
+            "statute expressly excludes credit scores and other risk predictors "
+            "from what must be disclosed. So the free report a person gets by "
+            "mail shows the file, and may show no number at all."
+        ),
+        source="15 U.S.C. 1681g(a)(1)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681g",
+        checked_on=CHECKED,
+    ),
+    "many_scores": Fact(
+        key="many_scores",
+        statement=(
+            "There is no single credit score. A score depends on which model "
+            "produced it, which bureau's file it was run against, and the day "
+            "it was calculated. Most scores run 300 to 850, but the "
+            "industry-specific FICO scores that car lenders and card issuers "
+            "use run 250 to 900, so the same number means different things."
+        ),
+        source="CFPB, What is a credit score?; myFICO, FICO Score Versions",
+        url="https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-score-en-315/",
+        checked_on=CHECKED,
+    ),
+    "fico_nine_collections": Fact(
+        key="fico_nine_collections",
+        statement=(
+            "On FICO Score 9, a third-party collection that has been paid off "
+            "no longer counts against the consumer at all, and an unpaid "
+            "medical collection counts for less than other debt. Older "
+            "versions still in wide use do not do either, which is why paying "
+            "a collection can move one score and leave another unchanged."
+        ),
+        source="myFICO, FICO Score Versions",
+        url="https://www.myfico.com/credit-education/credit-scores/fico-score-versions",
+        checked_on=CHECKED,
+    ),
+    "mortgage_uses_old_versions": Fact(
+        key="mortgage_uses_old_versions",
+        statement=(
+            "Mortgage lending uses older FICO versions, and a different one "
+            "per bureau: Score 2 at Experian, Score 4 at TransUnion, Score 5 "
+            "at Equifax. Improving the FICO 8 a free app shows does not "
+            "necessarily move any of them."
+        ),
+        source="myFICO, FICO Score Versions",
+        url="https://www.myfico.com/credit-education/credit-scores/fico-score-versions",
+        checked_on=CHECKED,
+    ),
     "mail_request_from_a_facility": Fact(
         key="mail_request_from_a_facility",
         statement=(

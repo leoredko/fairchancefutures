@@ -18,9 +18,15 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
 from app import labels
 from app.deps import templates
-from app.questions import INSIDE_QUESTIONS, inside_question
+from app.questions import INSIDE_QUESTIONS, inside_question, teaching_for
 from app.session import require_role
-from app.store import STATE, get_authorization, mutate, put_authorization
+from app.store import (
+    STATE,
+    get_authorization,
+    mutate,
+    put_authorization,
+    stored_reports,
+)
 from app.surfaces import Capability, Surface, require
 
 router = APIRouter(prefix="/inside")
@@ -84,7 +90,62 @@ async def answer(request: Request, index: int):
 
     if index >= len(INSIDE_QUESTIONS):
         return RedirectResponse("/inside/where-you-stand", status_code=303)
+    # The two knowledge questions come first, and what follows them is an
+    # explanation rather than another question.
+    if index == 2:
+        return RedirectResponse("/inside/how-this-works", status_code=303)
     return RedirectResponse(f"/inside/intake/{index + 1}", status_code=303)
+
+
+@router.get("/how-this-works", response_class=HTMLResponse)
+def how_this_works(request: Request):
+    """The teaching screen, sized to the answer given two questions ago."""
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    return templates.TemplateResponse(
+        request, "inside/how_this_works.html",
+        {"client": caller.client,
+         "teaching": teaching_for(caller.client.intake_answers.get("knows_how"))},
+    )
+
+
+@router.get("/learn/scores", response_class=HTMLResponse)
+def learn_scores(request: Request):
+    """Why the number a landlord sees is not the number a free app showed."""
+    from app import scores
+
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    by_use = [
+        (scores.USE_LABEL[use], scores.models_for(use))
+        for use in scores.Use
+        if scores.models_for(use)
+    ]
+    done_intake = len(caller.client.intake_answers) >= 6
+    return templates.TemplateResponse(
+        request, "inside/scores.html",
+        {"client": caller.client,
+         "summary": scores.summary_line(),
+         "by_use": by_use,
+         "explainers": scores.EXPLAINERS,
+         "back": "/inside/case" if done_intake else "/inside/how-this-works"},
+    )
+
+
+@router.get("/report", response_class=HTMLResponse)
+def read_report(request: Request):
+    """Read your own credit report, with the Social Security number masked.
+
+    Safe on a shared kiosk because the disclosure is requested truncated in the
+    first place, and masked again here on whatever actually arrived.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    reports = stored_reports(caller.client.id)
+    return templates.TemplateResponse(
+        request, "inside/report.html",
+        {"client": caller.client, "reports": reports},
+    )
 
 
 @router.get("/where-you-stand", response_class=HTMLResponse)

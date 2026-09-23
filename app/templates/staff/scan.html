@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Scan a report{% endblock %}
+{% block body %}
+<div class="bar">
+  <a class="pill btn ghost" href="/staff/{{ client.id }}" style="padding:6px 12px;font-size:13px">&larr; {{ client.display_name }}</a>
+  <span class="wordmark">Scan a report</span>
+  <div class="right">{{ coordinator.display_name }}</div>
+</div>
+
+<div class="desk" style="padding-top:28px; max-width:760px">
+  <h1>Read the paper into the record.</h1>
+  <p class="lede" style="margin:10px 0 22px">{{ client.display_name }} brought
+    the report they received. Scan it here and it appears on their tablet, with
+    the Social Security number covered.</p>
+
+  {% if existing %}
+  <div class="card soft" style="margin-bottom:20px">
+    <h3>Already on file</h3>
+    {% for r in existing %}
+    <p class="small">{{ r.bureau }} &middot; {{ r.summary }} &middot; scanned
+      {{ r.scanned_on }} by {{ r.scanned_by }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="post" action="/staff/{{ client.id }}/report/scan"
+        style="margin-bottom:18px">
+    <button class="btn">Scan the document</button>
+    <span class="hint" style="margin-left:10px">{{ scanner_note }}</span>
+  </form>
+
+  {% if scanned %}
+  <div class="card good" style="margin-bottom:18px">
+    <h3>Scanned. Check it before you save.</h3>
+    <p class="small">Everything below came off the page. Fix anything the
+      scanner misread, then confirm.</p>
+  </div>
+  {% endif %}
+
+  <form method="post" action="/staff/{{ client.id }}/report" class="stack"
+        autocomplete="off">
+    <div class="grid two">
+      <div class="field">
+        <label for="bureau">Bureau</label>
+        <select id="bureau" name="bureau">
+          {% for b in bureaus %}
+          <option value="{{ b }}" {% if b == form.bureau %}selected{% endif %}>{{ b }}</option>
+          {% endfor %}
+        </select>
+        <span class="hint">One report per bureau. Their files differ.</span>
+      </div>
+      <div class="field">
+        <label for="pulled_on">Date on the report</label>
+        <input id="pulled_on" name="pulled_on" type="date"
+               value="{{ form.pulled_on or '' }}">
+        <span class="hint">Leave blank and today's date is used.</span>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="field">
+        <label for="consumer_name">Name as printed</label>
+        <input id="consumer_name" name="consumer_name"
+               value="{{ form.consumer_name or '' }}">
+        <span class="hint">A name spelled wrong on the file is itself a
+          dispute.</span>
+      </div>
+      <div class="field">
+        <label for="ssn_on_document">Social Security number as printed</label>
+        <input id="ssn_on_document" name="ssn_on_document" class="mono"
+               value="{{ form.ssn_on_document or '' }}" placeholder="XXX-XX-4417">
+        <span class="hint">Only the last four are kept. The rest is thrown away
+          here, before anything is saved.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="accounts">Accounts</label>
+      <textarea id="accounts" name="accounts" rows="8" class="mono"
+                spellcheck="false">{{ form.accounts or '' }}</textarea>
+      <span class="hint">One per line: {{ line_format }}. Put a reason on the
+        line only if the person says the item is wrong. That is what drafts the
+        dispute letters.</span>
+    </div>
+
+    <div class="row">
+      <button class="btn">Confirm and save to the record</button>
+      <a class="btn ghost" href="/staff/{{ client.id }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

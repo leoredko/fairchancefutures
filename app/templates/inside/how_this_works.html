@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}How this works{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }}</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>{{ teaching.headline }}</h1>
+
+    <div class="stack">
+      {% for point in teaching.points %}
+      <div class="card accent">
+        <h3>{{ point.title }}</h3>
+        <p class="small">{{ point.body }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="card soft">
+      <h3>One more thing nobody tells you</h3>
+      <p class="small">You do not have one credit score. You have dozens. A
+        landlord, a car dealer and a credit card company each look at a
+        different one, built by a different model, from a different bureau's
+        file.</p>
+      <a class="btn ghost" href="/inside/learn/scores">Show me</a>
+    </div>
+
+    <a class="btn wide" href="/inside/intake/3">Got it, keep going</a>
+  </div>
+</div>
+{% endblock %}

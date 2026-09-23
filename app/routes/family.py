@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from fastapi import APIRouter, Form, Request, UploadFile
+from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import (
@@ -57,7 +57,6 @@ def landing(request: Request):
          "suggested_name": client.helper_name,
          "scopes": [
              "Receive his mail",
-             "Add photos of the report",
              "Mail a dispute letter we print for you",
              "Be contacted by his counselor",
          ]},
@@ -108,10 +107,12 @@ def task(request: Request):
         }
     elif not client.report_pages:
         current = {
-            "headline": "The report should be arriving. Photograph it when it does.",
-            "detail": "Flat on a table, good light, one page per photo.",
-            "action_url": "/family/report",
-            "action_label": "Add the report",
+            "headline": "Nothing to do until the mail comes back.",
+            "detail": f"When the report arrives, send it in to {client.first_name} "
+                      "at the facility. He walks it to his counselor, who scans "
+                      "it into the record. You do not photograph anything.",
+            "action_url": None,
+            "action_label": "",
             "skip_url": None,
             "skip_label": "",
         }
@@ -162,46 +163,3 @@ def packet(request: Request):
         request, "family/packet.html",
         {"client": client, "draft": draft},
     )
-
-
-@router.get("/report", response_class=HTMLResponse)
-def add_report_form(request: Request):
-    caller = require_role(request, "family")
-    require(Surface.FAMILY, Capability.UPLOAD_FILE)
-    client = caller.client
-    require_scope(get_authorization(client.id), Scope.SUBMIT_REPORT_IMAGES)
-    return templates.TemplateResponse(
-        request, "family/add_report.html",
-        {"client": client, "pages": client.report_pages},
-    )
-
-
-@router.post("/report")
-async def add_report(request: Request, pages: list[UploadFile] = None):
-    """Filenames only.
-
-    Photo-to-text extraction is the one genuinely hard engineering piece and it
-    is out of scope. The deck already named the fallback: the caseworker enters
-    the findings. So the image bytes are counted and discarded rather than
-    stored, which also means this build never holds a picture of somebody's
-    credit report on disk.
-    """
-    caller = require_role(request, "family")
-    require(Surface.FAMILY, Capability.UPLOAD_FILE)
-    client = caller.client
-    auth = get_authorization(client.id)
-    require_scope(auth, Scope.SUBMIT_REPORT_IMAGES)
-
-    names = [p.filename for p in (pages or []) if p and p.filename]
-    with mutate():
-        for i, _ in enumerate(names, start=len(client.report_pages) + 1):
-            client.report_pages.append(f"Page {i}")
-        if names:
-            client.timeline.append({
-                "text": f"{len(names)} page{'' if len(names) == 1 else 's'} "
-                        f"of the report added",
-                "actor": auth.helper_name,
-                "on": date.today().strftime("%B %-d"),
-                "done": True,
-            })
-    return RedirectResponse("/family/task", status_code=303)

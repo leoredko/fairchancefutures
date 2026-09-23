@@ -37,14 +37,25 @@ def test_queue_is_sorted_by_clock_not_by_name(staff):
     assert html.index("M. Alvarez") < html.index("T. Brennan")
 
 
-def test_tablet_has_no_upload_route():
-    """There is no URL on the inside surface that accepts a file. Not disabled,
-    absent."""
+def test_the_tablet_can_read_a_report_but_never_send_one():
+    """Reading your own report is the point. Sending one is impossible: there
+    is no camera in this app and no route that would take a file."""
     from app.routes.inside import router
 
-    routes = [r.path for r in router.routes]
-    assert routes
-    assert not any("report" in r or "upload" in r for r in routes)
+    reads = [r for r in router.routes if "GET" in getattr(r, "methods", set())]
+    writes = [r for r in router.routes if "POST" in getattr(r, "methods", set())]
+    assert any(r.path.endswith("/report") for r in reads)
+    assert not any(
+        word in r.path for r in writes
+        for word in ("report", "upload", "photo", "scan", "file")
+    ), [r.path for r in writes]
+
+
+def test_the_tablet_still_cannot_upload_or_verify_identity():
+    from app.surfaces import Capability, Surface, can
+
+    assert not can(Surface.INSIDE, Capability.UPLOAD_FILE)
+    assert not can(Surface.INSIDE, Capability.VERIFY_IDENTITY)
 
 
 def test_helper_with_no_signed_form_gets_the_invitation_only(client):
@@ -57,8 +68,8 @@ def test_helper_with_no_signed_form_gets_the_invitation_only(client):
     # The task surface bounces back to the invitation rather than opening.
     assert "asked you to help" in client.get("/family/task").text
 
-    # And the upload endpoint refuses outright.
-    refused = client.get("/family/report")
+    # And the scoped endpoints refuse outright.
+    refused = client.get("/family/packet")
     assert refused.status_code == 403
     assert "No signed authorization" in refused.text
 
@@ -66,19 +77,19 @@ def test_helper_with_no_signed_form_gets_the_invitation_only(client):
 def test_signing_the_form_is_what_creates_standing(client):
     sign_in_helper(client, code="BRIDGE-2231")
     client.post("/family/accept", data={"helper_name": "Andre"})
-    assert client.get("/family/report").status_code == 200
+    assert client.get("/family/packet").status_code == 200
 
 
 def test_client_revokes_from_the_tablet_and_the_helper_loses_access(client):
     helper = sign_in_helper(client, code="BRIDGE-4417")
-    assert helper.get("/family/report").status_code == 200
+    assert helper.get("/family/packet").status_code == 200
 
     # Same browser, different door: the client signs in and cancels.
     sign_in_inside(client, identifier="28A1187")
     client.post("/inside/authorization/revoke")
 
     sign_in_helper(client, code="BRIDGE-4417", pin=PIN)
-    refused = client.get("/family/report")
+    refused = client.get("/family/packet")
     assert refused.status_code == 403
     assert "revoked" in refused.text
 
@@ -91,12 +102,14 @@ def test_naming_a_helper_from_the_tablet_grants_nothing_by_itself(client):
     assert store.get_authorization("j-whitfield") is None
 
     sign_in_helper(client, code="BRIDGE-2231")
-    assert client.get("/family/report").status_code == 403
+    assert client.get("/family/packet").status_code == 403
 
 
 def test_intake_answers_persist_and_prefill_the_staff_form(client):
     sign_in_inside(client, identifier="28A0931")
-    client.post("/inside/intake/2", data={"ever_had_account": "unsure"})
+    # Question 3 is the first one that feeds triage; 1 and 2 ask what the
+    # person knows rather than what they have.
+    client.post("/inside/intake/3", data={"ever_had_account": "unsure"})
 
     import app.store as store
     assert store.STATE.clients["j-whitfield"].intake_answers["ever_had_account"] == "unsure"

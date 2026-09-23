@@ -14,7 +14,9 @@
       <span class="strong">Do this</span>
       <span class="small">{{ task.headline }}</span>
       <span class="tiny">{{ task.detail }}</span>
+      {% if task.action_url %}
       <a class="btn" href="{{ task.action_url }}">{{ task.action_label }}</a>
+      {% endif %}
       {% if task.skip_url %}
       <form method="post" action="{{ task.skip_url }}">
         <button class="btn quiet" type="submit">{{ task.skip_label }}</button>

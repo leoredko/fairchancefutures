@@ -40,14 +40,24 @@ from app import labels
 from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
 from app.redaction import WITHHELD_NOTE, for_surface
+from app.report import (
+    LINE_FORMAT,
+    SCANNER_NOTE,
+    from_scan,
+    mask_ssn,
+    parse_accounts,
+    simulated_scan,
+)
 from app.store import (
     STATE,
     add_draft,
     drafts_for,
     get_authorization,
     mutate,
+    put_report,
     put_review_log,
     review_log,
+    stored_reports,
 )
 from app.session import require_coordinator
 from app.surfaces import Capability, Surface, require
@@ -278,6 +288,99 @@ def client_detail(request: Request, client_id: str, created: int = 0):
               if a["role"] == "family" and a["subject_id"] == client_id), ""),
          "label": labels},
     )
+
+
+@router.get("/{client_id}/report", response_class=HTMLResponse)
+def scan_report_form(request: Request, client_id: str):
+    """Scan the paper report into the record.
+
+    This is the only way a credit report enters Bridge. The person inside
+    cannot photograph one, and after this change neither can their helper: the
+    paper comes back to the facility, the person walks it to their coordinator,
+    and it is read in here on equipment that already handles their file.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    require(Surface.STAFF, Capability.READ_FULL_REPORT)
+    client = get_client(client_id)
+    return templates.TemplateResponse(
+        request, "staff/scan.html",
+        {"client": client, "coordinator": coordinator,
+         "form": simulated_scan(client), "scanned": False,
+         "bureaus": [b.name for b in BUREAUS],
+         "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
+         "existing": stored_reports(client_id)},
+    )
+
+
+@router.post("/{client_id}/report/scan", response_class=HTMLResponse)
+def scan_report_run(request: Request, client_id: str):
+    """Run the scanner. Populates the form; saves nothing."""
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    client = get_client(client_id)
+    return templates.TemplateResponse(
+        request, "staff/scan.html",
+        {"client": client, "coordinator": coordinator,
+         "form": simulated_scan(client), "scanned": True,
+         "bureaus": [b.name for b in BUREAUS],
+         "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
+         "existing": stored_reports(client_id)},
+    )
+
+
+@router.post("/{client_id}/report")
+def save_report(
+    request: Request,
+    client_id: str,
+    bureau: str = Form(""),
+    consumer_name: str = Form(""),
+    ssn_on_document: str = Form(""),
+    pulled_on: str = Form(""),
+    accounts: str = Form(""),
+):
+    """Confirm and save. From here the person reads it on their tablet.
+
+    The Social Security number is masked on the way in, not on the way out.
+    Storing it whole and hiding it later would mean one templating mistake
+    puts somebody's SSN on a dayroom screen.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    client = get_client(client_id)
+
+    rows = parse_accounts(accounts)
+    report = from_scan(
+        client_id=client_id,
+        bureau=bureau or "Equifax",
+        consumer_name=consumer_name or client.display_name,
+        scanned_by=coordinator.display_name,
+        pulled_on=pulled_on,
+        accounts=rows,
+        ssn_on_document=mask_ssn(ssn_on_document),
+    )
+
+    disputed = [r for r in rows if r["disputed"]]
+    with mutate():
+        put_report(report)
+        client.last_pulled = report.pulled_on
+        client.report_summary = f"{report.bureau}: {report.summary}"
+        client.flagged_items = [
+            {"creditor": r["creditor"],
+             "last_four": "".join(ch for ch in r["number"] if ch.isdigit())[-4:],
+             "reason": r["note"]}
+            for r in disputed
+        ] or client.flagged_items
+        client.timeline.append({
+            "text": f"Your {report.bureau} report was scanned into your record",
+            "actor": "Your counselor",
+            "on": date.today().strftime("%B %-d"),
+            "done": True,
+        })
+        if disputed:
+            client.needs = "Dispute letter to approve"
+
+    return RedirectResponse(f"/staff/{client_id}", status_code=303)
 
 
 @router.post("/{client_id}/letters/draft")
