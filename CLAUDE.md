@@ -117,7 +117,7 @@ Editing that shell has gone wrong twice, both times the same way:
 
 ## Checks before pushing
 
-    pytest -q                       # 269 tests, all should pass
+    pytest -q                       # 297 tests, all should pass
     python3 standalone/build.py     # rebuild if anything changed
     ./run.sh                        # installs, tests, serves on :8000
 

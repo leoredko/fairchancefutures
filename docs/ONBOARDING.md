@@ -5,12 +5,13 @@ if nothing fights you.
 
 ## 1. Get access
 
-The repository is `leoredko/fairchancefutures`. You need a GitHub account with
-write access before any of this works. Send Leo your GitHub username and he adds
-you under Settings, Collaborators. Richard (`rcastillo9587`) is already on.
+The repository is `leoredko/fairchancefutures`. You are both already added as
+collaborators with write access, so there is nothing to request.
 
-Accept the invite from your email or from
-`https://github.com/leoredko/fairchancefutures/invitations` before you clone.
+If GitHub has not already put you on the repository, the invite is sitting in
+your email or at `https://github.com/leoredko/fairchancefutures/invitations`.
+Accept it *before* you clone. Cloning without it returns a confusing
+"repository not found" rather than a permission error.
 
 ## 2. What you need installed
 
