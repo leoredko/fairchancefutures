@@ -24,6 +24,43 @@ that registry with a URL and a date.
 | Civil judgments largely vanished from credit reports after July 2017 under the National Consumer Assistance Plan; tax liens fell about half | [CFPB, Quarterly Consumer Credit Trends: Public Records](https://www.consumerfinance.gov/data-research/research-reports/quarterly-consumer-credit-trends-public-records-credit-scores-and-credit-performance/) |
 | A mailed dispute carries full name with suffix, DOB, SSN and two years of addresses; Experian also asks for a government ID copy and proof of address | [Experian, Disputing by Mail](https://www.experian.com/blogs/ask-experian/credit-education/faqs/instructions-for-disputing-by-mail/) |
 
+### Getting the documents, checked 2026-09-23
+
+This is the chain that gates everything else, and it is what replaced the
+access ladder. Added when the vital-documents question turned out to have a
+real answer with a real deadline on it.
+
+| Claim | Source |
+| --- | --- |
+| A birth certificate **and** a Social Security card must both be on file **before** the non-driver ID application can be submitted. The Offender Rehabilitation Coordinator prioritizes getting them and reviews each person's document status **quarterly** | [DOCCS and DMV Identification Card Program, Annual Legislative Report 2025](https://doccs.ny.gov/system/files/documents/2026/06/2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf) |
+| **At 120 days before release**, a person is encouraged to apply for a Social Security card. Anyone without a birth certificate is encouraged to apply at any point | same report |
+| Scale and engagement: about 3,700 IDs since the program began in 2022; 1,061 issued May 2025 to April 2026, a 15% decline attributed to staffing; **493 people declined to engage** with the application process in that year | same report |
+| **The other 120 days.** The DOCCS Released Offender Identification Card expires 120 days *after* release, which is the window to exchange it at a DMV office. Two clocks, opposite sides of the gate, and confusing them costs somebody their ID | [DOCCS, Obtaining DMV Identification](https://doccs.ny.gov/obtaining-dmv-identification) |
+| No fee is charged when DOCCS requests a certified birth certificate in anticipation of release, and a certified copy of the sentence and commitment counts as the person's authorization, so no separate signature is needed | [N.Y. Public Health Law 4174](https://www.nysenate.gov/legislation/laws/PBH/4174) |
+| That waiver covers **New York** records. Somebody born in another state or country is not covered by it | Same statute, which governs records registered under that chapter. Stated as a limit of the statute rather than as a claim about what other states do |
+
+### The curriculum, checked 2026-09-23
+
+Every lesson card that states a rule cites one of these by key, and a test
+fails if a card cites a key that is not in the registry.
+
+| Claim | Source |
+| --- | --- |
+| Most negative information comes off after **seven years**, counted from the original delinquency; bankruptcies run **ten**. Paying an old debt does not restart the clock | [15 U.S.C. 1681c(a)](https://www.law.cornell.edu/uscode/text/15/1681c) |
+| A report may only be furnished for a listed permissible purpose | [15 U.S.C. 1681b(a)](https://www.law.cornell.edu/uscode/text/15/1681b) |
+| An employer needs clear written disclosure and written permission first, and must hand over a copy of the report and a statement of rights **before** acting adversely on it | [15 U.S.C. 1681b(b)(2)-(3)](https://www.law.cornell.edu/uscode/text/15/1681b) |
+| Denied credit, housing, insurance or a job because of a report? A free copy of that file, on request within **60 days** | [15 U.S.C. 1681j(b)](https://www.law.cornell.edu/uscode/text/15/1681j) |
+| A further free report once a year for anyone certifying in writing that they are **unemployed and job-hunting within 60 days**, **receiving public welfare assistance**, or that their file has **fraud-related errors**. Somebody just home often qualifies under more than one | [15 U.S.C. 1681j(c)](https://www.law.cornell.edu/uscode/text/15/1681j) |
+| A FICO score is about 35% payment history, 30% amounts owed, 15% length of history, 10% credit mix, 10% new credit, for the general population | [myFICO, What is in my FICO Scores](https://www.myfico.com/credit-education/whats-in-your-credit-score) |
+| A credit repair organization may not take any money before the service is fully performed, may not tell a person to misstate their history, and may not advise altering identifying information to hide a record | [15 U.S.C. 1679b(a)-(b)](https://www.law.cornell.edu/uscode/text/15/1679b) |
+| A security freeze is free, placed within 1 business day of an electronic or phone request and 3 of a mailed one, and lifted within 1 hour electronically | [15 U.S.C. 1681c-1](https://www.law.cornell.edu/uscode/text/15/1681c-1) |
+| An initial fraud alert lasts at least 1 year with a free file copy; an extended alert lasts 7 years, with 2 free copies in the first 12 months and 5 years off unsolicited offers | [15 U.S.C. 1681c-1](https://www.law.cornell.edu/uscode/text/15/1681c-1) |
+| **Corrected.** About **one in four** consumers identified at least one potential material error. **One in five** had an error *corrected after disputing*, which is not the same thing. About **one in twenty** had errors serious enough to mean less favorable loan terms | [FTC, Section 319 FACTA Fifth Interim Report, February 2013](https://www.ftc.gov/reports/section-319-fair-accurate-credit-transactions-act-2003-fifth-interim-federal-trade-commission-report) |
+
+The team problem statement has that last one the wrong way round: it reads
+"one in five consumers has an error", which is the corrected-after-dispute
+figure. Worth fixing on the slide before anyone in the audience checks.
+
 ### Bureau dispute addresses, checked 2026-09-23
 
 | Bureau | Address | Source |
@@ -41,11 +78,14 @@ addresses move without announcement; re-check anything older than six months.
 
 The app asserts none of these. Where one would be needed, the screen says so.
 
-- [ ] **What actually makes a bureau escalate past a plain signed request.** The
-      whole access ladder assumes rung 1 usually clears. No public source
-      confirms how often that is true, and if it is wrong, the ladder is wrong.
-      Experian asking for an ID copy with every mailed dispute is a hint that
-      rung 2 arrives more often than the ladder assumes.
+- [ ] **What actually makes a bureau escalate past a plain signed request.** No
+      public source says how often a plain request clears, and Experian asks
+      for an ID copy with every mailed dispute regardless. This used to be
+      load-bearing: a four-rung access ladder rested on the assumption that the
+      cheapest route usually works. **The ladder is gone.** The product now
+      turns on document readiness, which is knowable and already tracked
+      quarterly, so this is a question worth answering rather than a hole
+      underneath the design.
 - [ ] **Whether a bureau honors a mid-dispute revocation** of a helper's
       authority. The app lets a client revoke instantly from the tablet.
 - [ ] **Whether any New York county has designated a private collection
@@ -56,6 +96,21 @@ The app asserts none of these. Where one would be needed, the screen says so.
 - [ ] **Whether court fines and fees are furnished, and by whom.**
 - [ ] **The 6 to 9 month horizon for a credit-invisible client.** Sourced to the
       Cornish interview, Sep 21, uncorroborated, and labelled as such in the UI.
+- [ ] **Whether the free non-driver ID for people on public assistance, SNAP or
+      Medicaid exists as this repo used to claim**, dated October 2020. Could
+      not verify it. What the primary sources describe is a different thing: a
+      DOCCS and DMV program established in 2022 that produces an ID before
+      release once the birth certificate and Social Security card are on file.
+      The claim has been removed rather than left standing.
+
+## Corroborated since, and worth saying out loud
+
+The Cornish interview's strongest claim, that **engagement is the unsolved
+problem rather than the technology**, now has independent support from a state
+agency's own reporting: 493 people declined to engage with the pre-release ID
+application in a single year, against 1,061 issued. Roughly one in three people
+who could have walked out with a state ID said no. That is not a documents
+problem.
 
 ## Settled Sep 21, by the team
 
