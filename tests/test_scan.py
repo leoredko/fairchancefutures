@@ -124,9 +124,15 @@ def test_a_typed_report_lands_on_the_coordinator_desk_not_the_tablet(client):
     assert len(pending_reports("marcus-w")) == 1
     assert stored_reports("marcus-w", confirmed_only=True) == []
 
-    # And the person does not see it yet.
+    # The person is told it arrived and is being checked, but sees none of
+    # what it says. An empty screen would be its own lie: somebody told their
+    # helper sent it in cannot tell waiting apart from broken.
     sign_in_inside(client, identifier="28A1187")
-    assert "Experian" not in client.get("/inside/report").text
+    page = client.get("/inside/report").text
+    assert "Your counselor is" in page
+    assert "Experian" in page
+    assert "Midland Funding" not in page
+    assert "4471" not in page
 
     # The coordinator reads it against the paper and signs off.
     client.post("/staff/marcus-w/report/0/confirm", data={

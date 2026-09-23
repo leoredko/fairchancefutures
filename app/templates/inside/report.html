@@ -10,10 +10,26 @@
 
   <div class="pane">
     {% if not reports %}
-    <h1>Nothing here yet.</h1>
+    {% if waiting %}
+    <div class="card good">
+      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
+        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
+        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
+      {% for r in waiting %}
+      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
+        {{ r.scanned_on }}</p>
+      {% endfor %}
+      <p class="small">They read it against the paper before it goes on this
+        screen, because what is written here becomes a letter to a credit
+        bureau. Nothing is wrong. It is the checking step.</p>
+    </div>
+    {% endif %}
+    <h1>{{ 'Not on this screen yet.' if waiting else 'Nothing here yet.' }}</h1>
+    {% if not waiting %}
     <p class="lede">Your reports come back on paper. When they arrive, bring
       them to your coordinator and they will scan them into your record. Then
       you can read them here.</p>
+    {% endif %}
     <div class="card soft">
       <h3>You do not photograph anything</h3>
       <p class="small">There is no camera in this app and there does not need
@@ -31,6 +47,21 @@
         require, and this screen covers them again regardless.</p>
       <p class="tiny">15 U.S.C. 1681g(a)(1)(A)</p>
     </div>
+
+    {% if waiting %}
+    <div class="card good">
+      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
+        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
+        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
+      {% for r in waiting %}
+      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
+        {{ r.scanned_on }}</p>
+      {% endfor %}
+      <p class="small">They read it against the paper before it goes on this
+        screen, because what is written here becomes a letter to a credit
+        bureau. Nothing is wrong. It is the checking step.</p>
+    </div>
+    {% endif %}
 
     {% for report in reports %}
     <div class="card">

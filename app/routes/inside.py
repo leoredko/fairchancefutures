@@ -25,6 +25,7 @@ from app.store import (
     get_authorization,
     mutate,
     put_authorization,
+    pending_reports,
     stored_reports,
 )
 from app.surfaces import Capability, Surface, require
@@ -145,9 +146,13 @@ def read_report(request: Request):
     # checked by anyone yet, and showing somebody an unverified list of
     # their own debts is worse than showing them nothing.
     reports = stored_reports(caller.client.id, confirmed_only=True)
+    # But an empty screen is its own lie. Somebody told "your helper sent it
+    # in" and then shown nothing has no way to tell the difference between
+    # working and broken, so the waiting is named and attributed.
+    waiting = pending_reports(caller.client.id)
     return templates.TemplateResponse(
         request, "inside/report.html",
-        {"client": caller.client, "reports": reports},
+        {"client": caller.client, "reports": reports, "waiting": waiting},
     )
 
 
