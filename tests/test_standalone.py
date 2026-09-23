@@ -270,8 +270,8 @@ def test_the_course_is_reachable_from_the_tablet_bar(pages):
 
 
 def test_the_standalone_keeps_lesson_progress_per_card(pages):
-    """Same reason as the server app: a tablet session ends when the dayroom
-    closes, and starting a lesson over is how somebody stops bothering."""
+    """Same reason as the server app: a tablet session ends without warning,
+    and starting a lesson over is how somebody stops bothering."""
     shell = pages["inside"]
     assert "function markCard" in shell
     assert "Math.max(row.card || 0, n)" in shell

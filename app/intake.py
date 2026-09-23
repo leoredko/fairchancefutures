@@ -2,7 +2,8 @@
 
 A counselor does this, not the person themselves. That distinction is the whole
 reason there is no public signup: somebody inside does not enrol into a reentry
-program from a kiosk, a counselor puts them on the list after a conversation.
+program from their tablet, a counselor puts them on the list after a
+conversation.
 
 What creating a client actually makes:
 
@@ -77,7 +78,7 @@ def _clean_name(raw: str) -> str:
     """Title case the parts, leave initials and suffixes alone.
 
     "marcus w." becomes "Marcus W.", "MARIA ALVAREZ" becomes "Maria Alvarez".
-    A name typed in a hurry should not end up shouting on a kiosk screen.
+    A name typed in a hurry should not end up shouting on the tablet.
     """
     # Roman numerals shout, name suffixes do not: "Andre Quinones Jr. III".
     numerals = {"II", "III", "IV", "V", "VI"}

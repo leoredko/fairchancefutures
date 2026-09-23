@@ -84,11 +84,11 @@ resetting one *clears* it rather than choosing a new one, so the only person who
 ever knows a client's PIN is the client. PINs are PBKDF2-hashed with a per-user
 salt and the plaintext never reaches the store. The DIN format is confirmed
 from DOCCS; the NYSID check letter is not, so it is accepted and never
-validated, because rejecting a real number at a kiosk is the worst thing this
+validated, because rejecting a real number on the tablet is the worst thing this
 code can do.
 
 The threat model is the next person to pick up the tablet, not a remote
-attacker: 15 minute idle timeout on the kiosk, a shift-length one for staff,
+attacker: 15 minute idle timeout on the tablet, a shift-length one for staff,
 lockout after five wrong PINs, obvious PINs refused, sign-out on every screen.
 
 ## What is assumed away

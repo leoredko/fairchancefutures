@@ -189,7 +189,7 @@ async def lesson_check(request: Request, slug: str):
     """Answer the check. Any answer finishes the lesson.
 
     The explanation is the teaching; the question only exists to make somebody
-    commit before they read it. Marking them wrong in a dayroom, in front of
+    commit before they read it. Marking them wrong in a common area, in front of
     whoever is waiting for the tablet, would teach them to stop answering.
     """
     caller = require_role(request, "inside")
@@ -295,7 +295,7 @@ def learn_scores(request: Request):
 def read_report(request: Request):
     """Read your own credit report, with the Social Security number masked.
 
-    Safe on a shared kiosk because the disclosure is requested truncated in the
+    Safe on the tablet because the disclosure is requested truncated in the
     first place, and masked again here on whatever actually arrived.
     """
     caller = require_role(request, "inside")

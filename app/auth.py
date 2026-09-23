@@ -33,7 +33,8 @@ from datetime import datetime, timedelta, timezone
 PBKDF2_ROUNDS = 240_000
 PIN_LENGTH = 6
 
-# A shared tablet, metered by the minute, with a queue behind it.
+# A personal device, but one that gets set down, carried through movement,
+# and read with other people in line of sight.
 IDLE_TIMEOUT = timedelta(minutes=15)
 STAFF_IDLE_TIMEOUT = timedelta(hours=8)
 
@@ -184,7 +185,7 @@ def authenticate(account: Account, pin: str, now: datetime | None = None) -> Non
 
 
 def reset_pin(account: Account) -> None:
-    """A counselor clears it; the person sets a new one at the kiosk.
+    """A counselor clears it; the person sets a new one on their tablet.
 
     Staff never choose somebody else's PIN. Setting it for them would make the
     PIN something a staff member knows, which defeats the point of having one.

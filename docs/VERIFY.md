@@ -51,7 +51,7 @@ function a real integration replaces.
 | **It does not return a date of birth.** A search can be narrowed by year of birth, but the record that comes back carries no DOB. So a date of birth in this app never came from the lookup; it comes from the coordinator's own record | same page |
 | **Parole eligibility is not a release date.** It is the point at which somebody becomes eligible after serving their minimum term. The conditional release date is what a reentry plan is built around, and the Time Allowance Committee considers somebody four months before it | same page |
 
-Two consequences the code depends on. The dayroom rule holds here by
+Two consequences the code depends on. The line-of-sight rule holds here by
 construction rather than by a check, because there is no DOB on the record to
 render. And Bridge plans against the conditional release date, falling back to
 the earliest release date, never parole eligibility, and the screen names which

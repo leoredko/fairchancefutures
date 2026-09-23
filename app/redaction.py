@@ -11,9 +11,10 @@ the one who requests the birth certificate, and the vital documents packet sits
 in their file. An app that hides a number they are already holding is not
 protecting anybody, it is performing.
 
-The boundary that is real is physical. A facility tablet is shared, it sits in
-a dayroom, and whoever used it before is standing behind whoever is using it
-now. So the tablet never renders a Social Security number, a full account
+The boundary that is real is physical. The tablet is issued to one person, so
+nobody inherits their session, but it is read in common areas with other people
+in line of sight, and it is a vendor device the facility administers and can
+inspect. So the tablet never renders a Social Security number, a full account
 number or a date of birth, and neither does a helper's phone, because a helper
 was promised in the first ten seconds that they would never be asked to handle
 those. The coordinator's desk is neither of those places.
@@ -35,8 +36,9 @@ from app.surfaces import Surface
 # The fields worth naming out loud when a surface does not get them.
 SENSITIVE = frozenset({"ssn", "full_account_number", "date_of_birth"})
 
-# Which surfaces must never render them. Physical, not preferential: a shared
-# dayroom tablet and a helper's phone are the two places these cannot appear.
+# Which surfaces must never render them. Physical, not preferential: a screen
+# read in common areas and a helper's phone are the two places these cannot
+# appear.
 # The coordinator's desk already holds the file, so withholding there is
 # theater rather than protection.
 WITHHELD_FROM: dict[Surface, frozenset[str]] = {
@@ -76,7 +78,7 @@ VISIBLE: dict[Surface, frozenset[str]] = {
 
 WITHHELD_NOTE = (
     "You already hold this file, so Bridge does not pretend otherwise. What it "
-    "does enforce: none of this reaches the tablet in the dayroom or the "
+    "does enforce: none of this reaches the tablet in a common area or the "
     "helper's phone, and a scanned report stays truncated because that is how "
     "it arrived."
 )

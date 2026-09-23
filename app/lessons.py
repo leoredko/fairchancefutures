@@ -13,10 +13,9 @@ intake and is gone. Every tablet screen carries a way in, and a lesson can be
 opened at any point in a case, including before intake and long after the
 dispute is settled.
 
-Progress is saved per card, not per lesson. A tablet session ends when the
-dayroom closes, the tablet dies, or somebody else needs it. Losing four screens
-of reading because of that is how a person decides an app is not worth
-starting. Sign back in and the course opens exactly where it stopped.
+Progress is saved per card, not per lesson. A session ends when movement is
+called, the battery dies, or the tablet gets set down. Losing four screens of
+reading because of that is how a person decides an app is not worth starting. Sign back in and the course opens exactly where it stopped.
 
 Nothing here states a rule without a source. Every card that makes a legal or
 numeric claim carries a key into `app.sources`, and `cited()` resolves it, so a
@@ -70,7 +69,7 @@ class Check:
     """The question at the end of a lesson.
 
     `answer` is the defensible one. It is not marked right or wrong on screen,
-    because a person working through this on a shared tablet does not need a
+    because a person working through this between counts does not need a
     red cross in front of whoever is waiting for the tablet next.
     """
 

@@ -59,8 +59,10 @@ next tap. Some scopes raise on construction rather than being checked later.
 - **Mask the Social Security number on the way in, never on the way out.** A
   report is stored already truncated. That it can be truncated at all is
   15 U.S.C. 1681g(a)(1)(A), not a courtesy we invented.
-- **The dayroom is the boundary, not the desk.** A shared tablet and a helper's
-  phone never render an SSN, a full account number or a date of birth. The
+- **Line of sight is the boundary, not the desk.** The tablet is issued to one
+  person and it is connected, but it is read in common areas and the facility
+  administers it, so it and a helper's phone never render an SSN, a full
+  account number or a date of birth. The
   coordinator does see them, because they hold the sentence and commitment
   paperwork and request the birth certificate, and hiding a number somebody is
   already holding protects nobody. `app/redaction.py` is per surface for this
@@ -68,8 +70,8 @@ next tap. Some scopes raise on construction rather than being checked later.
 - **Education is the first priority.** Every lesson card that states a rule
   cites a key in `app/sources.py`, and a test fails if it cites one that is not
   there. The course is reachable from every tablet screen and is never gated
-  behind intake. Progress saves per card, because a tablet session ends when
-  the dayroom closes.
+  behind intake. Progress saves per card, because a session ends without
+  warning: movement is called, the battery dies, the tablet gets set down.
 - **No rungs.** The four-rung access ladder was removed deliberately: it
   modeled what a bureau would demand, which no public source establishes.
   Document readiness in `app/caseplan.py` replaced it. If you find yourself

@@ -95,7 +95,7 @@ INSIDE_QUESTIONS: tuple[Question, ...] = (
             Option("unsure", "I'm not sure"),
         ),
         design_note="one question per screen, large targets. Facility tablets "
-                    "are slow, shared, and often metered by the minute.",
+                    "are slow, and reading happens in short bursts.",
         constraint="no camera and no identity check on this surface. The "
                    "reports come back on paper and the coordinator scans them.",
     ),

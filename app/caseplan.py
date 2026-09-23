@@ -51,9 +51,6 @@ COORDINATOR_TITLE = "Offender Rehabilitation Coordinator"
 PLAN_NAME = "Offender Case Plan"
 PLAN_FORMER_NAME = "Transitional Accountability Plan"
 
-# Reentry planning intensifies in the six months before release.
-INTENSIVE_WINDOW_DAYS = 182
-
 
 class Document(str, Enum):
     """The vital documents packet reentry staff already assemble."""
@@ -161,11 +158,6 @@ def quarterly_reviews_left(release: date, today: date | None = None) -> int:
     today = today or date.today()
     days = (release - today).days
     return max(0, days // 91)
-
-
-def in_intensive_window(release: date, today: date | None = None) -> bool:
-    today = today or date.today()
-    return 0 <= (release - today).days <= INTENSIVE_WINDOW_DAYS
 
 
 def simulated_plan(

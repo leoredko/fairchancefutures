@@ -143,11 +143,6 @@ def sections_for(report) -> list[Section]:
     return out
 
 
-def total_screens(report) -> int:
-    """Sections plus the closing question."""
-    return len(sections_for(report)) + 1
-
-
 def _blank() -> dict:
     return {"section": 0, "done": False, "answer": "", "flagged": [],
             "reviewed_on": ""}

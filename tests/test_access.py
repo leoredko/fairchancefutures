@@ -32,7 +32,7 @@ from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
 
 @pytest.mark.parametrize("raw", ["28A1187", "28-A-1187", "28 a 1187", "28a1187"])
 def test_a_din_is_read_however_it_is_typed(raw):
-    """Somebody is copying this off a printed sheet onto a shared tablet."""
+    """Somebody is copying this off a printed sheet onto the tablet."""
     parsed = parse(raw)
     assert parsed.kind is IdKind.DIN
     assert parsed.normalized == "28A1187"
@@ -42,7 +42,7 @@ def test_a_din_is_read_however_it_is_typed(raw):
 @pytest.mark.parametrize("raw", ["00000011L", "04418823", "044-188-23 l"])
 def test_a_nysid_is_accepted_with_or_without_the_check_letter(raw):
     """Which letters are valid is NOT confirmed, so we never reject on it.
-    A real number refused at a kiosk is the worst outcome available here."""
+    A real number refused on the tablet is the worst outcome available here."""
     assert parse(raw).kind is IdKind.NYSID
 
 
@@ -168,7 +168,7 @@ def test_a_tampered_cookie_is_not_a_session(monkeypatch):
 
 
 def test_a_session_that_sat_idle_is_gone(monkeypatch):
-    """A shared tablet with somebody's case left open is the whole problem."""
+    """A tablet left open in a common area is the whole problem."""
     monkeypatch.setenv("BRIDGE_SECRET", "test-secret-not-a-real-one")
     from app.auth import IDLE_TIMEOUT, issue
 
@@ -177,7 +177,7 @@ def test_a_session_that_sat_idle_is_gone(monkeypatch):
     assert read(issue(stale)) is None
 
 
-def test_staff_sessions_last_a_shift_and_kiosk_sessions_do_not():
+def test_staff_sessions_last_a_shift_and_tablet_sessions_do_not():
     from app.auth import IDLE_TIMEOUT, STAFF_IDLE_TIMEOUT
 
     assert Session("a", "staff", "").idle_limit() == STAFF_IDLE_TIMEOUT
@@ -330,7 +330,7 @@ def test_signing_in_with_a_din_fills_in_what_is_attached_to_it(client):
 
 def test_the_lookup_never_supplies_a_date_of_birth(client):
     """The public lookup does not return one: you can search by year of birth,
-    but the record that comes back has no DOB on it. So the dayroom rule holds
+    but the record that comes back has no DOB on it. So the tablet rule holds
     here by construction rather than by a check, and a DOB can never be said to
     have come from this source."""
     from app.doccs import LookupRecord, simulated_lookup

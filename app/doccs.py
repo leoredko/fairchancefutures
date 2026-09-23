@@ -102,7 +102,7 @@ class LookupRecord:
         return asdict(self)
 
 
-# What a person may see of their own record on a shared tablet.
+# What a person may see of their own record on the tablet.
 #
 # All of it, and that is not a loophole. These are the dates this person is
 # told at their own reception and can recite from memory; the lookup publishes
@@ -111,7 +111,7 @@ class LookupRecord:
 #
 # The date of birth is the one field that would be wrong to show here, and it
 # is not on this record at all, because the lookup does not return one. That is
-# the dayroom rule holding by construction rather than by a check.
+# the tablet rule holding by construction rather than by a check.
 SHOWN_TO_THE_PERSON: tuple[str, ...] = (
     "housing_facility",
     "conditional_release_date",

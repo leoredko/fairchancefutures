@@ -4,13 +4,13 @@ Nobody photographs anything. The reports come back on paper to the facility,
 the person carries them to their coordinator, and the coordinator scans them
 into the record. From then on the person reads their own report on the tablet.
 
-The reason that is safe on a shared kiosk is statutory rather than a policy we
+The reason that is safe on the tablet is statutory rather than a policy we
 invented: on request, with proof of identity, a credit reporting agency SHALL
 leave the first five digits of the Social Security number out of the consumer's
 own file disclosure. The request goes out asking for exactly that, so the
 document that comes back is already truncated, and this module masks whatever
 arrives anyway. Two locks on the same door, because the failure here is
-somebody's SSN on a screen in a dayroom.
+somebody's SSN on a screen somebody else can read.
 
     15 U.S.C. 1681g(a)(1)(A), checked 2026-09-23
 
@@ -112,7 +112,7 @@ def mask_ssn(value: str) -> str:
     """Leave the last four, take out everything before it.
 
     Defensive on purpose: the request already asks for a truncated disclosure,
-    but this runs on whatever actually arrives. An unmasked number on a shared
+    but this runs on whatever actually arrives. An unmasked number on a
     tablet is the worst thing this app could put on a screen.
     """
     digits = re.sub(r"\D", "", value or "")
