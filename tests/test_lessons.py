@@ -306,3 +306,67 @@ def test_the_case_screen_no_longer_promises_a_lesson_that_does_not_exist(inside)
     page = inside.get("/inside/case").text
     assert "Lesson 3" not in page
     assert "/inside/learn" in page
+
+
+# --------------------------------------------------------------------------
+# people who are not near release
+# --------------------------------------------------------------------------
+
+def test_somebody_years_out_is_not_led_with_a_release_deadline(person):
+    """From a comment on the walkthrough: this applies to people 120 days from
+    release, what about people doing 10 years who just want to educate
+    themselves or get their report.
+
+    Opening the course with a deadline nine years away says this product is
+    for people on their way out. Reading your own report, learning what a
+    score is, and the free report you are owed every 12 months are all
+    available on day one of a long sentence.
+    """
+    from datetime import date, timedelta
+
+    person.release_date = (date.today() + timedelta(days=9 * 365)).isoformat()
+    assert lessons.far_from_release(person)
+    first = lessons.next_up(person)
+    assert not first.release_dependent, first.slug
+
+
+def test_somebody_near_release_still_gets_the_documents_lesson_first(person):
+    from datetime import date, timedelta
+
+    person.release_date = (date.today() + timedelta(days=100)).isoformat()
+    assert not lessons.far_from_release(person)
+    assert lessons.next_up(person).slug == "three-papers"
+
+
+def test_the_deadline_lesson_is_offered_but_never_hidden(person):
+    """Not first, still listed, still openable. Somebody nine years out who
+    wants it can have it."""
+    from datetime import date, timedelta
+
+    person.release_date = (date.today() + timedelta(days=9 * 365)).isoformat()
+    rows = lessons.index_rows(person)
+    assert len(rows) == len(lessons.CURRICULUM)
+    documents = next(r for r in rows if r["lesson"].slug == "three-papers")
+    assert not documents["for_you"]
+
+
+def test_a_long_sentence_still_finishes_the_whole_course(person):
+    """Stepping the deadline lesson aside must not make it unreachable, or
+    somebody far out could never reach 100 percent."""
+    from datetime import date, timedelta
+
+    person.release_date = (date.today() + timedelta(days=9 * 365)).isoformat()
+    for _ in range(len(lessons.CURRICULUM) + 2):
+        nxt = lessons.next_up(person)
+        if nxt is None:
+            break
+        lessons.record_answer(person, nxt.slug, nxt.check.answer)
+    assert lessons.finished_course(person)
+
+
+def test_a_missing_or_broken_release_date_is_treated_as_near(person):
+    """Fail toward the deadline rather than away from it."""
+    person.release_date = ""
+    assert not lessons.far_from_release(person)
+    person.release_date = "not a date"
+    assert not lessons.far_from_release(person)

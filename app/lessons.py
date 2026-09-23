@@ -92,6 +92,13 @@ class Lesson:
     # suggest next, never to hide anything: every lesson is open to everybody
     # from the day they sign in.
     urgent_for: tuple[str, ...] = ()
+    # True when the lesson's urgency comes from a release date rather than
+    # from the subject. The documents lesson is the only one: its deadline is
+    # 120 days before release, so leading with it for somebody nine years out
+    # tells them this product is not for them yet, which is both wrong and the
+    # fastest way to lose them. It stays in the list and stays openable; it
+    # just does not go first.
+    release_dependent: bool = False
 
     @property
     def screens(self) -> int:
@@ -107,10 +114,11 @@ CURRICULUM: tuple[Lesson, ...] = (
         slug="three-papers",
         title="The three pieces of paper",
         minutes=5,
-        hook="Two documents decide whether you walk out with ID. One of them "
-             "has a deadline you can act on right now.",
+        hook="Two documents decide whether you walk out with ID. One has a "
+             "deadline near release; the other is worth starting years out.",
         urgent_for=("not_yet_triaged", "credit_invisible", "thin_file",
                     "damaged_file", "errors_present"),
+        release_dependent=True,
         cards=(
             Card(
                 title="Everything runs through your ID",
@@ -119,6 +127,11 @@ CURRICULUM: tuple[Lesson, ...] = (
                      "photo ID. And the ID itself needs two other documents "
                      "first. Get this chain wrong and nothing downstream of it "
                      "can start.",
+                aside="If your date is years away, this lesson still has one "
+                      "thing in it for you: the birth certificate. It has no "
+                      "deadline, it takes ten weeks or more, and asking for it "
+                      "early costs you nothing. The rest of this course does "
+                      "not wait for a release date at all.",
             ),
             Card(
                 title="Birth certificate and Social Security card, in that order of worry",
@@ -135,7 +148,9 @@ CURRICULUM: tuple[Lesson, ...] = (
                 body="That is the mark. At 120 days before you go home, the "
                      "Social Security card application goes in. If you are "
                      "inside that window right now and nobody has raised it "
-                     "with you, raise it with them.",
+                     "with you, raise it with them. If you are years out, this "
+                     "is the date to know about rather than the date to act "
+                     "on, and it will come round.",
                 fact_key="social_security_card_at_120_days",
                 aside="Write the date down. It is the one deadline in this "
                       "whole course that is yours to chase rather than "
@@ -891,14 +906,37 @@ def standing(client) -> dict:
     }
 
 
-def next_up(client) -> Lesson | None:
+def far_from_release(client, today: date | None = None) -> bool:
+    """More than a year out, so nothing on a release clock is urgent yet.
+
+    Bridge was built around the six months before release, because that is
+    when a credit file can be moved. The course is not: reading your own
+    report, learning what a score is, freezing your file against somebody
+    using your name, and the free report you are owed once every twelve months
+    are all available on day one of a ten-year sentence. Somebody with nine
+    years left has more time to build a file than anyone, not less.
+    """
+    raw = getattr(client, "release_date", "") or ""
+    try:
+        return (date.fromisoformat(raw) - (today or date.today())).days > 365
+    except ValueError:
+        return False
+
+
+def next_up(client, today: date | None = None) -> Lesson | None:
     """What to offer next.
 
     In progress first, because an unfinished thing is the easiest thing to
     return to. Then whatever answers the state this person's case is actually
-    in, because that is the lesson they have a reason to care about today.
-    Then curriculum order. Nothing is ever hidden: this only picks what to put
-    in front of somebody, and the index lists all of them regardless.
+    in. Then curriculum order.
+
+    One exception, and it is the whole reason this takes a date. The documents
+    lesson leads the curriculum because its deadline is the one thing somebody
+    can act on the same day. For a person nine years out that deadline is not
+    theirs yet, and opening the course with it says this product is for people
+    on their way out. So for them it steps aside and something useful today
+    goes first. Nothing is hidden: the index still lists every lesson and any
+    of them opens.
     """
     started = [
         l for l in CURRICULUM
@@ -907,10 +945,20 @@ def next_up(client) -> Lesson | None:
     if started:
         return started[0]
 
+    skip_release_clock = far_from_release(client, today)
     state = getattr(client, "case_state", "") or ""
-    for lesson_ in CURRICULUM:
-        if state in lesson_.urgent_for and not is_complete(client, lesson_.slug):
+
+    for pass_ in ("urgent", "any"):
+        for lesson_ in CURRICULUM:
+            if is_complete(client, lesson_.slug):
+                continue
+            if skip_release_clock and lesson_.release_dependent:
+                continue
+            if pass_ == "urgent" and state not in lesson_.urgent_for:
+                continue
             return lesson_
+
+    # Everything else done, so the release-dependent one is what is left.
     for lesson_ in CURRICULUM:
         if not is_complete(client, lesson_.slug):
             return lesson_
@@ -921,6 +969,7 @@ def index_rows(client) -> list[dict]:
     """The course list, in order, with where this person stands on each."""
     rows = []
     state = getattr(client, "case_state", "") or ""
+    far_out = far_from_release(client)
     for lesson_ in CURRICULUM:
         row = progress(client, lesson_.slug)
         rows.append({
@@ -929,6 +978,8 @@ def index_rows(client) -> list[dict]:
             "started": row["card"] > 0 and not row["done"],
             "card": row["card"],
             "screens": lesson_.screens,
-            "for_you": state in lesson_.urgent_for and not row["done"],
+            # "For you now" on a deadline that is nine years away is noise.
+            "for_you": (state in lesson_.urgent_for and not row["done"]
+                        and not (far_out and lesson_.release_dependent)),
         })
     return rows
