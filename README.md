@@ -24,15 +24,21 @@ pytest
 uvicorn app.main:app --reload
 ```
 
-## The file you can just open
+## Three applications
 
-`standalone/bridge.html` is the whole product in one file: no server, no
-install, no network. Double-click it, email it, put it on a USB stick, or open
-it on a tablet and use Add to Home Screen. Everything a person does stays in
-that browser and is sent nowhere.
+Three surfaces, deployed separately, sharing one case.
+
+    standalone/bridge-inside.html    the facility tablet
+    standalone/bridge-family.html    the helper's phone
+    standalone/bridge-staff.html     the coordinator's desktop
+
+No server, no install, no network. Open one in a browser, or put it on a tablet
+and use Add to Home Screen. Served from the same folder or the same host all
+three share one caseload; each keeps its own session, so signing in on one does
+not sign you out of another.
 
 ```bash
-python3 standalone/build.py     # regenerate it after changing the app
+python3 standalone/build.py     # regenerate all three after changing the app
 ```
 
 It is generated, not hand-maintained. The four triage states, the letter
@@ -49,9 +55,27 @@ New York only, because the identifiers are.
 
 | Surface | What you sign in with |
 | --- | --- |
-| Inside | A DIN (`22-A-1187`) or a NYSID (`04418823L`), then a PIN you choose |
+| Inside | A DIN (`28-A-1187`) or a NYSID (`00000011L`), then a PIN you choose |
 | Family | The code printed on the letter that came in the mail, then a PIN |
 | Staff | A staff ID, then a PIN |
+
+Any DIN starting `28` signs in and opens a case on the spot: 2028 has not
+happened, so those cannot belong to a real person. Anything outside that range
+is added by a coordinator from **New intake** on the caseload queue,
+which creates the case
+file, a sign-in for each number entered, and the helper code that goes on the
+letter to whoever is helping from outside. No PIN is set at creation: a PIN a
+counselor could choose would be a PIN a counselor knows.
+
+Sign-ins for the seeded caseload are in [docs/DEMO.md](docs/DEMO.md), not in
+the application: seeded logins on a landing page make a product look like a
+sample.
+
+Bridge is one domain inside the DOCCS **Offender Case Plan** rather than a
+second system to maintain. See [docs/SCOPE.md](docs/SCOPE.md) for what that
+integration assumes and `app/caseplan.py` for the code.
+
+Design rationale lives in [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md).
 
 Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
 resetting one *clears* it rather than choosing a new one, so the only person who
@@ -190,13 +214,16 @@ app/sources.py         every legal fact, its primary source, and the check date
 app/identifiers.py     DIN and NYSID parsing
 app/auth.py            PINs, lockout, signed sessions
 app/session.py         who is asking, from the cookie rather than the URL
+app/caseplan.py        the DOCCS Offender Case Plan integration
+app/labels.py          human labels, so no column name reaches a screen
+app/intake.py          adding somebody to the caseload
 standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 132 tests
+tests/                 163 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons

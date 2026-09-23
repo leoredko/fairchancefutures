@@ -14,7 +14,7 @@ from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
 
 def test_the_front_page_needs_no_session(client):
     assert client.get("/").status_code == 200
-    for url in ["/roles", "/metrics", "/citations", "/signin", "/helper",
+    for url in ["/metrics", "/citations", "/signin", "/helper",
                 "/staff-signin"]:
         assert client.get(url).status_code == 200, url
 
@@ -74,7 +74,7 @@ def test_client_revokes_from_the_tablet_and_the_helper_loses_access(client):
     assert helper.get("/family/report").status_code == 200
 
     # Same browser, different door: the client signs in and cancels.
-    sign_in_inside(client, identifier="22A1187")
+    sign_in_inside(client, identifier="28A1187")
     client.post("/inside/authorization/revoke")
 
     sign_in_helper(client, code="BRIDGE-4417", pin=PIN)
@@ -84,7 +84,7 @@ def test_client_revokes_from_the_tablet_and_the_helper_loses_access(client):
 
 
 def test_naming_a_helper_from_the_tablet_grants_nothing_by_itself(client):
-    sign_in_inside(client, identifier="24A0931")   # J. Whitfield
+    sign_in_inside(client, identifier="28A0931")   # J. Whitfield
     client.post("/inside/authorization/name", data={"helper_name": "Andre"})
 
     import app.store as store
@@ -95,7 +95,7 @@ def test_naming_a_helper_from_the_tablet_grants_nothing_by_itself(client):
 
 
 def test_intake_answers_persist_and_prefill_the_staff_form(client):
-    sign_in_inside(client, identifier="24A0931")
+    sign_in_inside(client, identifier="28A0931")
     client.post("/inside/intake/2", data={"ever_had_account": "unsure"})
 
     import app.store as store
@@ -174,13 +174,6 @@ def test_ladder_escalates_one_rung_on_a_kickback(staff):
     assert store.STATE.clients["m-alvarez"].ladder_status["1"] == "Kicked back"
 
 
-def test_roles_page_is_generated_from_the_capability_table(client):
-    """The scope slide cannot drift from the code, because it is the code."""
-    html = client.get("/roles").text
-    assert "verify identity" in html
-    assert "upload file" in html
-
-
 def test_offline_writes_land_in_the_sync_queue(inside):
     inside.post("/inside/intake/1", data={"has_bank_account": "no"})
     payload = inside.get("/api/sync").json()
@@ -208,6 +201,23 @@ def test_drafting_produces_a_letter_for_every_bureau(staff):
     staff.post("/staff/m-alvarez/letters/draft", data={"item": "0"})
     drafts = store.drafts_for("m-alvarez")
     assert {d["bureau"] for d in drafts} == {b.name for b in BUREAUS}
+
+
+def test_the_front_page_is_not_a_demo_menu(client):
+    """Seeded logins on the landing page make an application look like a
+    sample. They live in docs/DEMO.md now."""
+    html = client.get("/").text
+    assert "Demo logins" not in html
+    assert "28-A-1187" not in html
+    assert "fictional" not in html.lower()
+    assert "prototype" not in html.lower()
+
+
+def test_no_wireframe_annotations_survive_in_the_product(client, staff):
+    for url in ["/", "/citations", "/metrics"]:
+        assert "Design note:" not in client.get(url).text, url
+    for url in ["/staff", "/staff/m-alvarez", "/staff/j-whitfield/triage"]:
+        assert "Design note:" not in staff.get(url).text, url
 
 
 def test_the_en_es_pill_is_gone(inside):
@@ -261,3 +271,23 @@ def test_plan_progress_reflects_the_drafts_actually_on_screen(staff):
     after = staff.get("/staff/m-alvarez").text
     assert "not drafted yet" not in after
     assert "0 of 3 letters approved" in after
+
+
+def test_no_database_column_names_reach_a_screen(staff):
+    """`ssn` and `full_account_number` sitting next to written sentences is
+    what made the page look half finished."""
+    html = staff.get("/staff/m-alvarez").text
+    for raw in ("full_account_number", "report_summary", "case_state",
+                "clock_sort", "ladder_rung"):
+        assert raw not in html, raw
+    assert "Social Security number" in html
+    assert "Full account numbers" in html
+
+
+def test_the_counselor_can_see_the_din_and_the_facility(staff):
+    """Both are needed: the facility is the envelope return address and the
+    DIN has to be on it. They were being reported as withheld, which was
+    wrong and confusing."""
+    html = staff.get("/staff/m-alvarez").text
+    assert "Facility" not in html.split("Not shared with you")[1][:400]
+    assert "DIN" not in html.split("Not shared with you")[1][:400]

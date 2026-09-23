@@ -14,16 +14,30 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-BUILT = ROOT / "standalone" / "bridge.html"
+APPS = ("inside", "family", "staff")
+
+
+def _build_if_needed() -> None:
+    if all((ROOT / "standalone" / f"bridge-{a}.html").exists() for a in APPS):
+        return
+    import subprocess
+    import sys
+
+    subprocess.run([sys.executable, "standalone/build.py"], cwd=ROOT, check=True)
 
 
 @pytest.fixture(scope="module")
-def page() -> str:
-    if not BUILT.exists():
-        import subprocess, sys
+def pages() -> dict:
+    """One file per surface, so a tablet gets the tablet app."""
+    _build_if_needed()
+    return {a: (ROOT / "standalone" / f"bridge-{a}.html").read_text()
+            for a in APPS}
 
-        subprocess.run([sys.executable, "standalone/build.py"], cwd=ROOT, check=True)
-    return BUILT.read_text()
+
+@pytest.fixture(scope="module")
+def page(pages) -> str:
+    """Anything true of one build is true of all three."""
+    return pages["staff"]
 
 
 @pytest.fixture(scope="module")
@@ -110,13 +124,37 @@ def test_it_is_one_file(page: str):
     assert "data:image/png;base64," in page
 
 
-def test_it_says_what_it_is(page: str):
-    """It must not read as an official system. It names itself a prototype and
-    disclaims any affiliation, on the first screen."""
-    assert "prototype" in page
-    assert "Not affiliated with" in page
-    assert "made\n      up." in page or "made up" in page
+def test_each_surface_is_its_own_application(pages: dict):
+    """A tablet gets the tablet app. No role switcher, no chooser screen."""
+    for role, html in pages.items():
+        assert f'const APP = "{role}"' in html, role
+        assert "demo-bar" not in html, role
 
 
-def test_it_stays_small_enough_to_email(page: str):
-    assert len(page.encode()) < 2_000_000
+def test_the_three_apps_share_one_caseload_but_not_one_session(page: str):
+    """A client the coordinator adds shows up on the tablet. Signing in on one
+    app must not sign you out of another."""
+    assert 'const KEY = "bridge.v1"' in page
+    assert 'const SESSION_KEY = "bridge.session." + APP' in page
+
+
+def test_nothing_calls_itself_a_prototype(pages: dict):
+    """It is an application. The demo framing lives in docs/DEMO.md."""
+    for role, html in pages.items():
+        lowered = html.lower()
+        for banned in ("prototype", "fictional caseload", "demo login",
+                       "wireframe", "design note:"):
+            assert banned not in lowered, f"{role}: {banned}"
+
+
+def test_it_still_disclaims_any_official_affiliation(pages: dict):
+    """The one piece of small print that stays. It handles prison identifiers,
+    so it says plainly that it is not a state system."""
+    for role, html in pages.items():
+        assert "not affiliated with" in html.lower(), role
+        assert "Department of Corrections" in html, role
+
+
+def test_they_stay_small_enough_to_email(pages: dict):
+    for role, html in pages.items():
+        assert len(html.encode()) < 2_000_000, role

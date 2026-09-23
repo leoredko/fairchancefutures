@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}New intake{% endblock %}
+{% block body %}
+<div class="bar">
+  <a class="pill btn ghost" href="/staff" style="padding:6px 12px;font-size:13px">&larr; Queue</a>
+  <span class="wordmark">New intake</span>
+  <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+</div>
+
+<div class="desk" style="padding-top:28px; max-width:620px">
+  <h1>Add someone to the caseload</h1>
+  <p class="lede" style="margin:10px 0 22px">You add them. They pick their own
+    PIN the first time they sign in, and nobody here ever sees it.</p>
+
+  {% if error %}
+  <div class="denied" style="margin-bottom:20px">
+    <span class="what">{{ error }}</span>
+  </div>
+  {% endif %}
+
+  <form method="post" action="/staff/new" class="stack" autocomplete="off">
+    <div class="field {% if field == 'display_name' %}bad{% endif %}">
+      <label for="display_name">Name</label>
+      <input id="display_name" name="display_name" autofocus
+             value="{{ form.display_name or '' }}"
+             placeholder="Marcus W.">
+      <span class="hint">However the person is addressed. Capitalization is
+        tidied up for you.</span>
+    </div>
+
+    <div class="grid two">
+      <div class="field {% if field == 'din' %}bad{% endif %}">
+        <label for="din">DIN</label>
+        <input id="din" name="din" class="mono" value="{{ form.din or '' }}"
+               placeholder="28-A-1187" autocapitalize="characters">
+        <span class="hint">Two digits, a letter, four digits.</span>
+      </div>
+      <div class="field {% if field == 'nysid' %}bad{% endif %}">
+        <label for="nysid">NYSID</label>
+        <input id="nysid" name="nysid" class="mono" value="{{ form.nysid or '' }}"
+               placeholder="00000011L" autocapitalize="characters">
+        <span class="hint">Eight digits, sometimes a letter.</span>
+      </div>
+    </div>
+    <p class="tiny" style="margin-top:-4px">Either one is enough. If you have
+      both, the person can sign in with whichever they remember.</p>
+
+    <div class="field {% if field == 'facility' %}bad{% endif %}">
+      <label for="facility">Facility</label>
+      <input id="facility" name="facility" list="facility-list"
+             value="{{ form.facility or '' }}"
+             placeholder="Sing Sing Correctional Facility">
+      <datalist id="facility-list">
+        {% for f in facilities %}<option value="{{ f }}">{% endfor %}
+      </datalist>
+      <span class="hint">Goes on the envelope as the return address. The
+        bureaus ask for it on mail from a prison.</span>
+    </div>
+
+    <div class="field {% if field == 'release_date' %}bad{% endif %}">
+      <label for="release_date">Release date</label>
+      <input id="release_date" name="release_date" type="date"
+             value="{{ form.release_date or '' }}">
+      <span class="hint">The queue sorts by what expires soonest, so this is
+        what decides where they land in it.</span>
+    </div>
+
+    <button class="btn wide" type="submit" style="margin-top:6px">
+      Add to the caseload
+    </button>
+  </form>
+
+  <div class="card soft" style="margin-top:22px">
+    <h3>What this creates</h3>
+    <p class="small">A case file, a sign-in for each number you enter, and a
+      helper code to put on the letter that goes out to whoever is helping
+      from the outside.</p>
+    <p class="small">No PIN is set. Every account here is PIN-less until the
+      person it belongs to picks one, which is the only way a PIN means
+      anything.</p>
+  </div>
+</div>
+{% endblock %}

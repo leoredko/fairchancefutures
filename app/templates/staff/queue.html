@@ -4,9 +4,10 @@
 <div class="bar">
   <span class="wordmark">Bridge</span>
   <span class="pill">Action queue</span>
+  <a class="pill" href="/staff/new">New intake</a>
   <a class="pill" href="/roles">Roles and scope</a>
   <a class="pill" href="/metrics">Accuracy</a>
-  <div class="right"><span class="who">Signed in as D. Reyes</span>
+  <div class="right"><a class="pill" href="/signout">Sign out</a><span class="who">Signed in as D. Reyes</span>
     <span class="pill">{{ clients|length }} clients</span></div>
 </div>
 
@@ -35,13 +36,5 @@
     {% endfor %}
     </tbody>
   </table>
-
-  <div class="card dashed" style="margin-top:24px">
-    <p class="note-design">Design note: this is a work queue, not a roster.
-      Nothing sorts by name. The only ordering that matters is what expires first.</p>
-    <p class="note-build">Build note: the triage screen and the client detail
-      screen are the two staff screens in scope. Referrals and outcomes are not
-      built.</p>
-  </div>
 </div>
 {% endblock %}

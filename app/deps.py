@@ -10,6 +10,11 @@ from app.store import STATE, Client
 templates = Jinja2Templates(directory="app/templates")
 
 
+from app import labels as _labels  # noqa: E402
+
+templates.env.globals["labels"] = _labels
+
+
 def get_client(client_id: str) -> Client:
     client = STATE.clients.get(client_id)
     if client is None:

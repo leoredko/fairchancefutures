@@ -1,83 +1,80 @@
 {% extends "base.html" %}
 {% block title %}Bridge{% endblock %}
 {% block body %}
-<div class="desk" style="padding-top:48px">
-  <h1 style="font-size:40px">Bridge</h1>
-  <p class="lede" style="margin:12px 0 8px">
-    Credit repair that starts before release. New York State.
-  </p>
-  <p class="small" style="margin-bottom:28px">
-    Three roles, three surfaces. Who can do what is set by physics and law, not
-    by preference, and each surface enforces its own limits server-side.
-  </p>
 
+<div class="hero">
+  <div class="desk" style="padding-bottom:0">
+    <h1>Start the credit work before the gate opens.</h1>
+    <p class="lede">Bridge runs the credit side of the Offender Case Plan: pull
+      the reports, find the errors, dispute them, and build a file that holds
+      up the first time a landlord or an employer asks for one.</p>
+  </div>
+</div>
+
+<div class="desk">
   {% if session %}
-  <div class="card" style="margin-bottom:24px">
-    <span class="strong">You are signed in on the {{ session.role }} surface.</span>
+  <div class="card good" style="margin-bottom:24px">
+    <span class="strong">You are signed in.</span>
     <div class="row">
-      <a class="btn" href="/{{ 'staff' if session.role == 'staff' else session.role }}">Continue</a>
+      <a class="btn" href="/{{ session.role }}">Continue</a>
       <a class="btn ghost" href="/signout">Sign out</a>
     </div>
   </div>
   {% endif %}
 
   <div class="grid three">
-    <div class="card">
-      <h2>Inside</h2>
-      <span class="tag">facility tablet</span>
-      <p class="small">Answer intake, see where you stand, watch named people
-        work your case, cancel a helper's authorization.</p>
+    <div class="card accent">
+      <span class="tag teal">On the tablet</span>
+      <h2>If you are inside</h2>
+      <p class="small">Answer six questions, see where you stand as a position
+        on a road rather than a score, and watch named people work your case.</p>
       <a class="btn" href="/signin">Sign in with your DIN or NYSID</a>
     </div>
-    <div class="card">
-      <h2>Family</h2>
-      <span class="tag">phone</span>
-      <p class="small">Receive the mail, photograph the report, print and mail
-        letters. One task on screen at a time.</p>
-      <a class="btn" href="/helper">Use the code from the letter</a>
+
+    <div class="card accent">
+      <span class="tag amber">On your phone</span>
+      <h2>If you are helping</h2>
+      <p class="small">One task at a time. Open the mail, photograph the
+        reports, drop two letters in a mailbox. Twenty minutes over three
+        months.</p>
+      <a class="btn amber" href="/helper">Use the code from the letter</a>
     </div>
-    <div class="card">
-      <h2>Caseworker</h2>
-      <span class="tag">desktop</span>
-      <p class="small">Triage, read the report, approve letters, hold the
-        deadline across a full caseload.</p>
-      <a class="btn" href="/staff-signin">Staff sign in</a>
+
+    <div class="card accent">
+      <span class="tag sky">At your desk</span>
+      <h2>If you are the coordinator</h2>
+      <p class="small">A queue sorted by what expires soonest. Triage in one
+        session, approve the letters, hold the deadline across a caseload.</p>
+      <a class="btn ghost" href="/staff-signin">Staff sign in</a>
     </div>
   </div>
 
-  {% if demo_logins %}
-  <div class="card warn" style="margin-top:28px">
-    <h3>Demo logins</h3>
-    <p class="small">This build ships with a fictional caseload and no way to
-      create an account, so the seeded logins are listed here. Everybody picks
-      their own PIN the first time they sign in. Delete this card before
-      anything real goes near it.</p>
-    {% for login in demo_logins %}
-    <div class="row">
-      <span class="small strong" style="min-width:210px">{{ login.role }}</span>
-      <span class="small" style="font-family:ui-monospace,monospace">{{ login.how }}</span>
-      <span class="tiny">{{ login.who }}</span>
-      <a class="tiny" href="{{ login.url }}" style="margin-left:auto">open &rarr;</a>
+  <div class="grid two" style="margin-top:28px; align-items:start">
+    <div class="card">
+      <h2>Four situations, four different answers</h2>
+      <p class="small">Six answers sort a person into one of four states, and
+        each needs a completely different response. No file at all. A thin or
+        stale file. A damaged file with real debt. Errors on the report.</p>
+      <p class="small">Only the last carries a legal clock, so it jumps the
+        queue. The credit-invisible path is the fastest of the four.</p>
     </div>
-    {% endfor %}
+    <div class="card">
+      <h2>It fits the plan that already exists</h2>
+      <p class="small">Bridge is one domain inside the Offender Case Plan the
+        coordinator already keeps, not a second system to maintain. Credit
+        goals go into the plan and progress comes back on the quarterly review
+        cadence.</p>
+      <p class="small">The vital documents packet reentry staff already
+        assemble is the same paperwork a credit bureau asks for, so it gets
+        used rather than collected twice.</p>
+    </div>
   </div>
-  {% endif %}
 
-  <div class="card soft" style="margin-top:20px">
-    <h3>What this build assumes away</h3>
-    <p class="small">Facility and DOC approval, incumbent tablet vendor access,
-      bureau data agreements, funding for the counselor role, and the PII
-      compliance regime a real deployment would sit under. Signed off for class,
-      and said here rather than hidden.</p>
-    <h3 style="margin-top:8px">What it does not assume away</h3>
-    <p class="small">A person inside cannot verify identity online, and a helper
-      outside has no standing without a signed form. Those two shape the
-      product, and no waiver makes them disappear. They are enforced in
-      <span class="strong">app/surfaces.py</span> and
-      <span class="strong">app/authorization.py</span>.</p>
-    <p class="small"><a href="/roles">Roles, surfaces and scope &rarr;</a> &nbsp;
-      <a href="/citations">What we checked &rarr;</a> &nbsp;
-      <a href="/metrics">Accuracy metric &rarr;</a></p>
+  <div class="colophon">
+    <p>Bridge is an independent tool built for reentry programs in New York
+      State. It is not affiliated with, endorsed by, or operated by the New
+      York State Department of Corrections and Community Supervision or any
+      correctional facility.</p>
   </div>
 </div>
 {% endblock %}

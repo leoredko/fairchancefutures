@@ -198,7 +198,8 @@ async def add_report(request: Request, pages: list[UploadFile] = None):
             client.report_pages.append(f"Page {i}")
         if names:
             client.timeline.append({
-                "text": f"{len(names)} page(s) of the report added",
+                "text": f"{len(names)} page{'' if len(names) == 1 else 's'} "
+                        f"of the report added",
                 "actor": auth.helper_name,
                 "on": date.today().strftime("%B %-d"),
                 "done": True,

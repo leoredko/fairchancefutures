@@ -59,3 +59,48 @@ A person inside cannot verify identity online, and a helper outside has no
 standing without a signed form. Those two shape the product, and no waiver makes
 them disappear. They are `app/surfaces.py` and `app/authorization.py`, and
 `tests/test_constraints.py` fails if either quietly stops being true.
+
+## Integrating with the Offender Case Plan
+
+Researched 2026-09-23. New York already keeps the record Bridge would otherwise
+duplicate, so Bridge is one domain inside it rather than a second system.
+
+At the initial interview an **Offender Rehabilitation Coordinator** establishes
+a program plan of goals and tasks. That plan follows the person through
+incarceration and out into community supervision, and the ORC reviews it at
+**scheduled quarterly reviews**. It was the Transitional Accountability Plan and
+is now the **Offender Case Plan**. Reentry planning intensifies in the **six
+months before release**, which is the same window in which a credit file can
+realistically be moved, and the same window the team's problem statement names.
+
+Two consequences, both of which made the product better:
+
+**Vital documents.** Reentry staff already assemble Social Security cards,
+birth certificates and non-driver ID, and the state can request a birth
+certificate at no cost using sentence and commitment paperwork. Since October
+2020 a free non-driver ID is available to people receiving public assistance,
+SNAP or Medicaid. That packet is exactly what **rung 2 of the access ladder**
+asks for. When the plan says the documents are on file, rung 2 stops being a
+wall.
+
+**Cadence.** Bridge reports progress on the ORC's quarterly review schedule
+rather than inventing one, and shows how many reviews are left before release,
+because that is the deadline a coordinator actually works to.
+
+`app/caseplan.py` holds the integration. Bridge writes only into the financial
+domain; housing, employment, education and treatment belong to the coordinator,
+and an app that started editing those would be a different and much worse idea.
+
+Sources, all DOCCS: Legislative Report on Reentry Planning and Access to Social
+Services; Transitional Services Program; Re-Entry Services; Parolee Lookup
+glossary.
+
+**Assumed, with the team's sign-off:** that DOCCS grants API access to the case
+plan. Nothing calls a real endpoint. `simulated_plan()` is the only function a
+real integration would replace.
+
+**Not established:** the name of the software the plan lives in. A DOCCS URL
+path suggests a Facility Population Management System, but nothing public
+confirms what it is or whether it is the system of record, so the integration
+is written against the *case plan* as an artifact rather than against a guessed
+product name.

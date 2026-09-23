@@ -34,12 +34,11 @@
     </div>
     {% endif %}
 
-    <div class="notes">
+    <div class="notes-always">
       {% if q.index > 1 %}
       <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; Back</a>
       {% endif %}
-      <p class="note-design">Design note: {{ q.design_note }}</p>
-      {% if q.constraint %}<p class="note-build">Constraint: {{ q.constraint }}</p>{% endif %}
+      {% if q.constraint %}{% endif %}
     </div>
   </form>
 </div>

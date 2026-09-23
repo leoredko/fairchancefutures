@@ -26,7 +26,7 @@ from app.auth import (
     issue,
 )
 from app.deps import templates
-from app.identifiers import InvalidIdentifier, parse
+from app.identifiers import InvalidIdentifier, is_self_service, parse
 from app.store import STATE, find_account, mutate, put_account
 
 router = APIRouter()
@@ -77,13 +77,16 @@ def signin_identify(request: Request, identifier: str = Form("")):
 
     account = find_account("inside", parsed.normalized)
     if account is None:
-        return templates.TemplateResponse(
-            request, "access/signin.html",
-            {"error": f"No record here for {parsed.display}. Check the number, "
-                      f"or ask your counselor to add you.",
-             "identifier": identifier},
-            status_code=404,
-        )
+        if is_self_service(parsed):
+            account = _open_a_case(parsed)
+        else:
+            return templates.TemplateResponse(
+                request, "access/signin.html",
+                {"error": f"No record here for {parsed.display}. Check the "
+                          f"number, or ask your counselor to add you.",
+                 "identifier": identifier},
+                status_code=404,
+            )
 
     page = "access/enroll.html" if not account.enrolled else "access/pin.html"
     return templates.TemplateResponse(
@@ -150,6 +153,48 @@ def _retry(request: Request, role: str, account, normalized: str, error: str,
          "role": role},
         status_code=400,
     )
+
+
+def _open_a_case(parsed):
+    """Create a case on the spot for a number in the self-service range.
+
+    Everything except the number is blank, and the person fills it in as they
+    go. A counselor doing a real intake enters far more, but somebody trying
+    the app should not have to wait on one.
+    """
+    from datetime import date, timedelta
+
+    from app.auth import Account
+    from app.intake import helper_code
+    from app.store import Client, put_account
+
+    client_id = f"din-{parsed.normalized.lower()}"
+    with mutate():
+        if client_id not in STATE.clients:
+            release = date.today() + timedelta(days=180)
+            STATE.clients[client_id] = Client(
+                id=client_id,
+                display_name=parsed.display,
+                first_name="",
+                din=parsed.normalized,
+                release_date=release.isoformat(),
+                clock="Releases in 180 days",
+                clock_sort=180,
+                consent_recorded_on=date.today().isoformat(),
+                plan_step="Intake not finished yet.",
+            )
+            put_account(Account(
+                account_id=f"inside-{client_id}", role="inside",
+                subject_id=client_id, login_key=parsed.normalized,
+                display_name=parsed.display,
+            ))
+            put_account(Account(
+                account_id=f"family-{client_id}", role="family",
+                subject_id=client_id,
+                login_key=helper_code(
+                    {a["login_key"] for a in STATE.accounts.values()}),
+            ))
+    return find_account("inside", parsed.normalized)
 
 
 # --------------------------------------------------------------------------

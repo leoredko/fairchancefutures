@@ -16,6 +16,7 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
+from app import labels
 from app.deps import templates
 from app.questions import INSIDE_QUESTIONS, inside_question
 from app.session import require_role
@@ -141,9 +142,9 @@ def authorization(request: Request):
     return templates.TemplateResponse(
         request, "inside/authorization.html",
         {"client": caller.client, "auth": auth,
-         "scopes": sorted(s.value.replace("_", " ") for s in auth.scopes) if auth else [],
+         "scopes": sorted(labels.scope(s) for s in auth.scopes) if auth else [],
          "rung_label": RUNG_DETAIL[auth.rung]["label"] if auth else "",
-         "forbidden": sorted(f.replace("_", " ") for f in FORBIDDEN_SCOPES)},
+         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
     )
 
 

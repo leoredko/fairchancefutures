@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Bridge{% endblock %}</title>
-<meta name="theme-color" content="#B4522A">
+<meta name="theme-color" content="#0E7C6B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Bridge">
@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="/static/icon-192.png">
 <link rel="stylesheet" href="/static/bridge.css">
 </head>
-<body>
+<body class="{% if show_notes %}show-notes{% endif %}">
 {% block body %}{% endblock %}
 <script src="/static/exclusive.js" defer></script>
 <script>

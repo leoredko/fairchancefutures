@@ -19,7 +19,24 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import RUNG_DETAIL, Rung, next_rung
 from app.bureaus import BUREAUS
+from app.caseplan import (
+    DOCUMENT_LABEL,
+    DOCUMENT_NOTE,
+    PLAN_NAME,
+    Document,
+    ladder_rung_available,
+    quarterly_reviews_left,
+    simulated_plan,
+)
 from app.deps import get_client, templates
+from app.intake import (
+    FACILITIES,
+    IntakeProblem,
+    client_id_for,
+    helper_code,
+    validate,
+)
+from app import labels
 from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
 from app.redaction import WITHHELD_NOTE, for_surface
@@ -60,6 +77,88 @@ def queue(request: Request):
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     clients = sorted(STATE.clients.values(), key=lambda c: c.clock_sort)
     return templates.TemplateResponse(request, "staff/queue.html", {"clients": clients})
+
+
+@router.get("/new", response_class=HTMLResponse)
+def new_intake(request: Request):
+    """The New intake tab from screen 07 of the deck."""
+    require_role(request, "staff")
+    require(Surface.STAFF, Capability.MANAGE_CASELOAD)
+    return templates.TemplateResponse(
+        request, "staff/new.html",
+        {"facilities": FACILITIES, "form": {}, "error": None, "field": None},
+    )
+
+
+@router.post("/new", response_class=HTMLResponse)
+def create_client(
+    request: Request,
+    display_name: str = Form(""),
+    din: str = Form(""),
+    nysid: str = Form(""),
+    facility: str = Form(""),
+    release_date: str = Form(""),
+):
+    """Create the client and the three PIN-less accounts they sign in with.
+
+    No PIN is set here. A counselor who could set a client's PIN would be a
+    counselor who knows it.
+    """
+    require_role(request, "staff")
+    require(Surface.STAFF, Capability.MANAGE_CASELOAD)
+
+    form = {"display_name": display_name, "din": din, "nysid": nysid,
+            "facility": facility, "release_date": release_date}
+    try:
+        new = validate(
+            display_name=display_name, din=din, nysid=nysid, facility=facility,
+            release_date=release_date,
+            known_dins={c.din for c in STATE.clients.values() if c.din},
+            known_nysids={c.nysid for c in STATE.clients.values() if c.nysid},
+        )
+    except IntakeProblem as exc:
+        return templates.TemplateResponse(
+            request, "staff/new.html",
+            {"facilities": FACILITIES, "form": form, "error": str(exc),
+             "field": exc.field},
+            status_code=400,
+        )
+
+    from app.auth import Account
+    from app.store import Client, put_account
+
+    client_id = client_id_for(new.display_name, new.din, set(STATE.clients))
+    days = (date.fromisoformat(new.release_date) - date.today()).days
+    code = helper_code({a["login_key"] for a in STATE.accounts.values()})
+
+    with mutate():
+        STATE.clients[client_id] = Client(
+            id=client_id,
+            display_name=new.display_name,
+            first_name=new.first_name,
+            din=new.din,
+            nysid=new.nysid,
+            facility=new.facility,
+            release_date=new.release_date,
+            clock=(f"Releases in {days} days" if days >= 0
+                   else f"Home {abs(days)} days ago"),
+            clock_sort=days,
+            consent_recorded_on=date.today().isoformat(),
+            plan_step="Triage session not yet held.",
+        )
+        for suffix, key in (("", new.din), ("-nysid", new.nysid)):
+            if key:
+                put_account(Account(
+                    account_id=f"inside-{client_id}{suffix}",
+                    role="inside", subject_id=client_id, login_key=key,
+                    display_name=new.display_name,
+                ))
+        put_account(Account(
+            account_id=f"family-{client_id}", role="family",
+            subject_id=client_id, login_key=code,
+        ))
+
+    return RedirectResponse(f"/staff/{client_id}?created=1", status_code=303)
 
 
 @router.get("/{client_id}/triage", response_class=HTMLResponse)
@@ -130,12 +229,13 @@ async def triage_run(request: Request, client_id: str):
 
 
 @router.get("/{client_id}", response_class=HTMLResponse)
-def client_detail(request: Request, client_id: str):
+def client_detail(request: Request, client_id: str, created: int = 0):
     require_role(request, "staff")
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
 
     view = for_surface(asdict(client), Surface.STAFF, set(client.consent_scopes))
+    plan = simulated_plan(client.id, "D. Reyes", client.release_date)
     drafts = drafts_for(client_id)
     pending = next((d for d in drafts if d["approved_on"] is None), None)
     approved = [d for d in drafts if d["approved_on"]]
@@ -157,7 +257,21 @@ def client_detail(request: Request, client_id: str):
          "ladder": _ladder_rows(client), "draft": pending,
          "draft_caption": caption, "approved": approved,
          "flagged": client.flagged_items if "flagged_items" in view else [],
-         "review_summary": review_log().summary()},
+         "plan": plan,
+         "plan_name": PLAN_NAME,
+         "plan_documents": [
+             {"label": DOCUMENT_LABEL[d], "note": DOCUMENT_NOTE[d],
+              "have": plan.has(d)} for d in Document
+         ],
+         "reviews_left": quarterly_reviews_left(
+             date.fromisoformat(client.release_date)),
+         "rung_two": ladder_rung_available(plan, 2),
+         "review_summary": review_log().summary(),
+         "just_created": bool(created),
+         "helper_code": next(
+             (a["login_key"] for a in STATE.accounts.values()
+              if a["role"] == "family" and a["subject_id"] == client_id), ""),
+         "label": labels},
     )
 
 
