@@ -249,3 +249,39 @@ def test_an_unknown_number_does_not_pretend_to_work(client):
 def test_staff_get_their_own_door(client):
     sign_in_staff(client)
     assert "Needs you this week" in client.get("/staff").text
+
+
+# --- the self-service range -------------------------------------------------
+
+def test_any_28_number_opens_a_case_on_the_spot(client):
+    """2028 has not happened, so a DIN starting 28 cannot be a real person.
+    That makes it the safe range for anyone trying the app."""
+    response = client.post("/signin", data={"identifier": "28Z4242"})
+    assert response.status_code == 200
+    assert "Pick a PIN" in response.text          # straight to enrolment
+
+    import app.store as store
+    assert store.find_account("inside", "28Z4242") is not None
+
+
+def test_a_number_outside_that_range_still_needs_a_counselor(client):
+    """Anything that could belong to a real person is never auto-created."""
+    response = client.post("/signin", data={"identifier": "19Z4242"})
+    assert response.status_code == 404
+    assert "ask your counselor" in response.text
+
+    import app.store as store
+    assert store.find_account("inside", "19Z4242") is None
+
+
+def test_a_self_opened_case_works_all_the_way_through(client):
+    client.post("/signin", data={"identifier": "28Z4242"})
+    client.post("/signin/enroll",
+                data={"normalized": "28Z4242", "pin": PIN, "confirm": PIN})
+    assert client.get("/inside/intake/1").status_code == 200
+    client.post("/inside/intake/1", data={"has_bank_account": "no"})
+    assert client.get("/inside/case").status_code == 200
+
+    # And the counselor sees them in the queue like anybody else.
+    sign_in_staff(client)
+    assert "28-Z-4242" in client.get("/staff").text

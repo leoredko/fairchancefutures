@@ -74,25 +74,40 @@ def rules() -> dict:
     }
 
 
-def build() -> Path:
-    shell = (HERE / "shell.html").read_text()
-    css = (ROOT / "app" / "static" / "bridge.css").read_text()
-    icon = (ROOT / "app" / "static" / "icon-512.png").read_bytes()
+# One file per surface. A tablet gets the tablet app and a helper gets the
+# helper app, the way they would be deployed separately in the real thing.
+# All three read the same storage key, so served from one folder or one host
+# they share a caseload; published to three different origins they do not.
+APPS = {
+    "inside": "Bridge",
+    "family": "Bridge for helpers",
+    "staff": "Bridge for coordinators",
+}
 
+
+def build() -> list[Path]:
     import base64
 
+    shell = (HERE / "shell.html").read_text()
+    css = (ROOT / "app" / "static" / "bridge.css").read_text()
+    icon = base64.b64encode(
+        (ROOT / "app" / "static" / "icon-512.png").read_bytes()).decode()
     payload = json.dumps(rules(), indent=1)
-    out = (shell
-           .replace("/*__BRIDGE_CSS__*/", css)
-           .replace('"__BRIDGE_RULES__"', payload)
-           .replace("__BRIDGE_ICON__",
-                    "data:image/png;base64," + base64.b64encode(icon).decode()))
 
-    target = HERE / "bridge.html"
-    target.write_text(out)
-    return target
+    written = []
+    for role, title in APPS.items():
+        out = (shell
+               .replace("/*__BRIDGE_CSS__*/", css)
+               .replace('"__BRIDGE_RULES__"', payload)
+               .replace('"__BRIDGE_ROLE__"', json.dumps(role))
+               .replace("<title>Bridge</title>", f"<title>{title}</title>")
+               .replace("__BRIDGE_ICON__", "data:image/png;base64," + icon))
+        target = HERE / f"bridge-{role}.html"
+        target.write_text(out)
+        written.append(target)
+    return written
 
 
 if __name__ == "__main__":
-    path = build()
-    print(f"wrote {path} ({path.stat().st_size:,} bytes)")
+    for path in build():
+        print(f"wrote {path.name} ({path.stat().st_size:,} bytes)")

@@ -5,7 +5,7 @@
   <div class="bar">
     <span class="wordmark">Bridge</span>
     <span class="who">The report came</span>
-    <div class="right"><a class="pill" href="/notes/toggle">{% if show_notes %}Hide notes{% else %}Design notes{% endif %}</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 
   <form class="pane" method="post" action="/family/report"
@@ -40,14 +40,6 @@
       <span class="small">To Ms. Reyes and to {{ client.first_name }}. Not to us,
         not to anyone else, and never to a company that wants to sell him
         something.</span>
-    </div>
-
-    <div class="notes">
-      <p class="note-build">Build note: photo-to-text extraction is the one
-        genuinely hard engineering piece. This build does not attempt it. Pages
-        are stored by filename and the caseworker enters the findings, which is
-        the fallback the deck already specified. The rest of the app is
-        unaffected.</p>
     </div>
   </form>
 </div>

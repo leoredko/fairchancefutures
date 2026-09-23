@@ -3,54 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bridge</title>
-<meta name="theme-color" content="#B4522A">
+<title>Bridge for coordinators</title>
+<meta name="theme-color" content="#0E7C6B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bridge">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 <link rel="icon" href="data:image/png;base64,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">
 <style>
 /* Bridge.
-   Palette and type from the design deck. No web fonts and no CDN: the tablet
-   surface is metered by the minute, so the app makes zero outbound requests
-   to render. */
+
+   Teal for the things that move you forward, amber for the things that need a
+   person. Warm white underneath rather than the beige-grey of every
+   institutional form anybody in this situation has ever been handed.
+
+   No web fonts and no CDN. The tablet surface is metered by the minute, so
+   the app makes zero outbound requests to render. */
 
 :root {
-  --ink: #1F1D1A;
-  --ink-2: #4A453E;
-  --muted: #6B655D;
-  --faint: #918A80;
-  --line: #E4DFD6;
-  --line-strong: #D2CBC0;
-  --track: #EBE6DD;
-  --surface: #FAF8F5;
-  --raise: #FFFFFF;
+  /* text */
+  --ink: #12232E;
+  --ink-2: #3D5361;
+  --muted: #64808F;
+  --faint: #93A8B4;
+
+  /* surfaces */
   --page: #FFFFFF;
-  --rust: #B4522A;
-  --rust-soft: #FBF1EC;
-  --blue: #26618F;
-  --blue-soft: #EFF4F8;
-  --green: #2F6B4F;
-  --green-soft: #EDF4F0;
-  --danger: #8C2F1F;
-  --danger-soft: #FCF1EE;
+  --surface: #F4F9F8;
+  --surface-2: #E9F3F1;
+  --line: #DCE9E6;
+  --line-strong: #C3D8D3;
+  --track: #DFEDEA;
+
+  /* brand */
+  --teal: #0E7C6B;
+  --teal-deep: #0A5C50;
+  --teal-soft: #E3F3F0;
+  --amber: #E08A1E;
+  --amber-soft: #FDF3E3;
+  --sky: #1B74B8;
+  --sky-soft: #E8F2FA;
+  --green: #17855B;
+  --green-soft: #E5F4EC;
+  --rose: #C4344B;
+  --rose-soft: #FCEDEF;
 
   --display: "Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
 
   --r: 12px;
-  --r-lg: 16px;
+  --r-lg: 18px;
   --r-pill: 999px;
 
-  /* One elevation, used sparingly. Borders everywhere is what made the first
-     version read as a wireframe. */
-  --lift: 0 1px 2px rgba(31, 29, 26, .04), 0 1px 1px rgba(31, 29, 26, .03);
-  --lift-2: 0 2px 8px rgba(31, 29, 26, .06), 0 1px 2px rgba(31, 29, 26, .04);
+  --lift: 0 1px 2px rgba(18, 35, 46, .05), 0 1px 3px rgba(18, 35, 46, .04);
+  --lift-2: 0 4px 16px rgba(14, 124, 107, .10), 0 1px 3px rgba(18, 35, 46, .05);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -62,38 +71,49 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--blue); text-underline-offset: 2px; }
-a:hover { color: var(--ink); }
+a { color: var(--teal); text-underline-offset: 2px; }
+a:hover { color: var(--teal-deep); }
 
-/* Everything focusable gets a visible ring. A kiosk gets tabbed through by
-   people who cannot see well, and by staff who never touch the screen. */
 :focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2.5px solid var(--teal);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* ---- shells ------------------------------------------------------------ */
 
-.tablet { width: min(768px, 100%); min-height: 100vh; margin: 0 auto;
-          background: var(--page); display: flex; flex-direction: column; }
-.phone  { width: min(430px, 100%); min-height: 100vh; margin: 0 auto;
-          background: var(--page); display: flex; flex-direction: column; }
-.desk   { max-width: 1140px; margin: 0 auto; padding: 0 24px 72px; }
+.tablet { width: min(780px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column;
+          box-shadow: var(--lift-2); }
+.phone  { width: min(440px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column;
+          box-shadow: var(--lift-2); }
+.desk   { max-width: 1160px; margin: 0 auto; padding: 0 24px 80px; }
+.sheet  { max-width: 1160px; margin: 0 auto; padding: 0 20px 72px; }
 
 .bar {
-  padding: 16px 28px;
-  border-bottom: 1px solid var(--line);
-  background: var(--page);
+  padding: 15px 28px;
+  background: linear-gradient(103deg, var(--teal-deep) 0%, var(--teal) 62%, #12907C 100%);
+  color: #EAF6F4;
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
   position: sticky; top: 0; z-index: 20;
 }
 .bar .wordmark {
-  font-family: var(--display); font-weight: 700; font-size: 18px;
-  letter-spacing: -.01em;
+  font-family: var(--display); font-weight: 700; font-size: 19px;
+  letter-spacing: -.015em; color: #FFFFFF;
 }
-.bar .who { font-size: 14px; color: var(--muted); }
+.bar .who { font-size: 14px; color: #BEDFD9; }
 .bar .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.bar a { color: #EAF6F4; }
+.bar a:hover { color: #FFFFFF; }
+.bar .pill {
+  font-size: 13px; border: 1px solid rgba(255,255,255,.34);
+  border-radius: var(--r-pill); padding: 5px 13px; text-decoration: none;
+  white-space: nowrap; color: #EAF6F4;
+}
+.bar .pill:hover { background: rgba(255,255,255,.14); }
+.bar .tag { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3);
+            color: #FFFFFF; }
 
 .pane { flex-grow: 1; padding: 32px 32px 40px; display: flex;
         flex-direction: column; gap: 22px; min-height: 0; }
@@ -101,27 +121,29 @@ a:hover { color: var(--ink); }
 
 /* ---- type -------------------------------------------------------------- */
 
-h1 { font-family: var(--display); font-weight: 700; font-size: 32px;
-     line-height: 1.18; letter-spacing: -.018em; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 33px;
+     line-height: 1.16; letter-spacing: -.02em; }
 .phone h1 { font-size: 26px; }
-h2 { font-family: var(--display); font-weight: 700; font-size: 19px;
-     line-height: 1.25; letter-spacing: -.01em; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 20px;
+     line-height: 1.25; letter-spacing: -.012em; }
 h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
-     letter-spacing: -.005em; }
+     letter-spacing: -.005em; color: var(--ink); }
 
-.lede  { font-size: 17px; line-height: 1.5; color: var(--ink-2); }
+.lede  { font-size: 17.5px; line-height: 1.5; color: var(--ink-2); }
 .small { font-size: 14.5px; color: var(--ink-2); }
 .tiny  { font-size: 13px; line-height: 1.5; color: var(--muted); }
 .strong { font-weight: 600; color: var(--ink); }
-.dim { color: var(--faint); }
 
 /* ---- progress ---------------------------------------------------------- */
 
 .progress { display: flex; align-items: center; gap: 14px; }
-.track { flex-grow: 1; height: 6px; border-radius: var(--r-pill);
+.track { flex-grow: 1; height: 8px; border-radius: var(--r-pill);
          background: var(--track); overflow: hidden; }
-.track > span { display: block; height: 100%; border-radius: var(--r-pill);
-                background: var(--rust); transition: width .25s ease; }
+.track > span {
+  display: block; height: 100%; border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--teal) 0%, #24A88F 100%);
+  transition: width .3s cubic-bezier(.4,0,.2,1);
+}
 
 /* ---- choices, buttons -------------------------------------------------- */
 
@@ -130,160 +152,162 @@ h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
 .choice {
   display: block; width: 100%; text-align: left;
   background: var(--page);
-  border: 1.5px solid var(--line-strong);
+  border: 2px solid var(--line-strong);
   border-radius: var(--r-lg);
   padding: 20px; font: inherit; font-size: 19px; font-weight: 600;
   color: inherit; text-decoration: none; cursor: pointer;
-  transition: border-color .12s ease, background .12s ease;
+  transition: border-color .14s ease, background .14s ease, transform .1s ease;
 }
-.choice:hover { border-color: var(--ink); background: var(--surface); }
-.choice.selected { border-color: var(--ink); border-width: 2px; }
+.choice:hover { border-color: var(--teal); background: var(--teal-soft); }
+.choice:active { transform: scale(.995); }
+.choice.selected { border-color: var(--teal); background: var(--teal-soft); }
 .choice .note { display: block; font-size: 14.5px; font-weight: 400;
                 color: var(--muted); margin-top: 6px; line-height: 1.45; }
-
 input.choice { font-weight: 500; }
 input.choice::placeholder { color: var(--faint); font-weight: 400; }
 
 .btn {
-  display: inline-block; background: var(--ink); color: var(--page);
-  border: 1.5px solid var(--ink); border-radius: var(--r);
-  padding: 13px 20px; font: inherit; font-weight: 600; font-size: 15.5px;
+  display: inline-block;
+  background: linear-gradient(180deg, #13907D 0%, var(--teal) 100%);
+  color: #FFFFFF;
+  border: 0; border-radius: var(--r);
+  padding: 14px 22px; font: inherit; font-weight: 600; font-size: 15.5px;
   cursor: pointer; text-decoration: none; text-align: center;
-  transition: opacity .12s ease;
+  box-shadow: 0 1px 2px rgba(10, 92, 80, .28);
+  transition: filter .14s ease, transform .1s ease;
 }
-.btn:hover { opacity: .88; color: var(--page); }
-.btn.wide { width: 100%; padding: 16px 20px; font-size: 17px; }
-.btn.ghost { background: transparent; color: var(--ink);
-             border-color: var(--line-strong); }
-.btn.ghost:hover { background: var(--surface); color: var(--ink); }
-.btn.quiet { background: transparent; color: var(--muted);
-             border-color: transparent; padding: 8px 0;
-             text-decoration: underline; font-weight: 500; }
-.btn.quiet:hover { color: var(--ink); }
+.btn:hover { filter: brightness(1.07); color: #FFFFFF; }
+.btn:active { transform: translateY(1px); }
+.btn.wide { width: 100%; padding: 17px 22px; font-size: 17px; }
+.btn.ghost { background: var(--page); color: var(--teal-deep);
+             border: 1.5px solid var(--line-strong); box-shadow: none; }
+.btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal);
+                   color: var(--teal-deep); filter: none; }
+.btn.quiet { background: none; color: var(--muted); border: 0; box-shadow: none;
+             padding: 8px 0; text-decoration: underline; font-weight: 500; }
+.btn.quiet:hover { color: var(--ink); filter: none; }
+.btn.amber { background: linear-gradient(180deg, #EE9A2C 0%, var(--amber) 100%);
+             box-shadow: 0 1px 2px rgba(180, 108, 18, .28); }
 
 /* ---- cards ------------------------------------------------------------- */
 
 .card {
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  padding: 18px 20px;
-  background: var(--raise);
+  padding: 19px 21px;
+  background: var(--page);
   box-shadow: var(--lift);
   display: flex; flex-direction: column; gap: 10px;
 }
 .card.soft { background: var(--surface); box-shadow: none; }
-.card.dashed { border-style: dashed; background: var(--surface);
-               box-shadow: none; border-color: var(--line-strong); }
-.card.warn { border-color: #E8C9BC; background: var(--rust-soft);
+.card.accent { border-left: 4px solid var(--teal); }
+.card.warn { border: 1px solid #F0D5AC; background: var(--amber-soft);
+             box-shadow: none; }
+.card.good { border: 1px solid #B6DEC8; background: var(--green-soft);
              box-shadow: none; }
 .card > .tag, .stack > .tag { align-self: flex-start; }
 
-.grid { display: grid; gap: 16px; }
+.grid { display: grid; gap: 18px; }
 .grid.two { grid-template-columns: 1fr 1fr; }
 .grid.three { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 900px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
 
-.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack { display: flex; flex-direction: column; gap: 15px; }
 .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .spacer { margin-top: auto; }
+
+/* ---- hero -------------------------------------------------------------- */
+
+.hero {
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 55%, #1AA18A 100%);
+  color: #FFFFFF; padding: 46px 32px 40px; border-radius: 0 0 28px 28px;
+  margin-bottom: 28px;
+}
+.hero h1 { color: #FFFFFF; font-size: 38px; }
+.hero .lede { color: #CDE9E4; margin-top: 10px; font-size: 18px; }
+.phone .hero, .tablet .hero { border-radius: 0; margin-bottom: 0; }
 
 /* ---- timeline ---------------------------------------------------------- */
 
 .timeline { display: flex; flex-direction: column; }
-.event { display: flex; gap: 14px; padding: 14px 0;
+.event { display: flex; gap: 15px; padding: 15px 0;
          border-bottom: 1px solid var(--track); }
 .event:last-child { border-bottom: 0; }
 .dot {
-  flex: 0 0 24px; height: 24px; border-radius: 50%;
+  flex: 0 0 26px; height: 26px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 600;
-  background: var(--ink); color: var(--page); margin-top: 2px;
+  font-size: 12px; font-weight: 700; margin-top: 2px;
+  background: var(--green); color: #FFFFFF;
 }
-.event.pending .dot { background: var(--page); color: var(--faint);
-                      border: 1.5px solid var(--line-strong); }
+.event.pending .dot { background: var(--page); color: var(--amber);
+                      border: 2px solid var(--amber); }
 
 /* ---- table ------------------------------------------------------------- */
 
 .queue {
   width: 100%; border-collapse: separate; border-spacing: 0;
-  background: var(--raise); border: 1px solid var(--line);
+  background: var(--page); border: 1px solid var(--line);
   border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--lift);
 }
 .queue th {
-  text-align: left; font-size: 12px; text-transform: uppercase;
-  letter-spacing: .06em; color: var(--muted); padding: 11px 18px;
-  border-bottom: 1px solid var(--line); background: var(--surface);
-  font-weight: 600;
+  text-align: left; font-size: 11.5px; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--teal-deep); padding: 12px 18px;
+  border-bottom: 1px solid var(--line); background: var(--teal-soft);
+  font-weight: 700;
 }
 .queue td { padding: 16px 18px; border-bottom: 1px solid var(--track);
             vertical-align: top; }
 .queue tr:last-child td { border-bottom: 0; }
 .queue tbody tr:hover { background: var(--surface); }
-.queue tr.overdue td:first-child { box-shadow: inset 3px 0 0 var(--rust); }
+.queue tr.overdue td:first-child { box-shadow: inset 4px 0 0 var(--rose); }
 
 /* ---- tags -------------------------------------------------------------- */
 
 .tag {
-  display: inline-block; font-size: 12.5px; font-weight: 500;
+  display: inline-block; font-size: 12.5px; font-weight: 600;
   border: 1px solid var(--line-strong); border-radius: var(--r-pill);
-  padding: 3px 11px; color: var(--muted); white-space: nowrap;
+  padding: 3px 12px; color: var(--muted); white-space: nowrap;
   background: var(--page);
 }
-.tag.rust  { border-color: #E3BCAB; color: var(--rust);  background: var(--rust-soft); }
-.tag.blue  { border-color: #BFD3E3; color: var(--blue);  background: var(--blue-soft); }
-.tag.green { border-color: #BCD6C7; color: var(--green); background: var(--green-soft); }
+.tag.teal  { border-color: #A6D5CD; color: var(--teal-deep); background: var(--teal-soft); }
+.tag.amber { border-color: #EFCE9C; color: #9A5F12;         background: var(--amber-soft); }
+.tag.sky   { border-color: #AFCFE8; color: var(--sky);      background: var(--sky-soft); }
+.tag.green { border-color: #ADD8C0; color: var(--green);    background: var(--green-soft); }
+.tag.rose  { border-color: #EDB6BF; color: var(--rose);     background: var(--rose-soft); }
+/* the old names, kept so nothing silently loses its colour */
+.tag.rust { border-color: #EFCE9C; color: #9A5F12; background: var(--amber-soft); }
+.tag.blue { border-color: #AFCFE8; color: var(--sky); background: var(--sky-soft); }
 
 /* ---- ladder ------------------------------------------------------------ */
 
 .rung { display: flex; gap: 14px; padding: 14px 16px;
         border: 1px solid var(--line); border-radius: var(--r);
         background: var(--page); }
-.rung.active { border-color: var(--ink); border-width: 1.5px;
-               background: var(--surface); }
+.rung.active { border-color: var(--teal); border-width: 2px;
+               background: var(--teal-soft); }
 .rung .n { font-family: var(--display); font-weight: 700; color: var(--faint);
            flex: 0 0 20px; font-size: 15px; }
+.rung.active .n { color: var(--teal); }
 
 /* ---- letter ------------------------------------------------------------ */
 
 .letter {
-  font-family: var(--mono); font-size: 12.5px; line-height: 1.65;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.68;
   white-space: pre-wrap; background: var(--page);
   border: 1px solid var(--line); border-radius: var(--r);
-  padding: 22px; color: var(--ink-2);
+  padding: 24px; color: var(--ink-2);
 }
 textarea.letter { width: 100%; min-height: 420px; resize: vertical; }
 @media (max-width: 560px) { .letter { font-size: 10.5px; line-height: 1.5; } }
 
-/* ---- design notes ------------------------------------------------------
-   Rationale from the design deck. Off by default, because annotations inside
-   the product are what make a product look like a wireframe. The toggle is in
-   the top bar; turn it on when walking somebody through why a screen is the
-   way it is. */
-
-.notes { display: none; }
-body.show-notes .notes {
-  margin-top: auto; padding-top: 18px;
-  border-top: 1px dashed var(--line-strong);
-  display: flex; flex-direction: column; gap: 8px;
-}
-body.show-notes .card.notes-card { display: flex; }
-.card.notes-card { display: none; }
-.note-design { font-size: 13px; line-height: 1.5; color: var(--rust); }
-.note-build  { font-size: 13px; line-height: 1.5; color: var(--blue); }
-.notes .btn.quiet { align-self: flex-start; }
-
-/* The back link lives in .notes on some screens and has to survive the
-   toggle being off. */
-.notes-always { margin-top: auto; padding-top: 18px; display: flex;
-                flex-direction: column; gap: 8px; }
-
 /* ---- denial ------------------------------------------------------------ */
 
 .denied {
-  border: 1px solid #E0BCB2; border-radius: var(--r-lg); padding: 18px 20px;
-  background: var(--danger-soft); display: flex; flex-direction: column; gap: 8px;
+  border: 1px solid #EDB6BF; border-left: 4px solid var(--rose);
+  border-radius: var(--r); padding: 16px 19px;
+  background: var(--rose-soft); display: flex; flex-direction: column; gap: 8px;
 }
-.denied .what { font-weight: 600; color: var(--danger); }
+.denied .what { font-weight: 600; color: var(--rose); }
 
 /* ---- forms ------------------------------------------------------------- */
 
@@ -291,13 +315,13 @@ fieldset { border: 0; display: flex; flex-direction: column; gap: 12px; }
 legend { padding: 0; }
 label.check {
   display: flex; gap: 12px; align-items: flex-start;
-  border: 1px solid var(--line-strong); border-radius: var(--r);
+  border: 1.5px solid var(--line-strong); border-radius: var(--r);
   padding: 13px 15px; cursor: pointer; background: var(--page);
-  transition: border-color .12s ease;
+  transition: border-color .14s ease, background .14s ease;
 }
-label.check:hover { border-color: var(--ink-2); }
+label.check:hover { border-color: var(--teal); background: var(--teal-soft); }
 input[type="radio"], input[type="checkbox"] {
-  width: 19px; height: 19px; accent-color: var(--rust); flex: none;
+  width: 19px; height: 19px; accent-color: var(--teal); flex: none;
   margin-top: 1px;
 }
 
@@ -305,16 +329,15 @@ input[type="radio"], input[type="checkbox"] {
 .field > label { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
 .field .hint { font-size: 12.5px; color: var(--muted); }
 .field input, .field select {
-  font: inherit; font-size: 16px; padding: 12px 14px;
+  font: inherit; font-size: 16px; padding: 13px 15px;
   border: 1.5px solid var(--line-strong); border-radius: var(--r);
   background: var(--page); color: var(--ink); width: 100%;
 }
-.field input:focus, .field select:focus { border-color: var(--ink); }
-.field.bad input, .field.bad select { border-color: var(--danger); }
+.field input:focus, .field select:focus { border-color: var(--teal); }
+.field.bad input, .field.bad select { border-color: var(--rose);
+                                      background: var(--rose-soft); }
 .field .mono { font-family: var(--mono); letter-spacing: .06em; }
 
-/* The triage form is six questions on one screen, for a 30 to 45 minute
-   session. Tablet-sized targets would make it three scrolls long. */
 .compact fieldset { gap: 6px; margin-bottom: 6px; }
 .compact label.check { padding: 8px 12px; }
 .compact input[type="radio"], .compact input[type="checkbox"] {
@@ -322,33 +345,24 @@ input[type="radio"], input[type="checkbox"] {
 }
 .compact legend { margin-top: 12px; }
 
+/* ---- the small print --------------------------------------------------- */
+
+.colophon { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
+.colophon p { font-size: 12px; color: var(--faint); line-height: 1.5; }
+
 @media print {
-  .bar, .btn, .notes, .demo-bar { display: none !important; }
+  .bar, .btn, .hero, .colophon { display: none !important; }
   .letter { border: 0; padding: 0; font-size: 11pt; }
   body { background: #fff; }
 }
 
 
-/* Standalone-only: this build has no server, so the shell centres itself and
-   the surfaces sit inside one page. */
+/* This build has no server, so the shell fills the window itself. */
 html, body { min-height: 100%; }
 #app { min-height: 100vh; }
-.sheet { max-width: 1180px; margin: 0 auto; padding: 0 16px 56px; }
-.demo-bar {
-  background: var(--ink); color: var(--page);
-  font: 500 12.5px/1.4 var(--body);
-  padding: 7px 16px; display: flex; gap: 12px; align-items: center;
-  flex-wrap: wrap;
-}
-.demo-bar a { color: var(--page); }
-.demo-bar .sp { margin-left: auto; opacity: .75; }
-/* A monospace letter at 13px wraps mid-address on a phone, which makes a
-   printable form look broken. Shrink it rather than letting it fold. */
-@media (max-width: 560px) { .letter { font-size: 10.5px; line-height: 1.5; } }
-@media print {
-  .demo-bar, .bar, .btn, .notes { display: none !important; }
-  .letter { border: 0; padding: 0; }
-}
+.hero { border-radius: 0; margin-bottom: 0; padding: 40px 32px 34px; }
+.phone .hero { padding: 30px 22px 26px; }
+.phone .hero h1 { font-size: 28px; }
 </style>
 </head>
 <body>
@@ -897,12 +911,23 @@ const RULES = {
  "requestTemplate": "{today}\n\n{address_block}\n\nRe: Request for free annual credit reports, by mail\n\nPlease send copies of my credit file from all three nationwide credit\nreporting companies: Equifax, Experian and TransUnion.\n\nFull name (with any suffix): {client_name}\nPrisoner identification number ({id_label}): {identification}\nCurrent address:\n{current_address}\nAddresses during the two years preceding incarceration:\n  [client completes by hand]\nSocial Security number: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\n\nI am requesting these reports by mail because I do not have internet or phone\naccess to complete an identity check.\n\nSincerely,\n\n\n____________________________\n{client_name}\n\n--------------------------------------------------------------------------\nFOR WHOEVER ADDRESSES THE ENVELOPE\n\nThe return address on the envelope must be the correctional institution, and\nthe prisoner identification number must appear on the envelope. The bureaus\nask for this specifically on mail from a facility, and a request without it\ncan come back.\n\n    Return address:  {client_name}, {identification}\n                     {facility}\n\n    Send to:         Annual Credit Report Request Service\n                     P.O. Box 105281\n                     Atlanta, GA 30348-5281\n--------------------------------------------------------------------------\n"
 };
 
+/* Which application this file is. The build emits one file per surface, so a
+   tablet gets the tablet app and a helper gets the helper app, the way they
+   would be deployed separately. All three read the same storage key, so served
+   from one folder or one host they share a caseload. */
+const APP = "staff";
+const DOOR = { inside: "#/signin", family: "#/helper", staff: "#/staff-signin" };
+
 /* ---------- storage ------------------------------------------------- */
 
+// The caseload is shared: all three apps read and write one key, so a client
+// the coordinator adds shows up on the tablet. The session is NOT shared, or
+// signing in on one app would sign you out of another. Each app keeps its own.
 const KEY = "bridge.v1";
+const SESSION_KEY = "bridge.session." + APP;
 
 function blank() {
-  return { accounts: {}, clients: seedClients(), session: null, drafts: {},
+  return { accounts: {}, clients: seedClients(), drafts: {},
            review: { reviewed: 0, edited: 0 } };
 }
 
@@ -1134,21 +1159,39 @@ function ensureAccounts() {
 }
 
 function startSession(account) {
-  DB.session = { account: account.id, role: account.role,
-                 subject: account.subject, seen: Date.now() };
-  save();
+  writeSession({ account: account.id, role: account.role,
+                 subject: account.subject, seen: Date.now() });
+}
+
+function readSession() {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); }
+  catch (e) { return null; }
+}
+
+function writeSession(value) {
+  try {
+    if (value) localStorage.setItem(SESSION_KEY, JSON.stringify(value));
+    else localStorage.removeItem(SESSION_KEY);
+  } catch (e) { /* private window: the app still works for this page load */ }
 }
 
 function session() {
-  const s = DB.session;
+  const s = readSession();
   if (!s) return null;
   const limit = s.role === "staff" ? STAFF_IDLE_MS : IDLE_MS;
-  if (Date.now() - s.seen > limit) { DB.session = null; save(); return null; }
+  if (Date.now() - s.seen > limit) { writeSession(null); return null; }
   s.seen = Date.now();
+  writeSession(s);
   return s;
 }
 
-function signOut() { DB.session = null; save(); go("#/"); }
+function signOut() {
+  writeSession(null);
+  // go() only redraws when the hash actually changes, and signing out from the
+  // sign-in screen leaves it unchanged. Force the redraw so the session is
+  // visibly gone either way.
+  if (location.hash === DOOR[APP]) render(); else go(DOOR[APP]);
+}
 
 function subject() {
   const s = session();
@@ -1288,6 +1331,10 @@ const ROUTES = [];
 function route(pattern, view) { ROUTES.push({ pattern, view }); }
 
 function render() {
+  // Three apps, one caseload. Each is a separate document, so a write from the
+  // coordinator's tab is invisible to the tablet's tab until the state is read
+  // back. Re-read before drawing; the whole caseload is a few kilobytes.
+  DB = load();
   ensureAccounts();
   const hash = location.hash.replace(/^#/, "") || "/";
   for (const r of ROUTES) {
@@ -1305,92 +1352,46 @@ function render() {
 
 window.addEventListener("hashchange", render);
 
-function notesOn() {
-  try { return localStorage.getItem("bridge.notes") === "1"; } catch (e) { return false; }
-}
-
-window.toggleNotes = function () {
-  try { localStorage.setItem("bridge.notes", notesOn() ? "0" : "1"); } catch (e) {}
-  applyNotes(); render();
-};
-
-function applyNotes() {
-  document.body.classList.toggle("show-notes", notesOn());
-}
+// And redraw immediately when another of the three apps writes, so a screen
+// left open does not sit there showing something that is no longer true.
+window.addEventListener("storage", function (e) {
+  if (!e.key || e.key === KEY) render();   // the caseload, not the session
+});
 
 function demoBar() {
-  const s = session();
-  return '<div class="demo-bar">' +
-    '<strong>Bridge</strong> <span>prototype &middot; fictional caseload</span>' +
-    (s ? ' <span>&middot; signed in: ' + esc(s.role) + '</span>' : '') +
-    '<span class="sp"></span>' +
-    '<a href="#" onclick="toggleNotes();return false">' +
-      (notesOn() ? "hide design notes" : "design notes") + '</a>' +
-    '<a href="#/citations">what we checked</a>' +
-    '<a href="#/scope">scope</a>' +
-    (s ? '<a href="#" onclick="signOut();return false">sign out</a>' : '') +
-    '<a href="#" onclick="if(confirm(\'Clear everything on this device and start over?\')){reset()}return false">start over</a>' +
-    '</div>';
+  return "";
+}
+
+function colophon() {
+  return '<div class="colophon"><p>Bridge is an independent tool built for ' +
+    'reentry programs in New York State. It is not affiliated with, endorsed ' +
+    'by, or operated by the New York State Department of Corrections and ' +
+    'Community Supervision or any correctional facility.</p></div>';
+}
+
+const PITCH = {
+  inside: { head: "Your credit, started early.",
+            sub: "Six questions, then you can see where you stand and who is " +
+                 "working your case." },
+  family: { head: "One task at a time.",
+            sub: "Open the mail, photograph the reports, drop two letters in " +
+                 "a mailbox. About twenty minutes over three months." },
+  staff:  { head: "Bridge",
+            sub: "The credit domain of the Offender Case Plan." }
+};
+
+function hero() {
+  const p = PITCH[APP];
+  return '<div class="hero"><h1>' + esc(p.head) + '</h1>' +
+         '<p class="lede">' + esc(p.sub) + '</p></div>';
 }
 
 /* ---------- screens: the front door ----------------------------------- */
 
 route(/^\/$/, () => {
   const s = session();
-  return '<div class="sheet" style="padding-top:40px">' +
-    '<h1 style="font-size:40px">Bridge</h1>' +
-    '<p class="lede" style="margin:12px 0 6px">Credit repair that starts before ' +
-      'release. New York State.</p>' +
-    '<p class="small" style="margin-bottom:26px">Three roles, three surfaces. ' +
-      'Who can do what is set by physics and law, not by preference.</p>' +
-    (s ? '<div class="card" style="margin-bottom:22px">' +
-      '<span class="strong">You are signed in on the ' + esc(s.role) + ' surface.</span>' +
-      '<div class="row"><a class="btn" href="#/' + esc(s.role) + '">Continue</a>' +
-      '<a class="btn ghost" href="#" onclick="signOut();return false">Sign out</a></div></div>' : '') +
-    '<div class="grid three">' +
-      card("Inside", "Facility tablet",
-        "Answer intake, see where you stand, watch named people work your case, " +
-        "cancel a helper's authorization.", "#/signin", "Sign in with your DIN or NYSID") +
-      card("Family", "Phone",
-        "Receive the mail, photograph the reports, print and mail letters. " +
-        "One task on screen at a time.", "#/helper", "Use the code from the letter") +
-      card("Caseworker", "Desktop",
-        "Triage, read the report, approve letters, hold the deadline across a " +
-        "full caseload.", "#/staff-signin", "Staff sign in") +
-    '</div>' +
-    '<div class="card warn" style="margin-top:26px"><h3>Demo logins</h3>' +
-      '<p class="small">Fictional caseload, no way to create an account, so the ' +
-      'seeded logins are here. Everyone picks their own PIN the first time.</p>' +
-      loginRow("Inside", "DIN 28-A-1187 or NYSID 00000011L", "Marcus W.") +
-      loginRow("Inside, not yet triaged", "DIN 28-A-0931", "J. Whitfield") +
-      loginRow("Helper", "code BRIDGE-4417", "Denise, helping Marcus") +
-      loginRow("Counselor", "staff ID REYES", "D. Reyes") +
-    '</div>' +
-    '<div class="card soft" style="margin-top:18px">' +
-      '<h3>This is a prototype</h3>' +
-      '<p class="small">Not affiliated with, endorsed by, or connected to the ' +
-      'New York State Department of Corrections and Community Supervision or ' +
-      'any correctional facility. Every person, number and case in it is made ' +
-      'up. Everything you type stays in this browser and is sent nowhere.</p>' +
-      '<p class="small">Facility approval, vendor access, bureau data ' +
-      'agreements and the PII compliance regime a real deployment needs are ' +
-      'assumed, and named here rather than hidden.</p>' +
-    '</div>' +
-    '</div>';
+  return go(s && s.role === APP ? "#/" + APP : DOOR[APP]), "";
 });
-
-function card(title, tag, body, href, cta) {
-  return '<div class="card"><h2>' + esc(title) + '</h2>' +
-    '<span class="tag">' + esc(tag) + '</span>' +
-    '<p class="small">' + esc(body) + '</p>' +
-    '<a class="btn" href="' + href + '">' + esc(cta) + '</a></div>';
-}
-
-function loginRow(role, how, who) {
-  return '<div class="row"><span class="small strong" style="min-width:190px">' +
-    esc(role) + '</span><span class="small" style="font-family:ui-monospace,monospace">' +
-    esc(how) + '</span><span class="tiny">' + esc(who) + '</span></div>';
-}
 
 function notFound() {
   return '<div class="sheet" style="padding-top:48px"><h1>Nothing here</h1>' +
@@ -1405,12 +1406,10 @@ route(/^\/signin$/, () => idScreen({
   shell: "tablet", title: "Your number",
   lede: "Your DIN or your NYSID. Either one works.",
   placeholder: "98-A-0004", role: "inside",
-  help: '<div class="card dashed"><span class="strong">Dashes and spaces don\'t matter.</span>' +
+  help: '<div class="card soft"><span class="strong">Dashes and spaces don\'t matter.</span>' +
     '<span class="small">A DIN is two numbers, a letter, then four numbers. A ' +
     'NYSID is eight numbers, sometimes with a letter on the end.</span></div>' +
-    '<div class="notes"><p class="tiny">Helping someone on the outside? ' +
-    '<a href="#/helper">Use the code from the letter</a>.</p>' +
-    '<p class="tiny">Staff? <a href="#/staff-signin">Sign in here</a>.</p></div>'
+    ''
 }));
 
 route(/^\/helper$/, () => idScreen({
@@ -1433,9 +1432,11 @@ function idScreen(opts) {
   const err = PENDING && PENDING.error ? denied(PENDING.error) : "";
   if (PENDING) PENDING.error = null;
   const wrap = opts.shell === "desk"
-    ? '<div class="sheet" style="padding-top:56px;max-width:440px">'
-    : '<div class="' + opts.shell + '"><div class="pane">';
-  const close = opts.shell === "desk" ? '</div>' : '</div></div>';
+    ? '<div class="sheet" style="padding-top:44px;max-width:470px">'
+    : '<div class="' + opts.shell + '">' + hero() + '<div class="pane">';
+  const close = opts.shell === "desk"
+    ? colophon() + '</div>'
+    : '</div>' + colophon() + '</div>';
   return wrap +
     '<h1>' + esc(opts.title) + '</h1>' +
     '<p class="lede">' + esc(opts.lede) + '</p>' + err +
@@ -1445,6 +1446,25 @@ function idScreen(opts) {
       'onkeydown="if(event.key===\'Enter\')submitId(\'' + opts.role + '\')">' +
     '<button class="btn wide" onclick="submitId(\'' + opts.role + '\')">Next</button>' +
     opts.help + close;
+}
+
+function openCase(din, display) {
+  const id = "din-" + din.toLowerCase();
+  const release = new Date(Date.now() + 180 * 86400000).toISOString().slice(0, 10);
+  let code;
+  do { code = "BRIDGE-" + String(Math.floor(1000 + Math.random() * 9000)); }
+  while (Object.values(DB.clients).some((c) => c.helperCode === code));
+  DB.clients[id] = {
+    id, name: display, first: "", din, nysid: "", facility: "",
+    release, clock: 180, state: "not_yet_triaged",
+    stateLabel: "Not yet triaged", needs: "Intake not finished",
+    helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
+    collections: 0, consent: ["report_sharing"],
+    consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
+    answers: {}, pages: [], taskDone: false, authorization: null, timeline: []
+  };
+  ensureAccounts();
+  save();
 }
 
 window.submitId = function (role) {
@@ -1458,7 +1478,16 @@ window.submitId = function (role) {
     if (role === "family" && !/^BRIDGE-\d{4}$/.test(key)) key = (raw || "").trim().toUpperCase();
     display = key;
   }
-  const account = accountFor(role, key);
+  let account = accountFor(role, key);
+
+  // 2028 has not happened, so a DIN starting 28 cannot belong to a real
+  // person. That makes it the safe range for anyone trying the app: sign in
+  // with one and a case opens on the spot.
+  if (!account && role === "inside" && /^28/.test(key)) {
+    openCase(key, display);
+    account = accountFor(role, key);
+  }
+
   if (!account) {
     PENDING = { error: role === "inside"
       ? "No record here for " + display + ". Check the number, or ask your counselor to add you."
@@ -1575,8 +1604,7 @@ function denied(msg) {
 
 function guard(role) {
   const s = session();
-  if (!s) { go(role === "inside" ? "#/signin" : role === "family" ? "#/helper" : "#/staff-signin"); return null; }
-  if (s.role !== role) { go("#/" + s.role); return null; }
+  if (!s || s.role !== role) { go(DOOR[APP]); return null; }
   return s;
 }
 
@@ -1625,14 +1653,12 @@ route(/^\/inside\/intake\/(\d+)$/, (n) => {
       '<h1>' + esc(q.prompt) + '</h1>' +
       (q.helper ? '<p class="lede">' + esc(q.helper) + '</p>' : "") +
       choices +
-      (q.reassurance ? '<div class="card dashed"><span class="strong">' +
+      (q.reassurance ? '<div class="card soft"><span class="strong">' +
         esc(q.reassurance.title) + '</span><span class="small">' +
         esc(q.reassurance.body) + '</span></div>' : "") +
-      '<div class="notes">' +
-        (n > 1 ? '<a class="btn quiet" href="#/inside/intake/' + (n - 1) + '">&larr; Back</a>' : "") +
-        '<p class="note-design">Design note: ' + esc(q.design_note) + '</p>' +
-        (q.constraint ? '<p class="note-build">Constraint: ' + esc(q.constraint) + '</p>' : "") +
-      '</div></div></div>';
+      (n > 1 ? '<div class="notes-always"><a class="btn quiet" ' +
+        'href="#/inside/intake/' + (n - 1) + '">&larr; Back</a></div>' : "") +
+      '</div></div>';
 });
 
 window.answerOne = function (n, field, value) {
@@ -1687,8 +1713,6 @@ route(/^\/inside\/stand$/, () => {
       '<div class="strong">' + esc(m[0]) + '</div>' +
       '<div class="small">' + esc(m[1]) + '</div></div></div>').join("") + '</div>' +
     '<a class="btn" href="#/inside/case">See what\'s happening on my case</a>' +
-    '<div class="notes"><p class="note-design">Design note: score shaming is a ' +
-      'known engagement killer. Position, never points.</p></div>' +
     '</div></div>';
 });
 
@@ -1723,11 +1747,7 @@ route(/^\/inside\/case$/, () => {
           'Nothing stops.</span>' +
           '<a class="btn ghost" href="#/inside/authorization">Name someone</a>') +
     '</div>' +
-    '<div class="notes"><p class="note-design">Design note: seeing named people ' +
-      'do real work on your behalf is the opposite of a silent app that asks you ' +
-      'to trust it.</p><p class="note-build">Cornish interview, Sep 21: automated ' +
-      'nudges read as scams here. Every event carries a person\'s name and a real ' +
-      'date.</p></div></div></div>';
+    '</div></div>';
 });
 
 function liveAuth(c) {
@@ -1771,13 +1791,9 @@ route(/^\/inside\/authorization$/, () => {
         '<p class="small">Naming someone starts an invitation. It does not give ' +
           'them anything. They agree on their own screen, after they have been ' +
           'shown exactly what they would be agreeing to.</p>') +
-    '<div class="notes"><p class="note-design">Design note: this screen asks who ' +
-      'receives the mail. It does NOT ask for a power of attorney. What the ' +
-      'bureaus require varies per person and is unknowable until you try.</p>' +
-      '<p class="note-build">Never make everyone pay the cost of the hardest ' +
-      'case. Start at the lightest rung, escalate only on a kickback.</p></div>' +
-    '<a class="btn quiet" href="#/inside/case">&larr; Back to my case</a>' +
-    '</div></div>';
+    '<div class="notes-always">' +
+      '<a class="btn quiet" href="#/inside/case">&larr; Back to my case</a>' +
+    '</div></div></div>';
 });
 
 window.revoke = function () {
@@ -1847,9 +1863,6 @@ function invitation(c) {
     '<input class="choice" id="hname" placeholder="Your first name" ' +
       'style="font-size:18px" value="' + esc(c.helper || "") + '">' +
     '<button class="btn wide" onclick="acceptHelp()">Yes, I\'ll help</button>' +
-    '<div class="notes"><p class="note-design">Design note: the first thing this ' +
-      'screen does is rule out everything a scam would ask for. Trust has to be ' +
-      'earned in the first ten seconds or there is no second screen.</p></div>' +
     '</div></div>';
 }
 
@@ -1914,8 +1927,6 @@ route(/^\/family\/task$/, () => {
     '<div class="card dashed"><span class="strong">You don\'t have to understand ' +
       'any of this.</span><span class="small">Ms. Reyes reads the reports and ' +
       'decides what to do. Your part is the mail.</span></div>' +
-    '<div class="notes"><p class="note-design">Design note: one task on screen at ' +
-      'a time. A helper with a to-do list of six items does none of them.</p></div>' +
     '</div></div>';
 });
 
@@ -1971,10 +1982,6 @@ route(/^\/family\/report$/, () => {
       '<span class="small">To Ms. Reyes and to ' + esc(c.first) + '. Not to us, ' +
       'not to anyone else, and never to a company that wants to sell them ' +
       'something.</span></div>' +
-    '<div class="notes"><p class="note-build">Build note: photo-to-text ' +
-      'extraction is the one genuinely hard engineering piece and it is not ' +
-      'built. The images are counted and discarded, never stored, and the ' +
-      'counselor enters the findings. That was always the fallback.</p></div>' +
     '</div></div>';
 });
 
@@ -2020,10 +2027,7 @@ route(/^\/staff$/, () => {
         ? '<a class="btn ghost" href="#/staff/' + c.id + '/triage">Triage</a>'
         : '<a class="btn ghost" href="#/staff/' + c.id + '">Open</a>') + '</td></tr>').join("") +
     '</tbody></table>' +
-    '<div class="card dashed" style="margin-top:20px">' +
-      '<p class="note-design">Design note: this is a work queue, not a roster. ' +
-      'Nothing sorts by name. The only ordering that matters is what expires ' +
-      'first.</p></div></div></div>';
+    colophon() + '</div></div>';
 });
 
 function clockText(c) {
@@ -2197,10 +2201,6 @@ route(/^\/staff\/([\w-]+)\/triage$/, (id) => {
           '<div class="small strong">' + esc(s.label) + '</div>' +
           '<div class="tiny">' + esc(s.plan) + '</div></div></div>').join("") +
       '</div></div></div>' +
-    '<div class="card dashed notes-card" style="margin-top:20px"><p class="note-design">' +
-      'Design note: this classifier is the actual product. Everything else is ' +
-      'letters and lists. It is also the only piece you can measure for ' +
-      'accuracy, which is what makes it defensible in a demo.</p></div>' +
     '</div></div>';
 });
 
@@ -2325,13 +2325,7 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
           '</p>').join("") : '<p class="small">None yet.</p>') +
         '<p class="tiny">' + esc(reviewSummary()) + '</p></div>' +
     '</div></div>' +
-    '<div class="card dashed" style="margin-top:20px">' +
-      '<p class="note-design">Design note: staff see enough to act, never the ' +
-      'whole file by default.</p>' +
-      '<p class="note-build">Measure this: how often does the reviewer edit ' +
-      'before approving. That number is the accuracy metric, and reporting it ' +
-      'honestly is the DoNotPay lesson.</p></div>' +
-    '<p style="margin-top:14px"><a class="btn ghost" href="#/staff">&larr; Queue</a></p>' +
+    '<p style="margin-top:16px"><a class="btn ghost" href="#/staff">&larr; Queue</a></p>' +
     '</div></div>';
 });
 
@@ -2430,6 +2424,11 @@ window.escalate = function (id) {
 
 /* ---------- screens: citations and scope ------------------------------ */
 
+route(/^\/signout$/, () => {
+  signOut();
+  return "";
+});
+
 route(/^\/citations$/, () => {
   return '<div class="sheet" style="padding-top:28px;max-width:880px">' +
     '<h1>What we checked, and what we didn\'t</h1>' +
@@ -2464,65 +2463,6 @@ route(/^\/citations$/, () => {
           '</div>' : "") + '</div></div>').join("") + '</div>' +
     '<p style="margin-top:18px"><a class="btn ghost" href="#/">Back</a></p></div>';
 });
-
-route(/^\/scope$/, () => {
-  return '<div class="sheet" style="padding-top:28px;max-width:880px">' +
-    '<h1>Three roles, three surfaces</h1>' +
-    '<p class="lede" style="margin:10px 0 20px">Who can do what is set by physics ' +
-      'and law, not by preference. That is what splits the app.</p>' +
-    '<div class="grid three">' +
-      scopeCard("Inside", "Facility tablet",
-        ["Answer the intake questions", "See where the case stands",
-         "See the case timeline", "Name someone to help",
-         "Cancel a helper's authorization"],
-        ["Verify identity online", "Receive mail", "Upload a file",
-         "Mail a letter", "Read the full credit report"],
-        "Offline-first in the real product. Metered by the minute. One question per screen.") +
-      scopeCard("Family or friend", "Phone",
-        ["Receive mail", "Photograph the reports", "Print and mail letters",
-         "Take a call from the counselor"],
-        ["Act without a signed, scoped authorization", "See the caseload",
-         "Read or judge the report", "Approve a letter"],
-        "One task on screen at a time. Long silences between tasks, by design.") +
-      scopeCard("Caseworker", "Desktop",
-        ["Run a triage session", "Read the report", "Approve letters",
-         "Hold the deadline", "Manage a full caseload"],
-        ["See more of the file than consent covers", "Choose a client's PIN"],
-        "Work queue sorted by what expires first. Never a roster.") +
-    '</div>' +
-    '<div class="grid two" style="margin-top:20px;align-items:start">' +
-    '<div class="card"><h2>What is assumed away</h2>' +
-      '<p class="small">Facility and DOC approval, incumbent tablet vendor access, ' +
-      'bureau data agreements, funding for the counselor role, and the PII ' +
-      'compliance regime a real deployment would sit under. Signed off for class, ' +
-      'and said on a slide rather than hoped past.</p>' +
-      '<h2 style="margin-top:10px">What is not</h2>' +
-      '<p class="small">A person inside cannot verify identity online, and a ' +
-      'helper outside has no standing without a signed form. Those two shape the ' +
-      'product, and no waiver makes them disappear.</p></div>' +
-    '<div class="card warn"><h2>Known gaps in this build</h2>' +
-      '<p class="small">&middot; No real offline support. The design promises ' +
-      '"nothing is lost if you lose access for a week" and this build does not ' +
-      'keep that promise.</p>' +
-      '<p class="small">&middot; No Spanish. The original design showed an EN / ES ' +
-      'toggle; it was removed rather than shipped as decoration.</p>' +
-      '<p class="small">&middot; No photo-to-text. The counselor types the ' +
-      'findings, which was always the fallback.</p>' +
-      '<p class="small">&middot; This standalone build keeps everything in one ' +
-      'browser on one device. The server version is the real architecture.</p>' +
-      '</div></div>' +
-    '<p style="margin-top:18px"><a class="btn ghost" href="#/">Back</a></p></div>';
-});
-
-function scopeCard(title, device, can, cannot, rule) {
-  return '<div class="card"><h2>' + esc(title) + '</h2>' +
-    '<span class="tag">' + esc(device) + '</span>' +
-    '<p class="small strong">Can</p>' +
-    can.map((c) => '<p class="tiny">&middot; ' + esc(c) + '</p>').join("") +
-    '<p class="small strong">Cannot</p>' +
-    cannot.map((c) => '<p class="tiny">&times; ' + esc(c) + '</p>').join("") +
-    '<p class="tiny" style="color:var(--rust)">' + esc(rule) + '</p></div>';
-}
 
 /* ---------- go -------------------------------------------------------- */
 

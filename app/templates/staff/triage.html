@@ -4,7 +4,7 @@
 <div class="bar">
   <a class="pill" href="/staff">&larr; Queue</a>
   <span class="wordmark">Triage, {{ client.display_name }}</span>
-  <div class="right"><a class="pill" href="/notes/toggle">{% if show_notes %}Hide notes{% else %}Design notes{% endif %}</a><a class="pill" href="/signout">Sign out</a></div>
+  <div class="right"><a class="pill" href="/signout">Sign out</a></div>
 </div>
 
 <div class="desk" style="padding-top:28px">
@@ -74,12 +74,6 @@
         {% endfor %}
       </div>
     </div>
-  </div>
-
-  <div class="card dashed notes-card" style="margin-top:24px">
-    <p class="note-design">Design note: this classifier is the actual product.
-      Everything else is letters and lists. It is also the only piece you can
-      measure for accuracy, which is what makes it defensible in a demo.</p>
   </div>
 </div>
 {% endblock %}

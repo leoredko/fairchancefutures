@@ -96,6 +96,18 @@ def parse(raw: str) -> Identifier:
     )
 
 
+# Numbers starting 28 mean a 2028 intake, which has not happened, so they
+# cannot belong to a real person in the public DOCCS lookup. That makes them
+# the safe range for anyone trying the app out: sign in with any of them and
+# an account is created on the spot.
+SELF_SERVICE_YEAR = "28"
+
+
+def is_self_service(identifier: "Identifier") -> bool:
+    return (identifier.kind is IdKind.DIN
+            and identifier.normalized.startswith(SELF_SERVICE_YEAR))
+
+
 def looks_like(raw: str) -> IdKind | None:
     """Non-raising check, for deciding what to show before someone submits."""
     try:

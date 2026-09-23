@@ -19,6 +19,15 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import RUNG_DETAIL, Rung, next_rung
 from app.bureaus import BUREAUS
+from app.caseplan import (
+    DOCUMENT_LABEL,
+    DOCUMENT_NOTE,
+    PLAN_NAME,
+    Document,
+    ladder_rung_available,
+    quarterly_reviews_left,
+    simulated_plan,
+)
 from app.deps import get_client, templates
 from app.intake import (
     FACILITIES,
@@ -226,6 +235,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
     client = get_client(client_id)
 
     view = for_surface(asdict(client), Surface.STAFF, set(client.consent_scopes))
+    plan = simulated_plan(client.id, "D. Reyes", client.release_date)
     drafts = drafts_for(client_id)
     pending = next((d for d in drafts if d["approved_on"] is None), None)
     approved = [d for d in drafts if d["approved_on"]]
@@ -247,6 +257,15 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          "ladder": _ladder_rows(client), "draft": pending,
          "draft_caption": caption, "approved": approved,
          "flagged": client.flagged_items if "flagged_items" in view else [],
+         "plan": plan,
+         "plan_name": PLAN_NAME,
+         "plan_documents": [
+             {"label": DOCUMENT_LABEL[d], "note": DOCUMENT_NOTE[d],
+              "have": plan.has(d)} for d in Document
+         ],
+         "reviews_left": quarterly_reviews_left(
+             date.fromisoformat(client.release_date)),
+         "rung_two": ladder_rung_available(plan, 2),
          "review_summary": review_log().summary(),
          "just_created": bool(created),
          "helper_code": next(

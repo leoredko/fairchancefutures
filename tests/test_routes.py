@@ -14,7 +14,7 @@ from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
 
 def test_the_front_page_needs_no_session(client):
     assert client.get("/").status_code == 200
-    for url in ["/roles", "/metrics", "/citations", "/signin", "/helper",
+    for url in ["/metrics", "/citations", "/signin", "/helper",
                 "/staff-signin"]:
         assert client.get(url).status_code == 200, url
 
@@ -174,16 +174,6 @@ def test_ladder_escalates_one_rung_on_a_kickback(staff):
     assert store.STATE.clients["m-alvarez"].ladder_status["1"] == "Kicked back"
 
 
-def test_roles_page_is_generated_from_the_capability_table(client):
-    """The scope slide cannot drift from the code, because it is the code."""
-    html = client.get("/roles").text
-    # Rendered through the label registry, so the page shows sentences rather
-    # than enum values.
-    assert "Verify identity online" in html
-    assert "Upload a file" in html
-    assert "verify_identity" not in html
-
-
 def test_offline_writes_land_in_the_sync_queue(inside):
     inside.post("/inside/intake/1", data={"has_bank_account": "no"})
     payload = inside.get("/api/sync").json()
@@ -211,6 +201,23 @@ def test_drafting_produces_a_letter_for_every_bureau(staff):
     staff.post("/staff/m-alvarez/letters/draft", data={"item": "0"})
     drafts = store.drafts_for("m-alvarez")
     assert {d["bureau"] for d in drafts} == {b.name for b in BUREAUS}
+
+
+def test_the_front_page_is_not_a_demo_menu(client):
+    """Seeded logins on the landing page make an application look like a
+    sample. They live in docs/DEMO.md now."""
+    html = client.get("/").text
+    assert "Demo logins" not in html
+    assert "28-A-1187" not in html
+    assert "fictional" not in html.lower()
+    assert "prototype" not in html.lower()
+
+
+def test_no_wireframe_annotations_survive_in_the_product(client, staff):
+    for url in ["/", "/citations", "/metrics"]:
+        assert "Design note:" not in client.get(url).text, url
+    for url in ["/staff", "/staff/m-alvarez", "/staff/j-whitfield/triage"]:
+        assert "Design note:" not in staff.get(url).text, url
 
 
 def test_the_en_es_pill_is_gone(inside):
@@ -264,25 +271,6 @@ def test_plan_progress_reflects_the_drafts_actually_on_screen(staff):
     after = staff.get("/staff/m-alvarez").text
     assert "not drafted yet" not in after
     assert "0 of 3 letters approved" in after
-
-
-def test_design_notes_are_off_until_you_ask_for_them(staff):
-    """Annotations inside a product are what make a product look like a
-    wireframe. They are still worth having for a walkthrough, so they are a
-    toggle rather than a deletion."""
-    page = staff.get("/staff/m-alvarez")
-    body_tag = page.text.split("<body", 1)[1][:80]
-    assert "show-notes" not in body_tag
-    assert "/notes/toggle" in page.text          # the way to turn them on
-    assert "notes-card" in page.text             # the markup is there, just hidden
-
-    staff.get("/notes/toggle")
-    after = staff.get("/staff/m-alvarez").text.split("<body", 1)[1][:80]
-    assert "show-notes" in after
-
-    staff.get("/notes/toggle")
-    off_again = staff.get("/staff/m-alvarez").text.split("<body", 1)[1][:80]
-    assert "show-notes" not in off_again
 
 
 def test_no_database_column_names_reach_a_screen(staff):

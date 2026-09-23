@@ -3,14 +3,359 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bridge</title>
+<title>Bridge for helpers</title>
 <meta name="theme-color" content="#0E7C6B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bridge">
-<link rel="apple-touch-icon" href="__BRIDGE_ICON__">
-<link rel="icon" href="__BRIDGE_ICON__">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAALlUlEQVR42u3bwYlCURBFQeMQxL3hTKym9kFcGYSM4j0FFcH73X2cxZyejwOAoJMnABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQADmXS9nmGfTBcBlB3RCAJx7QBIEwNEHxEAA3H1ACQTA3QeUQADcfUAJBMDdB5RAAJx+QAYEwOkHZEAAnH5ABgTA6QdkQACcfkAGBMDpBxkQANcf0AABcPoBGRAA1x/QAAFw+gEZEADXH9AAAXD9AQ0QAKcfkAEBcP0BDRAA1x/QAAFw/QENEADXH9AAAXD6ARkQANcf0AABcP0BDRAA1x/QAAFw/QENEAABAARAAFx/QAOSATB/gAYUA2DyAA0oBsDMARpQDIBpAzRAAAAEIBMAcwZoQDEAJgzQgGIAzBagAQIAIACZAJgqQAOKATBPgAYIAIAAZAJgkgANKAbADAEaIAAAApAJgOkBNEAAAAQgEwBzA2iAAAAIQCYAJgbQAAEAEIBMAMwKoAECACAAmQCYEkADBABAADIBMB+ABggAgAAIAIAAbAfAZAAaIAAAAiAAAAKwHQAzAWiAAAAIgAAACMB2AEwDoAECACAAAgAgANsBMAeABggAgAAIAIAACACAAAwGwAQAGiAAAAIgAAACIAAAAiAAAAIgAAAC8NMB8O0BBABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAAXH+AVgMEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAHxyAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAEAEAABABAAAQAQAAHgQ+5/t3/ibREAAWD80AsDAiAAuPh6gAAIAC6+HiAAAoCjLwYIgADg6IsBAiAAuPtKgAAIAO6+EiAAAoC7rwQIgAC4+ygBAiAATj8ygADg7qMECABOPzIgAAKA048MCIAA4PQjAwIgADj9yIAACABOPzIgAAKA048MCIAA4PQjAwIgADj9yIAACACuvwYgAAKA0y8DCIAA4PprAAIgADj9MoAACIDr70RqAAIgAE4/MoAACIDrjwYgAALg+qMBCIAAOP21u+a5EAABcP1dLi+JAAiA6+9IeV4EQADcJlfJgyMAAuAYOUA+AQIgAE6Po+NzIAAC4Nw4ND4NAiAA9RPji/hSCICvnrspPodPhgAIQOuU+BA+HwIgAK3z4RP4lAiAAOROhvf3TREAAchdCo/v4yIAApA7EF7eV0YABCB3Fzy7z40ACEDuHHhz3x0BEIDcFfDgBgABEIDc8nttk2ASBEAAcjvvqY2EkRAAAcitunc2G2ZDAATAhmNCTIgACEBgvb2wOTEnAiAAthrTYloEQAAC++x5jY2xEQABsMYYHsMjAAIQ2GEPa4SMkAAIgNXFIBkkARCAwNJ6VRNlogRAAOwq5spcCYAANBbVk2K0BEAArCgGzIAJgAAEltN7YtIEQACKa+kxMWwCIAAWEoycAAhAYxu9JKZOAATAHoLZEwABsIFgAgVAAFbXzzNiCAVAAHKL5w0xjQIgAFYOTKMACEBj3zwgxlIABMCmgbEUAAGwZmA4BUAAhnfM62E+BUAAbBeYUgEQgMZqeToMqgAIgKUC4yoAAtDYKO+GiRUAAbBLYG4FQAAai+TRMLoCIAC2CIyuAAiAFQIDLAACMLw/XgwzLAACYHPAJAuAAFgbMMkCIADDa+O5MMwCIAAWBoy0AAiAbQEjLQACMLwt3gpTLQACYE/AbAuAAFgSMNsCIADDS+KhMN4CIAA2BIy3AAiA9QBDLgACMLwbXglzLgACYDHAnAuAANgKMO0CIABWAky7AAjA2kq4Ghh4ARAA+wAGXgAEILMP7gVmXgAEwK8hMPYCIAB+CoHJFwABsAZg8gVAANbWwI3A8AuAANgBMPwCIACZHXAdMP8CIAB+AYEVEAABMP1gBQRAAPz9C7ZAAATA6IMtEAABmBh9FwGLIAACYO7BIgiAAJh7sAgCIADbc+8WYBcEQAAMPdgFARAAQw92QQAEYHvoXQE0wDoIgIkH6yAAAmDiwToIgABsT7z9BxshAMYdbIQACMDiv7cA7xMAARAAEAABEAABAAEQAAEQABAAARAAAQABEAABEAAQAAEQAAEAARAAARAAEAABEAABAAEQAAEQABAAARAAAQABEAABEAAQAAEQAAEAARAAARAAEAABEAABAAEQAAEQABAAARAAQAAEQAAAARAAAQAEQAAEABAAARAAQAAEQAAAARAAAQAEQAAEABAAARAAEAABEAABAAEQAAEQABAAARAAAQABEAABiLJ4GAYBEAA7b+cNg2EQAAGw83beMBgGARAAO2/nDYNhEAABsPN23jAYBgEQADtv5w2DYRAAAbDzdt4wGAYBEAA7b+cNg2EQAAGw897WMBgGARAAO49hQAAEwM5jGBAAAbDzGAYEQADsPIYBARAAO49hQAAEwM5jGBAAAbDzGAYEwFe38xgGBAA7j2EQAAHAzmMYBEAAsPMYBgEQAOw8hkEABAA7j2EQAAHAzmMYBEAAsPMYBgEQADtv5zEMAiAAdt7OGwbDIAACYOftvGEwDAIgAHbezhsGwyAAAmDn7bxhMAwCIAB23s4bBsMgAAJg5+28YTAMAiAAdt7OGwbDIAACYOcxDIZBAATAzmMYEAABsPMYBgRAAOw8hgEBEAA7j2FAAATAzmMYEAABsPMYBgRAAOw8hgEBwM5jGARAALDzGAYBEADsPIZBAAQAO49hEAABwM5jGARAALDzGAYBEADsPIZBAATAztt5DIMACICdt/OGwTAIgADYeTtvGAyDAAiAnbfzhsEwCIAA2Hk7bxgMgwAIgJ2384bBMAiAANh5O28YDIMACICdt/OGwTAIgADYeW9rGAyDAAiAnccwIAACYOcxDAiAANh5DAMCIAB2HsOAAAiAnccwIAACYOcxDAiAANh5DAMCgJ3HMCAAAAIgAAACsB0ADQD44vUXAAABEAAAARAAAAEQAAABEAAAARAAAAEQAAABEAAAARAAAAEQAAABEAAAARAAgHQANABw/QUAQAAEAEAABABAAAQAQAAEAEAABgKgAYDrLwAAAiAAAAIgAAACMBsADQBcfwEAEAABABCAQgA0AHD9BQBAAAQAQAAKAdAAwPUXAAABEAAAASgEQAMA118AAARAAAAEoBAADQBcfwEAEIBYADQAcP0FAEAAYgHQAMD1FwAAAYgFQAMA118AAAQgFgANAFx/AQAQgFgANABw/QUAQABiAdAAwPXvBkADANdfAAAEIBYADQBc/24ANABw/QUAQABiAdAAwPXvBkADANe/GwANAFx/AQAQgFgANABw/bsB0ADA9e8GQAMA178bAA0AXP9uADQAcP0FAEAAYgHQAMD17wZAAwDXvxsADQBc/24ANABw/bsBkAHA6U8HQAMA178bAA0AXP9uADQAcP27AdAAwPXvBkAGAKc/HQANAFz/bgA0AHD9uwGQAcDpTwdAAwDXvxsAGQDKp18ANABc/0MADhkAnH4BkAHA6RcAGQCcfgGQAcDpFwAZAJx+AZABwOkXACUA3H0BUALA3RcAJQDcfQFQAsDdFwAxABx9AZAEwLkXAOw8LjsCAIAAACAAAAgAAAIAgAAAIAAACAAAAgCAAAAIgFcAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAEAAABAAAAQBAAAAQAAAEAIBf9QKPN2s788L0aAAAAABJRU5ErkJggg==">
+<link rel="icon" href="data:image/png;base64,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">
 <style>
-/*__BRIDGE_CSS__*/
+/* Bridge.
+
+   Teal for the things that move you forward, amber for the things that need a
+   person. Warm white underneath rather than the beige-grey of every
+   institutional form anybody in this situation has ever been handed.
+
+   No web fonts and no CDN. The tablet surface is metered by the minute, so
+   the app makes zero outbound requests to render. */
+
+:root {
+  /* text */
+  --ink: #12232E;
+  --ink-2: #3D5361;
+  --muted: #64808F;
+  --faint: #93A8B4;
+
+  /* surfaces */
+  --page: #FFFFFF;
+  --surface: #F4F9F8;
+  --surface-2: #E9F3F1;
+  --line: #DCE9E6;
+  --line-strong: #C3D8D3;
+  --track: #DFEDEA;
+
+  /* brand */
+  --teal: #0E7C6B;
+  --teal-deep: #0A5C50;
+  --teal-soft: #E3F3F0;
+  --amber: #E08A1E;
+  --amber-soft: #FDF3E3;
+  --sky: #1B74B8;
+  --sky-soft: #E8F2FA;
+  --green: #17855B;
+  --green-soft: #E5F4EC;
+  --rose: #C4344B;
+  --rose-soft: #FCEDEF;
+
+  --display: "Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  --r: 12px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+
+  --lift: 0 1px 2px rgba(18, 35, 46, .05), 0 1px 3px rgba(18, 35, 46, .04);
+  --lift-2: 0 4px 16px rgba(14, 124, 107, .10), 0 1px 3px rgba(18, 35, 46, .05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--teal); text-underline-offset: 2px; }
+a:hover { color: var(--teal-deep); }
+
+:focus-visible {
+  outline: 2.5px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---- shells ------------------------------------------------------------ */
+
+.tablet { width: min(780px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column;
+          box-shadow: var(--lift-2); }
+.phone  { width: min(440px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column;
+          box-shadow: var(--lift-2); }
+.desk   { max-width: 1160px; margin: 0 auto; padding: 0 24px 80px; }
+.sheet  { max-width: 1160px; margin: 0 auto; padding: 0 20px 72px; }
+
+.bar {
+  padding: 15px 28px;
+  background: linear-gradient(103deg, var(--teal-deep) 0%, var(--teal) 62%, #12907C 100%);
+  color: #EAF6F4;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 20;
+}
+.bar .wordmark {
+  font-family: var(--display); font-weight: 700; font-size: 19px;
+  letter-spacing: -.015em; color: #FFFFFF;
+}
+.bar .who { font-size: 14px; color: #BEDFD9; }
+.bar .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.bar a { color: #EAF6F4; }
+.bar a:hover { color: #FFFFFF; }
+.bar .pill {
+  font-size: 13px; border: 1px solid rgba(255,255,255,.34);
+  border-radius: var(--r-pill); padding: 5px 13px; text-decoration: none;
+  white-space: nowrap; color: #EAF6F4;
+}
+.bar .pill:hover { background: rgba(255,255,255,.14); }
+.bar .tag { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3);
+            color: #FFFFFF; }
+
+.pane { flex-grow: 1; padding: 32px 32px 40px; display: flex;
+        flex-direction: column; gap: 22px; min-height: 0; }
+.phone .pane { padding: 22px 20px 32px; gap: 18px; }
+
+/* ---- type -------------------------------------------------------------- */
+
+h1 { font-family: var(--display); font-weight: 700; font-size: 33px;
+     line-height: 1.16; letter-spacing: -.02em; }
+.phone h1 { font-size: 26px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 20px;
+     line-height: 1.25; letter-spacing: -.012em; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
+     letter-spacing: -.005em; color: var(--ink); }
+
+.lede  { font-size: 17.5px; line-height: 1.5; color: var(--ink-2); }
+.small { font-size: 14.5px; color: var(--ink-2); }
+.tiny  { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.strong { font-weight: 600; color: var(--ink); }
+
+/* ---- progress ---------------------------------------------------------- */
+
+.progress { display: flex; align-items: center; gap: 14px; }
+.track { flex-grow: 1; height: 8px; border-radius: var(--r-pill);
+         background: var(--track); overflow: hidden; }
+.track > span {
+  display: block; height: 100%; border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--teal) 0%, #24A88F 100%);
+  transition: width .3s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---- choices, buttons -------------------------------------------------- */
+
+.choices { display: flex; flex-direction: column; gap: 12px; }
+
+.choice {
+  display: block; width: 100%; text-align: left;
+  background: var(--page);
+  border: 2px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  padding: 20px; font: inherit; font-size: 19px; font-weight: 600;
+  color: inherit; text-decoration: none; cursor: pointer;
+  transition: border-color .14s ease, background .14s ease, transform .1s ease;
+}
+.choice:hover { border-color: var(--teal); background: var(--teal-soft); }
+.choice:active { transform: scale(.995); }
+.choice.selected { border-color: var(--teal); background: var(--teal-soft); }
+.choice .note { display: block; font-size: 14.5px; font-weight: 400;
+                color: var(--muted); margin-top: 6px; line-height: 1.45; }
+input.choice { font-weight: 500; }
+input.choice::placeholder { color: var(--faint); font-weight: 400; }
+
+.btn {
+  display: inline-block;
+  background: linear-gradient(180deg, #13907D 0%, var(--teal) 100%);
+  color: #FFFFFF;
+  border: 0; border-radius: var(--r);
+  padding: 14px 22px; font: inherit; font-weight: 600; font-size: 15.5px;
+  cursor: pointer; text-decoration: none; text-align: center;
+  box-shadow: 0 1px 2px rgba(10, 92, 80, .28);
+  transition: filter .14s ease, transform .1s ease;
+}
+.btn:hover { filter: brightness(1.07); color: #FFFFFF; }
+.btn:active { transform: translateY(1px); }
+.btn.wide { width: 100%; padding: 17px 22px; font-size: 17px; }
+.btn.ghost { background: var(--page); color: var(--teal-deep);
+             border: 1.5px solid var(--line-strong); box-shadow: none; }
+.btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal);
+                   color: var(--teal-deep); filter: none; }
+.btn.quiet { background: none; color: var(--muted); border: 0; box-shadow: none;
+             padding: 8px 0; text-decoration: underline; font-weight: 500; }
+.btn.quiet:hover { color: var(--ink); filter: none; }
+.btn.amber { background: linear-gradient(180deg, #EE9A2C 0%, var(--amber) 100%);
+             box-shadow: 0 1px 2px rgba(180, 108, 18, .28); }
+
+/* ---- cards ------------------------------------------------------------- */
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 19px 21px;
+  background: var(--page);
+  box-shadow: var(--lift);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.card.soft { background: var(--surface); box-shadow: none; }
+.card.accent { border-left: 4px solid var(--teal); }
+.card.warn { border: 1px solid #F0D5AC; background: var(--amber-soft);
+             box-shadow: none; }
+.card.good { border: 1px solid #B6DEC8; background: var(--green-soft);
+             box-shadow: none; }
+.card > .tag, .stack > .tag { align-self: flex-start; }
+
+.grid { display: grid; gap: 18px; }
+.grid.two { grid-template-columns: 1fr 1fr; }
+.grid.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+
+.stack { display: flex; flex-direction: column; gap: 15px; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.spacer { margin-top: auto; }
+
+/* ---- hero -------------------------------------------------------------- */
+
+.hero {
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 55%, #1AA18A 100%);
+  color: #FFFFFF; padding: 46px 32px 40px; border-radius: 0 0 28px 28px;
+  margin-bottom: 28px;
+}
+.hero h1 { color: #FFFFFF; font-size: 38px; }
+.hero .lede { color: #CDE9E4; margin-top: 10px; font-size: 18px; }
+.phone .hero, .tablet .hero { border-radius: 0; margin-bottom: 0; }
+
+/* ---- timeline ---------------------------------------------------------- */
+
+.timeline { display: flex; flex-direction: column; }
+.event { display: flex; gap: 15px; padding: 15px 0;
+         border-bottom: 1px solid var(--track); }
+.event:last-child { border-bottom: 0; }
+.dot {
+  flex: 0 0 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin-top: 2px;
+  background: var(--green); color: #FFFFFF;
+}
+.event.pending .dot { background: var(--page); color: var(--amber);
+                      border: 2px solid var(--amber); }
+
+/* ---- table ------------------------------------------------------------- */
+
+.queue {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--page); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--lift);
+}
+.queue th {
+  text-align: left; font-size: 11.5px; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--teal-deep); padding: 12px 18px;
+  border-bottom: 1px solid var(--line); background: var(--teal-soft);
+  font-weight: 700;
+}
+.queue td { padding: 16px 18px; border-bottom: 1px solid var(--track);
+            vertical-align: top; }
+.queue tr:last-child td { border-bottom: 0; }
+.queue tbody tr:hover { background: var(--surface); }
+.queue tr.overdue td:first-child { box-shadow: inset 4px 0 0 var(--rose); }
+
+/* ---- tags -------------------------------------------------------------- */
+
+.tag {
+  display: inline-block; font-size: 12.5px; font-weight: 600;
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  padding: 3px 12px; color: var(--muted); white-space: nowrap;
+  background: var(--page);
+}
+.tag.teal  { border-color: #A6D5CD; color: var(--teal-deep); background: var(--teal-soft); }
+.tag.amber { border-color: #EFCE9C; color: #9A5F12;         background: var(--amber-soft); }
+.tag.sky   { border-color: #AFCFE8; color: var(--sky);      background: var(--sky-soft); }
+.tag.green { border-color: #ADD8C0; color: var(--green);    background: var(--green-soft); }
+.tag.rose  { border-color: #EDB6BF; color: var(--rose);     background: var(--rose-soft); }
+/* the old names, kept so nothing silently loses its colour */
+.tag.rust { border-color: #EFCE9C; color: #9A5F12; background: var(--amber-soft); }
+.tag.blue { border-color: #AFCFE8; color: var(--sky); background: var(--sky-soft); }
+
+/* ---- ladder ------------------------------------------------------------ */
+
+.rung { display: flex; gap: 14px; padding: 14px 16px;
+        border: 1px solid var(--line); border-radius: var(--r);
+        background: var(--page); }
+.rung.active { border-color: var(--teal); border-width: 2px;
+               background: var(--teal-soft); }
+.rung .n { font-family: var(--display); font-weight: 700; color: var(--faint);
+           flex: 0 0 20px; font-size: 15px; }
+.rung.active .n { color: var(--teal); }
+
+/* ---- letter ------------------------------------------------------------ */
+
+.letter {
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.68;
+  white-space: pre-wrap; background: var(--page);
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 24px; color: var(--ink-2);
+}
+textarea.letter { width: 100%; min-height: 420px; resize: vertical; }
+@media (max-width: 560px) { .letter { font-size: 10.5px; line-height: 1.5; } }
+
+/* ---- denial ------------------------------------------------------------ */
+
+.denied {
+  border: 1px solid #EDB6BF; border-left: 4px solid var(--rose);
+  border-radius: var(--r); padding: 16px 19px;
+  background: var(--rose-soft); display: flex; flex-direction: column; gap: 8px;
+}
+.denied .what { font-weight: 600; color: var(--rose); }
+
+/* ---- forms ------------------------------------------------------------- */
+
+fieldset { border: 0; display: flex; flex-direction: column; gap: 12px; }
+legend { padding: 0; }
+label.check {
+  display: flex; gap: 12px; align-items: flex-start;
+  border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  padding: 13px 15px; cursor: pointer; background: var(--page);
+  transition: border-color .14s ease, background .14s ease;
+}
+label.check:hover { border-color: var(--teal); background: var(--teal-soft); }
+input[type="radio"], input[type="checkbox"] {
+  width: 19px; height: 19px; accent-color: var(--teal); flex: none;
+  margin-top: 1px;
+}
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field > label { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.field .hint { font-size: 12.5px; color: var(--muted); }
+.field input, .field select {
+  font: inherit; font-size: 16px; padding: 13px 15px;
+  border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  background: var(--page); color: var(--ink); width: 100%;
+}
+.field input:focus, .field select:focus { border-color: var(--teal); }
+.field.bad input, .field.bad select { border-color: var(--rose);
+                                      background: var(--rose-soft); }
+.field .mono { font-family: var(--mono); letter-spacing: .06em; }
+
+.compact fieldset { gap: 6px; margin-bottom: 6px; }
+.compact label.check { padding: 8px 12px; }
+.compact input[type="radio"], .compact input[type="checkbox"] {
+  width: 16px; height: 16px;
+}
+.compact legend { margin-top: 12px; }
+
+/* ---- the small print --------------------------------------------------- */
+
+.colophon { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
+.colophon p { font-size: 12px; color: var(--faint); line-height: 1.5; }
+
+@media print {
+  .bar, .btn, .hero, .colophon { display: none !important; }
+  .letter { border: 0; padding: 0; font-size: 11pt; }
+  body { background: #fff; }
+}
+
 
 /* This build has no server, so the shell fills the window itself. */
 html, body { min-height: 100%; }
@@ -39,13 +384,538 @@ html, body { min-height: 100%; }
    so this file cannot quietly drift from the version the test suite covers.
    ===================================================================== */
 
-const RULES = "__BRIDGE_RULES__";
+const RULES = {
+ "built": "2026-09-23",
+ "states": [
+  {
+   "key": "credit_invisible",
+   "label": "No file. Credit invisible.",
+   "plan": "Builder loan or secured card, then one on-time payment stream.",
+   "horizon": "Roughly 6 to 9 months to a usable file.",
+   "source": "Cornish interview, Sep 21. Unverified against a primary source.",
+   "first_step": "Open the account before release, with the counselor."
+  },
+  {
+   "key": "thin_file",
+   "label": "Thin or stale file",
+   "plan": "Low-effort boosters first: rent reporting, utility and phone reporting.",
+   "horizon": "Months, and most of the work is not the client's.",
+   "source": "Least work for the client, which is why it goes first.",
+   "first_step": "Enroll the boosters that need no new account."
+  },
+  {
+   "key": "damaged_file",
+   "label": "Damaged file, real debt",
+   "plan": "Debt triage before credit building.",
+   "horizon": "Set the expectation in years rather than months.",
+   "source": "Telling someone the truth here beats selling them a quick fix.",
+   "first_step": "Inventory the debts and sort by what is collectible."
+  },
+  {
+   "key": "errors_present",
+   "label": "Errors on the report",
+   "plan": "Dispute flow, one letter to each of the three bureaus. Counselor approves, helper mails.",
+   "horizon": "30 days from the day each bureau receives the letter, extendable to 45 if the client sends more information mid-dispute. This is the only state with a statutory clock, which is why it jumps the queue.",
+   "source": "15 U.S.C. 1681i(a)(1), checked 2026-09-23.",
+   "first_step": "Draft the three dispute letters for the first flagged item."
+  },
+  {
+   "key": "not_yet_triaged",
+   "label": "Not yet triaged",
+   "plan": "Pull the report first. There is nothing to classify yet.",
+   "horizon": "The bureaus must deliver within 15 days of receiving the request. Add mail time in both directions.",
+   "source": "15 U.S.C. 1681j(a), checked 2026-09-23.",
+   "first_step": "Mail the Annual Credit Report Request Form at rung 1."
+  }
+ ],
+ "insideQuestions": [
+  {
+   "index": 1,
+   "field": "has_bank_account",
+   "prompt": "Do you have a bank account right now?",
+   "helper": "Open, closed, frozen, joint with someone. Any of it counts as a yes.",
+   "multi": false,
+   "design_note": "the easiest question first. The first screen is where people decide whether this is worth their time.",
+   "constraint": "",
+   "reassurance": {
+    "title": "Nothing here needs the internet.",
+    "body": "Your answers save on the tablet and sync whenever it connects. Nothing is lost if you lose access for a week."
+   },
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes",
+     "note": ""
+    },
+    {
+     "value": "no",
+     "label": "No",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 2,
+   "field": "ever_had_account",
+   "prompt": "Have you ever had a credit card, loan, or account in your name?",
+   "helper": "Before you came in counts. A guess is fine, we check it later.",
+   "multi": false,
+   "design_note": "one question per screen, offline-first, large targets. Facility tablets are slow, shared, and often metered by the minute.",
+   "constraint": "no file upload and no identity verification happen on this surface. Both are physically impossible from inside, so neither is designed here.",
+   "reassurance": {
+    "title": "Nothing here needs the internet.",
+    "body": "Your answers save on the tablet and sync whenever it connects. Nothing is lost if you lose access for a week."
+   },
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes, at some point",
+     "note": ""
+    },
+    {
+     "value": "no",
+     "label": "No, never",
+     "note": ""
+    },
+    {
+     "value": "unsure",
+     "label": "I'm not sure",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 3,
+   "field": "collections",
+   "prompt": "Is anyone chasing you for money you owe?",
+   "helper": "A collector, a hospital, an old landlord. Not court fines, those come next.",
+   "multi": false,
+   "design_note": "'I have no idea' is a real answer and the most common one. Forcing a guess here produces bad data and a worse path.",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "none_found",
+     "label": "Not that I know of",
+     "note": ""
+    },
+    {
+     "value": "some",
+     "label": "One or two",
+     "note": ""
+    },
+    {
+     "value": "many",
+     "label": "More than a few",
+     "note": ""
+    },
+    {
+     "value": "unknown",
+     "label": "I have no idea",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 4,
+   "field": "obligations",
+   "prompt": "Do you owe anything the court ordered?",
+   "helper": "Restitution, child support, fines and fees. Pick all that apply.",
+   "multi": true,
+   "design_note": "these route to the obligations list, never to the credit path. Different mechanism, different screen. They matter, and they do not sit in a list pretending to be a credit card.",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "none",
+     "label": "None that I know of",
+     "note": ""
+    },
+    {
+     "value": "restitution",
+     "label": "Restitution",
+     "note": ""
+    },
+    {
+     "value": "child_support",
+     "label": "Child support",
+     "note": ""
+    },
+    {
+     "value": "court_fines",
+     "label": "Court fines or fees",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": 5,
+   "field": "helper_available",
+   "prompt": "Is there someone outside who can get your mail?",
+   "helper": "Your report comes on paper, to an address. Somebody has to be there when it lands.",
+   "multi": false,
+   "design_note": "this screen asks who receives the mail. It does NOT ask for a power of attorney. What the bureaus require varies per person and is unknowable until you try, so the paperwork question is handled later, by the caseworker, only for the people who hit it.",
+   "constraint": "a helper outside has no standing without a signed form. Answering yes here starts an invitation, it does not grant anything.",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes, someone I trust",
+     "note": "They get the mail and send us photos. Most of the time that's all that's needed. If a bureau asks for more, Ms. Reyes handles it from there."
+    },
+    {
+     "value": "no",
+     "label": "No, or I'd rather not ask anyone",
+     "note": "Ms. Reyes handles it through the program instead, using the same form you already signed with her. A few steps run slower. Nothing stops."
+    },
+    {
+     "value": "later",
+     "label": "I'll decide later",
+     "note": "Nothing is waiting on this answer."
+    }
+   ]
+  },
+  {
+   "index": 6,
+   "field": "wants_line_by_line",
+   "prompt": "When the report comes back, do you want to go through it line by line?",
+   "helper": "It takes about twenty minutes with Ms. Reyes. It is how errors get found.",
+   "multi": false,
+   "design_note": "an error finding requires a person who recognizes their own accounts. Nobody else can do this step, which is why it is asked rather than assumed.",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes, go through it with me",
+     "note": ""
+    },
+    {
+     "value": "summary",
+     "label": "Just tell me what matters",
+     "note": ""
+    }
+   ]
+  }
+ ],
+ "staffQuestions": [
+  {
+   "index": null,
+   "field": "ever_had_account",
+   "prompt": "Any account in your name, ever?",
+   "helper": "",
+   "multi": false,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "no",
+     "label": "Not that he knows of",
+     "note": ""
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "note": ""
+    },
+    {
+     "value": "unsure",
+     "label": "Unsure",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": null,
+   "field": "report_result",
+   "prompt": "Report came back as?",
+   "helper": "",
+   "multi": false,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "not_pulled",
+     "label": "Not pulled yet",
+     "note": ""
+    },
+    {
+     "value": "no_file_found",
+     "label": "No file found",
+     "note": ""
+    },
+    {
+     "value": "thin_or_stale",
+     "label": "Thin or stale",
+     "note": ""
+    },
+    {
+     "value": "full_file",
+     "label": "Full file",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": null,
+   "field": "collections",
+   "prompt": "Anything in collections?",
+   "helper": "",
+   "multi": false,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "none_found",
+     "label": "None found",
+     "note": ""
+    },
+    {
+     "value": "some",
+     "label": "One or two",
+     "note": ""
+    },
+    {
+     "value": "many",
+     "label": "More than a few",
+     "note": ""
+    },
+    {
+     "value": "unknown",
+     "label": "Unknown",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": null,
+   "field": "has_bank_account",
+   "prompt": "Bank account right now?",
+   "helper": "",
+   "multi": false,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "note": ""
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": null,
+   "field": "obligations",
+   "prompt": "Court-ordered obligations?",
+   "helper": "",
+   "multi": true,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "none",
+     "label": "None",
+     "note": ""
+    },
+    {
+     "value": "restitution",
+     "label": "Restitution",
+     "note": ""
+    },
+    {
+     "value": "child_support",
+     "label": "Child support",
+     "note": ""
+    },
+    {
+     "value": "court_fines",
+     "label": "Court fines",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "index": null,
+   "field": "recognizes_everything",
+   "prompt": "Does he recognize every item on the report?",
+   "helper": "",
+   "multi": false,
+   "design_note": "",
+   "constraint": "",
+   "reassurance": null,
+   "options": [
+    {
+     "value": "not_reviewed_yet",
+     "label": "Not walked through yet",
+     "note": ""
+    },
+    {
+     "value": "all_mine",
+     "label": "Yes, all his",
+     "note": ""
+    },
+    {
+     "value": "some_not_mine",
+     "label": "No, at least one is not his",
+     "note": ""
+    }
+   ]
+  }
+ ],
+ "facts": [
+  {
+   "source": "15 U.S.C. 1681i(a)(1)(A)",
+   "statement": "A credit reporting agency must complete its reinvestigation of a disputed item within 30 days beginning on the date it receives the notice of dispute. The clock starts on receipt, not on the day the letter is mailed.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681i",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681i(a)(1)(B)",
+   "statement": "The 30 days may be extended by not more than 15 additional days if the agency receives relevant information from the consumer during that 30-day period. So sending more paperwork mid-dispute can push the deadline out to 45 days.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681i",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681i(a)(5)-(6)",
+   "statement": "The agency must send written notice of the results within 5 business days of completing the reinvestigation, and must promptly delete or modify any item found inaccurate, incomplete, or unverifiable.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681i",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681j(a)",
+   "statement": "Every nationwide agency must provide one free file disclosure per 12-month period on request through the centralized source, and must deliver it within 15 days of receiving the request.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681j",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "FTC, Free Credit Reports",
+   "statement": "The mail route is the Annual Credit Report Request Form, sent to Annual Credit Report Request Service, P.O. Box 105281, Atlanta, GA 30348-5281. This is the route that works without internet access.",
+   "url": "https://consumer.ftc.gov/articles/free-credit-reports",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "FTC, Free Credit Reports",
+   "statement": "Beyond the statutory annual disclosure, the three nationwide bureaus currently offer a free report every week through AnnualCreditReport.com. That is a voluntary program, not a statutory entitlement, and it is online only, so it does not help a client inside.",
+   "url": "https://consumer.ftc.gov/articles/free-credit-reports",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "42 U.S.C. 666(a)(7)",
+   "statement": "States are required to report child support delinquencies to consumer reporting agencies periodically, after the noncustodial parent has had notice and a chance to contest accuracy. So child support arrears can and do reach a credit report.",
+   "url": "https://www.law.cornell.edu/uscode/text/42/666",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "CFPB, Quarterly Consumer Credit Trends: Public Records",
+   "statement": "Under the National Consumer Assistance Plan, from July 2017 civil public records needed a name, address, and SSN or date of birth to appear on a credit file. Civil judgments disappeared from credit reports almost entirely and tax liens fell by about half.",
+   "url": "https://www.consumerfinance.gov/data-research/research-reports/quarterly-consumer-credit-trends-public-records-credit-scores-and-credit-performance/",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "CFPB, Requesting your free credit reports by mail from a correctional facility",
+   "statement": "For a mail request from a prison or jail the bureaus ask for: full name with any suffix, a PRISONER IDENTIFICATION NUMBER, current address, every address during the two years PRECEDING incarceration, SSN and date of birth. The correctional institution's name goes on the envelope as the return address, with the prisoner ID number on it. One letter can request all three bureaus by naming them.",
+   "url": "https://files.consumerfinance.gov/f/documents/cfpb_request-free-credit-report_handout_2021-08.pdf",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "CFPB, Requesting your free credit reports by mail from a correctional facility",
+   "statement": "Correctional facilities have different rules about retaining personal information, so how a person keeps a copy of their own credit report has to be checked facility by facility. This is a reason the report is read by the counselor and the helper rather than held on the tablet.",
+   "url": "https://files.consumerfinance.gov/f/documents/cfpb_request-free-credit-report_handout_2021-08.pdf",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "CFPB, Justice-Involved Individuals and the Consumer Financial Marketplace, January 2022",
+   "statement": "The average credit score of formerly imprisoned people is about 50 points lower than that of people who were never incarcerated. This is the number behind the problem statement.",
+   "url": "https://www.consumerfinance.gov/data-research/research-reports/justice-involved-individuals-consumer-financial-marketplace/",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "Experian, How to Dispute Credit Report Errors by Mail",
+   "statement": "A mailed dispute is expected to carry full name with any generational suffix, date of birth, Social Security number, and every address from the past two years. Experian additionally asks for a copy of a government-issued ID and a proof of current address.",
+   "url": "https://www.experian.com/blogs/ask-experian/credit-education/faqs/instructions-for-disputing-by-mail/",
+   "checked": "2026-09-23"
+  }
+ ],
+ "open": [
+  "What actually makes a bureau escalate past a plain signed request. The access ladder assumes rung 1 usually clears; no public source confirms how often that is true.",
+  "Whether a bureau honors a mid-dispute revocation of a helper's authority.",
+  "Whether criminal restitution is ever furnished to a consumer reporting agency. Civil judgments are gone from reports, but restitution is a different instrument and no primary source was found either way.",
+  "Whether court fines and fees are furnished, and by whom.",
+  "The 6 to 9 month horizon for a credit-invisible client. Sourced to the Cornish interview, Sep 21, and not corroborated by a second source.",
+  "The 32-point credit score drop per year of confinement. Cited in the team problem statement; the 50-point gap is confirmed, this one is not.",
+  "What share of this population has a report error. The general rate is one in five (FTC, 2013); nobody has measured it for people coming home, and guessing would be worse than saying so."
+ ],
+ "interviews": [
+  {
+   "who": "Brianne Cornish, founder, FinEquity",
+   "when": "2026-09-21",
+   "claims": [
+    "A credit-invisible client can go from no score to 650+ in about 6 to 9 months on a builder loan. A damaged file, say around 550, takes years. Those are two different products, not two speeds of one product.",
+    "Pre-release with a family member acting as proxy is the model she would run today if starting over. People inside have more willingness to learn and fewer competing stressors.",
+    "Engagement is the unsolved problem, not the technology. Automated nudges arrive on the same channels scammers use, so a text about connecting a bank account reads as fraud.",
+    "Low-effort credit building is the strongest entry point: Experian Boost, rent reporting, utility and phone reporting."
+   ]
+  }
+ ],
+ "bureaus": [
+  {
+   "name": "Equifax",
+   "address": [
+    "Equifax Information Services, LLC",
+    "P.O. Box 740256",
+    "Atlanta, GA 30374-0256"
+   ],
+   "note": "",
+   "url": "https://www.equifax.com/personal/help/article-list/-/h/a/mail-in-credit-report-dispute/"
+  },
+  {
+   "name": "Experian",
+   "address": [
+    "Experian",
+    "P.O. Box 4500",
+    "Allen, TX 75013"
+   ],
+   "note": "Experian also asks for a copy of a government-issued ID and a proof of current address with a mailed dispute. That is rung 2 of the access ladder arriving in the envelope.",
+   "url": "https://www.experian.com/blogs/ask-experian/credit-education/faqs/instructions-for-disputing-by-mail/"
+  },
+  {
+   "name": "TransUnion",
+   "address": [
+    "TransUnion Consumer Solutions",
+    "P.O. Box 2000",
+    "Chester, PA 19016-2000"
+   ],
+   "note": "Address taken from TransUnion's own mail-label document. Their site blocks automated fetching, so re-read it by hand before a real letter goes out.",
+   "url": "https://www.transunion.com/credit-disputes/dispute-your-credit/mail-or-phone"
+  }
+ ],
+ "acr": {
+  "name": "Annual Credit Report Request Service",
+  "address": [
+   "Annual Credit Report Request Service",
+   "P.O. Box 105281",
+   "Atlanta, GA 30348-5281"
+  ]
+ },
+ "disputeTemplate": "{today}\n\n{address_block}\n\nRe: Request to remove inaccurate information\nName: {client_name}\nSSN: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\nAddresses for the past two years: [client completes by hand]\n\nI am writing to dispute the following information in my file. The item listed\nbelow is not mine. I did not open this account and I request that it be\nremoved.\n\nItem: {creditor}, account ending {last_four}\nReason: {reason}\n\nPlease investigate this item and send me the results in writing. If the item\ncannot be verified, please delete it from my file.\n\nI understand you have 30 days from the date you receive this letter to complete\nyour investigation, and that you must send me the results in writing within 5\nbusiness days of completing it.\n\nSincerely,\n\n\n____________________________\n{client_name}\n",
+ "requestTemplate": "{today}\n\n{address_block}\n\nRe: Request for free annual credit reports, by mail\n\nPlease send copies of my credit file from all three nationwide credit\nreporting companies: Equifax, Experian and TransUnion.\n\nFull name (with any suffix): {client_name}\nPrisoner identification number ({id_label}): {identification}\nCurrent address:\n{current_address}\nAddresses during the two years preceding incarceration:\n  [client completes by hand]\nSocial Security number: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\n\nI am requesting these reports by mail because I do not have internet or phone\naccess to complete an identity check.\n\nSincerely,\n\n\n____________________________\n{client_name}\n\n--------------------------------------------------------------------------\nFOR WHOEVER ADDRESSES THE ENVELOPE\n\nThe return address on the envelope must be the correctional institution, and\nthe prisoner identification number must appear on the envelope. The bureaus\nask for this specifically on mail from a facility, and a request without it\ncan come back.\n\n    Return address:  {client_name}, {identification}\n                     {facility}\n\n    Send to:         Annual Credit Report Request Service\n                     P.O. Box 105281\n                     Atlanta, GA 30348-5281\n--------------------------------------------------------------------------\n"
+};
 
 /* Which application this file is. The build emits one file per surface, so a
    tablet gets the tablet app and a helper gets the helper app, the way they
    would be deployed separately. All three read the same storage key, so served
    from one folder or one host they share a caseload. */
-const APP = "__BRIDGE_ROLE__";
+const APP = "family";
 const DOOR = { inside: "#/signin", family: "#/helper", staff: "#/staff-signin" };
 
 /* ---------- storage ------------------------------------------------- */

@@ -5,7 +5,7 @@
   <div class="bar">
     <span class="wordmark">Bridge</span>
     <span class="who">{{ client.display_name }} &middot; Kiosk 04</span>
-    <div class="right"><a class="pill" href="/notes/toggle">{% if show_notes %}Hide notes{% else %}Design notes{% endif %}</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 
   <form class="pane" method="post" action="/inside/intake/{{ q.index }}">
@@ -34,12 +34,11 @@
     </div>
     {% endif %}
 
-    <div class="notes">
+    <div class="notes-always">
       {% if q.index > 1 %}
       <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; Back</a>
       {% endif %}
-      <p class="note-design">Design note: {{ q.design_note }}</p>
-      {% if q.constraint %}<p class="note-build">Constraint: {{ q.constraint }}</p>{% endif %}
+      {% if q.constraint %}{% endif %}
     </div>
   </form>
 </div>
