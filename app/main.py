@@ -11,10 +11,12 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized, RUNG_DETAIL, Rung
+from app.bureaus import BUREAUS
+from app.sources import FACTS, OPEN_QUESTIONS
 from app.deps import templates
 from app.routes import family, inside, staff
 from app.store import STATE, boot, review_log
@@ -65,6 +67,32 @@ def not_authorized(request: Request, exc: NotAuthorized):
     )
 
 
+# The manifest and the worker are served from the root, not from /static.
+# A service worker can only control pages at or below its own path, so one
+# parked under /static could never claim the app.
+@app.get("/manifest.webmanifest", include_in_schema=False)
+def manifest() -> FileResponse:
+    return FileResponse(
+        "app/static/manifest.webmanifest",
+        media_type="application/manifest+json",
+    )
+
+
+@app.get("/sw.js", include_in_schema=False)
+def service_worker() -> FileResponse:
+    return FileResponse(
+        "app/static/sw.js",
+        media_type="text/javascript",
+        headers={"Service-Worker-Allowed": "/", "Cache-Control": "no-cache"},
+    )
+
+
+@app.get("/healthz", include_in_schema=False)
+def healthz() -> JSONResponse:
+    """What the host polls to decide the container is alive."""
+    return JSONResponse({"ok": True, "clients": len(STATE.clients)})
+
+
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(request, "index.html", {})
@@ -98,17 +126,21 @@ def roles(request: Request):
         })
 
     ladder = [{"n": int(r), **RUNG_DETAIL[r]} for r in Rung]
-    verify = [
-        "Dispute and reinvestigation window, and what starts the clock",
-        "Whether court fines, restitution and child support report, and when",
-        "Free report entitlement and the mail-in route",
-        "What actually triggers a bureau to escalate past rung 1",
-        "Which ID documents each bureau accepts at rung 2",
-    ]
+    verify = list(OPEN_QUESTIONS)
     return templates.TemplateResponse(
         request, "roles.html",
         {"surfaces": surfaces, "ladder": ladder, "verify": verify,
          "forbidden": sorted(f.replace("_", " ") for f in FORBIDDEN_SCOPES)},
+    )
+
+
+@app.get("/citations", response_class=HTMLResponse)
+def citations(request: Request):
+    """What we checked, rendered from the same registry the letters cite."""
+    return templates.TemplateResponse(
+        request, "citations.html",
+        {"facts": list(FACTS.values()), "open_questions": OPEN_QUESTIONS,
+         "bureaus": BUREAUS},
     )
 
 

@@ -40,7 +40,8 @@ expires first, never a roster.
 | Photo-to-text extraction | The genuinely hard engineering piece. The deck named the fallback and the fallback is what is built. Nothing else depends on it. |
 | Referrals and outcomes | Static in the deck, static here. |
 | Real authentication | The surface split is the interesting control. Login is a solved problem and adds nothing to the demo. |
-| Statutory citations | Nothing has been checked against a primary source. See VERIFY.md. |
+| Real offline support | The deck's "nothing is lost if you lose access for a week" is not kept. Writes go to the server. IndexedDB plus replay is the real fix. |
+| Spanish | The deck showed an EN / ES toggle. Removed rather than shipped as decoration over an English-only app. |
 | Encryption, audit logging, retention policy | Assumed away with the rest of the compliance regime, for class. Named on the home page rather than hidden. |
 
 ## Assumed away, with the instructors' sign-off

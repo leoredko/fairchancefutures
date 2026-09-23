@@ -97,16 +97,21 @@ PATH: dict[State, dict[str, str]] = {
         "first_step": "Inventory the debts and sort by what is collectible.",
     },
     State.ERRORS_PRESENT: {
-        "plan": "Dispute flow. Letter drafted, counselor approves, helper mails.",
-        "horizon": "A statutory reinvestigation window, which is why it jumps the queue.",
-        "source": "Window length and clock start are on the verify-before-demo list.",
-        "first_step": "Draft the dispute letter for the first flagged item.",
+        "plan": "Dispute flow, one letter to each of the three bureaus. Counselor "
+                "approves, helper mails.",
+        "horizon": "30 days from the day each bureau receives the letter, "
+                   "extendable to 45 if the client sends more information "
+                   "mid-dispute. This is the only state with a statutory clock, "
+                   "which is why it jumps the queue.",
+        "source": "15 U.S.C. 1681i(a)(1), checked 2026-09-23.",
+        "first_step": "Draft the three dispute letters for the first flagged item.",
     },
     State.NOT_YET_TRIAGED: {
         "plan": "Pull the report first. There is nothing to classify yet.",
-        "horizon": "About three weeks by mail.",
-        "source": "",
-        "first_step": "Send the plain request at rung 1.",
+        "horizon": "The bureaus must deliver within 15 days of receiving the "
+                   "request. Add mail time in both directions.",
+        "source": "15 U.S.C. 1681j(a), checked 2026-09-23.",
+        "first_step": "Mail the Annual Credit Report Request Form at rung 1.",
     },
 }
 
@@ -162,17 +167,24 @@ def _obligation_notes(answers: Answers) -> list[str]:
         if ob is Obligation.RESTITUTION:
             notes.append(
                 "Restitution goes to the obligations list, not the credit path. "
-                "Different mechanism, different screen."
+                "Different mechanism, different screen. Whether restitution is "
+                "ever furnished to a bureau is still an open question, so the "
+                "app does not claim either way."
             )
         elif ob is Obligation.CHILD_SUPPORT:
             notes.append(
-                "Child support arrears can surface on a report through a "
-                "collector. Whether and when is on the verify list."
+                "Child support arrears do reach credit reports: states are "
+                "required to report delinquencies to the bureaus periodically, "
+                "after notice and a chance to contest. Expect this one on the "
+                "file. (42 U.S.C. 666(a)(7), checked 2026-09-23.)"
             )
         elif ob is Obligation.COURT_FINES:
             notes.append(
-                "Court fines are tracked as an obligation. Whether they report "
-                "is on the verify list."
+                "Court fines are tracked as an obligation. Civil judgments "
+                "largely vanished from credit reports after July 2017, so do not "
+                "assume a fine is on the file, but whether fines are furnished "
+                "at all is still open. (CFPB public-records research, checked "
+                "2026-09-23.)"
             )
     return notes
 

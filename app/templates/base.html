@@ -4,11 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Bridge{% endblock %}</title>
+<meta name="theme-color" content="#B4522A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bridge">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/static/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
 <link rel="stylesheet" href="/static/bridge.css">
 </head>
 <body>
 {% block body %}{% endblock %}
 <script src="/static/exclusive.js" defer></script>
+<script>
+  // Registered so the tablet can install Bridge to the home screen. The worker
+  // is network-only; see app/static/sw.js for why it does not cache.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/sw.js").catch(function () {});
+    });
+  }
+</script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

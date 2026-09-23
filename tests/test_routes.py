@@ -176,3 +176,68 @@ def test_none_is_exclusive_server_side(client):
     })
     import app.store as store
     assert store.STATE.clients["j-whitfield"].intake_answers["obligations"] == ["restitution"]
+
+
+def test_drafting_produces_a_letter_for_every_bureau(client):
+    from app.bureaus import BUREAUS
+    import app.store as store
+
+    client.post("/staff/m-alvarez/letters/draft", data={"item": "0"})
+    drafts = store.drafts_for("m-alvarez")
+    assert {d["bureau"] for d in drafts} == {b.name for b in BUREAUS}
+
+
+def test_the_en_es_pill_is_gone(client):
+    """There is no Spanish and lang is hardcoded en. A toggle that does not
+    toggle is worse than no toggle."""
+    for url in ["/inside/marcus-w/intake/1", "/family/marcus-w",
+                "/inside/marcus-w/authorization"]:
+        assert "EN / ES" not in client.get(url).text
+
+
+def test_citations_page_lists_every_fact_with_its_source(client):
+    from app.sources import FACTS
+
+    html = client.get("/citations").text
+    for fact in FACTS.values():
+        assert fact.source in html
+        assert fact.url in html
+
+
+def test_the_app_installs_as_a_tablet_app(client):
+    manifest = client.get("/manifest.webmanifest")
+    assert manifest.status_code == 200
+    assert manifest.headers["content-type"].startswith("application/manifest+json")
+    body = manifest.json()
+    assert body["display"] == "standalone"
+    assert body["start_url"] == "/"
+
+    # The worker must be served from the root or it cannot claim the app.
+    worker = client.get("/sw.js")
+    assert worker.status_code == 200
+    assert worker.headers["service-worker-allowed"] == "/"
+
+
+def test_the_worker_makes_no_offline_promise(client):
+    """Offline-first is a real feature and this worker is not it. If somebody
+    adds a cache here, the tablet can serve a stale deadline."""
+    worker = client.get("/sw.js").text
+    assert "caches.open" not in worker
+    assert "cache.match" not in worker
+
+
+def test_health_check_answers(client):
+    payload = client.get("/healthz").json()
+    assert payload["ok"] is True
+
+
+def test_plan_progress_reflects_the_drafts_actually_on_screen(client):
+    """A seeded 'not drafted yet' while three drafts sit there is a small lie
+    that costs trust in the rest of the page."""
+    before = client.get("/staff/m-alvarez").text
+    assert "not drafted yet" in before
+
+    client.post("/staff/m-alvarez/letters/draft", data={"item": "0"})
+    after = client.get("/staff/m-alvarez").text
+    assert "not drafted yet" not in after
+    assert "0 of 3 letters approved" in after

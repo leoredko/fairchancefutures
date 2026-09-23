@@ -18,8 +18,9 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import RUNG_DETAIL, Rung, next_rung
+from app.bureaus import BUREAUS
 from app.deps import get_client, templates
-from app.letters import draft_dispute
+from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
 from app.redaction import WITHHELD_NOTE, for_surface
 from app.store import (
@@ -135,15 +136,19 @@ def client_detail(request: Request, client_id: str):
     approved = [d for d in drafts if d["approved_on"]]
 
     caption = ""
-    if pending and client.flagged_items:
+    if pending:
+        outstanding = sum(1 for d in drafts if d["approved_on"] is None)
+        reason = (client.flagged_items[0]["reason"]
+                  if client.flagged_items else "see letter")
         caption = (
-            f"Item 1 of {len(client.flagged_items)} · reason: "
-            f"{client.flagged_items[0]['reason']}"
+            f"To {pending['bureau']} · {outstanding} of {len(BUREAUS)} letters "
+            f"for this item still awaiting approval · reason: {reason}"
         )
 
     return templates.TemplateResponse(
         request, "staff/client.html",
         {"client": client, "view": view, "withheld_note": WITHHELD_NOTE,
+         "plan_step": _plan_step(client, drafts),
          "ladder": _ladder_rows(client), "draft": pending,
          "draft_caption": caption, "approved": approved,
          "flagged": client.flagged_items if "flagged_items" in view else [],
@@ -153,21 +158,26 @@ def client_detail(request: Request, client_id: str):
 
 @router.post("/{client_id}/letters/draft")
 def draft_letter(client_id: str, item: int = Form(0)):
+    """One item, three letters.
+
+    An item deleted at Equifax is still sitting on the Experian and TransUnion
+    files, so drafting one letter would leave two thirds of the job undone.
+    """
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     if not client.flagged_items:
         return RedirectResponse(f"/staff/{client_id}", status_code=303)
     flagged = client.flagged_items[min(item, len(client.flagged_items) - 1)]
-    draft = draft_dispute(
+    drafts = draft_dispute_set(
         client_id=client_id,
         client_name=client.display_name,
-        bureau="Equifax Information Services LLC",
         creditor=flagged["creditor"],
         last_four=flagged["last_four"],
         reason=flagged["reason"],
     )
     with mutate():
-        add_draft(draft)
+        for draft in drafts:
+            add_draft(draft)
     return RedirectResponse(f"/staff/{client_id}", status_code=303)
 
 
@@ -272,6 +282,24 @@ def _stored_result(client) -> Classification | None:
         needs_human_review=stored.get("needs_human_review", False),
         obligations_route=stored.get("obligations_route", []),
     )
+
+
+def _plan_step(client, drafts: list[dict]) -> str:
+    """Derived, not stored.
+
+    A seeded sentence that says "not drafted yet" while three drafts sit on the
+    screen is the kind of small lie that makes a reviewer stop trusting the
+    rest of the page.
+    """
+    pending = sum(1 for d in drafts if d["approved_on"] is None)
+    approved = len(drafts) - pending
+    if pending:
+        return (f"{approved} of {len(drafts)} letters approved. {pending} "
+                f"waiting on you.")
+    if approved:
+        return (f"All {approved} letters approved. Next: the helper mails them, "
+                f"then the clock runs 30 days from each bureau's receipt.")
+    return client.plan_step
 
 
 def _all_states() -> list[dict]:

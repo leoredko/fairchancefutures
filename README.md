@@ -13,7 +13,8 @@ itself marked in scope is implemented and runnable.
 ```
 
 Tests run in CI on every push and pull request, on Python 3.11 and 3.12
-(`.github/workflows/tests.yml`).
+(`.github/workflows/tests.yml`). To deploy it somewhere real, see
+[docs/DEPLOY.md](docs/DEPLOY.md).
 
 Or by hand:
 
@@ -97,6 +98,29 @@ new case in that file. `/metrics` reports the other half, how often a reviewer
 edits a drafted letter before approving it. Reporting that number when it is
 ugly is the DoNotPay lesson.
 
+## What has been checked
+
+Nothing in this app states a legal fact unless it is in `app/sources.py` with a
+primary source and the date somebody looked. `/citations` renders that registry,
+open questions alongside the checked ones, and the letter templates cite from
+the same place. Full table in [docs/VERIFY.md](docs/VERIFY.md).
+
+The load-bearing ones: a bureau has 30 days from **receipt** of a dispute, not
+from the postmark, extendable to 45 if the client sends more information
+mid-dispute. Child support arrears do reach credit reports. Civil judgments
+mostly do not, since July 2017.
+
+A dispute is drafted once per bureau. An item deleted at Equifax is still
+sitting on the Experian and TransUnion files, and the first build quietly
+pretended otherwise.
+
+## Running it on a tablet
+
+`app/static/manifest.webmanifest` plus a registered service worker means the
+inside surface installs to a tablet home screen and runs standalone, no browser
+chrome. The worker caches nothing on purpose: see the note in `app/static/sw.js`
+and in [docs/DEPLOY.md](docs/DEPLOY.md). The tablet app assumes connectivity.
+
 ## What is deliberately not built
 
 - Photo-to-text extraction of a mailed report. The deck already named the
@@ -104,8 +128,11 @@ ugly is the DoNotPay lesson.
   are counted and discarded rather than stored, which also means this build
   never holds a picture of somebody's credit report on disk.
 - Referrals and outcomes reporting.
-- Any statutory citation. Nothing in the letters cites a law, because nothing
-  has been checked against a primary source yet. See `docs/VERIFY.md`.
+- Real offline support. The deck promises "nothing is lost if you lose access
+  for a week" and this build does not keep that promise: writes go straight to
+  the server. Doing it properly is IndexedDB plus replay-on-reconnect.
+- Spanish. The design deck showed an EN / ES toggle on six screens; it has been
+  removed rather than shipped as decoration over an English-only app.
 - Real auth. Anyone who can reach the URL is the surface named in the URL. The
   surface split is enforced, the identity behind it is not.
 
@@ -117,11 +144,15 @@ app/authorization.py   scoped grants and the access ladder, constraint two
 app/triage.py          the classifier
 app/redaction.py       per-surface, per-field minimization
 app/letters.py         templated letters and the edit-rate log
+app/bureaus.py         the three bureaus, addresses, and where they came from
+app/sources.py         every legal fact, its primary source, and the check date
 app/questions.py       the two question sets, and why they differ
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 53 tests
+tests/                 77 tests
 .github/workflows/     pytest on 3.11 and 3.12
+Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
+scripts/make_icons.py  regenerates the app icons
 ```

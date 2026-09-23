@@ -147,7 +147,6 @@ def packet(request: Request, client_id: str):
     draft = draft_report_request(
         client_id=client_id,
         client_name=client.display_name,
-        bureau="Equifax Information Services LLC",
         delivery_address=f"c/o {auth.helper_name}, on file with the program",
     )
     return HTMLResponse(
