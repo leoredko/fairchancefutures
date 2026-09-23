@@ -303,3 +303,18 @@ def test_a_self_opened_case_works_all_the_way_through(client):
     # And the counselor sees them in the queue like anybody else.
     sign_in_staff(client)
     assert "28-Z-4242" in client.get("/staff").text
+
+
+def test_a_self_service_case_flags_its_own_missing_facility(client):
+    """A coordinator entering somebody by hand cannot leave the facility blank,
+    because it is the envelope return address and the bureaus ask for it on
+    mail from a prison. This door has no screen that asks for it, so the gap
+    belongs on the work queue rather than surfacing when a letter is already
+    being printed."""
+    from app.store import STATE
+
+    sign_in_inside(client, identifier="28-Z-4410")
+    made = STATE.clients["din-28z4410"]
+    assert made.facility == ""
+    assert "Facility missing" in made.needs
+    assert "Facility missing" in client.get("/staff").text

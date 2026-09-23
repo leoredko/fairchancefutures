@@ -83,13 +83,12 @@ async def answer(request: Request, index: int):
             client.intake_answers[question.field] = picked or ["none"]
         else:
             client.intake_answers[question.field] = form.get(question.field)
-        # Offline-first in the real tablet means queueing locally and flushing
-        # on connect. The queue is modelled so /api/sync has something real to
-        # drain rather than a claim in a docstring.
-        STATE.sync_queue.append({
+        # The receipt for what question one promises: the answer is saved as
+        # it is given. /api/saves reads this back.
+        STATE.write_log.append({
             "client_id": client.id, "field": question.field,
             "value": client.intake_answers[question.field],
-            "at": date.today().isoformat(), "synced": True,
+            "at": date.today().isoformat(),
         })
 
     if index >= len(INSIDE_QUESTIONS):

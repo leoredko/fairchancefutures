@@ -182,6 +182,12 @@ def _open_a_case(parsed):
                 clock_sort=180,
                 consent_recorded_on=date.today().isoformat(),
                 plan_step="Intake not finished yet.",
+                # The facility is the envelope return address, and the bureaus
+                # ask for it on mail from a prison. A coordinator entering
+                # somebody by hand cannot leave it blank; this door has no
+                # screen that asks for it, so the gap goes on the work queue
+                # rather than surfacing when a letter is already being printed.
+                needs="Facility missing, added from the tablet",
             )
             put_account(Account(
                 account_id=f"inside-{client_id}", role="inside",

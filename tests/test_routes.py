@@ -240,10 +240,16 @@ def test_the_escalate_route_is_gone(staff):
     assert staff.post("/staff/m-alvarez/ladder/escalate").status_code == 404
 
 
-def test_offline_writes_land_in_the_sync_queue(inside):
-    inside.post("/inside/intake/1", data={"has_bank_account": "no"})
-    payload = inside.get("/api/sync").json()
-    assert payload["synced"] >= 1
+def test_every_intake_answer_is_written_and_can_be_read_back(inside):
+    """Question one promises the answer saves as it is given. This is the
+    receipt. It used to be an /api/sync endpoint describing an offline queue
+    draining, which never happened: every entry was marked synced as it was
+    created, so it demonstrated a thing that did not occur."""
+    inside.post("/inside/intake/1", data={"knows_score": "no"})
+    payload = inside.get("/api/saves").json()
+    assert payload["saved"] >= 1
+    assert payload["writes"][-1]["field"] == "knows_score"
+    assert payload["writes"][-1]["at"]
 
 
 def test_none_is_exclusive_server_side(staff):

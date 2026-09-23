@@ -137,16 +137,23 @@ def metrics(request: Request):
     )
 
 
-@app.get("/api/sync")
-def sync() -> JSONResponse:
-    """What the tablet flushes when it finds a connection.
+@app.get("/api/saves")
+def saves() -> JSONResponse:
+    """Every answer this build has written, and when.
 
-    Real offline-first would queue on the device. This endpoint exists so the
-    demo can show the queue draining rather than describing it.
+    This used to be called a sync queue and it described an offline-first
+    tablet flushing a local queue on reconnect. That is not what happens: the
+    tablet is connected and a write lands immediately. Pretending otherwise
+    made the endpoint a demo of a thing that never occurred, since every entry
+    was marked synced in the same breath as it was created.
+
+    What it is now is the receipt for the promise intake makes on question one,
+    that every answer saves as it is given. That promise is true, and this is
+    how you check it.
     """
     return JSONResponse({
-        "pending": [q for q in STATE.sync_queue if not q.get("synced")],
-        "synced": len([q for q in STATE.sync_queue if q.get("synced")]),
+        "saved": len(STATE.write_log),
+        "writes": STATE.write_log[-25:],
     })
 
 

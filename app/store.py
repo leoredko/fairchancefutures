@@ -97,7 +97,10 @@ class State:
     authorizations: dict[str, dict] = field(default_factory=dict)
     drafts: dict[str, list[dict]] = field(default_factory=dict)
     review_log: dict = field(default_factory=lambda: {"reviewed": 0, "edited": 0})
-    sync_queue: list[dict] = field(default_factory=list)
+    # Every answer, with what was saved and when. Not an offline queue: the
+    # tablet is connected and writes land immediately. This is the receipt for
+    # the promise intake makes on question one.
+    write_log: list[dict] = field(default_factory=list)
 
 
 STATE = State()
@@ -116,7 +119,7 @@ def _serialize() -> dict:
         "authorizations": STATE.authorizations,
         "drafts": STATE.drafts,
         "review_log": STATE.review_log,
-        "sync_queue": STATE.sync_queue,
+        "write_log": STATE.write_log,
     }
 
 
@@ -138,7 +141,7 @@ def load() -> bool:
     STATE.authorizations = raw.get("authorizations", {})
     STATE.drafts = raw.get("drafts", {})
     STATE.review_log = raw.get("review_log", {"reviewed": 0, "edited": 0})
-    STATE.sync_queue = raw.get("sync_queue", [])
+    STATE.write_log = raw.get("write_log", raw.get("sync_queue", []))
     return True
 
 
@@ -412,7 +415,7 @@ report_summary="Full file, nine collections accounts",
     STATE.drafts = {}
     STATE.reports = {}
     STATE.review_log = {"reviewed": 0, "edited": 0}
-    STATE.sync_queue = []
+    STATE.write_log = []
     _seed_accounts()
 
 
