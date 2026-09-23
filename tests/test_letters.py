@@ -94,3 +94,37 @@ def test_edit_rate_is_none_before_any_review():
     log = ReviewLog()
     assert log.edit_rate is None
     assert "No letters reviewed" in log.summary()
+
+
+def test_the_request_letter_matches_what_a_facility_mail_request_needs():
+    """The bureaus ask for a different list from a prison than from a house.
+    Getting this wrong means the envelope comes back and three weeks are gone.
+    """
+    draft = draft_report_request(
+        client_id="marcus-w", client_name="Marcus W.",
+        delivery_address="c/o Denise", identification="22A1187",
+        facility="Sing Sing Correctional Facility",
+    )
+    body = draft.body
+
+    # The prisoner ID, in the letter and again for the envelope.
+    assert body.count("22A1187") >= 2
+    assert "Sing Sing Correctional Facility" in body
+
+    # Addresses from BEFORE incarceration, not from the last two years.
+    assert "two years preceding incarceration" in body
+
+    # One letter, all three bureaus named.
+    for name in ("Equifax", "Experian", "TransUnion"):
+        assert name in body
+
+    # And the envelope instruction, which is the part that gets forgotten.
+    assert "return address on the envelope must be the correctional" in body
+
+
+def test_a_request_with_no_din_still_prints_something_usable():
+    """A client whose DIN is missing gets a line to write on, not a crash."""
+    draft = draft_report_request(
+        client_id="x", client_name="A. Person", delivery_address="c/o Someone")
+    assert "[client writes by hand]" in draft.body
+    assert "[correctional institution]" in draft.body

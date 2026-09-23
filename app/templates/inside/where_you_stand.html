@@ -4,7 +4,7 @@
 <div class="tablet">
   <div class="bar">
     <span class="wordmark">Bridge</span>
-    <span class="who">Where you stand</span>
+    <span class="who">{{ client.display_name }} &middot; where you stand</span>
       </div>
 
   <div class="pane">
@@ -33,12 +33,13 @@
       {% endfor %}
     </div>
 
-    <a class="btn" href="/inside/{{ client.id }}/case">See what's happening on my case</a>
+    <a class="btn" href="/inside/case">See what's happening on my case</a>
 
     <div class="notes">
       <p class="note-design">Design note: score shaming is a known engagement
         killer. Position, never points.</p>
     </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 </div>
 {% endblock %}

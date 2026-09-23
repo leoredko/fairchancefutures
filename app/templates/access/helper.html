@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Helper sign in{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar"><span class="wordmark">Bridge</span></div>
+
+  <form class="pane" method="post" action="/helper" autocomplete="off">
+    <h1>Your code</h1>
+    <p class="lede">It's printed on the letter that came in the mail.</p>
+
+    {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
+
+    <input class="choice" name="code" autocapitalize="characters" autocomplete="off"
+           spellcheck="false" autofocus placeholder="BRIDGE-0000"
+           value="{{ code or '' }}"
+           style="font-family: ui-monospace, monospace; letter-spacing: .06em">
+
+    <button class="btn wide" type="submit">Next</button>
+
+    <div class="card warn">
+      <span class="strong">We will never ask you for</span>
+      <span class="small">Your Social Security number. Your bank login. Your
+        card. Money. Access to your own credit.</span>
+      <span class="small">If anything calling itself Bridge asks you for those,
+        it isn't us.</span>
+    </div>
+  </form>
+</div>
+{% endblock %}

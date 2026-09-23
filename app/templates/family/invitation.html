@@ -45,7 +45,7 @@
         request, and only climbs if a bureau pushes back.</span>
     </div>
 
-    <form method="post" action="/family/{{ client.id }}/accept">
+    <form method="post" action="/family/accept">
       <div class="stack">
         <label class="check"><input type="checkbox" name="receive_mail" required>
           <span class="small">I'll receive his mail and add it here</span></label>
@@ -62,6 +62,7 @@
         rule out everything a scam would ask for. Trust has to be earned in the
         first ten seconds or there is no second screen.</p>
     </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 </div>
 {% endblock %}

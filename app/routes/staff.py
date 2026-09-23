@@ -32,6 +32,7 @@ from app.store import (
     put_review_log,
     review_log,
 )
+from app.session import require_role
 from app.surfaces import Capability, Surface, require
 from app.triage import PATH, STATE_LABEL, Answers, Classification, State, classify
 
@@ -55,6 +56,7 @@ def _ladder_rows(client) -> list[dict]:
 @router.get("", response_class=HTMLResponse)
 def queue(request: Request):
     """A work queue, not a roster. Sorted by what expires soonest."""
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     clients = sorted(STATE.clients.values(), key=lambda c: c.clock_sort)
     return templates.TemplateResponse(request, "staff/queue.html", {"clients": clients})
@@ -62,6 +64,7 @@ def queue(request: Request):
 
 @router.get("/{client_id}/triage", response_class=HTMLResponse)
 def triage_form(request: Request, client_id: str):
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     return templates.TemplateResponse(
@@ -74,6 +77,7 @@ def triage_form(request: Request, client_id: str):
 
 @router.post("/{client_id}/triage", response_class=HTMLResponse)
 async def triage_run(request: Request, client_id: str):
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     form = await request.form()
@@ -127,6 +131,7 @@ async def triage_run(request: Request, client_id: str):
 
 @router.get("/{client_id}", response_class=HTMLResponse)
 def client_detail(request: Request, client_id: str):
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
 
@@ -157,12 +162,13 @@ def client_detail(request: Request, client_id: str):
 
 
 @router.post("/{client_id}/letters/draft")
-def draft_letter(client_id: str, item: int = Form(0)):
+def draft_letter(request: Request, client_id: str, item: int = Form(0)):
     """One item, three letters.
 
     An item deleted at Equifax is still sitting on the Experian and TransUnion
     files, so drafting one letter would leave two thirds of the job undone.
     """
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     if not client.flagged_items:
@@ -182,8 +188,11 @@ def draft_letter(client_id: str, item: int = Form(0)):
 
 
 @router.post("/{client_id}/letters/{draft_id}/approve")
-def approve_letter(client_id: str, draft_id: str, body: str = Form(...)):
+def approve_letter(
+    request: Request, client_id: str, draft_id: str, body: str = Form(...)
+):
     """Approval records whether the reviewer edited first. That is the metric."""
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     row = next((d for d in drafts_for(client_id) if d["id"] == draft_id), None)
@@ -209,8 +218,9 @@ def approve_letter(client_id: str, draft_id: str, body: str = Form(...)):
 
 
 @router.post("/{client_id}/ladder/escalate")
-def escalate(client_id: str):
+def escalate(request: Request, client_id: str):
     """A bureau kicked the request back. Climb exactly one rung, not four."""
+    require_role(request, "staff")
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
     auth = get_authorization(client_id)

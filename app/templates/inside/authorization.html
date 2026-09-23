@@ -28,7 +28,7 @@
       {% for f in forbidden %}<span class="tiny">&times; {{ f }}</span>{% endfor %}
     </div>
 
-    <form method="post" action="/inside/{{ client.id }}/authorization/revoke">
+    <form method="post" action="/inside/authorization/revoke">
       <button class="btn wide" type="submit">Cancel this authorization</button>
     </form>
     <p class="small">You can cancel from this screen without telling
@@ -41,7 +41,7 @@
         the same form you already signed with her. A few steps run slower.
         Nothing stops.</span>
     </div>
-    <form method="post" action="/inside/{{ client.id }}/authorization/name">
+    <form method="post" action="/inside/authorization/name">
       <div class="stack">
         <label class="small" for="helper">Name someone you trust</label>
         <input class="choice" id="helper" name="helper_name" placeholder="First name"
@@ -59,6 +59,7 @@
       <p class="note-build">Never make everyone pay the cost of the hardest case.
         Start at the lightest rung, escalate only on a kickback.</p>
     </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 </div>
 {% endblock %}

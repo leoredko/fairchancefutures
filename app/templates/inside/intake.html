@@ -5,9 +5,10 @@
   <div class="bar">
     <span class="wordmark">Bridge</span>
     <span class="who">{{ client.display_name }} &middot; Kiosk 04</span>
-      </div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
 
-  <form class="pane" method="post" action="/inside/{{ client.id }}/intake/{{ q.index }}">
+  <form class="pane" method="post" action="/inside/intake/{{ q.index }}">
     <div class="progress">
       <div class="track"><span style="width: {{ (100 * q.index / total)|round|int }}%"></span></div>
       <span class="small">{{ q.index }} of {{ total }}</span>
@@ -35,7 +36,7 @@
 
     <div class="notes">
       {% if q.index > 1 %}
-      <a class="btn quiet" href="/inside/{{ client.id }}/intake/{{ q.index - 1 }}">&larr; Back</a>
+      <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; Back</a>
       {% endif %}
       <p class="note-design">Design note: {{ q.design_note }}</p>
       {% if q.constraint %}<p class="note-build">Constraint: {{ q.constraint }}</p>{% endif %}

@@ -18,8 +18,9 @@ from app.authorization import FORBIDDEN_SCOPES, NotAuthorized, RUNG_DETAIL, Rung
 from app.bureaus import BUREAUS
 from app.sources import FACTS, OPEN_QUESTIONS
 from app.deps import templates
-from app.routes import family, inside, staff
+from app.routes import access, family, inside, staff
 from app.store import STATE, boot, review_log
+from app.session import NotSignedIn, current, redirect_to_signin
 from app.surfaces import CAPABILITIES, DENIAL_REASON, Surface, SurfaceDenied
 
 @asynccontextmanager
@@ -29,10 +30,31 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Bridge", lifespan=lifespan)
+
+# Seeded logins, shown on the front page because this build ships with a
+# fictional caseload and no way to create an account. Delete this dict and the
+# card that renders it before anything real goes near it.
+DEMO_LOGINS = [
+    {"role": "Inside, on the tablet", "how": "DIN 22-A-1187 or NYSID 04418823L",
+     "who": "Marcus W.", "url": "/signin"},
+    {"role": "Inside, not yet triaged", "how": "DIN 24-A-0931",
+     "who": "J. Whitfield", "url": "/signin"},
+    {"role": "Helper, on a phone", "how": "code BRIDGE-4417",
+     "who": "Denise, helping Marcus", "url": "/helper"},
+    {"role": "Counselor, on desktop", "how": "staff ID REYES",
+     "who": "D. Reyes", "url": "/staff-signin"},
+]
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.include_router(access.router)
 app.include_router(inside.router)
 app.include_router(family.router)
 app.include_router(staff.router)
+
+
+@app.exception_handler(NotSignedIn)
+def not_signed_in(request: Request, exc: NotSignedIn):
+    """Send them to the right door rather than explaining which doors exist."""
+    return redirect_to_signin(exc)
 
 
 @app.exception_handler(SurfaceDenied)
@@ -95,7 +117,12 @@ def healthz() -> JSONResponse:
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
-    return templates.TemplateResponse(request, "index.html", {})
+    """The only page that does not need a session."""
+    session = current(request)
+    return templates.TemplateResponse(
+        request, "index.html",
+        {"session": session, "demo_logins": DEMO_LOGINS},
+    )
 
 
 @app.get("/roles", response_class=HTMLResponse)

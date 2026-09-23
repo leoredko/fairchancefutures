@@ -56,30 +56,54 @@ ____________________________
 {client_name}
 """
 
+# Built to match what the bureaus actually ask for when the request comes from
+# a prison or jail, which is not the same list as a request from a house. Note
+# the addresses asked for are the two years BEFORE incarceration, not the two
+# years before today, and the prisoner ID number is required twice: in the
+# letter and on the envelope.
 REPORT_REQUEST_TEMPLATE = """\
 {today}
 
 {address_block}
 
-Re: Annual free credit report request
+Re: Request for free annual credit reports, by mail
 
-Please send a copy of my credit file to the address below. I am requesting the
-free annual disclosure I am entitled to under the Fair Credit Reporting Act.
+Please send copies of my credit file from all three nationwide credit
+reporting companies: Equifax, Experian and TransUnion.
 
-Name: {client_name}
-SSN: [client writes by hand on the printed copy]
+Full name (with any suffix): {client_name}
+Prisoner identification number ({id_label}): {identification}
+Current address:
+{current_address}
+Addresses during the two years preceding incarceration:
+  [client completes by hand]
+Social Security number: [client writes by hand on the printed copy]
 Date of birth: [client writes by hand on the printed copy]
-Current address for delivery: {delivery_address}
-Previous addresses for the past two years: [client completes by hand]
 
-I am requesting this report by mail because I do not have internet access to
-complete an online identity check.
+I am requesting these reports by mail because I do not have internet or phone
+access to complete an identity check.
 
 Sincerely,
 
 
 ____________________________
 {client_name}
+
+--------------------------------------------------------------------------
+FOR WHOEVER ADDRESSES THE ENVELOPE
+
+The return address on the envelope must be the correctional institution, and
+the prisoner identification number must appear on the envelope. The bureaus
+ask for this specifically on mail from a facility, and a request without it
+can come back.
+
+    Return address:  {client_name}, {identification}
+                     {facility}
+
+    Send to:         Annual Credit Report Request Service
+                     P.O. Box 105281
+                     Atlanta, GA 30348-5281
+--------------------------------------------------------------------------
 """
 
 
@@ -168,19 +192,26 @@ def draft_report_request(
     client_id: str,
     client_name: str,
     delivery_address: str,
+    identification: str = "",
+    id_label: str = "DIN",
+    facility: str = "",
     today: date | None = None,
 ) -> Draft:
     """One request to the centralized source covers all three bureaus.
 
     This is the route that works with no internet, which is the whole reason it
-    is the first rung of the ladder.
+    is the first rung of the ladder and the whole reason the inside surface
+    exists.
     """
     today = today or date.today()
     body = REPORT_REQUEST_TEMPLATE.format(
         today=today.strftime("%B %-d, %Y"),
         address_block=ANNUAL_REPORT_REQUEST.address_block,
         client_name=client_name,
-        delivery_address=delivery_address,
+        identification=identification or "[client writes by hand]",
+        id_label=id_label,
+        facility=facility or "[correctional institution]",
+        current_address=f"  {delivery_address}",
     )
     return Draft(
         kind="report_request",
@@ -188,10 +219,11 @@ def draft_report_request(
         bureau=ANNUAL_REPORT_REQUEST.name,
         body=body,
         citations=[
+            fact("mail_request_from_a_facility").cite(),
             fact("free_report_entitlement").cite(),
             fact("free_report_mail_route").cite(),
             fact("weekly_free_reports").cite(),
-            ANNUAL_REPORT_REQUEST.note,
+            fact("facility_record_rules").cite(),
         ],
     )
 

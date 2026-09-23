@@ -126,6 +126,51 @@ FACTS: dict[str, Fact] = {
             "credit-performance/",
         checked_on=CHECKED,
     ),
+    "mail_request_from_a_facility": Fact(
+        key="mail_request_from_a_facility",
+        statement=(
+            "For a mail request from a prison or jail the bureaus ask for: full "
+            "name with any suffix, a PRISONER IDENTIFICATION NUMBER, current "
+            "address, every address during the two years PRECEDING "
+            "incarceration, SSN and date of birth. The correctional "
+            "institution's name goes on the envelope as the return address, "
+            "with the prisoner ID number on it. One letter can request all "
+            "three bureaus by naming them."
+        ),
+        source="CFPB, Requesting your free credit reports by mail from a "
+               "correctional facility",
+        url="https://files.consumerfinance.gov/f/documents/"
+            "cfpb_request-free-credit-report_handout_2021-08.pdf",
+        checked_on=CHECKED,
+    ),
+    "facility_record_rules": Fact(
+        key="facility_record_rules",
+        statement=(
+            "Correctional facilities have different rules about retaining "
+            "personal information, so how a person keeps a copy of their own "
+            "credit report has to be checked facility by facility. This is a "
+            "reason the report is read by the counselor and the helper rather "
+            "than held on the tablet."
+        ),
+        source="CFPB, Requesting your free credit reports by mail from a "
+               "correctional facility",
+        url="https://files.consumerfinance.gov/f/documents/"
+            "cfpb_request-free-credit-report_handout_2021-08.pdf",
+        checked_on=CHECKED,
+    ),
+    "credit_score_gap": Fact(
+        key="credit_score_gap",
+        statement=(
+            "The average credit score of formerly imprisoned people is about 50 "
+            "points lower than that of people who were never incarcerated. This "
+            "is the number behind the problem statement."
+        ),
+        source="CFPB, Justice-Involved Individuals and the Consumer Financial "
+               "Marketplace, January 2022",
+        url="https://www.consumerfinance.gov/data-research/research-reports/"
+            "justice-involved-individuals-consumer-financial-marketplace/",
+        checked_on=CHECKED,
+    ),
     "mailed_dispute_identity": Fact(
         key="mailed_dispute_identity",
         statement=(
@@ -152,6 +197,31 @@ def cite(key: str) -> str:
 
 # Still unverified. Anything that would need one of these renders as an open
 # question in the UI rather than as a sentence.
+# Practitioner testimony rather than law. Kept separate from FACTS on purpose:
+# one interview is evidence, and it is not the same kind of evidence as a
+# statute. The UI labels these as an interview wherever it shows them.
+INTERVIEWS: tuple[dict, str] = (
+    {
+        "who": "Brianne Cornish, founder, FinEquity",
+        "when": "2026-09-21",
+        "claims": (
+            "A credit-invisible client can go from no score to 650+ in about 6 "
+            "to 9 months on a builder loan. A damaged file, say around 550, "
+            "takes years. Those are two different products, not two speeds of "
+            "one product.",
+            "Pre-release with a family member acting as proxy is the model she "
+            "would run today if starting over. People inside have more "
+            "willingness to learn and fewer competing stressors.",
+            "Engagement is the unsolved problem, not the technology. Automated "
+            "nudges arrive on the same channels scammers use, so a text about "
+            "connecting a bank account reads as fraud.",
+            "Low-effort credit building is the strongest entry point: Experian "
+            "Boost, rent reporting, utility and phone reporting.",
+        ),
+    },
+)
+
+
 OPEN_QUESTIONS: tuple[str, ...] = (
     "What actually makes a bureau escalate past a plain signed request. The "
     "access ladder assumes rung 1 usually clears; no public source confirms how "
@@ -162,5 +232,10 @@ OPEN_QUESTIONS: tuple[str, ...] = (
     "different instrument and no primary source was found either way.",
     "Whether court fines and fees are furnished, and by whom.",
     "The 6 to 9 month horizon for a credit-invisible client. Sourced to the "
-    "Cornish interview, Sep 21, and not corroborated.",
+    "Cornish interview, Sep 21, and not corroborated by a second source.",
+    "The 32-point credit score drop per year of confinement. Cited in the team "
+    "problem statement; the 50-point gap is confirmed, this one is not.",
+    "What share of this population has a report error. The general rate is one "
+    "in five (FTC, 2013); nobody has measured it for people coming home, and "
+    "guessing would be worse than saying so.",
 )

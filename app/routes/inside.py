@@ -1,22 +1,25 @@
 """The facility tablet.
 
-Every handler here calls surfaces.require() first. There is no route in this
-module for uploading a file or verifying an identity, and if someone adds one
-later the capability check will refuse it before it does anything.
+Two gates on every handler. require_role says who is asking, from the signed
+cookie; surfaces.require says what this surface can do, from the capability
+table. The URL carries no identity, so there is nothing in it to guess at.
+
+There is no route here for uploading a file or verifying an identity, and if
+someone adds one later the capability check refuses it before it does anything.
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict
 from datetime import date
 
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL, Rung
-from app.deps import get_client, templates
+from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
+from app.deps import templates
 from app.questions import INSIDE_QUESTIONS, inside_question
-from app.store import get_authorization, mutate, put_authorization, save
+from app.session import require_role
+from app.store import STATE, get_authorization, mutate, put_authorization
 from app.surfaces import Capability, Surface, require
 
 router = APIRouter(prefix="/inside")
@@ -30,55 +33,64 @@ POSITION = {
 }
 
 
-@router.get("/{client_id}", response_class=HTMLResponse)
-def start(client_id: str):
-    return RedirectResponse(f"/inside/{client_id}/intake/1", status_code=303)
+@router.get("", response_class=HTMLResponse)
+def home(request: Request):
+    """Straight to the case if intake is done, otherwise pick up where they left off."""
+    caller = require_role(request, "inside")
+    answered = caller.client.intake_answers
+    if len(answered) >= len(INSIDE_QUESTIONS):
+        return RedirectResponse("/inside/case", status_code=303)
+    for question in INSIDE_QUESTIONS:
+        if question.field not in answered:
+            return RedirectResponse(f"/inside/intake/{question.index}", status_code=303)
+    return RedirectResponse("/inside/case", status_code=303)
 
 
-@router.get("/{client_id}/intake/{index}", response_class=HTMLResponse)
-def intake(request: Request, client_id: str, index: int):
+@router.get("/intake/{index}", response_class=HTMLResponse)
+def intake(request: Request, index: int):
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.ANSWER_INTAKE)
-    client = get_client(client_id)
-    q = inside_question(index)
+    question = inside_question(index)
     return templates.TemplateResponse(
         request, "inside/intake.html",
-        {"client": client, "q": q, "total": len(INSIDE_QUESTIONS),
-         "saved": client.intake_answers.get(q.field)},
+        {"client": caller.client, "q": question, "total": len(INSIDE_QUESTIONS),
+         "saved": caller.client.intake_answers.get(question.field)},
     )
 
 
-@router.post("/{client_id}/intake/{index}")
-async def answer(request: Request, client_id: str, index: int):
+@router.post("/intake/{index}")
+async def answer(request: Request, index: int):
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.ANSWER_INTAKE)
-    client = get_client(client_id)
-    q = inside_question(index)
+    client = caller.client
+    question = inside_question(index)
     form = await request.form()
 
     with mutate():
-        if q.multi:
-            picked = [v for v in form.getlist(q.field) if v != "none"]
-            client.intake_answers[q.field] = picked or ["none"]
+        if question.multi:
+            picked = [v for v in form.getlist(question.field) if v != "none"]
+            client.intake_answers[question.field] = picked or ["none"]
         else:
-            client.intake_answers[q.field] = form.get(q.field)
-        # Offline-first: in the real tablet these writes queue locally and flush
-        # on connect. The queue is modeled so the sync endpoint has something
-        # real to drain, and so nothing is lost if the tablet is offline a week.
-        from app.store import STATE
+            client.intake_answers[question.field] = form.get(question.field)
+        # Offline-first in the real tablet means queueing locally and flushing
+        # on connect. The queue is modelled so /api/sync has something real to
+        # drain rather than a claim in a docstring.
         STATE.sync_queue.append({
-            "client_id": client_id, "field": q.field,
-            "value": client.intake_answers[q.field],
+            "client_id": client.id, "field": question.field,
+            "value": client.intake_answers[question.field],
             "at": date.today().isoformat(), "synced": True,
         })
 
     if index >= len(INSIDE_QUESTIONS):
-        return RedirectResponse(f"/inside/{client_id}/where-you-stand", status_code=303)
-    return RedirectResponse(f"/inside/{client_id}/intake/{index + 1}", status_code=303)
+        return RedirectResponse("/inside/where-you-stand", status_code=303)
+    return RedirectResponse(f"/inside/intake/{index + 1}", status_code=303)
 
 
-@router.get("/{client_id}/where-you-stand", response_class=HTMLResponse)
-def where_you_stand(request: Request, client_id: str):
+@router.get("/where-you-stand", response_class=HTMLResponse)
+def where_you_stand(request: Request):
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
-    client = get_client(client_id)
+    client = caller.client
 
     if client.case_state == "credit_invisible" or not client.classification:
         moves = [
@@ -91,14 +103,14 @@ def where_you_stand(request: Request, client_id: str):
     else:
         moves = [
             {"title": "Your file exists and two items are disputed",
-             "body": "Ms. Reyes approved the letter. The bureau has to answer."},
+             "body": "Ms. Reyes approved the letter. The bureaus have to answer."},
             {"title": "One account, paid on time, keeps the clock running",
              "body": "Set up before release, not after."},
         ]
     if any(o != "none" for o in client.intake_answers.get("obligations", [])):
         moves.append({
-            "title": "Restitution is tracked separately",
-            "body": "It matters, but it does not sit in this list pretending to "
+            "title": "What the court ordered is tracked separately",
+            "body": "It matters, and it does not sit in this list pretending to "
                     "be a credit card."})
 
     return templates.TemplateResponse(
@@ -108,61 +120,60 @@ def where_you_stand(request: Request, client_id: str):
     )
 
 
-@router.get("/{client_id}/case", response_class=HTMLResponse)
-def case(request: Request, client_id: str):
+@router.get("/case", response_class=HTMLResponse)
+def case(request: Request):
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+    auth = get_authorization(caller.client.id)
     return templates.TemplateResponse(
         request, "inside/case.html",
-        {"client": client, "timeline": client.timeline,
+        {"client": caller.client, "timeline": caller.client.timeline,
          "auth": auth if auth and auth.is_live() else None,
-         "synced": "2 hours ago"},
+         "synced": "just now"},
     )
 
 
-@router.get("/{client_id}/authorization", response_class=HTMLResponse)
-def authorization(request: Request, client_id: str):
+@router.get("/authorization", response_class=HTMLResponse)
+def authorization(request: Request):
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.REVOKE_AUTHORIZATION)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+    auth = get_authorization(caller.client.id)
     return templates.TemplateResponse(
         request, "inside/authorization.html",
-        {"client": client, "auth": auth,
+        {"client": caller.client, "auth": auth,
          "scopes": sorted(s.value.replace("_", " ") for s in auth.scopes) if auth else [],
          "rung_label": RUNG_DETAIL[auth.rung]["label"] if auth else "",
          "forbidden": sorted(f.replace("_", " ") for f in FORBIDDEN_SCOPES)},
     )
 
 
-@router.post("/{client_id}/authorization/revoke")
-def revoke(client_id: str):
+@router.post("/authorization/revoke")
+def revoke(request: Request):
     """The client cancels, from the tablet, without telling the helper first."""
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.REVOKE_AUTHORIZATION)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+    auth = get_authorization(caller.client.id)
     with mutate():
         if auth is not None:
             put_authorization(auth.revoked())
-        client.helper_name = None
-        client.timeline.append({
+        caller.client.helper_name = None
+        caller.client.timeline.append({
             "text": "You cancelled the authorization",
             "actor": "You", "on": date.today().strftime("%B %-d"), "done": True,
         })
-    return RedirectResponse(f"/inside/{client_id}/authorization", status_code=303)
+    return RedirectResponse("/inside/authorization", status_code=303)
 
 
-@router.post("/{client_id}/authorization/name")
-def name_helper(client_id: str, helper_name: str = Form(...)):
+@router.post("/authorization/name")
+def name_helper(request: Request, helper_name: str = Form(...)):
     """Naming someone starts an invitation. It grants nothing.
 
     The grant is created on the family surface, by the helper, after they have
     been shown what they are agreeing to. A person cannot consent on someone
     else's behalf, which is the whole reason the two screens are separate.
     """
+    caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.NAME_HELPER)
-    client = get_client(client_id)
     with mutate():
-        client.helper_name = helper_name.strip()[:40]
-    return RedirectResponse(f"/family/{client_id}?invited={client.helper_name}",
-                            status_code=303)
+        caller.client.helper_name = helper_name.strip()[:40]
+    return RedirectResponse("/inside/authorization", status_code=303)

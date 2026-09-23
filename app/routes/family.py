@@ -1,9 +1,10 @@
 """The helper's phone.
 
-Constraint two lives in this module. Every handler past the invitation calls
-require_scope() against a live, signed, unexpired, unrevoked authorization. A
-helper with no grant gets the invitation and nothing else, and a helper whose
-grant the client cancelled from the tablet loses access on the next request.
+Two gates here too, and a third that is specific to this surface: a signed,
+scoped, unexpired, unrevoked authorization. Signing in with the code from the
+letter proves which case you are here about. It does not grant you anything.
+The grant is the form, and the form is checked on every request, so a client
+who cancels from the tablet cuts access off at the next tap.
 """
 
 from __future__ import annotations
@@ -14,13 +15,13 @@ from fastapi import APIRouter, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import (
-    NotAuthorized,
     POA_TERM_DAYS,
     Scope,
     default_helper_authorization,
     require_scope,
 )
-from app.deps import get_client, templates
+from app.deps import templates
+from app.session import require_role
 from app.store import get_authorization, mutate, put_authorization
 from app.surfaces import Capability, Surface, require
 
@@ -40,19 +41,20 @@ def _homecoming(iso: str) -> str:
     return f"He comes home in about {round(days / 30)} months"
 
 
-@router.get("/{client_id}", response_class=HTMLResponse)
-def landing(request: Request, client_id: str, invited: str | None = None):
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+@router.get("", response_class=HTMLResponse)
+def landing(request: Request):
+    caller = require_role(request, "family")
+    client = caller.client
+    auth = get_authorization(client.id)
     if auth is not None and auth.is_live():
-        return RedirectResponse(f"/family/{client_id}/task", status_code=303)
+        return RedirectResponse("/family/task", status_code=303)
 
     return templates.TemplateResponse(
         request, "family/invitation.html",
         {"client": client,
          "homecoming": _homecoming(client.release_date),
          "term_days": POA_TERM_DAYS,
-         "suggested_name": invited or client.helper_name,
+         "suggested_name": client.helper_name,
          "scopes": [
              "Receive his mail",
              "Add photos of the report",
@@ -62,11 +64,12 @@ def landing(request: Request, client_id: str, invited: str | None = None):
     )
 
 
-@router.post("/{client_id}/accept")
-def accept(client_id: str, helper_name: str = Form(...)):
+@router.post("/accept")
+def accept(request: Request, helper_name: str = Form(...)):
     """The signed form. This is the moment standing is created, and the only one."""
-    client = get_client(client_id)
-    auth = default_helper_authorization(client_id, helper_name.strip()[:40])
+    caller = require_role(request, "family")
+    client = caller.client
+    auth = default_helper_authorization(client.id, helper_name.strip()[:40])
     with mutate():
         put_authorization(auth)
         client.helper_name = auth.helper_name
@@ -76,16 +79,17 @@ def accept(client_id: str, helper_name: str = Form(...)):
             "on": date.today().strftime("%B %-d"),
             "done": True,
         })
-    return RedirectResponse(f"/family/{client_id}/task", status_code=303)
+    return RedirectResponse("/family/task", status_code=303)
 
 
-@router.get("/{client_id}/task", response_class=HTMLResponse)
-def task(request: Request, client_id: str):
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+@router.get("/task", response_class=HTMLResponse)
+def task(request: Request):
+    caller = require_role(request, "family")
+    client = caller.client
+    auth = get_authorization(client.id)
     # No live grant means no task surface at all. Back to the invitation.
     if auth is None or not auth.is_live():
-        return RedirectResponse(f"/family/{client_id}", status_code=303)
+        return RedirectResponse("/family", status_code=303)
     require_scope(auth, Scope.BE_CONTACTED_BY_STAFF)
 
     # One task on screen. Never two.
@@ -97,16 +101,16 @@ def task(request: Request, client_id: str):
             "detail": client.family_task.get(
                 "detail", "We filled in everything except his signature. The "
                           "envelope prints addressed. One stamp."),
-            "action_url": f"/family/{client_id}/packet",
+            "action_url": "/family/packet",
             "action_label": "Print the packet",
-            "skip_url": f"/family/{client_id}/task/done",
+            "skip_url": "/family/task/done",
             "skip_label": "I already mailed it",
         }
     elif not client.report_pages:
         current = {
             "headline": "The report should be arriving. Photograph it when it does.",
             "detail": "Flat on a table, good light, one page per photo.",
-            "action_url": f"/family/{client_id}/report",
+            "action_url": "/family/report",
             "action_label": "Add the report",
             "skip_url": None,
             "skip_label": "",
@@ -121,74 +125,71 @@ def task(request: Request, client_id: str):
     )
 
 
-@router.post("/{client_id}/task/done")
-def task_done(client_id: str):
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+@router.post("/task/done")
+def task_done(request: Request):
+    caller = require_role(request, "family")
+    client = caller.client
+    auth = get_authorization(client.id)
     require_scope(auth, Scope.MAIL_DISPUTE_LETTER)
     with mutate():
         client.family_task["done"] = True
         client.timeline.append({
-            "text": "Request mailed to the bureau",
+            "text": "Request mailed to the bureaus",
             "actor": auth.helper_name, "on": date.today().strftime("%B %-d"),
             "done": True,
         })
-    return RedirectResponse(f"/family/{client_id}/task", status_code=303)
+    return RedirectResponse("/family/task", status_code=303)
 
 
-@router.get("/{client_id}/packet", response_class=HTMLResponse)
-def packet(request: Request, client_id: str):
+@router.get("/packet", response_class=HTMLResponse)
+def packet(request: Request):
     """The rung 1 request letter, ready to print. Signature by hand, SSN by hand."""
     from app.letters import draft_report_request
 
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+    caller = require_role(request, "family")
+    client = caller.client
+    auth = get_authorization(client.id)
     require_scope(auth, Scope.RECEIVE_MAIL)
     draft = draft_report_request(
-        client_id=client_id,
+        client_id=client.id,
         client_name=client.display_name,
         delivery_address=f"c/o {auth.helper_name}, on file with the program",
+        identification=client.din,
+        id_label="DIN",
+        facility=client.facility,
     )
-    return HTMLResponse(
-        "<!DOCTYPE html><html><head><meta charset='utf-8'>"
-        "<title>Print the packet</title>"
-        "<link rel='stylesheet' href='/static/bridge.css'></head><body>"
-        "<div class='desk' style='padding-top:32px;max-width:720px'>"
-        f"<h1>Print this, get it signed, mail it</h1>"
-        f"<pre class='letter' style='margin-top:16px'>{draft.body}</pre>"
-        "<p class='tiny' style='margin-top:12px'>The SSN and date of birth lines "
-        "are blank on purpose. They are filled in by hand on the paper copy and "
-        "never typed into this app.</p>"
-        f"<p style='margin-top:16px'><a class='btn' href='/family/{client_id}/task'>Back</a></p>"
-        "</div></body></html>"
+    return templates.TemplateResponse(
+        request, "family/packet.html",
+        {"client": client, "draft": draft},
     )
 
 
-@router.get("/{client_id}/report", response_class=HTMLResponse)
-def add_report_form(request: Request, client_id: str):
+@router.get("/report", response_class=HTMLResponse)
+def add_report_form(request: Request):
+    caller = require_role(request, "family")
     require(Surface.FAMILY, Capability.UPLOAD_FILE)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
-    require_scope(auth, Scope.SUBMIT_REPORT_IMAGES)
+    client = caller.client
+    require_scope(get_authorization(client.id), Scope.SUBMIT_REPORT_IMAGES)
     return templates.TemplateResponse(
         request, "family/add_report.html",
         {"client": client, "pages": client.report_pages},
     )
 
 
-@router.post("/{client_id}/report")
-async def add_report(client_id: str, pages: list[UploadFile] = None):
+@router.post("/report")
+async def add_report(request: Request, pages: list[UploadFile] = None):
     """Filenames only.
 
     Photo-to-text extraction is the one genuinely hard engineering piece and it
-    is out of scope here. The deck already named the fallback: the caseworker
-    enters the findings. So the image bytes are counted and discarded rather
-    than stored, which also means this build never holds a picture of somebody's
+    is out of scope. The deck already named the fallback: the caseworker enters
+    the findings. So the image bytes are counted and discarded rather than
+    stored, which also means this build never holds a picture of somebody's
     credit report on disk.
     """
+    caller = require_role(request, "family")
     require(Surface.FAMILY, Capability.UPLOAD_FILE)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
+    client = caller.client
+    auth = get_authorization(client.id)
     require_scope(auth, Scope.SUBMIT_REPORT_IMAGES)
 
     names = [p.filename for p in (pages or []) if p and p.filename]
@@ -202,4 +203,4 @@ async def add_report(client_id: str, pages: list[UploadFile] = None):
                 "on": date.today().strftime("%B %-d"),
                 "done": True,
             })
-    return RedirectResponse(f"/family/{client_id}/task", status_code=303)
+    return RedirectResponse("/family/task", status_code=303)
