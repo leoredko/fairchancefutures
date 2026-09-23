@@ -40,16 +40,28 @@ from app import labels
 from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
 from app.redaction import WITHHELD_NOTE, for_surface
+from app.report import (
+    LINE_FORMAT,
+    SCANNER_NOTE,
+    Source,
+    from_scan,
+    mask_ssn,
+    parse_accounts,
+    simulated_scan,
+)
 from app.store import (
     STATE,
     add_draft,
     drafts_for,
     get_authorization,
     mutate,
+    pending_reports,
+    put_report,
     put_review_log,
     review_log,
+    stored_reports,
 )
-from app.session import require_role
+from app.session import require_coordinator
 from app.surfaces import Capability, Surface, require
 from app.triage import PATH, STATE_LABEL, Answers, Classification, State, classify
 
@@ -73,20 +85,24 @@ def _ladder_rows(client) -> list[dict]:
 @router.get("", response_class=HTMLResponse)
 def queue(request: Request):
     """A work queue, not a roster. Sorted by what expires soonest."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     clients = sorted(STATE.clients.values(), key=lambda c: c.clock_sort)
-    return templates.TemplateResponse(request, "staff/queue.html", {"clients": clients})
+    return templates.TemplateResponse(
+        request, "staff/queue.html",
+        {"clients": clients, "coordinator": coordinator},
+    )
 
 
 @router.get("/new", response_class=HTMLResponse)
 def new_intake(request: Request):
     """The New intake tab from screen 07 of the deck."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     return templates.TemplateResponse(
         request, "staff/new.html",
-        {"facilities": FACILITIES, "form": {}, "error": None, "field": None},
+        {"facilities": FACILITIES, "form": {}, "error": None, "field": None,
+         "coordinator": coordinator},
     )
 
 
@@ -104,7 +120,7 @@ def create_client(
     No PIN is set here. A counselor who could set a client's PIN would be a
     counselor who knows it.
     """
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
 
     form = {"display_name": display_name, "din": din, "nysid": nysid,
@@ -120,7 +136,7 @@ def create_client(
         return templates.TemplateResponse(
             request, "staff/new.html",
             {"facilities": FACILITIES, "form": form, "error": str(exc),
-             "field": exc.field},
+             "field": exc.field, "coordinator": coordinator},
             status_code=400,
         )
 
@@ -163,20 +179,20 @@ def create_client(
 
 @router.get("/{client_id}/triage", response_class=HTMLResponse)
 def triage_form(request: Request, client_id: str):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     return templates.TemplateResponse(
         request, "staff/triage.html",
         {"client": client, "questions": STAFF_QUESTIONS,
          "answers": _prefill(client), "result": _stored_result(client),
-         "all_states": _all_states()},
+         "all_states": _all_states(), "coordinator": coordinator},
     )
 
 
 @router.post("/{client_id}/triage", response_class=HTMLResponse)
 async def triage_run(request: Request, client_id: str):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     form = await request.form()
@@ -224,18 +240,18 @@ async def triage_run(request: Request, client_id: str):
         request, "staff/triage.html",
         {"client": client, "questions": STAFF_QUESTIONS,
          "answers": _prefill(client), "result": result,
-         "all_states": _all_states()},
+         "all_states": _all_states(), "coordinator": coordinator},
     )
 
 
 @router.get("/{client_id}", response_class=HTMLResponse)
 def client_detail(request: Request, client_id: str, created: int = 0):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
 
     view = for_surface(asdict(client), Surface.STAFF, set(client.consent_scopes))
-    plan = simulated_plan(client.id, "D. Reyes", client.release_date)
+    plan = simulated_plan(client.id, coordinator.display_name, client.release_date)
     drafts = drafts_for(client_id)
     pending = next((d for d in drafts if d["approved_on"] is None), None)
     approved = [d for d in drafts if d["approved_on"]]
@@ -266,6 +282,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          "reviews_left": quarterly_reviews_left(
              date.fromisoformat(client.release_date)),
          "rung_two": ladder_rung_available(plan, 2),
+         "coordinator": coordinator,
          "review_summary": review_log().summary(),
          "just_created": bool(created),
          "helper_code": next(
@@ -275,6 +292,148 @@ def client_detail(request: Request, client_id: str, created: int = 0):
     )
 
 
+@router.get("/{client_id}/report", response_class=HTMLResponse)
+def scan_report_form(request: Request, client_id: str):
+    """Scan the paper report into the record.
+
+    This is the only way a credit report enters Bridge. The person inside
+    cannot photograph one, and after this change neither can their helper: the
+    paper comes back to the facility, the person walks it to their coordinator,
+    and it is read in here on equipment that already handles their file.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    require(Surface.STAFF, Capability.READ_FULL_REPORT)
+    client = get_client(client_id)
+    return templates.TemplateResponse(
+        request, "staff/scan.html",
+        {"client": client, "coordinator": coordinator,
+         "form": simulated_scan(client), "scanned": False,
+         "bureaus": [b.name for b in BUREAUS],
+         "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
+         "existing": stored_reports(client_id),
+         "waiting": _waiting(client_id)},
+    )
+
+
+@router.post("/{client_id}/report/{index}/confirm")
+def confirm_report(request: Request, client_id: str, index: int,
+                   accounts: str = Form("")):
+    """Sign off on something that arrived from outside.
+
+    A PDF, a typed list, a stack of photographs: none of them become a dispute
+    letter until a person who can be named has read them against the document.
+    That is the same accuracy check as the letter edit rate, moved to the input
+    side where a wrong account number is still cheap to fix.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.READ_FULL_REPORT)
+    client = get_client(client_id)
+
+    rows = STATE.reports.get(client_id, [])
+    if not 0 <= index < len(rows):
+        return RedirectResponse(f"/staff/{client_id}", status_code=303)
+
+    parsed = parse_accounts(accounts)
+    with mutate():
+        row = rows[index]
+        if parsed:
+            row["accounts"] = parsed
+        row["confirmed"] = True
+        row["scanned_on"] = date.today().isoformat()
+        row["scanned_by"] = coordinator.display_name
+        disputed = [a for a in row["accounts"] if a.get("disputed")]
+        if disputed:
+            client.flagged_items = [
+                {"creditor": a["creditor"],
+                 "last_four": "".join(c for c in a["number"] if c.isdigit())[-4:],
+                 "reason": a.get("note", "")}
+                for a in disputed
+            ]
+            client.needs = "Dispute letter to approve"
+        client.last_pulled = row["pulled_on"]
+        client.report_summary = f"{row['bureau']}: {len(row['accounts'])} accounts"
+        client.timeline.append({
+            "text": f"Your {row['bureau']} report was checked and added to your record",
+            "actor": "Your counselor",
+            "on": date.today().strftime("%B %-d"),
+            "done": True,
+        })
+    return RedirectResponse(f"/staff/{client_id}/report", status_code=303)
+
+
+@router.post("/{client_id}/report/scan", response_class=HTMLResponse)
+def scan_report_run(request: Request, client_id: str):
+    """Run the scanner. Populates the form; saves nothing."""
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    client = get_client(client_id)
+    return templates.TemplateResponse(
+        request, "staff/scan.html",
+        {"client": client, "coordinator": coordinator,
+         "form": simulated_scan(client), "scanned": True,
+         "bureaus": [b.name for b in BUREAUS],
+         "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
+         "existing": stored_reports(client_id),
+         "waiting": _waiting(client_id)},
+    )
+
+
+@router.post("/{client_id}/report")
+def save_report(
+    request: Request,
+    client_id: str,
+    bureau: str = Form(""),
+    consumer_name: str = Form(""),
+    ssn_on_document: str = Form(""),
+    pulled_on: str = Form(""),
+    accounts: str = Form(""),
+):
+    """Confirm and save. From here the person reads it on their tablet.
+
+    The Social Security number is masked on the way in, not on the way out.
+    Storing it whole and hiding it later would mean one templating mistake
+    puts somebody's SSN on a dayroom screen.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.UPLOAD_FILE)
+    client = get_client(client_id)
+
+    rows = parse_accounts(accounts)
+    report = from_scan(
+        client_id=client_id,
+        bureau=bureau or "Equifax",
+        consumer_name=consumer_name or client.display_name,
+        scanned_by=coordinator.display_name,
+        pulled_on=pulled_on,
+        accounts=rows,
+        ssn_on_document=mask_ssn(ssn_on_document),
+        source=Source.SCAN,
+    )
+
+    disputed = [r for r in rows if r["disputed"]]
+    with mutate():
+        put_report(report)
+        client.last_pulled = report.pulled_on
+        client.report_summary = f"{report.bureau}: {report.summary}"
+        client.flagged_items = [
+            {"creditor": r["creditor"],
+             "last_four": "".join(ch for ch in r["number"] if ch.isdigit())[-4:],
+             "reason": r["note"]}
+            for r in disputed
+        ] or client.flagged_items
+        client.timeline.append({
+            "text": f"Your {report.bureau} report was scanned into your record",
+            "actor": "Your counselor",
+            "on": date.today().strftime("%B %-d"),
+            "done": True,
+        })
+        if disputed:
+            client.needs = "Dispute letter to approve"
+
+    return RedirectResponse(f"/staff/{client_id}", status_code=303)
+
+
 @router.post("/{client_id}/letters/draft")
 def draft_letter(request: Request, client_id: str, item: int = Form(0)):
     """One item, three letters.
@@ -282,7 +441,7 @@ def draft_letter(request: Request, client_id: str, item: int = Form(0)):
     An item deleted at Equifax is still sitting on the Experian and TransUnion
     files, so drafting one letter would leave two thirds of the job undone.
     """
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     if not client.flagged_items:
@@ -306,7 +465,7 @@ def approve_letter(
     request: Request, client_id: str, draft_id: str, body: str = Form(...)
 ):
     """Approval records whether the reviewer edited first. That is the metric."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     row = next((d for d in drafts_for(client_id) if d["id"] == draft_id), None)
@@ -334,7 +493,7 @@ def approve_letter(
 @router.post("/{client_id}/ladder/escalate")
 def escalate(request: Request, client_id: str):
     """A bureau kicked the request back. Climb exactly one rung, not four."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
     auth = get_authorization(client_id)
@@ -350,6 +509,24 @@ def escalate(request: Request, client_id: str):
 
 
 # --------------------------------------------------------------------------
+
+def _waiting(client_id: str) -> list[dict]:
+    """Reports from outside, each with the index the confirm route needs and
+    its accounts already back in the pipe format the coordinator edits."""
+    out = []
+    for i, report in enumerate(stored_reports(client_id)):
+        if report.confirmed:
+            continue
+        out.append({
+            "index": i,
+            "report": report,
+            "lines": "\n".join(
+                " | ".join([a.creditor, a.number, a.opened, a.status,
+                            a.balance, a.note])
+                for a in report.accounts),
+        })
+    return out
+
 
 def _enum(field: str, form):
     from app import triage

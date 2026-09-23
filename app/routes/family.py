@@ -21,8 +21,15 @@ from app.authorization import (
     require_scope,
 )
 from app.deps import templates
+from app.report import Source, from_scan, mask_ssn, parse_accounts
 from app.session import require_role
-from app.store import get_authorization, mutate, put_authorization
+from app.store import (
+    get_authorization,
+    mutate,
+    put_authorization,
+    put_report,
+    stored_reports,
+)
 from app.surfaces import Capability, Surface, require
 
 router = APIRouter(prefix="/family")
@@ -57,7 +64,7 @@ def landing(request: Request):
          "suggested_name": client.helper_name,
          "scopes": [
              "Receive his mail",
-             "Add photos of the report",
+             "Send his reports in, however is easiest for you",
              "Mail a dispute letter we print for you",
              "Be contacted by his counselor",
          ]},
@@ -106,12 +113,13 @@ def task(request: Request):
             "skip_url": "/family/task/done",
             "skip_label": "I already mailed it",
         }
-    elif not client.report_pages:
+    elif not stored_reports(client.id):
         current = {
-            "headline": "The report should be arriving. Photograph it when it does.",
-            "detail": "Flat on a table, good light, one page per photo.",
+            "headline": "When the reports arrive, send them in.",
+            "detail": "Three ways, and any of them works. The easiest is a PDF "
+                      "if you have one.",
             "action_url": "/family/report",
-            "action_label": "Add the report",
+            "action_label": "Send the reports in",
             "skip_url": None,
             "skip_label": "",
         }
@@ -163,45 +171,92 @@ def packet(request: Request):
         {"client": client, "draft": draft},
     )
 
+# --------------------------------------------------------------------------
+# getting the report in
+# --------------------------------------------------------------------------
+#
+# Three routes, offered in this order for a reason that is about cost to the
+# helper and accuracy to the case, not about what is impressive.
+#
+#   PDF      one tap, the whole document, nothing lost. If a helper pulled the
+#            report online they already have this.
+#   Typed    exact, and twenty minutes of somebody's evening. It is the route
+#            for a paper report and a helper who would rather type than fight
+#            a scanner app.
+#   Photo    last, and honestly labelled. Nothing in this build reads data out
+#            of a picture. A photograph means a human transcribes it later,
+#            which is the coordinator, which is slower for everyone.
+#
+# None of the three writes a confirmed record. Everything arriving from outside
+# waits for a coordinator, because these fields become a dispute letter and a
+# letter about the wrong account number is worse than no letter.
+
 
 @router.get("/report", response_class=HTMLResponse)
-def add_report_form(request: Request):
+def send_report_form(request: Request, how: str = ""):
     caller = require_role(request, "family")
     require(Surface.FAMILY, Capability.UPLOAD_FILE)
     client = caller.client
     require_scope(get_authorization(client.id), Scope.SUBMIT_REPORT_IMAGES)
     return templates.TemplateResponse(
-        request, "family/add_report.html",
-        {"client": client, "pages": client.report_pages},
+        request, "family/send_report.html",
+        {"client": client, "how": how,
+         "sent": stored_reports(client.id)},
     )
 
 
 @router.post("/report")
-async def add_report(request: Request, pages: list[UploadFile] = None):
-    """Filenames only.
-
-    Photo-to-text extraction is the one genuinely hard engineering piece and it
-    is out of scope. The deck already named the fallback: the caseworker enters
-    the findings. So the image bytes are counted and discarded rather than
-    stored, which also means this build never holds a picture of somebody's
-    credit report on disk.
-    """
+async def send_report(
+    request: Request,
+    how: str = Form("pdf"),
+    bureau: str = Form(""),
+    consumer_name: str = Form(""),
+    accounts: str = Form(""),
+    ssn_on_document: str = Form(""),
+    pulled_on: str = Form(""),
+    files: list[UploadFile] = None,
+):
+    """Take it however it comes, and be honest about what happens next."""
     caller = require_role(request, "family")
     require(Surface.FAMILY, Capability.UPLOAD_FILE)
     client = caller.client
     auth = get_authorization(client.id)
     require_scope(auth, Scope.SUBMIT_REPORT_IMAGES)
 
-    names = [p.filename for p in (pages or []) if p and p.filename]
+    source = {"pdf": Source.PDF, "typed": Source.TYPED,
+              "photo": Source.PHOTO}.get(how, Source.PDF)
+
+    # Filenames and a page count, never the bytes. This build does not hold a
+    # picture of anybody's credit report on disk, which is a smaller promise
+    # than it sounds and the only one it can actually keep.
+    names = [f.filename for f in (files or []) if f and f.filename]
+    pages = [f"Page {i}" for i, _ in enumerate(names, start=1)]
+
+    report = from_scan(
+        client_id=client.id,
+        bureau=bureau or "Not stated on the copy",
+        consumer_name=consumer_name or client.display_name,
+        scanned_by=auth.helper_name,
+        pulled_on=pulled_on,
+        accounts=parse_accounts(accounts) if source is Source.TYPED else [],
+        ssn_on_document=mask_ssn(ssn_on_document),
+        source=source,
+        pages=pages,
+    )
+
     with mutate():
-        for i, _ in enumerate(names, start=len(client.report_pages) + 1):
-            client.report_pages.append(f"Page {i}")
-        if names:
-            client.timeline.append({
-                "text": f"{len(names)} page{'' if len(names) == 1 else 's'} "
-                        f"of the report added",
-                "actor": auth.helper_name,
-                "on": date.today().strftime("%B %-d"),
-                "done": True,
-            })
-    return RedirectResponse("/family/task", status_code=303)
+        put_report(report)
+        for page in pages:
+            client.report_pages.append(page)
+        client.timeline.append({
+            "text": {
+                Source.PDF: "The report came in as a PDF",
+                Source.TYPED: "Your helper typed the report in",
+                Source.PHOTO: "Your helper photographed the report",
+            }[source],
+            "actor": auth.helper_name,
+            "on": date.today().strftime("%B %-d"),
+            "done": True,
+        })
+
+    return RedirectResponse("/family/report?how=done", status_code=303)

@@ -8,7 +8,7 @@
   </div>
 
   <form class="pane" method="post" autocomplete="off"
-        action="{% if role == 'inside' %}/signin/pin{% elif role == 'family' %}/helper/pin{% else %}/staff-signin/pin{% endif %}">
+        action="{% if role == 'inside' %}/signin/pin{% else %}/helper/pin{% endif %}">
     <input type="hidden" name="normalized" value="{{ normalized }}">
 
     <h1>Your PIN</h1>

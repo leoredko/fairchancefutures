@@ -8,14 +8,14 @@
   </div>
 
   <form class="pane" method="post" action="/signin" autocomplete="off">
-    <h1>Your number</h1>
-    <p class="lede">Your DIN or your NYSID. Either one works.</p>
+    <h1>DIN number or NYS ID</h1>
+    <p class="lede">Either one works.</p>
 
     {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
 
     <input class="choice" name="identifier" inputmode="text" autocapitalize="characters"
            autocomplete="off" spellcheck="false" autofocus
-           placeholder="98-A-0004" value="{{ identifier or '' }}"
+           placeholder="28-A-1187" value="{{ identifier or '' }}"
            style="font-family: ui-monospace, monospace; letter-spacing: .08em">
 
     <button class="btn wide" type="submit">Next</button>
@@ -29,7 +29,6 @@
     <div class="notes-always">
       <p class="tiny">Helping someone on the outside?
         <a href="/helper">Use the code from the letter</a>.</p>
-      <p class="tiny">Staff? <a href="/staff-signin">Sign in here</a>.</p>
     </div>
   </form>
 </div>

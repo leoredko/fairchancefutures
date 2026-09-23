@@ -48,7 +48,12 @@ def sign_in_helper(client, code="BRIDGE-4417", pin=PIN):
 
 
 def sign_in_staff(client, staff_id="REYES", pin=PIN):
-    return _door(client, "/staff-signin", "staff_id", staff_id, staff_id, pin)
+    """A coordinator does not sign in. The vendor case plan system already did.
+
+    Kept as a no-op so the tests read the same as the other two surfaces and
+    so a future change back to a real staff login has one place to go.
+    """
+    return client
 
 
 def _norm(raw):

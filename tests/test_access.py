@@ -188,11 +188,10 @@ def test_staff_sessions_last_a_shift_and_kiosk_sessions_do_not():
 # --- the doors, end to end -------------------------------------------------
 
 @pytest.mark.parametrize("url,expect", [
-    ("/inside", "Your number"),
-    ("/inside/case", "Your number"),
+    ("/inside", "DIN number or NYS ID"),
+    ("/inside/case", "DIN number or NYS ID"),
     ("/family", "Your code"),
     ("/family/task", "Your code"),
-    ("/staff", "Counselor sign in"),
 ])
 def test_no_session_means_no_surface(client, url, expect):
     """Each door sends you to its own sign-in, not to a page that tells you
@@ -237,7 +236,7 @@ def test_signing_out_ends_it(client):
     sign_in_inside(client)
     assert client.get("/inside/case").status_code == 200
     client.get("/signout")
-    assert "Your number" in client.get("/inside/case").text
+    assert "DIN number or NYS ID" in client.get("/inside/case").text
 
 
 def test_an_unknown_number_does_not_pretend_to_work(client):
@@ -246,9 +245,28 @@ def test_an_unknown_number_does_not_pretend_to_work(client):
     assert "No record here" in response.text
 
 
-def test_staff_get_their_own_door(client):
-    sign_in_staff(client)
-    assert "Needs you this week" in client.get("/staff").text
+def test_a_coordinator_does_not_sign_in_at_all(client):
+    """They are already signed in to the vendor case plan system, which is
+    where Bridge opens. Asking for a second credential would be asking them to
+    remember a password for a tab they never deliberately opened."""
+    queue = client.get("/staff")
+    assert queue.status_code == 200
+    assert "Needs you this week" in queue.text
+    assert "Sign in" not in queue.text
+    assert "PIN" not in queue.text
+
+
+def test_the_coordinator_identity_comes_from_the_vendor_system(client):
+    """And it is the only place a coordinator identity enters the app."""
+    default = client.get("/staff").text
+    assert "D. Reyes" in default
+
+    handed_over = client.get("/staff", headers={"X-Vendor-Coordinator": "okafor"})
+    assert "Okafor" in handed_over.text
+
+
+def test_there_is_no_staff_sign_in_route_left(client):
+    assert client.get("/staff-signin").status_code == 404
 
 
 # --- the self-service range -------------------------------------------------

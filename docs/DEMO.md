@@ -3,6 +3,17 @@
 Sign-ins for the seeded caseload. These are not shown in the application,
 because seeded logins on a landing page make a product look like a sample.
 
+## The coordinator never signs in
+
+The staff app opens straight on the caseload queue. A coordinator is already
+authenticated by the vendor case plan system that Bridge opens inside, so
+there is no staff ID, no PIN and no enrolment. To try a different coordinator,
+send an `X-Vendor-Coordinator` header to the server build.
+
+The other two surfaces do authenticate, because there is nowhere else they
+could have: a person on a facility tablet has no other system to be signed in
+to, and a helper on their phone has no institutional identity at all.
+
 ## Any DIN starting 28 works
 
 2028 has not happened, so a DIN in that range cannot belong to a real person in
@@ -23,15 +34,16 @@ real. Those are added by a coordinator from **New intake**.
 | J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
-| D. Reyes, coordinator | staff ID `REYES` | desktop |
+| D. Reyes, coordinator | nothing, the vendor system already signed them in | desktop |
 
 Everyone picks their own PIN the first time. Six digits, not all the same, not
 a run, and not a stretch of their own number.
 
 ## A walkthrough that shows the whole thing
 
-1. **Coordinator** opens the staff app, signs in as `REYES`, and uses
-   **New intake** to add somebody. Note the helper code it issues.
+1. **Coordinator** opens the staff app. There is no sign-in: it opens on the
+   queue, because they are already signed in to the vendor case plan system.
+   Use **New intake** to add somebody, and note the helper code it issues.
 2. **That person** opens the tablet app, signs in with the DIN just entered,
    picks a PIN, and answers the six intake questions.
 3. **Coordinator** opens them from the queue and runs triage. Six answers, one

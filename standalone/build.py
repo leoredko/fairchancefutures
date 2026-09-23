@@ -28,7 +28,9 @@ def rules() -> dict:
     sys.path.insert(0, str(ROOT))
     from app.bureaus import ANNUAL_REPORT_REQUEST, BUREAUS
     from app.letters import DISPUTE_TEMPLATE, REPORT_REQUEST_TEMPLATE
-    from app.questions import INSIDE_QUESTIONS, STAFF_QUESTIONS
+    from app.questions import INSIDE_QUESTIONS, STAFF_QUESTIONS, teaching_for
+    from app.report import LINE_FORMAT, SCANNER_NOTE
+    from app.scores import EXPLAINERS, MODELS, USE_LABEL, summary_line
     from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS
     from app.triage import PATH, STATE_LABEL, State
 
@@ -71,6 +73,20 @@ def rules() -> dict:
                 "address": list(ANNUAL_REPORT_REQUEST.dispute_address)},
         "disputeTemplate": DISPUTE_TEMPLATE,
         "requestTemplate": REPORT_REQUEST_TEMPLATE,
+        # Written from the answer to "do you know how to find out". Somebody
+        # who said yes does not need the long version read to them.
+        "teaching": {answer: teaching_for(answer)
+                     for answer in ("no", "some_idea", "yes")},
+        "scores": {
+            "summary": summary_line(),
+            "models": [
+                {"name": m.name, "use": USE_LABEL[m.use], "range": m.range_label,
+                 "note": m.note}
+                for m in MODELS
+            ],
+            "explainers": [dict(e) for e in EXPLAINERS],
+        },
+        "scan": {"lineFormat": LINE_FORMAT, "note": SCANNER_NOTE},
     }
 
 
@@ -79,7 +95,7 @@ def rules() -> dict:
 # All three read the same storage key, so served from one folder or one host
 # they share a caseload; published to three different origins they do not.
 APPS = {
-    "inside": "Bridge",
+    "inside": "Bridge for the tablet",
     "family": "Bridge for helpers",
     "staff": "Bridge for coordinators",
 }

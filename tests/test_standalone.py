@@ -158,3 +158,74 @@ def test_it_still_disclaims_any_official_affiliation(pages: dict):
 def test_they_stay_small_enough_to_email(pages: dict):
     for role, html in pages.items():
         assert len(html.encode()) < 2_000_000, role
+
+
+def test_the_coordinator_app_has_no_sign_in_at_all(pages: dict):
+    """They are already signed in to the vendor case plan system. Asking for a
+    second credential would be asking them to remember a password for a tab
+    they never deliberately opened."""
+    staff = pages["staff"]
+    assert 'staff: "#/staff"' in staff          # the door is the queue itself
+    assert "staff-signin" not in staff
+    assert "VENDOR_COORDINATOR" in staff
+
+
+def test_only_the_two_surfaces_without_another_system_ask_for_a_pin(pages: dict):
+    """A person on a facility tablet has no other system to be signed in to,
+    and a helper has no institutional identity at all. Those two authenticate
+    here because there is nowhere else they could have."""
+    for role in ("inside", "family"):
+        assert "#/enroll" in pages[role], role
+    assert 'if (role === "staff")' in pages["staff"]
+
+
+def test_the_three_titles_are_not_confusable(pages: dict):
+    import re
+
+    titles = {role: re.search(r"<title>(.*?)</title>", html).group(1)
+              for role, html in pages.items()}
+    assert len(set(titles.values())) == 3, titles
+    assert titles["staff"] == "Bridge for coordinators"
+
+
+def test_the_teaching_screen_is_the_python_one(payload):
+    from app.questions import teaching_for
+
+    for answer in ("no", "some_idea", "yes"):
+        built = payload["teaching"][answer]
+        want = teaching_for(answer)
+        assert built["headline"] == want["headline"]
+        assert [p["title"] for p in built["points"]] == \
+            [p["title"] for p in want["points"]]
+
+
+def test_the_score_models_are_the_python_ones(payload):
+    from app.scores import MODELS, summary_line
+
+    built = payload["scores"]
+    assert built["summary"] == summary_line()
+    assert [m["name"] for m in built["models"]] == [m.name for m in MODELS]
+    # The single most confusing fact in the subject, and the reason this screen
+    # exists: auto and card scores are not on the 300 to 850 scale at all.
+    ranges = {m["name"]: m["range"] for m in built["models"]}
+    assert ranges["FICO Auto Score"] == "250 to 900"
+    assert ranges["FICO Score 8"] == "300 to 850"
+
+
+def test_the_tablet_build_cannot_reach_the_helper_routes(pages: dict):
+    """All three builds share one shell, so the tablet file does contain the
+    helper's source. What stops it is the role constant and the guard: APP is
+    "inside", so guard("family") bounces every one of those routes back to the
+    tablet's own door. That is the control, not the absence of the text."""
+    inside = pages["inside"]
+    assert 'const APP = "inside"' in inside
+    assert 'if (!s || s.role !== role) { go(DOOR[APP]); return null; }' in inside
+    # Reading is the tablet's own route, and it is the only one it has.
+    assert "#/inside/report" in inside
+
+
+def test_only_the_desk_scan_lands_confirmed(page: str):
+    """Everything arriving from outside waits for a human, because these
+    fields become a dispute letter."""
+    assert 'function selfConfirming(source) { return source === "scan"; }' in page
+    assert "const ready = confirmedReports(c);" in page

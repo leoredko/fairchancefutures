@@ -5,7 +5,7 @@
   <a class="pill" href="/staff">&larr; Queue</a>
   <span class="wordmark">{{ view.display_name }}</span>
   <span class="tag rust">{{ client.state_label }}</span>
-  <div class="right"><a class="pill" href="/signout">Sign out</a><span class="small">Consent recorded
+  <div class="right"><span class="small">Consent recorded
     {{ client.consent_recorded_on }} &middot;
     report sharing {{ 'on' if 'report_sharing' in client.consent_scopes else 'off' }}</span></div>
 </div>
@@ -22,6 +22,11 @@
         <p class="small">Report sharing is off for this client. Nothing to show,
           and that is the consent record doing its job.</p>
         {% endif %}
+        <div class="row">
+          <a class="btn ghost" href="/staff/{{ client.id }}/report">Scan a report in</a>
+        </div>
+        <p class="tiny">The paper comes back to the facility and the person
+          carries it to you. Scanning it here is what puts it on their tablet.</p>
       </div>
 
       <div class="card">

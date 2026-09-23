@@ -84,6 +84,8 @@ class Client:
 @dataclass
 class State:
     clients: dict[str, Client] = field(default_factory=dict)
+    # Reports the coordinator scanned in, by client id.
+    reports: dict[str, list[dict]] = field(default_factory=dict)
     accounts: dict[str, dict] = field(default_factory=dict)
     # Cookie signing key. From BRIDGE_SECRET in a real deployment; generated
     # here so a restart does not sign everyone out mid-demo.
@@ -105,6 +107,7 @@ def _serialize() -> dict:
     return {
         "clients": {k: asdict(v) for k, v in STATE.clients.items()},
         "accounts": STATE.accounts,
+        "reports": STATE.reports,
         "secret": STATE.secret,
         "authorizations": STATE.authorizations,
         "drafts": STATE.drafts,
@@ -126,6 +129,7 @@ def load() -> bool:
     raw = json.loads(DATA_PATH.read_text())
     STATE.clients = {k: Client(**v) for k, v in raw.get("clients", {}).items()}
     STATE.accounts = raw.get("accounts", {})
+    STATE.reports = raw.get("reports", {})
     STATE.secret = raw.get("secret", "")
     STATE.authorizations = raw.get("authorizations", {})
     STATE.drafts = raw.get("drafts", {})
@@ -218,6 +222,37 @@ def account_for_client(client_id: str, role: str = "inside"):
         if raw["role"] == role and raw["subject_id"] == client_id:
             return Account(**raw)
     return None
+
+
+def stored_reports(client_id: str, *, confirmed_only: bool = False) -> list:
+    """The reports on file, rebuilt as documents a person can read.
+
+    confirmed_only is what the tablet asks for. A report a helper typed in or
+    photographed has not been checked by anyone yet, and showing somebody an
+    unverified list of their own debts is worse than showing them nothing.
+    """
+    from app.report import Account, CreditReport
+
+    out = []
+    for raw in STATE.reports.get(client_id, []):
+        data = dict(raw)
+        data["accounts"] = [Account(**a) for a in raw.get("accounts", [])]
+        report = CreditReport(**data)
+        if confirmed_only and not report.confirmed:
+            continue
+        out.append(report)
+    return out
+
+
+def pending_reports(client_id: str) -> list:
+    """Waiting on a human. This is the coordinator's queue, not a status flag."""
+    return [r for r in stored_reports(client_id) if not r.confirmed]
+
+
+def put_report(report) -> None:
+    from dataclasses import asdict as _asdict
+
+    STATE.reports.setdefault(report.client_id, []).append(_asdict(report))
 
 
 def review_log() -> ReviewLog:
@@ -390,6 +425,7 @@ def seed() -> None:
         default_helper_authorization("m-alvarez", "Rosa", today - timedelta(days=21))
     )
     STATE.drafts = {}
+    STATE.reports = {}
     STATE.review_log = {"reviewed": 0, "edited": 0}
     STATE.sync_queue = []
     _seed_accounts()

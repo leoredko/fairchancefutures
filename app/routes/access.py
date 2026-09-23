@@ -259,66 +259,6 @@ def helper_enroll(
 
 
 # --------------------------------------------------------------------------
-# staff
-# --------------------------------------------------------------------------
-
-@router.get("/staff-signin", response_class=HTMLResponse)
-def staff_signin(request: Request, error: str | None = None):
-    return templates.TemplateResponse(request, "access/staff.html", {"error": error})
-
-
-@router.post("/staff-signin", response_class=HTMLResponse)
-def staff_identify(request: Request, staff_id: str = Form("")):
-    account = find_account("staff", (staff_id or "").strip().upper())
-    if account is None:
-        return templates.TemplateResponse(
-            request, "access/staff.html",
-            {"error": "No staff account with that ID.", "staff_id": staff_id},
-            status_code=404,
-        )
-    page = "access/enroll.html" if not account.enrolled else "access/pin.html"
-    return templates.TemplateResponse(
-        request, page,
-        {"account": account, "identifier": account.login_key,
-         "normalized": account.login_key, "label": "staff ID",
-         "pin_length": PIN_LENGTH, "role": "staff"},
-    )
-
-
-@router.post("/staff-signin/pin")
-def staff_pin(
-    request: Request, normalized: str = Form(...), pin: str = Form("")):
-    account = find_account("staff", normalized)
-    if account is None:
-        return RedirectResponse("/staff-signin", status_code=303)
-    try:
-        authenticate(account, pin)
-    except AuthError as exc:
-        with mutate():
-            put_account(account)
-        return _retry(request, "staff", account, normalized, str(exc))
-    with mutate():
-        put_account(account)
-    return _start(account, RedirectResponse("/staff", status_code=303))
-
-
-@router.post("/staff-signin/enroll")
-def staff_enroll(
-    request: Request, normalized: str = Form(...), pin: str = Form(""), confirm: str = Form("")
-):
-    account = find_account("staff", normalized)
-    if account is None:
-        return RedirectResponse("/staff-signin", status_code=303)
-    try:
-        enroll(account, pin, confirm)
-    except AuthError as exc:
-        return _retry(request, "staff", account, normalized, str(exc), enrolling=True)
-    with mutate():
-        put_account(account)
-    return _start(account, RedirectResponse("/staff", status_code=303))
-
-
-# --------------------------------------------------------------------------
 
 @router.post("/signout")
 @router.get("/signout")

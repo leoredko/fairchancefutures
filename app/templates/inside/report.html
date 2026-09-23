@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Your credit report{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }} &middot; your reports</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    {% if not reports %}
+    {% if waiting %}
+    <div class="card good">
+      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
+        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
+        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
+      {% for r in waiting %}
+      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
+        {{ r.scanned_on }}</p>
+      {% endfor %}
+      <p class="small">They read it against the paper before it goes on this
+        screen, because what is written here becomes a letter to a credit
+        bureau. Nothing is wrong. It is the checking step.</p>
+    </div>
+    {% endif %}
+    <h1>{{ 'Not on this screen yet.' if waiting else 'Nothing here yet.' }}</h1>
+    {% if not waiting %}
+    <p class="lede">Your reports come back on paper. When they arrive, bring
+      them to your coordinator and they will scan them into your record. Then
+      you can read them here.</p>
+    {% endif %}
+    <div class="card soft">
+      <h3>You do not photograph anything</h3>
+      <p class="small">There is no camera in this app and there does not need
+        to be. The paper goes to your coordinator, the coordinator scans it,
+        and it shows up here.</p>
+    </div>
+    <a class="btn ghost" href="/inside/case">Back to my case</a>
+
+    {% else %}
+    <h1>Your credit reports.</h1>
+    <div class="card good">
+      <h3>Your Social Security number is blacked out</h3>
+      <p class="small">Only the last four digits appear, on every page. The
+        request asked them to leave the first five out, which the law lets you
+        require, and this screen covers them again regardless.</p>
+      <p class="tiny">15 U.S.C. 1681g(a)(1)(A)</p>
+    </div>
+
+    {% if waiting %}
+    <div class="card good">
+      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
+        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
+        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
+      {% for r in waiting %}
+      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
+        {{ r.scanned_on }}</p>
+      {% endfor %}
+      <p class="small">They read it against the paper before it goes on this
+        screen, because what is written here becomes a letter to a credit
+        bureau. Nothing is wrong. It is the checking step.</p>
+    </div>
+    {% endif %}
+
+    {% for report in reports %}
+    <div class="card">
+      <div class="row">
+        <h2>{{ report.bureau }}</h2>
+        <span class="tag teal" style="margin-left:auto">{{ report.summary }}</span>
+      </div>
+      <p class="tiny">Pulled {{ report.pulled_on }} &middot; scanned in
+        {{ report.scanned_on }} by {{ report.scanned_by }}</p>
+
+      <h3>About you, as they have it</h3>
+      <p class="small">{{ report.consumer_name }}</p>
+      <p class="small" style="font-family:var(--mono)">{{ report.safe_ssn }}</p>
+      <p class="small">{{ report.safe_dob }}</p>
+
+      <h3>Score</h3>
+      <p class="small">{{ report.score_line }}</p>
+
+      <h3>Accounts</h3>
+      {% if report.accounts %}
+        {% for a in report.accounts %}
+        <div class="rung {% if a.disputed %}active{% endif %}">
+          <div>
+            <div class="small strong">{{ a.creditor }}</div>
+            <div class="tiny">{{ a.safe_number }}
+              {% if a.opened %}&middot; opened {{ a.opened }}{% endif %}
+              {% if a.status %}&middot; {{ a.status }}{% endif %}
+              {% if a.balance %}&middot; {{ a.balance }}{% endif %}</div>
+            {% if a.disputed %}
+            <span class="tag amber">Disputed{% if a.note %}: {{ a.note }}{% endif %}</span>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+      <p class="small">No accounts on file with this bureau. That is not the
+        same as bad credit, and it moves faster than damaged does.</p>
+      {% endif %}
+
+      {% if report.public_records %}
+      <h3>Public records</h3>
+      {% for r in report.public_records %}<p class="small">{{ r }}</p>{% endfor %}
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="row">
+      <button class="btn" onclick="window.print()">Save as PDF</button>
+      <a class="btn ghost" href="/inside/case">Back to my case</a>
+      <a class="btn ghost" href="/inside/learn/scores">Why is there no score?</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

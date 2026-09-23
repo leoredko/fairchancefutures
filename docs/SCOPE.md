@@ -23,8 +23,9 @@ is said about them, cancel a helper. Cannot verify identity, receive mail,
 upload files, open accounts, browse the open web. Offline-first, metered by the
 minute, one question per screen.
 
-**Family or friend, phone.** Can receive mail, photograph the report, print and
-mail letters, take a call. Cannot act without a signed, scoped authorization.
+**Family or friend, phone.** Can receive mail, send the report in (a PDF, typed
+by hand, or photographed, offered in that order), print and mail letters, take a
+call. Cannot act without a signed, scoped authorization.
 Never asked to read or judge the report. One task on screen at a time, long
 silences between tasks, by design.
 

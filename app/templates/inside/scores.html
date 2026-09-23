@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Why there is no single score{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">Credit scores</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>There is no such thing as your credit score.</h1>
+    <p class="lede">There are dozens of them, and they disagree on purpose.</p>
+
+    <div class="card accent">
+      <p class="small">{{ summary }}</p>
+    </div>
+
+    <h2>Three things multiply together</h2>
+    <div class="stack">
+      <div class="card">
+        <h3>Which bureau</h3>
+        <p class="small">Equifax, Experian and TransUnion hold different files.
+          Not every lender reports to all three, so an account on one report can
+          be missing from another.</p>
+      </div>
+      <div class="card">
+        <h3>Which model</h3>
+        <p class="small">FICO and VantageScore are different companies. FICO
+          alone has versions 2 through 10T still in use, and they do not agree
+          with each other.</p>
+      </div>
+      <div class="card">
+        <h3>Which industry</h3>
+        <p class="small">A car lender and a card issuer use scores tuned to
+          their own risk, on a different scale entirely.</p>
+      </div>
+    </div>
+
+    <h2>What gets pulled, and when</h2>
+    {% for use, models in by_use %}
+    <div class="card">
+      <h3>{{ use }}</h3>
+      {% for m in models %}
+      <div class="row">
+        <span class="tag teal">{{ m.range_label }}</span>
+        <span class="small strong">{{ m.name }}</span>
+        <span class="tiny" style="flex-basis:100%">{{ m.note }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h2>The questions people actually ask</h2>
+    <div class="stack">
+      {% for item in explainers %}
+      <div class="card soft">
+        <h3>{{ item.question }}</h3>
+        <p class="small">{{ item.answer }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="card warn">
+      <h3>Which is why this app does not show you a number</h3>
+      <p class="small">A number with no model, no bureau and no date attached
+        is not information. It is a guess that feels precise. What it shows you
+        instead is what is actually on your file, and what moves it.</p>
+    </div>
+
+    <a class="btn wide" href="{{ back }}">Back</a>
+  </div>
+</div>
+{% endblock %}
