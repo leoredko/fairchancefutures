@@ -89,7 +89,7 @@ PLUMBING = frozenset({
     "id", "clock", "clock_sort", "needs", "state_label", "case_state",
     "consent_scopes", "consent_recorded_on", "classification", "intake_answers",
     "ladder_rung", "ladder_status", "family_task", "report_pages",
-    "lesson_progress",
+    "lesson_progress", "report_review",
     "first_name", "helper_name", "timeline", "plan_step", "release_date",
     "display_name", "authorization_summary", "task", "mailing_deadline",
     "client_first_name", "din", "nysid", "facility",

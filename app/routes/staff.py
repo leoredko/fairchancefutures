@@ -62,6 +62,7 @@ from app.store import (
     review_log,
     stored_reports,
 )
+from app import walkthrough
 from app.session import require_coordinator
 from app.surfaces import Capability, Surface, require
 from app.triage import PATH, STATE_LABEL, Answers, Classification, State, classify
@@ -285,6 +286,11 @@ def client_detail(request: Request, client_id: str, created: int = 0):
              date.fromisoformat(client.release_date)),
          "rung_two": ladder_rung_available(plan, 2),
          "coordinator": coordinator,
+         # What the client said reading their own report. A claim, not a
+         # dispute: it arrives here to be checked against the paper, which is
+         # the same step everything arriving from outside goes through.
+         "client_flags": walkthrough.client_flags(
+             client, stored_reports(client_id, confirmed_only=True)),
          "review_summary": review_log().summary(),
          "just_created": bool(created),
          "helper_code": next(

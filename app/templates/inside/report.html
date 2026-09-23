@@ -40,6 +40,19 @@
     <a class="btn ghost" href="/inside/case">Back to my case</a>
 
     {% else %}
+    {# A report that has landed and not been read is the biggest thing that has
+       happened on this case. It interrupts. #}
+    {% if arrival %}
+    <div class="card good">
+      <h1 style="margin:0">{{ arrival.credit.headline }}</h1>
+      <p class="lede">{{ arrival.credit.body }}</p>
+      <p class="small">Your {{ arrival.report.bureau }} report is here and
+        nobody has read it with you yet. It takes about five minutes and it
+        explains itself as you go.</p>
+      <a class="btn wide" href="/inside/report/{{ arrival.index }}/read">Read it with me</a>
+    </div>
+    {% endif %}
+
     <h1>Your credit reports.</h1>
     <div class="card good">
       <h3>Your Social Security number is blacked out</h3>
@@ -69,6 +82,15 @@
       <div class="row">
         <h2>{{ report.bureau }}</h2>
         <span class="tag teal" style="margin-left:auto">{{ report.summary }}</span>
+      </div>
+      {% set state = read_state.get(loop.index0) %}
+      <div class="row">
+        {% if state and state.done %}
+        <span class="tag teal">You read this on {{ state.reviewed_on }}</span>
+        <a class="btn ghost" href="/inside/report/{{ loop.index0 }}/read">Go through it again</a>
+        {% else %}
+        <a class="btn" href="/inside/report/{{ loop.index0 }}/read">Read it with me</a>
+        {% endif %}
       </div>
       <p class="tiny">Pulled {{ report.pulled_on }} &middot; scanned in
         {{ report.scanned_on }} by {{ report.scanned_by }}</p>

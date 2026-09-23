@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}You have read your {{ report.bureau }} report{% endblock %}
+
+{% block head %}
+<style>
+  /* Transform only. Content must be readable at every instant, whether the
+     animation runs, is delayed, or is turned off entirely. */
+  .rise { animation: rise .7s cubic-bezier(.2,.7,.3,1) backwards; }
+  .rise-2 { animation-delay: .12s; }
+  @keyframes rise {
+    from { transform: translateY(14px); }
+    to   { transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <a class="pill" href="/inside/learn">Learn</a>
+    <span class="who">{{ report.bureau }}</span>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <div class="card good rise">
+      <h1 style="margin:0">{{ credit.headline }}</h1>
+      <p class="lede">{{ credit.body }}</p>
+      <p class="small">You have now read your own {{ report.bureau }} credit
+        report, start to finish. Whatever happens next on this case, that part
+        is done and it was the hard part.</p>
+      <p class="tiny">Pulled {{ report.pulled_on }} &middot; {{ report.source_label|lower }},
+        {{ report.scanned_on }} by {{ report.scanned_by }}</p>
+    </div>
+
+    <div class="card accent rise rise-2">
+      <h3>What you said, and what happens now</h3>
+      <p class="small">{{ what_next }}</p>
+      {% if flagged %}
+      <p class="small strong">You flagged {{ flagged|length }}
+        {{ 'item' if flagged|length == 1 else 'items' }}:</p>
+      {% for a in flagged %}
+      <div class="rung active">
+        <div>
+          <div class="small strong">{{ a.creditor }}</div>
+          <div class="tiny">{{ a.safe_number }}</div>
+        </div>
+      </div>
+      {% endfor %}
+      <p class="tiny">Your coordinator checks these against the paper before
+        anything is sent. That is the step that stops a letter going out about
+        the wrong account.</p>
+      {% endif %}
+    </div>
+
+    {% if unread %}
+    <div class="card">
+      <span class="strong">You have another report to read</span>
+      <span class="small">Each bureau keeps its own file, and they do not
+        match. An item on this one may be missing from the next.</span>
+      <a class="btn" href="/inside/report/{{ unread[0] }}/read">Read the next one</a>
+    </div>
+    {% endif %}
+
+    <div class="card soft">
+      <span class="strong">Any of this can be read again</span>
+      <span class="small">Your report stays on this screen, with your Social
+        Security number blacked out, for as long as your case is open.</span>
+      <div class="row">
+        <a class="btn ghost" href="/inside/report">My reports</a>
+        <a class="btn ghost" href="/inside/case">My case</a>
+        <a class="btn ghost" href="/inside/learn">The course</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -37,18 +37,30 @@ def test_queue_is_sorted_by_clock_not_by_name(staff):
     assert html.index("M. Alvarez") < html.index("T. Brennan")
 
 
-def test_the_tablet_can_read_a_report_but_never_send_one():
-    """Reading your own report is the point. Sending one is impossible: there
-    is no camera in this app and no route that would take a file."""
+def test_the_tablet_can_read_a_report_and_answer_about_it_but_never_send_one():
+    """Reading your own report is the point, and saying which items you do not
+    recognize is the point of reading it.
+
+    Sending a report is still impossible: there is no camera in this app and no
+    route that would take a file. The guard is on the words that mean a
+    document moving, not on the word report, because answering a question about
+    a report is exactly what this surface is for.
+    """
     from app.routes.inside import router
 
     reads = [r for r in router.routes if "GET" in getattr(r, "methods", set())]
     writes = [r for r in router.routes if "POST" in getattr(r, "methods", set())]
     assert any(r.path.endswith("/report") for r in reads)
-    assert not any(
-        word in r.path for r in writes
-        for word in ("report", "upload", "photo", "scan", "file")
-    ), [r.path for r in writes]
+    assert any("/read" in r.path for r in reads)
+
+    for route in writes:
+        for word in ("upload", "photo", "scan", "file", "send"):
+            assert word not in route.path, route.path
+
+    # And nothing on this surface takes a file, whatever the path is called.
+    for route in writes:
+        annotations = getattr(route.endpoint, "__annotations__", {})
+        assert "UploadFile" not in str(annotations.values()), route.path
 
 
 def test_the_tablet_still_cannot_upload_or_verify_identity():

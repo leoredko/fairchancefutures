@@ -19,6 +19,8 @@ from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
 from app import labels
 from app.deps import templates
 from app import lessons
+from app import report as report_module
+from app import walkthrough
 from app.questions import INSIDE_QUESTIONS, inside_question, teaching_for
 from app.session import require_role
 from app.store import (
@@ -302,9 +304,138 @@ def read_report(request: Request):
     # in" and then shown nothing has no way to tell the difference between
     # working and broken, so the waiting is named and attributed.
     waiting = pending_reports(caller.client.id)
+    # A report that has landed and not been read is the most important thing on
+    # this person's case. It interrupts rather than sitting in a list.
+    unread = walkthrough.unread_indexes(caller.client, reports)
     return templates.TemplateResponse(
         request, "inside/report.html",
-        {"client": caller.client, "reports": reports, "waiting": waiting},
+        {"client": caller.client, "reports": reports, "waiting": waiting,
+         "unread": unread,
+         "arrival": (
+             {"index": unread[0],
+              "report": reports[unread[0]],
+              "credit": report_module.arrival_credit(reports[unread[0]].source)}
+             if unread else None),
+         "read_state": {i: walkthrough.review(caller.client, i)
+                        for i, _ in enumerate(reports)}},
+    )
+
+
+@router.get("/report/{index:int}/read", response_class=HTMLResponse)
+def read_walk_resume(request: Request, index: int):
+    """Open the walk where it was left, same as a lesson."""
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    reports = stored_reports(caller.client.id, confirmed_only=True)
+    if not 0 <= index < len(reports):
+        return RedirectResponse("/inside/report", status_code=303)
+    at = walkthrough.review(caller.client, index)["section"]
+    sections = walkthrough.sections_for(reports[index])
+    return RedirectResponse(
+        f"/inside/report/{index}/read/{min(at, len(sections))}", status_code=303)
+
+
+@router.get("/report/{index:int}/read/{at:int}", response_class=HTMLResponse)
+def read_walk(request: Request, index: int, at: int):
+    """One section of your own report, with what that section means.
+
+    The teaching sits next to the person's own data rather than in a lesson
+    somewhere else, because that is the difference between homework and the
+    moment somebody actually understands what they are looking at.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    client = caller.client
+    reports = stored_reports(client.id, confirmed_only=True)
+    if not 0 <= index < len(reports):
+        return RedirectResponse("/inside/report", status_code=303)
+
+    report = reports[index]
+    sections = walkthrough.sections_for(report)
+    at = max(0, min(at, len(sections)))
+    with mutate():
+        walkthrough.record_section(client, index, at)
+
+    row = walkthrough.review(client, index)
+    return templates.TemplateResponse(
+        request, "inside/report_walk.html",
+        {"client": client, "report": report, "index": index, "at": at,
+         "section": sections[at] if at < len(sections) else None,
+         "is_final": at == len(sections),
+         "total": len(sections) + 1,
+         "question": walkthrough.FINAL_QUESTION,
+         "choices": walkthrough.FINAL_CHOICES,
+         "answered": row["answer"], "flagged": row["flagged"]},
+    )
+
+
+@router.post("/report/{index:int}/read/answer")
+async def read_walk_answer(request: Request, index: int):
+    """The person says whether they recognize their own file.
+
+    This is `recognizes_everything`, the one field that opens a statutory
+    clock, and it used to be answered on the staff form because the tablet
+    could not show a report. It can now, and the person looking at the account
+    is the only human alive who knows whether they opened it.
+
+    It does not send a letter. What the person raises is a claim, and it goes
+    to the coordinator to check against the paper, the same as anything else
+    arriving from outside.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    client = caller.client
+    reports = stored_reports(client.id, confirmed_only=True)
+    if not 0 <= index < len(reports):
+        return RedirectResponse("/inside/report", status_code=303)
+
+    form = await request.form()
+    answer = (form.get("answer") or "").strip()
+    if answer not in dict(walkthrough.FINAL_CHOICES):
+        return RedirectResponse(
+            f"/inside/report/{index}/read", status_code=303)
+    flagged = [int(v) for v in form.getlist("flagged") if str(v).isdigit()]
+
+    first_time = not walkthrough.has_been_read(client, index)
+    with mutate():
+        walkthrough.record_answer(
+            client, index, answer, flagged, date.today().isoformat())
+        if first_time:
+            client.timeline.append({
+                "text": f"You read your {reports[index].bureau} report and said "
+                        f"what you did and did not recognize",
+                "actor": "You",
+                "on": date.today().strftime("%B %-d"),
+                "done": True,
+            })
+            if answer in ("some_not_mine", "not_sure"):
+                client.needs = "Client flagged items to check"
+    return RedirectResponse(f"/inside/report/{index}/read/done",
+                            status_code=303)
+
+
+@router.get("/report/{index:int}/read/done", response_class=HTMLResponse)
+def read_walk_done(request: Request, index: int):
+    """The end of the arc that started with a letter going out months ago."""
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    client = caller.client
+    reports = stored_reports(client.id, confirmed_only=True)
+    if not 0 <= index < len(reports):
+        return RedirectResponse("/inside/report", status_code=303)
+
+    report = reports[index]
+    row = walkthrough.review(client, index)
+    return templates.TemplateResponse(
+        request, "inside/report_read.html",
+        {"client": client, "report": report, "index": index,
+         "answer": row["answer"],
+         "what_next": walkthrough.ANSWER_NEXT.get(row["answer"], ""),
+         "flagged": [report.accounts[i] for i in row["flagged"]
+                     if 0 <= i < len(report.accounts)],
+         "credit": report_module.arrival_credit(report.source),
+         "unread": walkthrough.unread_indexes(
+             client, reports)},
     )
 
 

@@ -74,6 +74,9 @@ class Client:
     plan_step: str = ""
     family_task: dict = field(default_factory=dict)
     report_pages: list[str] = field(default_factory=list)
+    # Where this person has got to reading each of their own reports, and what
+    # they said about it. Keyed by the report's position. See app/walkthrough.py.
+    report_review: dict = field(default_factory=dict)
     # Where this person has got to in the credit course, per lesson.
     # A plain dict so it survives the JSON round trip and crosses to the
     # standalone build without a schema. See app/lessons.py.

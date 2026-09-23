@@ -29,6 +29,30 @@
           carries it to you. Scanning it here is what puts it on their tablet.</p>
       </div>
 
+      {# The one thing on this page nobody else could have told the coordinator.
+         The client is the only person alive who knows whether they opened an
+         account, so their answer leads rather than sitting in a footnote. #}
+      {% if client_flags %}
+      <div class="card accent">
+        <h3>{{ client.first_name }} read the report and flagged
+          {{ client_flags|length }}
+          {{ 'item' if client_flags|length == 1 else 'items' }}</h3>
+        <p class="small">Check these against the paper before drafting. This is
+          the client's claim, not a confirmed error, and it is the answer to the
+          one question that opens a statutory clock.</p>
+        {% for f in client_flags %}
+        <div class="rung active">
+          <div>
+            <div class="small strong">{{ f.creditor }}
+              {% if f.unsure %}<span class="tag amber">Wants to go through it with you</span>{% endif %}</div>
+            <div class="tiny">{{ f.bureau }}{% if f.safe_number %} &middot; {{ f.safe_number }}{% endif %}
+              &middot; read {{ f.reviewed_on }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       {# The coordinator holds this file already. What is worth showing them is
          not a list of what Bridge is keeping back, which would be theatre, but
          where these fields do stop travelling. #}
