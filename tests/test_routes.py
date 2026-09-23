@@ -37,18 +37,30 @@ def test_queue_is_sorted_by_clock_not_by_name(staff):
     assert html.index("M. Alvarez") < html.index("T. Brennan")
 
 
-def test_the_tablet_can_read_a_report_but_never_send_one():
-    """Reading your own report is the point. Sending one is impossible: there
-    is no camera in this app and no route that would take a file."""
+def test_the_tablet_can_read_a_report_and_answer_about_it_but_never_send_one():
+    """Reading your own report is the point, and saying which items you do not
+    recognize is the point of reading it.
+
+    Sending a report is still impossible: there is no camera in this app and no
+    route that would take a file. The guard is on the words that mean a
+    document moving, not on the word report, because answering a question about
+    a report is exactly what this surface is for.
+    """
     from app.routes.inside import router
 
     reads = [r for r in router.routes if "GET" in getattr(r, "methods", set())]
     writes = [r for r in router.routes if "POST" in getattr(r, "methods", set())]
     assert any(r.path.endswith("/report") for r in reads)
-    assert not any(
-        word in r.path for r in writes
-        for word in ("report", "upload", "photo", "scan", "file")
-    ), [r.path for r in writes]
+    assert any("/read" in r.path for r in reads)
+
+    for route in writes:
+        for word in ("upload", "photo", "scan", "file", "send"):
+            assert word not in route.path, route.path
+
+    # And nothing on this surface takes a file, whatever the path is called.
+    for route in writes:
+        annotations = getattr(route.endpoint, "__annotations__", {})
+        assert "UploadFile" not in str(annotations.values()), route.path
 
 
 def test_the_tablet_still_cannot_upload_or_verify_identity():
@@ -136,22 +148,48 @@ def test_triage_classifies_and_reorders_the_queue(staff):
     assert whitfield.clock_sort < 0
 
 
-def test_staff_never_receive_the_sensitive_fields(staff):
+def test_the_tablet_and_the_helper_never_receive_the_sensitive_fields():
+    """The boundary that is real is physical.
+
+    A shared dayroom tablet and a helper's phone are the two places a Social
+    Security number cannot appear. This used to apply to the coordinator too,
+    which was defending the wrong boundary: they hold the file already.
+    """
+    import app.store as store
+
+    record = asdict(store.STATE.clients["m-alvarez"])
+    record["ssn"] = "078-05-1120"
+
+    for surface in (Surface.INSIDE, Surface.FAMILY):
+        view = for_surface(record, surface, {"report_sharing"})
+        for field in NEVER_RENDERED:
+            assert field not in view.fields, f"{surface}: {field}"
+        assert "ssn" in view.withheld
+
+
+def test_the_coordinator_sees_the_file_they_already_hold(staff):
+    """They request the birth certificate and hold the sentence and commitment
+    paperwork. Hiding the number from them protects nobody."""
     import app.store as store
 
     record = store.STATE.clients["m-alvarez"]
     record.ssn = "078-05-1120"
-    record.full_account_number = "4147202398761111"
-
-    html = staff.get("/staff/m-alvarez").text
-    # The values are absent from the rendered page, not merely styled away.
-    assert record.ssn not in html
-    assert record.full_account_number not in html
 
     view = for_surface(asdict(record), Surface.STAFF, {"report_sharing"})
-    for field in NEVER_RENDERED:
-        assert field not in view.fields
-    assert "ssn" in view.withheld
+    assert view.get("ssn") == "078-05-1120"
+    assert "ssn" not in view.withheld
+
+
+def test_a_scanned_report_stays_truncated_even_for_the_coordinator(staff):
+    """A separate protection from the one above, and it survives it. The
+    disclosure is requested truncated, so that is what the document says."""
+    import app.store as store
+
+    staff.post("/staff/m-alvarez/report",
+               data={"bureau": "Equifax", "consumer_name": "M. Alvarez",
+                     "ssn_on_document": "078-05-1120", "accounts": "Cap One | 1111"})
+    stored = store.STATE.reports["m-alvarez"][-1]
+    assert stored["ssn_on_document"] == "XXX-XX-1120"
 
 
 def test_consent_off_hides_the_report_from_staff(staff):
@@ -179,18 +217,39 @@ def test_letter_leaves_the_ssn_blank_for_a_pen(staff):
     assert "Midland Funding" in body
 
 
-def test_ladder_escalates_one_rung_on_a_kickback(staff):
-    import app.store as store
-    assert store.STATE.clients["m-alvarez"].ladder_rung == 1
-    staff.post("/staff/m-alvarez/ladder/escalate")
-    assert store.STATE.clients["m-alvarez"].ladder_rung == 2
-    assert store.STATE.clients["m-alvarez"].ladder_status["1"] == "Kicked back"
+def test_the_client_page_says_what_is_blocking_the_id(staff):
+    """This replaced the four-rung access ladder.
+
+    The ladder modelled what a bureau would demand, which no public source
+    establishes. What documents somebody actually has is knowable, is already
+    reviewed quarterly by their coordinator, and has a real deadline attached.
+    """
+    html = staff.get("/staff/m-alvarez").text
+    assert "What is blocking the ID" in html
+    # The birth certificate is the one with no deadline of its own, which is
+    # exactly why it is the one that gets left.
+    assert "Birth certificate" in html
+    assert "10 weeks" in html
+    # And the page says which 120 days it means, because there are two and
+    # mixing them up costs somebody their ID.
+    assert "120 days after release" in html
 
 
-def test_offline_writes_land_in_the_sync_queue(inside):
-    inside.post("/inside/intake/1", data={"has_bank_account": "no"})
-    payload = inside.get("/api/sync").json()
-    assert payload["synced"] >= 1
+def test_the_escalate_route_is_gone(staff):
+    """Climbing a rung was the ladder's only verb. Nothing should answer it."""
+    assert staff.post("/staff/m-alvarez/ladder/escalate").status_code == 404
+
+
+def test_every_intake_answer_is_written_and_can_be_read_back(inside):
+    """Question one promises the answer saves as it is given. This is the
+    receipt. It used to be an /api/sync endpoint describing an offline queue
+    draining, which never happened: every entry was marked synced as it was
+    created, so it demonstrated a thing that did not occur."""
+    inside.post("/inside/intake/1", data={"knows_score": "no"})
+    payload = inside.get("/api/saves").json()
+    assert payload["saved"] >= 1
+    assert payload["writes"][-1]["field"] == "knows_score"
+    assert payload["writes"][-1]["at"]
 
 
 def test_none_is_exclusive_server_side(staff):
@@ -293,8 +352,11 @@ def test_no_database_column_names_reach_a_screen(staff):
     for raw in ("full_account_number", "report_summary", "case_state",
                 "clock_sort", "ladder_rung"):
         assert raw not in html, raw
+    # The where-this-stops card names the fields in words, which is what proves
+    # the label registry is being used rather than the column names.
     assert "Social Security number" in html
     assert "Full account numbers" in html
+    assert "Date of birth" in html
 
 
 def test_the_counselor_can_see_the_din_and_the_facility(staff):
@@ -302,5 +364,73 @@ def test_the_counselor_can_see_the_din_and_the_facility(staff):
     DIN has to be on it. They were being reported as withheld, which was
     wrong and confusing."""
     html = staff.get("/staff/m-alvarez").text
-    assert "Facility" not in html.split("Not shared with you")[1][:400]
-    assert "DIN" not in html.split("Not shared with you")[1][:400]
+    assert "Facility" not in html.split("Where this stops")[1][:400]
+    assert "DIN" not in html.split("Where this stops")[1][:400]
+
+
+def test_a_seeded_client_with_a_live_case_lands_on_it_not_on_question_one(client):
+    """A person mid-dispute signing in and being asked "do you know what your
+    credit score is?" reads as an app that has lost their file. The seeded
+    caseload carries the answers those people would have given."""
+    signed_in = sign_in_inside(client, identifier="28A1187")
+    landed = signed_in.get("/inside", follow_redirects=False)
+    assert landed.headers["location"] == "/inside/case"
+
+
+def test_the_one_client_who_has_not_started_still_lands_on_intake(client):
+    """J. Whitfield is the fresh case on purpose, so he keeps question one."""
+    signed_in = sign_in_inside(client, identifier="28A0931")
+    landed = signed_in.get("/inside", follow_redirects=False)
+    assert "/inside/intake/" in landed.headers["location"]
+
+
+def test_seeded_intake_answers_prefill_the_triage_form(staff):
+    """The coordinator opens triage on a seeded client and the tablet answers
+    are already there, which is the whole point of the two question sets."""
+    html = staff.get("/staff/t-brennan/triage").text
+    checked = html.split('value="many"')[1].split(">")[0]
+    assert "checked" in checked
+
+
+def test_every_link_on_the_coordinator_queue_resolves(client):
+    """The queue linked to /roles from the first build and the route never
+    existed, so the main staff screen carried a dead link that pytest could not
+    see. This walks the nav rather than trusting it."""
+    import re
+
+    html = client.get("/staff").text
+    for href in set(re.findall(r'href="(/[^"#]*)"', html)):
+        assert client.get(href).status_code == 200, href
+
+
+def test_roles_is_generated_from_the_capability_table(client):
+    """Not a hand-written slide. If a capability moves in app/surfaces.py this
+    page moves with it, which is the whole reason to render it."""
+    import html as html_module
+
+    from app.surfaces import CAPABILITIES, Capability, Surface
+    from app import labels
+
+    # Unescaped, because several labels carry an apostrophe and the page is
+    # right to escape it. Comparing raw text to escaped HTML fails for the
+    # wrong reason.
+    page = html_module.unescape(client.get("/roles").text)
+    for capability in CAPABILITIES[Surface.INSIDE]:
+        assert labels.capability(capability) in page, capability
+    # And it says what the tablet cannot do, with the reason.
+    assert labels.capability(Capability.UPLOAD_FILE) in page
+    assert "no camera roll" in page or "no open web" in page
+
+
+def test_roles_names_the_dayroom_boundary_rather_than_a_blanket_rule(client):
+    html = client.get("/roles").text
+    assert "Social Security number" in html
+    assert "dayroom" in html
+    assert "coordinator's desk is neither" in html
+
+
+def test_no_enum_value_reaches_the_roles_page(client):
+    html = client.get("/roles").text
+    for raw in ("upload_file", "verify_identity", "manage_caseload",
+                "open_account", "view_ssn", "full_account_number"):
+        assert raw not in html, raw

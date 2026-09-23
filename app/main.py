@@ -19,7 +19,7 @@ from fastapi.responses import (
 )
 from fastapi.staticfiles import StaticFiles
 
-from app.authorization import FORBIDDEN_SCOPES, NotAuthorized, RUNG_DETAIL, Rung
+from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
 from app.sources import FACTS, OPEN_QUESTIONS
 from app import labels
@@ -128,6 +128,41 @@ def citations(request: Request):
     )
 
 
+@app.get("/roles", response_class=HTMLResponse)
+def roles(request: Request):
+    """Who can do what, rendered from the capability table itself.
+
+    The coordinator's queue has linked here since the first build and the route
+    never existed, so it was a dead link on the main staff screen. Worth
+    building rather than deleting: the capability table is the product spec, and
+    a page generated from it cannot drift from the behaviour the router
+    enforces.
+    """
+    from app import labels
+    from app.authorization import FORBIDDEN_SCOPES
+    from app.redaction import SENSITIVE
+
+    rows = []
+    for surface in Surface:
+        allowed = CAPABILITIES[surface]
+        rows.append({
+            "role": labels.role(surface.value),
+            "device": labels.device(surface.value),
+            "can": sorted(labels.capability(c) for c in allowed),
+            "cannot": sorted(
+                ({"label": labels.capability(c), "reason": DENIAL_REASON[c]}
+                 for c in DENIAL_REASON if c not in allowed),
+                key=lambda row: row["label"],
+            ),
+        })
+    return templates.TemplateResponse(
+        request, "roles.html",
+        {"surfaces": rows,
+         "sensitive": sorted(labels.field(f) for f in SENSITIVE),
+         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
+    )
+
+
 @app.get("/metrics", response_class=HTMLResponse)
 def metrics(request: Request):
     log = review_log()
@@ -137,16 +172,23 @@ def metrics(request: Request):
     )
 
 
-@app.get("/api/sync")
-def sync() -> JSONResponse:
-    """What the tablet flushes when it finds a connection.
+@app.get("/api/saves")
+def saves() -> JSONResponse:
+    """Every answer this build has written, and when.
 
-    Real offline-first would queue on the device. This endpoint exists so the
-    demo can show the queue draining rather than describing it.
+    This used to be called a sync queue and it described an offline-first
+    tablet flushing a local queue on reconnect. That is not what happens: the
+    tablet is connected and a write lands immediately. Pretending otherwise
+    made the endpoint a demo of a thing that never occurred, since every entry
+    was marked synced in the same breath as it was created.
+
+    What it is now is the receipt for the promise intake makes on question one,
+    that every answer saves as it is given. That promise is true, and this is
+    how you check it.
     """
     return JSONResponse({
-        "pending": [q for q in STATE.sync_queue if not q.get("synced")],
-        "synced": len([q for q in STATE.sync_queue if q.get("synced")]),
+        "saved": len(STATE.write_log),
+        "writes": STATE.write_log[-25:],
     })
 
 

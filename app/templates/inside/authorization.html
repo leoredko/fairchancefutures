@@ -4,6 +4,7 @@
 <div class="tablet">
   <div class="bar">
     <span class="wordmark">Bridge</span>
+    <a class="pill" href="/inside/learn">Learn</a>
     <span class="who">{{ client.display_name }} &middot; Kiosk 04</span>
       </div>
 
@@ -13,8 +14,8 @@
     {% if auth and auth.is_live() %}
     <div class="card">
       <span class="strong">{{ auth.helper_name }}, since {{ auth.signed_on }}</span>
-      <span class="small">Expires {{ auth.expires_on }}. Rung {{ auth.rung.value }} of
-        the access ladder: {{ rung_label }}.</span>
+      <span class="small">Expires {{ auth.expires_on }}. Acting under a
+        {{ standing_label|lower }}.</span>
       <div class="row">
         {% for s in scopes %}<span class="tag">{{ s }}</span>{% endfor %}
       </div>

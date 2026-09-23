@@ -41,6 +41,10 @@ a run, and not a stretch of their own number.
 
 ## A walkthrough that shows the whole thing
 
+Start with the course if you only have five minutes. It is the part of the
+product that matters most and the part that needs no setup: sign in on the
+tablet with any DIN starting 28 and open **Learn**.
+
 1. **Coordinator** opens the staff app. There is no sign-in: it opens on the
    queue, because they are already signed in to the vendor case plan system.
    Use **New intake** to add somebody, and note the helper code it issues.
@@ -54,7 +58,16 @@ a run, and not a stretch of their own number.
 5. **Helper** opens the phone app with the code, agrees to the scoped
    authorization, and prints the packet. The prisoner ID is on the envelope
    instructions, which is what the bureaus ask for on mail from a facility.
-6. **That person** cancels the authorization from the tablet. The helper loses
+6. **That person** opens **My reports** on the tablet. The report announces
+   itself and names who got it here, then walks section by section with the
+   teaching attached, ending on "does anything on here look wrong to you". Tick
+   an item that is not theirs.
+7. **Coordinator** reloads the client page. What the person flagged is at the
+   top, as a claim to check against the paper rather than a dispute already in
+   flight.
+8. **That person** works through a lesson or two from **Learn**, signs out
+   mid-lesson, and signs back in. It opens on the screen they left.
+9. **That person** cancels the authorization from the tablet. The helper loses
    access on their next tap.
 
 Close every tab and reopen them. Everything is still there.

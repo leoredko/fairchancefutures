@@ -52,8 +52,9 @@ BUREAUS: tuple[Bureau, ...] = (
         source_url="https://www.experian.com/blogs/ask-experian/credit-education/"
                    "faqs/instructions-for-disputing-by-mail/",
         note="Experian also asks for a copy of a government-issued ID and a "
-             "proof of current address with a mailed dispute. That is rung 2 of "
-             "the access ladder arriving in the envelope.",
+             "proof of current address with every mailed dispute. This is the "
+             "evidence that killed the access ladder: the cheapest route was "
+             "never available here in the first place.",
     ),
     Bureau(
         key="transunion",

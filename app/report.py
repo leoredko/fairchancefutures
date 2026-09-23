@@ -41,7 +41,8 @@ class Source(str, Enum):
     PDF = "pdf"
     TYPED = "typed"
     PHOTO = "photo"
-    SCAN = "scan"      # the coordinator's own scanner, at the desk
+    SCAN = "scan"           # the coordinator's own scanner, at the desk
+    CLIENT_DELIVERED = "client_delivered"   # the person carried the paper in
 
 
 SOURCE_LABEL: dict[Source, str] = {
@@ -49,13 +50,47 @@ SOURCE_LABEL: dict[Source, str] = {
     Source.TYPED: "Typed in by the helper",
     Source.PHOTO: "Photographed by the helper",
     Source.SCAN: "Scanned at the coordinator's desk",
+    Source.CLIENT_DELIVERED: "Brought in by the client and scanned at the desk",
+}
+
+# Who to credit when the report lands, in the person's own words. There are
+# three ways a report gets here and only one of them is the program doing it
+# for somebody. Naming which one happened is the difference between a file
+# appearing and a thing a person accomplished.
+ARRIVAL_CREDIT: dict[Source, dict] = {
+    Source.CLIENT_DELIVERED: {
+        "headline": "You did this.",
+        "body": "You asked for your report, it came back to the facility, and "
+                "you carried it to your coordinator. Most people never get "
+                "this far, inside or out.",
+    },
+    Source.PDF: {
+        "headline": "Your helper came through.",
+        "body": "They received it, sent it in, and your coordinator checked it "
+                "against the paper before it reached this screen.",
+    },
+    Source.TYPED: {
+        "headline": "Your helper came through.",
+        "body": "They sat down and typed the whole thing in by hand, line by "
+                "line. That is an evening of somebody's life spent on you.",
+    },
+    Source.PHOTO: {
+        "headline": "Your helper came through.",
+        "body": "They photographed every page and sent them in, and your "
+                "coordinator read them with you and typed the accounts up.",
+    },
+    Source.SCAN: {
+        "headline": "Your report is here.",
+        "body": "Your coordinator handled this one end to end, because the "
+                "paperwork route does not wait for anybody to be available.",
+    },
 }
 
 # Which routes land finished, and which land on somebody's desk. A coordinator
 # scanning at their own desk confirms as they go, so that one is done. Anything
 # arriving from outside is checked by a human before it can become a dispute
 # letter about an account number nobody verified.
-SELF_CONFIRMING = frozenset({Source.SCAN})
+SELF_CONFIRMING = frozenset({Source.SCAN, Source.CLIENT_DELIVERED})
 
 SOURCE_NEXT_STEP: dict[Source, str] = {
     Source.PDF: "Your coordinator reads the fields off the PDF and confirms them.",
@@ -64,7 +99,13 @@ SOURCE_NEXT_STEP: dict[Source, str] = {
                   "the accounts in. This is the slowest route, which is why it "
                   "is the last one offered.",
     Source.SCAN: "Confirmed at the desk.",
+    Source.CLIENT_DELIVERED: "Read at the desk with the client holding the "
+                             "paper. Confirmed as it was typed.",
 }
+
+
+def arrival_credit(source: str) -> dict:
+    return ARRIVAL_CREDIT.get(Source(source), ARRIVAL_CREDIT[Source.SCAN])
 
 
 def mask_ssn(value: str) -> str:

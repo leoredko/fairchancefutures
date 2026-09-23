@@ -19,8 +19,8 @@ from pathlib import Path
 
 from app.authorization import (
     Authorization,
-    Rung,
     Scope,
+    Standing,
     default_helper_authorization,
 )
 from app.letters import Draft, ReviewLog
@@ -62,8 +62,6 @@ class Client:
     consent_scopes: list[str] = field(default_factory=lambda: ["report_sharing"])
     consent_recorded_on: str = ""
     helper_name: str | None = None
-    ladder_rung: int = 1
-    ladder_status: dict[str, str] = field(default_factory=dict)
     intake_answers: dict = field(default_factory=dict)
     classification: dict | None = None
     timeline: list[dict] = field(default_factory=list)
@@ -72,9 +70,23 @@ class Client:
     collections_count: int = 0
     last_pulled: str = ""
     plan_step: str = ""
-    lesson: str = ""
     family_task: dict = field(default_factory=dict)
     report_pages: list[str] = field(default_factory=list)
+    # The record attached to this DIN, as the lookup returns it. Facility and
+    # the sentence dates come from here rather than from a person retyping them
+    # on a metered tablet. See app/doccs.py; note it carries no date of birth,
+    # because the public lookup does not return one.
+    doccs_record: dict = field(default_factory=dict)
+    # Which field the release date was taken from, so a screen can say so
+    # rather than implying somebody goes home on their parole eligibility date.
+    release_date_source: str = ""
+    # Where this person has got to reading each of their own reports, and what
+    # they said about it. Keyed by the report's position. See app/walkthrough.py.
+    report_review: dict = field(default_factory=dict)
+    # Where this person has got to in the credit course, per lesson.
+    # A plain dict so it survives the JSON round trip and crosses to the
+    # standalone build without a schema. See app/lessons.py.
+    lesson_progress: dict = field(default_factory=dict)
     # Never rendered by any surface. Present so the redaction tests have
     # something real to withhold.
     ssn: str = "***-**-****"
@@ -93,7 +105,10 @@ class State:
     authorizations: dict[str, dict] = field(default_factory=dict)
     drafts: dict[str, list[dict]] = field(default_factory=dict)
     review_log: dict = field(default_factory=lambda: {"reviewed": 0, "edited": 0})
-    sync_queue: list[dict] = field(default_factory=list)
+    # Every answer, with what was saved and when. Not an offline queue: the
+    # tablet is connected and writes land immediately. This is the receipt for
+    # the promise intake makes on question one.
+    write_log: list[dict] = field(default_factory=list)
 
 
 STATE = State()
@@ -112,7 +127,7 @@ def _serialize() -> dict:
         "authorizations": STATE.authorizations,
         "drafts": STATE.drafts,
         "review_log": STATE.review_log,
-        "sync_queue": STATE.sync_queue,
+        "write_log": STATE.write_log,
     }
 
 
@@ -134,7 +149,7 @@ def load() -> bool:
     STATE.authorizations = raw.get("authorizations", {})
     STATE.drafts = raw.get("drafts", {})
     STATE.review_log = raw.get("review_log", {"reviewed": 0, "edited": 0})
-    STATE.sync_queue = raw.get("sync_queue", [])
+    STATE.write_log = raw.get("write_log", raw.get("sync_queue", []))
     return True
 
 
@@ -169,7 +184,7 @@ def get_authorization(client_id: str) -> Authorization | None:
         client_id=raw["client_id"],
         helper_name=raw["helper_name"],
         scopes=frozenset(Scope(s) for s in raw["scopes"]),
-        rung=Rung(raw["rung"]),
+        standing=Standing(raw.get("standing", Standing.SIGNED_FORM.value)),
         signed_on=date.fromisoformat(raw["signed_on"]),
         expires_on=date.fromisoformat(raw["expires_on"]),
         revoked_on=date.fromisoformat(raw["revoked_on"]) if raw.get("revoked_on") else None,
@@ -181,7 +196,7 @@ def put_authorization(auth: Authorization) -> None:
         "client_id": auth.client_id,
         "helper_name": auth.helper_name,
         "scopes": sorted(s.value for s in auth.scopes),
-        "rung": int(auth.rung),
+        "standing": auth.standing.value,
         "signed_on": auth.signed_on.isoformat(),
         "expires_on": auth.expires_on.isoformat(),
         "revoked_on": auth.revoked_on.isoformat() if auth.revoked_on else None,
@@ -285,18 +300,6 @@ def add_draft(draft: Draft) -> dict:
 # seed
 # --------------------------------------------------------------------------
 
-def _ladder(cleared_at: int) -> dict[str, str]:
-    labels = {
-        1: "Worked" if cleared_at >= 1 else "Not needed",
-        2: "Not needed",
-        3: "Not needed",
-        4: "Not needed",
-    }
-    for rung in range(1, cleared_at):
-        labels[rung] = "Kicked back"
-    labels[cleared_at] = "Worked"
-    return {str(k): v for k, v in labels.items()}
-
 
 def seed() -> None:
     """The caseload from screens 07 through 09, as data.
@@ -323,13 +326,17 @@ def seed() -> None:
         clock_sort=118,
         consent_recorded_on=(today - timedelta(days=205)).isoformat(),
         helper_name="Denise",
-        ladder_rung=1,
-        ladder_status=_ladder(1),
-        report_summary="Thin file, two disputed items",
+report_summary="Thin file, two disputed items",
         collections_count=0,
         last_pulled=(today - timedelta(days=186)).isoformat(),
         plan_step="Dispute letter mailed, waiting on the bureau",
-        lesson="Lesson 3, what a secured card actually is. Four minutes.",
+        # Answered on the tablet months ago. Without these he signs in to a
+        # live dispute and lands on intake question one.
+        intake_answers={
+            "knows_score": "no", "knows_how": "no",
+            "ever_had_account": "yes", "has_bank_account": "no",
+            "collections": "none_found", "obligations": ["none"],
+        },
         flagged_items=[
             {"creditor": "Midland Funding", "last_four": "4471",
              "reason": "never opened this account"},
@@ -364,8 +371,7 @@ def seed() -> None:
             needs="Dispute letter to approve", clock="Releases in 9 days",
             clock_sort=9, helper_name="Rosa",
             consent_recorded_on=(today - timedelta(days=21)).isoformat(),
-            ladder_rung=1, ladder_status=_ladder(1),
-            report_summary="Thin file, two disputed items",
+report_summary="Thin file, two disputed items",
             last_pulled=(today - timedelta(days=22)).isoformat(),
             collections_count=0,
             flagged_items=[
@@ -375,6 +381,11 @@ def seed() -> None:
                  "reason": "not mine, wrong middle initial"},
             ],
             plan_step="Two items flagged. Dispute letter not drafted yet.",
+            intake_answers={
+                "knows_score": "roughly", "knows_how": "some_idea",
+                "ever_had_account": "yes", "has_bank_account": "yes",
+                "collections": "none_found", "obligations": ["child_support"],
+            },
         ),
         Client(
             id="j-whitfield", din="28A0931", nysid="00000033M",
@@ -384,8 +395,7 @@ def seed() -> None:
             needs="No report on file", clock="Releases in 21 days",
             clock_sort=21, helper_name=None,
             consent_recorded_on=(today - timedelta(days=4)).isoformat(),
-            ladder_rung=1, ladder_status=_ladder(1),
-            plan_step="Triage session not yet held",
+plan_step="Triage session not yet held",
         ),
         Client(
             id="r-osei", din="28C2204", nysid="00000044J",
@@ -395,10 +405,14 @@ def seed() -> None:
             needs="Bureau answer overdue", clock="4 days past due",
             clock_sort=-4, helper_name="Ama",
             consent_recorded_on=(today - timedelta(days=90)).isoformat(),
-            ladder_rung=2, ladder_status=_ladder(2),
-            report_summary="No file found on two of three bureaus",
+report_summary="No file found on two of three bureaus",
             last_pulled=(today - timedelta(days=40)).isoformat(),
             plan_step="Builder loan opens after the third bureau answers",
+            intake_answers={
+                "knows_score": "no", "knows_how": "no",
+                "ever_had_account": "no", "has_bank_account": "no",
+                "collections": "unknown", "obligations": ["restitution"],
+            },
         ),
         Client(
             id="t-brennan", din="28D0775", nysid="00000055H",
@@ -408,11 +422,15 @@ def seed() -> None:
             needs="Missed 2 check-ins", clock="Out 6 weeks",
             clock_sort=200, helper_name=None,
             consent_recorded_on=(today - timedelta(days=160)).isoformat(),
-            ladder_rung=4, ladder_status=_ladder(4),
-            report_summary="Full file, nine collections accounts",
+report_summary="Full file, nine collections accounts",
             collections_count=9,
             last_pulled=(today - timedelta(days=70)).isoformat(),
             plan_step="Debt triage, then boosters. Expectation set in years.",
+            intake_answers={
+                "knows_score": "roughly", "knows_how": "yes",
+                "ever_had_account": "yes", "has_bank_account": "yes",
+                "collections": "many", "obligations": ["court_fines"],
+            },
         ),
     ]
 
@@ -427,7 +445,7 @@ def seed() -> None:
     STATE.drafts = {}
     STATE.reports = {}
     STATE.review_log = {"reviewed": 0, "edited": 0}
-    STATE.sync_queue = []
+    STATE.write_log = []
     _seed_accounts()
 
 

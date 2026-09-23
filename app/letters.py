@@ -11,7 +11,7 @@ still sitting on the Experian and TransUnion files. Drafting one letter and
 calling the job done was the single most misleading thing in the first build.
 
 Every legal sentence in a template comes from app/sources.py, which carries the
-primary source and the date somebody checked it. Screen 09 asks for one number:
+primary source and the date somebody checked it. The client screen asks for one number:
 how often does the reviewer edit before approving. ReviewLog is where it comes
 from.
 """
@@ -200,7 +200,7 @@ def draft_report_request(
     """One request to the centralized source covers all three bureaus.
 
     This is the route that works with no internet, which is the whole reason it
-    is the first rung of the ladder and the whole reason the inside surface
+    is the cheapest route in and the whole reason the inside surface
     exists.
     """
     today = today or date.today()

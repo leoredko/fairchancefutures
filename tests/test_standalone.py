@@ -229,3 +229,49 @@ def test_only_the_desk_scan_lands_confirmed(page: str):
     fields become a dispute letter."""
     assert 'function selfConfirming(source) { return source === "scan"; }' in page
     assert "const ready = confirmedReports(c);" in page
+
+
+# --------------------------------------------------------------------------
+# the course
+# --------------------------------------------------------------------------
+
+def test_the_whole_course_made_it_across(payload):
+    """The single file is what gets handed to somebody. Shipping it without the
+    part of the product that matters most would be the worst kind of drift."""
+    from app.lessons import CURRICULUM
+
+    built = {l["slug"]: l for l in payload["lessons"]}
+    assert len(built) == len(CURRICULUM)
+    for lesson in CURRICULUM:
+        assert lesson.slug in built, lesson.slug
+        row = built[lesson.slug]
+        assert row["title"] == lesson.title
+        assert len(row["cards"]) == len(lesson.cards)
+        assert row["check"]["answer"] == lesson.check.answer
+
+
+def test_every_citation_is_resolved_at_build_time(payload):
+    """The shell should never have to know what a fact key is. A card that
+    states a rule crosses with its source line already rendered."""
+    from app.lessons import CURRICULUM
+
+    built = {l["slug"]: l for l in payload["lessons"]}
+    for lesson in CURRICULUM:
+        for i, card in enumerate(lesson.cards):
+            crossed = built[lesson.slug]["cards"][i]
+            assert crossed["cited"] == card.cited, f"{lesson.slug} card {i}"
+            if card.fact_key:
+                assert crossed["url"].startswith("https://")
+
+
+def test_the_course_is_reachable_from_the_tablet_bar(pages):
+    """Always present is the whole design, in the single file too."""
+    assert '#/inside/learn' in pages["inside"]
+
+
+def test_the_standalone_keeps_lesson_progress_per_card(pages):
+    """Same reason as the server app: a tablet session ends when the dayroom
+    closes, and starting a lesson over is how somebody stops bothering."""
+    shell = pages["inside"]
+    assert "function markCard" in shell
+    assert "Math.max(row.card || 0, n)" in shell

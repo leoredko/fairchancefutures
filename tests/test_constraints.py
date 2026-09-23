@@ -12,12 +12,12 @@ import pytest
 
 from app.authorization import (
     Authorization,
+    STANDING_DETAIL,
     FORBIDDEN_SCOPES,
     NotAuthorized,
-    Rung,
     Scope,
+    Standing,
     default_helper_authorization,
-    next_rung,
     require_scope,
 )
 from app.surfaces import CAPABILITIES, Capability, Surface, SurfaceDenied, can, require
@@ -78,7 +78,7 @@ def test_a_grant_is_scoped_not_general():
     mail_only = Authorization(
         client_id="c1", helper_name="Denise",
         scopes=frozenset({Scope.RECEIVE_MAIL}),
-        rung=Rung.PLAIN_REQUEST,
+        standing=Standing.SIGNED_FORM,
         signed_on=date.today(),
         expires_on=date.today() + timedelta(days=30),
     )
@@ -98,7 +98,7 @@ def test_forbidden_scopes_cannot_be_constructed():
             Authorization(
                 client_id="c1", helper_name="D",
                 scopes=frozenset({Sneaky(forbidden)}),
-                rung=Rung.PLAIN_REQUEST,
+                standing=Standing.SIGNED_FORM,
                 signed_on=date.today(),
                 expires_on=date.today() + timedelta(days=30),
             )
@@ -109,7 +109,7 @@ def test_an_authorization_that_never_expires_is_rejected():
         Authorization(
             client_id="c1", helper_name="D",
             scopes=frozenset({Scope.RECEIVE_MAIL}),
-            rung=Rung.PLAIN_REQUEST,
+            standing=Standing.SIGNED_FORM,
             signed_on=date.today(),
             expires_on=date.today(),
         )
@@ -130,20 +130,28 @@ def test_expiry_takes_effect_on_its_own():
     assert not auth.is_live()
 
 
-# --- the ladder ------------------------------------------------------------
+# --- standing, which is what survived the ladder ---------------------------
 
-def test_the_ladder_starts_at_the_cheapest_rung():
-    """Never make everyone pay the cost of the hardest case."""
-    assert default_helper_authorization("c1", "D").rung is Rung.PLAIN_REQUEST
-
-
-def test_the_ladder_climbs_one_rung_at_a_time():
-    assert next_rung(Rung.PLAIN_REQUEST, helper_present=True) is Rung.IDENTITY_DOCUMENTS
-    assert next_rung(Rung.IDENTITY_DOCUMENTS, helper_present=True) is Rung.LIMITED_POA
-    assert next_rung(Rung.LIMITED_POA, helper_present=True) is Rung.PROGRAM_RELEASE
-    assert next_rung(Rung.PROGRAM_RELEASE, helper_present=True) is None
+def test_a_helper_starts_on_a_signed_form_not_a_notarized_one():
+    """Sending somebody to a notary before anybody has established that it is
+    needed is how a tool gets abandoned at step one."""
+    assert default_helper_authorization("c1", "D").standing is Standing.SIGNED_FORM
 
 
-def test_no_helper_skips_the_poa_rung():
-    """A power of attorney with nobody to hold it is a notary trip for nothing."""
-    assert next_rung(Rung.IDENTITY_DOCUMENTS, helper_present=False) is Rung.PROGRAM_RELEASE
+def test_there_are_two_kinds_of_standing_because_there_were_only_ever_two():
+    """The four-rung ladder modelled what a bureau would demand, which nobody
+    publishes. The distinction that is real is whether the helper has to act
+    without the client, and that is the only one that earns a notary."""
+    assert len(list(Standing)) == 2
+    for standing in Standing:
+        assert STANDING_DETAIL[standing]["label"]
+        assert STANDING_DETAIL[standing]["cost"]
+
+
+def test_the_ladder_is_gone():
+    """Kept as a test so nobody quietly reintroduces it. If a rung is needed
+    again, the reason has to be written down somewhere other than here."""
+    import app.authorization as authorization
+
+    for name in ("Rung", "RUNG_DETAIL", "next_rung"):
+        assert not hasattr(authorization, name), name

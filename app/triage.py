@@ -1,8 +1,8 @@
 """The classifier. Six answers in, one of four states out, with a path attached.
 
-Screen 10 of the deck: this is the only screen where the app does something a
-person could not do on paper, and the only one whose output can be scored for
-accuracy. Everything else is a list, a letter, or a status.
+This is the only part of the app that does something a person could not do on
+paper, and the only one whose output can be scored for accuracy. Everything
+else is a list, a letter, or a status.
 
 Two design rules are load-bearing here.
 
@@ -111,7 +111,7 @@ PATH: dict[State, dict[str, str]] = {
         "horizon": "The bureaus must deliver within 15 days of receiving the "
                    "request. Add mail time in both directions.",
         "source": "15 U.S.C. 1681j(a), checked 2026-09-23.",
-        "first_step": "Mail the Annual Credit Report Request Form at rung 1.",
+        "first_step": "Mail the Annual Credit Report Request Form.",
     },
 }
 

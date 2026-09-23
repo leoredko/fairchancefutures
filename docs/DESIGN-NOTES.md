@@ -1,26 +1,68 @@
 # Design notes
 
 The rationale that used to render inside the product. Annotations on a live
-screen are what make an application look like a wireframe, so they live here.
+screen are what make an application look like a prototype, so they live here.
 Each one is a decision somebody will eventually ask about.
 
+These are principles, stated on their own authority. An earlier version of this
+file argued each one against a wireframe deck that the product started from.
+That deck has been deleted: it stopped describing the product some time ago,
+and a design that has to be justified as a diff against a sketch is a design
+nobody can argue with on the merits.
+
 ## Inside, on the tablet
+
+**The course is the product, not a feature of it.** Everything else on this
+surface runs on somebody else's schedule. A letter takes six weeks. A bureau
+takes thirty days. A coordinator has thirty other people. The course is the one
+thing that moves when the person moves it, is available on every screen, and
+keeps working after they go home. It is reachable from every screen and never
+gated behind intake.
+
+**Progress saves per card, not per lesson.** A tablet session ends when the
+dayroom closes, the tablet dies, or somebody else needs it. Losing four screens
+of reading to that is how a person decides an app is not worth starting.
+Furthest card reached rather than latest, so paging back to re-read costs
+nothing.
+
+**Nothing is ever marked wrong.** The check question at the end of a lesson
+exists to make somebody commit to an answer before they read the explanation,
+because that is what makes the explanation stick. A verdict, delivered in a
+dayroom in front of whoever is waiting for the tablet, teaches people to stop
+answering.
 
 **One question per screen.** Facility tablets are slow, shared, and often
 metered by the minute. A six-field form is six chances to lose the session.
 
 **Position, never points.** Score shaming is a known engagement killer, so the
 client sees where they are on a road rather than a number they can feel bad
-about. Kept from Roshawn's v1.
+about.
 
 **Every event carries a person's name and a real date.** From the Cornish
 interview: automated nudges arrive on the same channels scammers use, so a
 message with no human attached reads as fraud. Seeing named people do real work
 on your behalf is the opposite of a silent app asking to be trusted.
 
+**The report arriving is a moment, not a row.** It is the first time in years
+anybody has told this person the truth about their own financial record. It
+interrupts, it names who got it here, and it is read one section at a time with
+the teaching attached to their own data. A lesson read cold is homework; the
+same lesson attached to a line on your own report is the best teaching moment
+this product will ever get.
+
+**The person answers the question that opens the clock.** Whether they
+recognise every item on their report is the one field with a statutory
+consequence, and they are the only human alive who knows the answer. It used to
+be answered on the staff form because the tablet could not show a report. It
+can now.
+
 **No file upload and no identity verification.** Both are physically impossible
 from inside. They are not hidden, they are absent, and `app/surfaces.py`
 refuses them server-side.
+
+**Nothing on this screen tells anybody to install anything.** The destination
+is an app provisioned onto the tablet. A product that depends on somebody
+inside being handed a URL and tapping Add to Home Screen does not get used.
 
 **The name is on the case screen.** On a shared tablet, seeing your own name is
 how you know you are not looking at whoever used it before you.
@@ -41,28 +83,55 @@ none of them. Long silences between tasks are the design, not a gap.
 **A work queue, not a roster.** Nothing sorts by name. The only ordering that
 matters is what expires first.
 
-**Staff see enough to act, never the whole file by default.** Enforced in
-`app/redaction.py`, not by policy memo.
+**They see the file they already hold.** The coordinator requests the birth
+certificate, holds the sentence and commitment paperwork, and has the vital
+documents packet in their own folder. Hiding a Social Security number from
+somebody who is already holding it is not protection, it is performance.
 
-**The classifier is the actual product.** Everything else is letters and lists.
-It is also the only piece whose output can be scored, which is what makes it
+**The boundary that is real is physical.** A facility tablet is shared and sits
+in a dayroom with whoever used it last standing behind whoever is using it now,
+and a helper was promised they would never be asked to handle these fields. So
+`app/redaction.py` is strict for the tablet and the phone and empty for the
+desk. Two separate protections survive that: a scanned report stays truncated
+because that is how the document arrived, and the printed letter leaves the
+number blank for a pen because the envelope travels through the helper's hands.
+
+**The client's own words lead.** What somebody flagged reading their own report
+is the one thing on the client page nobody else could have supplied, so it sits
+at the top as a claim to check against the paper rather than in a footnote.
+
+**The classifier is the measurable part.** Everything else is letters and
+lists. It is the only piece whose output can be scored, which is what makes it
 defensible. Measure how often the reviewer edits before approving; reporting
 that honestly is the DoNotPay lesson.
 
-## The access ladder
+## The documents, and why there is no ladder
 
-What a bureau asks for varies per person and cannot be known in advance, so the
-app tries the cheapest rung first and climbs only on a kickback.
+An earlier design had a four-rung access ladder: try the cheapest request
+first, climb a rung each time a bureau pushed back. It was removed because it
+modelled what a bureau would demand, and nobody publishes that. No source says
+how often a plain signed request clears, and Experian asks for an ID copy with
+every mailed dispute as standard, which suggests the first rung was fiction for
+at least one of the three.
 
-Never make everyone pay the cost of the hardest case. Forcing a notary trip on
-somebody who would have cleared with a signature is how a tool gets abandoned
-at step one. With no helper on file, rung 3 is skipped entirely: a power of
-attorney with nobody to hold it is a trip for nothing.
+What a person has in their file is knowable. The coordinator already tracks it,
+reviews it quarterly, and works to a real deadline: the Social Security card
+application goes in at 120 days before release, and the birth certificate and
+the card both have to be on file before the ID application can be submitted at
+all. Same shape of decision, grounded in something checkable.
 
-## What the original wireframe got right, and what it did not
+Never make everyone pay the cost of the hardest case still holds. It is just
+attached to something true now.
 
-The eleven-screen deck in `design/` set the information architecture and most
-of the copy, and both held up. Its palette did not: warm greys read as every
-institutional form the audience has ever been handed. The application uses teal
-for the things that move a case forward and amber for the things that need a
-person.
+## What this is built toward
+
+A progressive web app provisioned onto a facility tablet, not a website
+somebody finds. The browser build is how it is developed and shown. The three
+single files in `standalone/` are a demo artifact so the whole journey can be
+walked in three windows, and they are not the product.
+
+The gap between here and that, roughly in order: `app/store.py` is a JSON file
+rewritten whole on every write and has to become a database; the case plan
+integration is three simulated functions; encryption, audit logging and
+retention are assumed away, and for something holding Social Security numbers
+those are most of the work rather than a footnote.

@@ -8,16 +8,24 @@ short version of what a session needs to not break things.
 
 ## Where to look first
 
+    app/lessons.py         the credit course. Education is priority one.
     app/surfaces.py        the capability table. Read this as the product spec.
     docs/SCOPE.md          what each of the three surfaces can and cannot do
     docs/VERIFY.md         every legal claim, its primary source and check date
     docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
-    design/                the original wireframe deck, a starting point only
 
-The deck is history, not a specification. It was a wireframe to get moving and
-the product has moved well past it. Do not treat a screen in it as a
-requirement.
+The product started from a wireframe deck. That deck has been deleted, and its
+references stripped out of the code and the docs, because it stopped describing
+the product and every change was being argued against a sketch. `docs/DESIGN-NOTES.md`
+states the design principles on their own authority. Do not reintroduce a
+screen-by-screen spec.
+
+Where this is going: a progressive web app provisioned onto a facility tablet,
+not a website somebody finds and installs. The browser build is how it is
+developed and demonstrated. `standalone/` is a demo artifact so the whole
+journey can be walked in three windows; it is not the product, and nothing in
+the app should tell a person to install anything.
 
 ## Two constraints everything follows from
 
@@ -26,6 +34,12 @@ browse out to a bureau.** Not a policy, not a setting: it is where the tablet
 physically sits. This lives in `app/surfaces.py` and the router asks that
 module before it does anything. Hiding a button in a template is decoration;
 the capability table is the enforcement.
+
+The tablet is not offline. Bridge is loaded onto it and reaches the person's
+own record, which is why intake saves as it goes and the course keeps a place.
+What it cannot reach is the open web, and every route a bureau offers a free
+citizen runs through a web page. Do not write copy promising that anything
+survives a week without connectivity: writes go to the server.
 
 **A helper outside has no standing until they sign a scoped form.**
 `app/authorization.py` holds scoped, expiring, revocable grants, checked on
@@ -45,6 +59,25 @@ next tap. Some scopes raise on construction rather than being checked later.
 - **Mask the Social Security number on the way in, never on the way out.** A
   report is stored already truncated. That it can be truncated at all is
   15 U.S.C. 1681g(a)(1)(A), not a courtesy we invented.
+- **The dayroom is the boundary, not the desk.** A shared tablet and a helper's
+  phone never render an SSN, a full account number or a date of birth. The
+  coordinator does see them, because they hold the sentence and commitment
+  paperwork and request the birth certificate, and hiding a number somebody is
+  already holding protects nobody. `app/redaction.py` is per surface for this
+  reason; do not make it global again.
+- **Education is the first priority.** Every lesson card that states a rule
+  cites a key in `app/sources.py`, and a test fails if it cites one that is not
+  there. The course is reachable from every tablet screen and is never gated
+  behind intake. Progress saves per card, because a tablet session ends when
+  the dayroom closes.
+- **No rungs.** The four-rung access ladder was removed deliberately: it
+  modeled what a bureau would demand, which no public source establishes.
+  Document readiness in `app/caseplan.py` replaced it. If you find yourself
+  reintroducing a ladder, read the docstring in `app/authorization.py` first.
+- **Say which 120 days you mean.** The Social Security card application goes in
+  at 120 days *before* release. The release ID expires 120 days *after*. Two
+  clocks, opposite sides of the gate, and confusing them costs somebody their
+  ID.
 - **A dispute goes to all three bureaus.** An item deleted at Equifax is still
   sitting on the other two files.
 - **No legal sentence without a primary source.** Add the fact to
@@ -84,7 +117,7 @@ Editing that shell has gone wrong twice, both times the same way:
 
 ## Checks before pushing
 
-    pytest -q                       # 189 tests, all should pass
+    pytest -q                       # 269 tests, all should pass
     python3 standalone/build.py     # rebuild if anything changed
     ./run.sh                        # installs, tests, serves on :8000
 

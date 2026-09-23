@@ -17,8 +17,11 @@ Two things fall out of that, and both make the product better:
 Vital documents. Reentry staff already assemble Social Security cards, birth
 certificates and non-driver ID, and the state can pull a birth certificate at
 no cost using sentence and commitment paperwork. That packet is exactly what
-rung 2 of the credit bureau access ladder asks for. When the plan says the
-documents are on file, the ladder does not have to treat rung 2 as a wall.
+the ID application needs. Both the birth certificate and the Social Security
+card have to be on file before that application can be submitted at all, the
+coordinator reviews the status quarterly, and the Social Security card goes in
+at 120 days before release. `document_readiness` below models that chain, and
+it is what replaced the old four-rung access ladder.
 
 Timing. Reentry planning intensifies in the six months before release, which is
 the same window in which a credit file can realistically be moved. Bridge sorts
@@ -73,9 +76,10 @@ DOCUMENT_NOTE: dict[Document, str] = {
         "The state can request a certified copy at no cost using sentence and "
         "commitment paperwork.",
     Document.PHOTO_ID:
-        "A free non-driver ID is available to people receiving public "
-        "assistance, SNAP or Medicaid. This is what clears rung 2 when a "
-        "bureau cannot match the file.",
+        "Produced before release through the DOCCS and DMV program, but only "
+        "once the birth certificate and Social Security card are both on file. "
+        "The release ID a person walks out with expires 120 days later, which "
+        "is the window to exchange it at a DMV office for the real one.",
 }
 
 
@@ -126,7 +130,7 @@ class CasePlan:
 
     @property
     def identity_packet_complete(self) -> bool:
-        """Everything a bureau asks for at rung 2, already in one folder."""
+        """The whole packet on file, ID included."""
         return all(self.has(d) for d in Document)
 
     def financial_tasks(self) -> list[PlanTask]:
@@ -203,23 +207,77 @@ def simulated_plan(
     )
 
 
-def ladder_rung_available(plan: CasePlan, rung: int) -> tuple[bool, str]:
-    """Does the case plan already satisfy this rung of the access ladder?
+# At 120 days before release the Social Security card application goes in.
+# That is the one deadline in this whole product that belongs to the person
+# rather than to a bureau or a coordinator.
+SSN_CARD_TRIGGER_DAYS = 120
 
-    This is the whole point of the integration. Rung 2 asks for an ID copy and
-    proof of address, and the vital documents packet is exactly that. If the
-    coordinator already has it, nobody needs a notary and nobody waits.
+# The birth certificate is the slow one, and it gates the ID application.
+BIRTH_CERTIFICATE_WEEKS = 10
+
+
+def days_to_release(release: date, today: date | None = None) -> int:
+    return (release - (today or date.today())).days
+
+
+def document_readiness(
+    plan: CasePlan, release: date, today: date | None = None,
+    born_in_new_york: bool = True,
+) -> dict:
+    """What is missing, what is urgent, and what it blocks.
+
+    This replaced the four-rung access ladder. The ladder modelled what a
+    bureau would demand, which nobody can establish: no public source says how
+    often a plain signed request clears, and Experian asks for an ID copy with
+    every mailed dispute regardless. A ladder whose first step may not exist is
+    a guess with a state machine around it.
+
+    Document status is the same decision grounded in something checkable. The
+    coordinator already tracks it, reviews it quarterly, and works to a real
+    deadline. Nothing here is inferred: the trigger, the review cadence and the
+    order of operations are all in the DOCCS legislative report.
     """
-    if rung == 1:
-        return True, "A signature is all rung 1 needs."
-    if rung == 2:
-        if plan.identity_packet_complete:
-            return True, (
-                "The vital documents packet is complete in the case plan, so "
-                "rung 2 needs no new paperwork."
-            )
-        missing = ", ".join(DOCUMENT_LABEL[d] for d in plan.missing_documents)
-        return False, f"Still needed for rung 2: {missing}."
-    if rung == 3:
-        return True, "Requires a notary at the law library and a named helper."
-    return True, "The program acts under its own release form."
+    left = days_to_release(release, today)
+    missing = plan.missing_documents
+    blocking = [d for d in (Document.BIRTH_CERTIFICATE,
+                            Document.SOCIAL_SECURITY_CARD) if not plan.has(d)]
+
+    urgent: list[str] = []
+    if not plan.has(Document.SOCIAL_SECURITY_CARD) and left <= SSN_CARD_TRIGGER_DAYS:
+        urgent.append(
+            f"Social Security card: {left} days to release, past the "
+            f"{SSN_CARD_TRIGGER_DAYS}-day mark. This one is overdue."
+        )
+    if not plan.has(Document.BIRTH_CERTIFICATE):
+        urgent.append(
+            f"Birth certificate: allow {BIRTH_CERTIFICATE_WEEKS} weeks or more. "
+            f"It has no deadline of its own, which is why it gets left, and it "
+            f"blocks the ID application."
+        )
+    # The fee waiver runs on New York records. Somebody born elsewhere is not
+    # covered by it and their request is slower and costs money, so it has to
+    # be started earlier rather than discovered later.
+    if not born_in_new_york and not plan.has(Document.BIRTH_CERTIFICATE):
+        urgent.append(
+            "Born outside New York, so the no-fee route does not apply. This "
+            "one goes to another state or country and needs starting now."
+        )
+
+    if not blocking:
+        summary = ("Birth certificate and Social Security card are both on "
+                   "file, so the ID application is not waiting on paperwork.")
+    else:
+        names = ", ".join(DOCUMENT_LABEL[d] for d in blocking)
+        summary = (f"The ID application cannot be submitted yet. Still needed: "
+                   f"{names}.")
+
+    return {
+        "days_to_release": left,
+        "missing": missing,
+        "blocking": blocking,
+        "urgent": urgent,
+        "summary": summary,
+        "ready": not blocking,
+        "has_photo_id": plan.has(Document.PHOTO_ID),
+        "past_ssn_trigger": left <= SSN_CARD_TRIGGER_DAYS,
+    }

@@ -158,30 +158,44 @@ def _retry(request: Request, role: str, account, normalized: str, error: str,
 def _open_a_case(parsed):
     """Create a case on the spot for a number in the self-service range.
 
-    Everything except the number is blank, and the person fills it in as they
-    go. A counselor doing a real intake enters far more, but somebody trying
-    the app should not have to wait on one.
+    The number is the only thing typed. Everything already attached to it is
+    looked up, because asking somebody to retype their own release date from
+    memory on a metered tablet is asking them to do a computer's job.
+
+    This used to invent a release date of today plus 180 days and leave the
+    facility blank. Both were fabrications, and both then drove real things:
+    the work queue's ordering, the count of quarterly reviews left, and the
+    120-day document deadline.
     """
-    from datetime import date, timedelta
+    from datetime import date
 
     from app.auth import Account
+    from app.doccs import simulated_lookup
     from app.intake import helper_code
     from app.store import Client, put_account
 
     client_id = f"din-{parsed.normalized.lower()}"
     with mutate():
         if client_id not in STATE.clients:
-            release = date.today() + timedelta(days=180)
+            record = simulated_lookup(parsed.normalized)
+            planning = record.planning_date
+            days = ((date.fromisoformat(planning) - date.today()).days
+                    if planning else 0)
             STATE.clients[client_id] = Client(
                 id=client_id,
                 display_name=parsed.display,
                 first_name="",
                 din=parsed.normalized,
-                release_date=release.isoformat(),
-                clock="Releases in 180 days",
-                clock_sort=180,
+                facility=record.housing_facility,
+                release_date=planning,
+                release_date_source=record.planning_date_label,
+                doccs_record=record.as_dict(),
+                clock=(f"Releases in {days} days" if days >= 0
+                       else f"Home {abs(days)} days ago"),
+                clock_sort=days,
                 consent_recorded_on=date.today().isoformat(),
                 plan_step="Intake not finished yet.",
+                needs="Opened from the tablet, intake not finished",
             )
             put_account(Account(
                 account_id=f"inside-{client_id}", role="inside",

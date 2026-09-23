@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ lesson.title }}</span>
+    <div class="right"><a class="pill" href="/inside/learn">All lessons</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    {# Saved-here reassurance sits above the content, because the worry it
+       answers is what stops somebody starting in the first place. #}
+    <div class="row" style="gap:8px;align-items:center">
+      <div class="track" style="flex:1">
+        <span style="width: {{ ((index + 1) * 100 / lesson.screens)|round|int }}%"></span>
+      </div>
+      <span class="tiny">{{ index + 1 }} of {{ lesson.screens }}</span>
+    </div>
+    <p class="tiny">Saved as you go. Close this and it opens here again.</p>
+
+    {% if is_check %}
+    <h1>One question before you go.</h1>
+    <p class="lede">{{ lesson.check.prompt }}</p>
+    <form method="post" action="/inside/learn/lesson/{{ lesson.slug }}/check">
+      <div class="stack">
+        {% for choice in lesson.check.choices %}
+        <label class="card accent" style="cursor:pointer">
+          <input type="radio" name="choice" value="{{ choice.value }}"
+                 {% if answered == choice.value %}checked{% endif %} required>
+          <span class="strong">{{ choice.label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <p class="tiny">Nothing is scored and nobody sees your answer. The
+        explanation is the same either way.</p>
+      <button class="btn wide" type="submit">Answer</button>
+    </form>
+
+    {% else %}
+    <h1>{{ card.title }}</h1>
+    <p class="lede">{{ card.body }}</p>
+
+    {% if card.aside %}
+    <div class="card accent">
+      <span class="small">{{ card.aside }}</span>
+    </div>
+    {% endif %}
+
+    {% if card.cited %}
+    <div class="card soft">
+      <span class="tiny">Where this comes from: {{ card.cited }}</span>
+    </div>
+    {% endif %}
+
+    <div class="row">
+      <a class="btn wide" href="/inside/learn/lesson/{{ lesson.slug }}/{{ index + 1 }}">
+        {% if index + 1 == lesson.screens - 1 %}Last one, then a question{% else %}Next{% endif %}</a>
+    </div>
+    {% endif %}
+
+    <div class="row">
+      {% if index > 0 %}
+      <a class="btn ghost" href="/inside/learn/lesson/{{ lesson.slug }}/{{ index - 1 }}">Back</a>
+      {% endif %}
+      <a class="btn ghost" href="/inside/learn">Stop for now</a>
+      {% if lesson.slug == "no-single-score" %}
+      <a class="btn ghost" href="/inside/learn/scores">See every score model</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

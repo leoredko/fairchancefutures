@@ -5,8 +5,9 @@ A capstone project by a team of Fair Chance Futures AI Lab fellows, 2026.
 A credit-repair workflow for people coming home, split across three surfaces
 because the three people involved genuinely cannot do each other's jobs.
 
-Built from the design deck in `design/`. Every screen in the deck that the deck
-itself marked in scope is implemented and runnable.
+The destination is an application that arrives already on a facility tablet,
+provisioned by whoever manages the devices. The browser version here is how it
+is built and demonstrated, not how it would be handed to somebody.
 
 ```bash
 ./run.sh          # installs, tests, serves on http://127.0.0.1:8000
@@ -24,18 +25,23 @@ pytest
 uvicorn app.main:app --reload
 ```
 
-## Three applications
+## Three surfaces, one case
 
-Three surfaces, deployed separately, sharing one case.
+The server app in `app/` is the real architecture: three surfaces, one shared
+case, enforcement server-side. That is what becomes the product.
+
+`standalone/` is a demo artifact, and only that. Three single files, no server
+and no network, so the whole journey can be shown by opening three browser
+windows side by side without anybody installing anything:
 
     standalone/bridge-inside.html    the facility tablet
     standalone/bridge-family.html    the helper's phone
     standalone/bridge-staff.html     the coordinator's desktop
 
-No server, no install, no network. Open one in a browser, or put it on a tablet
-and use Add to Home Screen. Served from the same folder or the same host all
-three share one caseload; each keeps its own session, so signing in on one does
-not sign you out of another.
+Served from the same folder or the same host all three share one caseload, so a
+client the coordinator adds appears on the tablet. Each keeps its own session,
+so signing in on one does not sign you out of another. Published to three
+different origins they cannot see each other.
 
 ```bash
 python3 standalone/build.py     # regenerate all three after changing the app
@@ -44,10 +50,6 @@ python3 standalone/build.py     # regenerate all three after changing the app
 It is generated, not hand-maintained. The four triage states, the letter
 templates, the verified facts and the bureau addresses come straight out of the
 Python modules, and `tests/test_standalone.py` fails if the two ever disagree.
-
-The server app in `app/` is the real architecture: three surfaces, one shared
-case, enforcement server-side. The single file is the same product with the
-server folded into the page so it can be handed to somebody.
 
 ## Signing in
 
@@ -121,29 +123,41 @@ client cancels from the tablet and the helper loses access on the next request.
 Four scopes can be granted; six can never be, and constructing an authorization
 that names one of them raises.
 
-## The access ladder
+## The documents, which gate everything
 
-What a bureau demands varies per person and cannot be known in advance, so the
-app starts at the cheapest rung and climbs only on a kickback.
+This replaced a four-rung access ladder that modeled what a bureau would demand
+and climbed a rung on each kickback. Nobody publishes how often the cheapest
+route clears, and Experian asks for an ID copy with every mailed dispute
+regardless, so the first rung may never have existed. `app/authorization.py`
+carries the full reasoning.
 
-1. Plain request. A signature. For many people this is the whole story.
-2. Identity documents, when a bureau cannot match the file.
-3. Limited POA, notarized, only when the helper must act alone.
-4. Program release, when there is no outside helper at all.
+What is knowable is what a person has in their file, and there is a strict
+order to it. The birth certificate **and** the Social Security card must both
+be on file before the non-driver ID application can be submitted. The
+coordinator prioritizes getting them and reviews the status quarterly. The
+Social Security card application goes in at **120 days before release**.
 
-Never make everyone pay the cost of the hardest case. Forcing a notary trip on
-someone who would have cleared with a signature is how a tool gets abandoned at
-step one. With no helper on file, rung 3 is skipped entirely, because a power of
-attorney with nobody to hold it is a trip for nothing.
+Three things the app says that a person would otherwise find out too late:
+
+- The birth certificate takes ten weeks or more and has no deadline of its own,
+  which is exactly why it is the one that gets left.
+- The no-fee route covers New York records. Born elsewhere and it does not
+  apply to you, so start now.
+- The release ID expires **120 days after** release, which is a different 120
+  days from the one above.
+
+`app/caseplan.py` holds this, and `docs/VERIFY.md` has every source.
 
 ## What the app actually does
 
 | Surface | Route | What it is |
 | --- | --- | --- |
-| Inside, tablet | `/inside/{id}` | Six intake questions, one per screen, offline-first. Position not score. Case timeline with named people. Cancel a helper's authorization. |
-| Family, phone | `/family/{id}` | The invitation that rules out everything a scam would ask for. Exactly one task on screen. Print the rung 1 packet. Add photos of the report. |
-| Caseworker, desktop | `/staff` | Work queue sorted by what expires first. Triage session. Letter draft and approval. The access ladder. |
-| — | `/roles` | Generated from the capability table, so the scope slide cannot drift from the code. |
+| Inside, tablet | `/inside/learn` | **The credit course.** Eleven lessons, about fifty minutes, reachable from every screen, saved per card. Every rule cites a primary source. |
+| Inside, tablet | `/inside/report` | The report arriving, credited to whoever got it here, then walked section by section with the teaching attached. Ends on the one question that opens a legal clock. |
+| Inside, tablet | `/inside` | Six intake questions, one per screen. Position not score. Case timeline with named people. Cancel a helper's authorization. |
+| Family, phone | `/family` | The invitation that rules out everything a scam would ask for. Exactly one task on screen. Print the request packet. Send the report in three ways. |
+| Caseworker, desktop | `/staff` | Work queue sorted by what expires first. Triage session. Letter draft and approval. What is blocking the ID. What the client flagged on their own report. |
+| — | `/citations` | Every verified fact with its source and check date, and the open questions alongside them. |
 | — | `/metrics` | The edit rate. |
 
 ## The measurable part
@@ -179,33 +193,50 @@ A dispute is drafted once per bureau. An item deleted at Equifax is still
 sitting on the Experian and TransUnion files, and the first build quietly
 pretended otherwise.
 
-## Running it on a tablet
+## Where this is going
 
-`app/static/manifest.webmanifest` plus a registered service worker means the
-inside surface installs to a tablet home screen and runs standalone, no browser
-chrome. The worker caches nothing on purpose: see the note in `app/static/sw.js`
-and in [docs/DEPLOY.md](docs/DEPLOY.md). The tablet app assumes connectivity.
+A progressive web app, provisioned onto the tablet rather than installed by the
+person using it. Nobody inside is going to be handed a URL and told to tap Add
+to Home Screen, and a product that depends on them doing so does not get used.
+
+`app/static/manifest.webmanifest` and the registered service worker are the
+foundation for that: the app runs with its own icon and no browser chrome. The
+worker caches nothing on purpose, which is the right call while the tablet is
+connected. See `app/static/sw.js` and [docs/DEPLOY.md](docs/DEPLOY.md).
+
+What still stands between this and a real deployment, roughly in order:
+`app/store.py` is a JSON file rewritten whole on every write and needs to be a
+database; the case plan integration is three simulated functions; and
+encryption, audit logging and retention are assumed away, which for something
+holding Social Security numbers is most of the work.
 
 ## What is deliberately not built
 
-- Photo-to-text extraction of a mailed report. The deck already named the
-  fallback, the caseworker types it in, so that is what happens. Uploaded images
-  are counted and discarded rather than stored, which also means this build
-  never holds a picture of somebody's credit report on disk.
+- Photo-to-text extraction of a mailed report. The fallback is that the
+  caseworker types it in, so that is what happens. Uploaded images are counted
+  and discarded rather than stored, which also means this build never holds a
+  picture of somebody's credit report on disk.
 - Referrals and outcomes reporting.
-- Real offline support. The deck promises "nothing is lost if you lose access
-  for a week" and this build does not keep that promise: writes go straight to
-  the server. Doing it properly is IndexedDB plus replay-on-reconnect.
-- Spanish. The design deck showed an EN / ES toggle on six screens; it has been
-  removed rather than shipped as decoration over an English-only app.
+- Real offline support. The tablet reaches Bridge, so writes go straight to the
+  server and save as they are made. An earlier promise that "nothing is lost if
+  you lose access for a week" was about a disconnected device and has been taken
+  out of the intake copy rather than left there untrue. If a facility
+  turns out to have genuinely intermittent connectivity, IndexedDB plus
+  replay-on-reconnect is the real fix.
+- Spanish. An EN / ES toggle was drawn early and removed rather than shipped as
+  decoration over an English-only app. For this population it is a real
+  requirement rather than a nice-to-have, and it should come back as
+  translation rather than as a pill.
 - Real auth. Anyone who can reach the URL is the surface named in the URL. The
   surface split is enforced, the identity behind it is not.
 
 ## Layout
 
 ```
+app/lessons.py         the credit course, and where somebody has got to in it
+app/walkthrough.py     reading your own report, one section at a time
 app/surfaces.py        capability table, constraint one
-app/authorization.py   scoped grants and the access ladder, constraint two
+app/authorization.py   scoped, expiring, revocable grants, constraint two
 app/triage.py          the classifier
 app/redaction.py       per-surface, per-field minimization
 app/letters.py         templated letters and the edit-rate log
@@ -224,9 +255,8 @@ standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
-design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 189 tests
+tests/                 274 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons

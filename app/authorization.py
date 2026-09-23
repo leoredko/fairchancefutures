@@ -1,18 +1,32 @@
-"""Scoped authorization, and the access ladder.
+"""Scoped authorization.
 
-Constraint two, from the design deck: a helper outside has no standing without
-a signed form. No waiver makes that disappear, so it is modeled as data rather
-than assumed.
+Constraint two: a helper outside has no standing without a signed form. No
+waiver makes that disappear, so it is modeled as data rather than assumed. An
+Authorization is a scoped, expiring, revocable grant, checked on every
+family-side action, so a client who cancels from the tablet cuts access off at
+the next tap. A helper with no live grant can look at an invitation and nothing
+else.
 
-Two ideas live here.
+This module used to carry a four-rung access ladder as well, modeling what a
+bureau would demand and climbing a rung each time one kicked a request back.
+It is gone, and it is worth saying why, because it was a lot of code.
 
-1. An Authorization is a scoped, expiring, revocable grant. Every family-side
-   action is checked against one. A helper with no live grant can look at an
-   invitation and nothing else.
+It rested on a question nobody can answer. How often a plain signed request
+clears is not published by anybody, and Experian asks for an ID copy with every
+mailed dispute as standard, which suggests rung one was fiction for at least
+one of the three bureaus. A ladder whose first step may not exist is not an
+optimization, it is a guess with a state machine around it.
 
-2. The access ladder. What a bureau demands varies per person and cannot be
-   known in advance, so we start at rung 1 and climb only on a kickback. Never
-   make everyone pay the cost of the hardest case.
+What replaced it is a question that does have an answer, in `app/caseplan.py`:
+which documents does this person actually have. That is tracked by their
+Offender Rehabilitation Coordinator, reviewed quarterly, and has a real
+deadline at 120 days before release. Same shape of decision, grounded in
+something checkable instead of something assumed.
+
+The one distinction from the ladder worth keeping is the genuinely different
+legal posture of a helper acting alone, which needs a notarized power of
+attorney rather than a signature. That is `Standing` below, and it is two
+states rather than four because there were only ever two.
 """
 
 from __future__ import annotations
@@ -32,7 +46,8 @@ class Scope(str, Enum):
 
 
 # Things a helper can never be granted, no matter what anyone signs in this app.
-# Screen 04 promises this in the first ten seconds. Keeping the promise is a
+# The helper's invitation promises this in the first ten seconds, because
+# ruling out the scam is what earns a second screen. Keeping the promise is a
 # list, checked, not a paragraph.
 FORBIDDEN_SCOPES = frozenset({
     "open_account",
@@ -44,33 +59,32 @@ FORBIDDEN_SCOPES = frozenset({
 })
 
 
-class Rung(int, Enum):
-    PLAIN_REQUEST = 1
-    IDENTITY_DOCUMENTS = 2
-    LIMITED_POA = 3
-    PROGRAM_RELEASE = 4
+class Standing(str, Enum):
+    """What the helper is acting under. Two states, because there are two.
+
+    A helper who carries paper and mails envelopes is doing so alongside the
+    client, whose signature is on the request. A helper who has to act when the
+    client cannot be reached is doing something else entirely, and that is the
+    only situation that earns a notary trip.
+    """
+
+    SIGNED_FORM = "signed_form"
+    NOTARIZED_POA = "notarized_poa"
 
 
-RUNG_DETAIL: dict[Rung, dict[str, str]] = {
-    Rung.PLAIN_REQUEST: {
-        "label": "Plain request",
-        "asks_for": "Name, SSN, date of birth, address history. Signed by the client.",
-        "cost": "One signature. No notary, no trip, no helper required.",
+STANDING_DETAIL: dict[Standing, dict[str, str]] = {
+    Standing.SIGNED_FORM: {
+        "label": "Signed form",
+        "asks_for": "The client signs the request. The helper receives the "
+                    "mail and posts the envelopes.",
+        "cost": "One signature. No notary and no trip.",
     },
-    Rung.IDENTITY_DOCUMENTS: {
-        "label": "Identity documents",
-        "asks_for": "Copy of ID, proof of address.",
-        "cost": "Sent when a bureau cannot match the file.",
-    },
-    Rung.LIMITED_POA: {
+    Standing.NOTARIZED_POA: {
         "label": "Limited power of attorney",
-        "asks_for": "Notarized form, scoped to credit reports and disputes, twelve months.",
-        "cost": "A notary trip at the law library. Only when the helper must act alone.",
-    },
-    Rung.PROGRAM_RELEASE: {
-        "label": "Program release",
-        "asks_for": "The org's own release form, signed by the client.",
-        "cost": "No outside helper at all. Slower, but nothing stops.",
+        "asks_for": "Notarized, scoped to credit reports and disputes, twelve "
+                    "months.",
+        "cost": "A notary at the law library. Only when the helper has to act "
+                "without the client in the room.",
     },
 }
 
@@ -84,7 +98,7 @@ class Authorization:
     client_id: str
     helper_name: str
     scopes: frozenset[Scope]
-    rung: Rung
+    standing: Standing
     signed_on: date
     expires_on: date
     revoked_on: date | None = None
@@ -136,10 +150,11 @@ def require_scope(
 def default_helper_authorization(
     client_id: str, helper_name: str, signed_on: date | None = None
 ) -> Authorization:
-    """What screen 04 actually creates when a helper taps 'Yes, I'll help'.
+    """What the invitation screen creates when a helper taps 'Yes, I'll help'.
 
-    Note the rung: 1, not 3. The notarized POA is not the front door. It is
-    where we go if a bureau kicks the plain request back.
+    A signed form, not a notarized one. Sending somebody to a notary before
+    anybody has established that it is needed is how a tool gets abandoned at
+    step one.
     """
     signed_on = signed_on or date.today()
     return Authorization(
@@ -151,22 +166,7 @@ def default_helper_authorization(
             Scope.MAIL_DISPUTE_LETTER,
             Scope.BE_CONTACTED_BY_STAFF,
         }),
-        rung=Rung.PLAIN_REQUEST,
+        standing=Standing.SIGNED_FORM,
         signed_on=signed_on,
         expires_on=signed_on + timedelta(days=POA_TERM_DAYS),
     )
-
-
-def next_rung(current: Rung, helper_present: bool) -> Rung | None:
-    """Climb one rung after a bureau kickback.
-
-    With no helper outside, rung 3 is meaningless: there is nobody to hold the
-    power of attorney. Skip straight to the program release.
-    """
-    if current is Rung.PLAIN_REQUEST:
-        return Rung.IDENTITY_DOCUMENTS
-    if current is Rung.IDENTITY_DOCUMENTS:
-        return Rung.LIMITED_POA if helper_present else Rung.PROGRAM_RELEASE
-    if current is Rung.LIMITED_POA:
-        return Rung.PROGRAM_RELEASE
-    return None

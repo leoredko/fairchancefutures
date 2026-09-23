@@ -99,7 +99,11 @@ def test_the_tablet_is_the_one_surface_that_can_never_send_a_report(client):
 
     for route in inside.routes:
         if "POST" in getattr(route, "methods", set()):
-            assert "report" not in route.path, route.path
+            # The tablet may say things about a report. It may never move one.
+            for word in ("upload", "photo", "scan", "file", "send"):
+                assert word not in route.path, route.path
+            annotations = getattr(route.endpoint, "__annotations__", {})
+            assert "UploadFile" not in str(annotations.values()), route.path
     assert not can(Surface.INSIDE, Capability.UPLOAD_FILE)
 
 

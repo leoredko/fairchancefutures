@@ -4,6 +4,7 @@
 <div class="tablet">
   <div class="bar">
     <span class="wordmark">Bridge</span>
+    <a class="pill" href="/inside/learn">Learn</a>
     <span class="who">{{ client.display_name }} &middot; your case</span>
     <div class="right"><span class="pill">Last synced {{ synced }}</span></div>
     <div class="right"><a class="pill" href="/signout">Sign out</a></div>
@@ -24,12 +25,25 @@
       {% endfor %}
     </div>
 
-    {% if client.lesson %}
-    <div class="card soft">
-      <span class="strong">Your one thing this week</span>
-      <span class="small">{{ client.lesson }} Ms. Reyes will ask you about it Thursday.</span>
+    <div class="card {{ 'good' if course.finished else 'accent' }}">
+      <span class="strong">
+        {% if course.finished %}You finished the credit course
+        {% elif course.done %}The credit course, {{ course.done }} of {{ course.total }} done
+        {% else %}Learn how credit actually works{% endif %}
+      </span>
+      <div class="track"><span style="width: {{ course.percent }}%"></span></div>
+      {% if course.finished %}
+      <span class="small">All {{ course.total }} lessons. Any of them opens
+        again whenever you want it.</span>
+      <a class="btn ghost" href="/inside/learn">Look back over them</a>
+      {% elif next_lesson %}
+      <span class="small">{{ next_lesson.hook }}</span>
+      <span class="tiny">{{ next_lesson.title }} &middot;
+        {{ next_lesson.minutes }} minutes &middot; saves where you stop</span>
+      <a class="btn" href="/inside/learn/lesson/{{ next_lesson.slug }}">
+        {% if course.done %}Carry on{% else %}Start the course{% endif %}</a>
+      {% endif %}
     </div>
-    {% endif %}
 
     <div class="card accent">
       <span class="strong">Your credit reports</span>
@@ -42,8 +56,32 @@
       <span class="strong">There is no single credit score</span>
       <span class="small">A landlord, a car dealer and a card company each look
         at a different one. Worth ten minutes.</span>
-      <a class="btn ghost" href="/inside/learn/scores">Learn why</a>
+      <a class="btn ghost" href="/inside/learn/lesson/no-single-score">Learn why</a>
     </div>
+
+    {# Their own record, read back. Seeing it come back correct is how somebody
+       knows the app has the right person before they trust it with anything
+       else, and it is why nobody is asked to type a date they already know.
+       No date of birth appears here: the lookup does not return one, and a
+       dayroom tablet is the wrong place for it either way. #}
+    {% if record %}
+    <div class="card soft">
+      <span class="strong">What we already have for you</span>
+      <span class="small">Off your DIN. Nothing here was typed by you, and if
+        any of it is wrong, tell your coordinator.</span>
+      {% for row in record %}
+      <div class="row">
+        <span class="small">{{ row.label }}</span>
+        <span class="small strong" style="margin-left:auto">{{ row.value }}</span>
+      </div>
+      {% endfor %}
+      {% if release_source %}
+      <span class="tiny">Bridge plans against your
+        {{ release_source|lower }}. That is the date a reentry plan is built
+        around, and it is not the same as your parole eligibility date.</span>
+      {% endif %}
+    </div>
+    {% endif %}
 
     <div class="card">
       <span class="strong">Who is helping you</span>

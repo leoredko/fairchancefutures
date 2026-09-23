@@ -425,7 +425,7 @@ const RULES = {
    "plan": "Pull the report first. There is nothing to classify yet.",
    "horizon": "The bureaus must deliver within 15 days of receiving the request. Add mail time in both directions.",
    "source": "15 U.S.C. 1681j(a), checked 2026-09-23.",
-   "first_step": "Mail the Annual Credit Report Request Form at rung 1."
+   "first_step": "Mail the Annual Credit Report Request Form."
   }
  ],
  "insideQuestions": [
@@ -438,8 +438,8 @@ const RULES = {
    "design_note": "starting with what somebody knows rather than what they have. A form that assumes you have seen a credit report is useless to somebody who never has.",
    "constraint": "",
    "reassurance": {
-    "title": "Nothing here needs the internet.",
-    "body": "Your answers save on the tablet and sync whenever it connects. Nothing is lost if you lose access for a week."
+    "title": "Every answer saves as you give it.",
+    "body": "This app is already on the tablet and it only talks to your own record. Stop halfway, hand the tablet back, come again on Thursday, and it opens on the question you were on."
    },
    "options": [
     {
@@ -894,10 +894,112 @@ const RULES = {
    "statement": "So a New York restitution order does not by itself reach a credit report. The judgment route is closed, because the public-record standards that took effect in July 2017 removed all civil judgments from credit reports, and the agency that collects restitution does not furnish to the bureaus. What remains is the collections route: a debt placed with a third-party collector can be reported as a collection account like any other.",
    "url": "https://www.consumerfinance.gov/about-us/blog/new-retrospective-on-removing-public-records/",
    "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS and DMV Identification Card Program, Annual Legislative Report 2025",
+   "statement": "A birth certificate and a Social Security card must both be on file before the non-driver ID application can even be submitted. The Offender Rehabilitation Coordinator prioritizes getting them and reviews each person's document status quarterly.",
+   "url": "https://doccs.ny.gov/system/files/documents/2026/06/2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS and DMV Identification Card Program, Annual Legislative Report 2025",
+   "statement": "At 120 days before release, a person is encouraged to apply for a Social Security card. Anyone without a birth certificate is encouraged to apply for one at any point, and earlier is better because it is the slower of the two.",
+   "url": "https://doccs.ny.gov/system/files/documents/2026/06/2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS, Obtaining DMV Identification",
+   "statement": "The DOCCS Released Offender Identification Card expires 120 days after release. That is the window to take it to a DMV office and exchange it for a non-driver photo ID. Note that this is a different 120 days from the one before release, and confusing the two costs somebody their ID.",
+   "url": "https://doccs.ny.gov/obtaining-dmv-identification",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "N.Y. Public Health Law 4174",
+   "statement": "No fee is charged when DOCCS requests a certified birth certificate for somebody in anticipation of their release, and a certified copy of the sentence and commitment counts as that person's authorization, so no separate signature is needed. This covers New York records. Somebody born in another state or another country is not covered by it.",
+   "url": "https://www.nysenate.gov/legislation/laws/PBH/4174",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681c(a)",
+   "statement": "Most negative information has to come off a credit report after seven years: collection accounts and charge-offs seven years from when they first went delinquent, civil judgments and paid tax liens seven years, other adverse items seven years. Bankruptcies run ten years. The clock is counted from the original delinquency, so paying an old debt does not restart it.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681c",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681b(a)",
+   "statement": "A credit report may only be given out for a purpose the law lists: a credit application, an insurance decision, employment with the person's written permission, a court order, child support enforcement, or the person's own written instructions. Curiosity is not on the list.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681b",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681b(b)(2)-(3)",
+   "statement": "An employer cannot pull a credit report without telling the person clearly and in writing and getting written permission first. If they then decide against hiring based on it, they have to hand over a copy of the report and a written statement of the person's rights before they act on it.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681b",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681j(b)",
+   "statement": "Turned down for credit, an apartment, insurance or a job because of a credit report? The bureau has to give a free copy of that file, on request within 60 days of being told about the decision.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681j",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681j(c)",
+   "statement": "A free report is also owed, once every 12 months, to anybody who certifies in writing that they are unemployed and intend to look for work in the next 60 days, that they receive public welfare assistance, or that they believe their file contains errors from fraud. Somebody coming home often qualifies under more than one.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681j",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "myFICO, What is in my FICO Scores",
+   "statement": "A FICO score is built from five things: payment history about 35 percent, how much is owed against available credit about 30 percent, length of credit history about 15 percent, credit mix about 10 percent, and new credit about 10 percent. Those weights are for the general population and shift depending on what is in a particular file.",
+   "url": "https://www.myfico.com/credit-education/whats-in-your-credit-score",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1679b(a)-(b)",
+   "statement": "A credit repair company may not take any money before the service it promised has been fully performed. It also may not tell a person to misstate their credit history, or advise them to alter their identifying information to hide a bad record. Both are prohibited outright.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1679b",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681c-1",
+   "statement": "A security freeze stops new credit being opened in somebody's name and must be placed free of charge, within one business day of an electronic or phone request and three business days of a mailed one. Lifting it is free too, within one hour electronically.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681c-1",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "15 U.S.C. 1681c-1",
+   "statement": "An initial fraud alert lasts at least one year and comes with a free copy of the file. Somebody who files an identity theft report can get an extended alert that lasts seven years, comes with two free copies in the first 12 months, and keeps their name off unsolicited credit offers for five years.",
+   "url": "https://www.law.cornell.edu/uscode/text/15/1681c-1",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "FTC, Section 319 of the Fair and Accurate Credit Transactions Act of 2003: Fifth Interim Report to Congress, February 2013",
+   "statement": "In the FTC's 2013 study, about one in four consumers identified at least one potential material error on a credit report. One in five had an error that the agency corrected after they disputed it. About one in twenty had errors serious enough to mean less favorable terms on a loan. The one-in-five figure is the share whose error was corrected, which is not the same as the share who had one.",
+   "url": "https://www.ftc.gov/reports/section-319-fair-accurate-credit-transactions-act-2003-fifth-interim-federal-trade-commission-report",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS, Inmate Information Data Definitions",
+   "statement": "The DOCCS incarcerated lookup answers on a DIN with the housing or releasing facility, the date received, the earliest release date, the parole eligibility date, the conditional release date, the maximum expiration date and the post-release supervision maximum expiration date. So none of those need to be typed in from memory by the person they belong to.",
+   "url": "https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS, Inmate Information Data Definitions",
+   "statement": "The lookup does not return a date of birth. A search can be narrowed by year of birth, but the record that comes back does not carry a DOB. So a date of birth in this app never came from the lookup: it comes from the coordinator's own record.",
+   "url": "https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+   "checked": "2026-09-23"
+  },
+  {
+   "source": "DOCCS, Inmate Information Data Definitions",
+   "statement": "Parole eligibility is the point at which somebody becomes eligible after serving their minimum term, not a date they go home on. The conditional release date is the one a reentry plan is built around, and the Time Allowance Committee considers somebody four months before it.",
+   "url": "https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+   "checked": "2026-09-23"
   }
  ],
  "open": [
-  "What actually makes a bureau escalate past a plain signed request. The access ladder assumes rung 1 usually clears; no public source confirms how often that is true.",
+  "What actually makes a bureau escalate past a plain signed request. No public source says how often a plain request clears, and Experian asks for an ID copy with every mailed dispute regardless. This used to be load-bearing: a four-rung access ladder was built on the assumption that the cheapest route usually works. The ladder is gone and the product now turns on document readiness instead, which is knowable, so this is a question worth answering rather than a hole under the design.",
   "Whether a bureau honors a mid-dispute revocation of a helper's authority.",
   "Whether any New York county has designated a private collection agency, rather than its probation department, to collect restitution. That is the one route by which restitution could reach a credit report, and the designation is made county by county.",
   "Whether court fines and fees are furnished, and by whom.",
@@ -935,7 +1037,7 @@ const RULES = {
     "P.O. Box 4500",
     "Allen, TX 75013"
    ],
-   "note": "Experian also asks for a copy of a government-issued ID and a proof of current address with a mailed dispute. That is rung 2 of the access ladder arriving in the envelope.",
+   "note": "Experian also asks for a copy of a government-issued ID and a proof of current address with every mailed dispute. This is the evidence that killed the access ladder: the cheapest route was never available here in the first place.",
    "url": "https://www.experian.com/blogs/ask-experian/credit-education/faqs/instructions-for-disputing-by-mail/"
   },
   {
@@ -1093,6 +1195,665 @@ const RULES = {
    }
   ]
  },
+ "lessons": [
+  {
+   "slug": "three-papers",
+   "title": "The three pieces of paper",
+   "minutes": 5,
+   "hook": "Two documents decide whether you walk out with ID. One has a deadline near release; the other is worth starting years out.",
+   "urgentFor": [
+    "not_yet_triaged",
+    "credit_invisible",
+    "thin_file",
+    "damaged_file",
+    "errors_present"
+   ],
+   "cards": [
+    {
+     "title": "Everything runs through your ID",
+     "body": "A bank account, an apartment, a job, and every single thing you will ever do with a credit bureau needs a photo ID. And the ID itself needs two other documents first. Get this chain wrong and nothing downstream of it can start.",
+     "aside": "If your date is years away, this lesson still has one thing in it for you: the birth certificate. It has no deadline, it takes ten weeks or more, and asking for it early costs you nothing. The rest of this course does not wait for a release date at all.",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Birth certificate and Social Security card, in that order of worry",
+     "body": "Both have to be in your file before the non-driver ID application can even be sent. Your coordinator is the one who requests them, and they check where everyone's documents stand every three months. The birth certificate is the slow one. It can take ten weeks or more to come back, so it is the one to ask about first.",
+     "aside": "",
+     "cited": "DOCCS and DMV Identification Card Program, Annual Legislative Report 2025, checked 2026-09-23",
+     "url": "https://doccs.ny.gov/system/files/documents/2026/06/2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf"
+    },
+    {
+     "title": "120 days out, ask for the Social Security card",
+     "body": "That is the mark. At 120 days before you go home, the Social Security card application goes in. If you are inside that window right now and nobody has raised it with you, raise it with them. If you are years out, this is the date to know about rather than the date to act on, and it will come round.",
+     "aside": "Write the date down. It is the one deadline in this whole course that is yours to chase rather than somebody else's.",
+     "cited": "DOCCS and DMV Identification Card Program, Annual Legislative Report 2025, checked 2026-09-23",
+     "url": "https://doccs.ny.gov/system/files/documents/2026/06/2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf"
+    },
+    {
+     "title": "The birth certificate is free, unless you were born somewhere else",
+     "body": "When the department requests your birth certificate for your release, there is no fee, and your sentence and commitment paperwork counts as your permission, so you do not have to sign anything separately. That covers New York records only. Born in another state, or another country, and none of that applies to you. Say so early, because yours takes longer and costs money.",
+     "aside": "",
+     "cited": "N.Y. Public Health Law 4174, checked 2026-09-23",
+     "url": "https://www.nysenate.gov/legislation/laws/PBH/4174"
+    },
+    {
+     "title": "The other 120 days, which is not the same 120 days",
+     "body": "After you are released, the DOCCS ID you walk out with expires in 120 days. That is your window to get to a DMV office and trade it for a real non-driver photo ID. Two different 120-day clocks, one before the gate and one after, and mixing them up is how people end up with no ID at all.",
+     "aside": "",
+     "cited": "DOCCS, Obtaining DMV Identification, checked 2026-09-23",
+     "url": "https://doccs.ny.gov/obtaining-dmv-identification"
+    }
+   ],
+   "check": {
+    "prompt": "You are 130 days from release and have no birth certificate on file. What is the most useful thing to do?",
+    "choices": [
+     {
+      "value": "both",
+      "label": "Ask your coordinator about both documents now"
+     },
+     {
+      "value": "wait",
+      "label": "Wait until 120 days, then ask about both"
+     },
+     {
+      "value": "id",
+      "label": "Apply for the photo ID and sort the rest later"
+     }
+    ],
+    "answer": "both",
+    "why": "The birth certificate has no deadline attached, which is exactly why it gets left. It is also the slow one, ten weeks or more, and the ID application cannot be submitted without it. The 120-day mark is for the Social Security card. The birth certificate wants to be moving before that."
+   }
+  },
+  {
+   "slug": "what-a-report-is",
+   "title": "What a credit report actually is",
+   "minutes": 4,
+   "hook": "It is a file about you that you have never read, and there are rules about who gets to look at it.",
+   "urgentFor": [
+    "not_yet_triaged",
+    "credit_invisible"
+   ],
+   "cards": [
+    {
+     "title": "It is a list, not a judgement",
+     "body": "A credit report is a record of accounts in your name: who you borrowed from, how much, whether you paid on time, and whether anybody is chasing you for it. That is it. It is closer to a bank statement than to a grade.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "There are three of them, and they disagree",
+     "body": "Equifax, Experian and TransUnion each keep their own file on you. Not every lender reports to all three, so an account can sit on one report and be missing from another. This is why anything we do, we do three times.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Not everybody can just look you up",
+     "body": "A report can only be handed out for a reason the law lists: you applied for credit, an insurer is making a decision, a court ordered it, child support enforcement, or you told them in writing to release it. Somebody being curious about you is not on that list.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681b(a), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681b"
+    },
+    {
+     "title": "An employer needs your written permission",
+     "body": "An employer has to tell you clearly and in writing that they want to pull your credit, and get your written permission before they do. If they then decide not to hire you because of what is in it, they have to give you a copy of the report and a written statement of your rights before they act. Not after. Before.",
+     "aside": "This one matters on the outside. Most people never ask for the copy they are owed.",
+     "cited": "15 U.S.C. 1681b(b)(2)-(3), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681b"
+    }
+   ],
+   "check": {
+    "prompt": "An employer turns you down and mentions your credit. What are you owed?",
+    "choices": [
+     {
+      "value": "copy",
+      "label": "A copy of the report and a statement of your rights"
+     },
+     {
+      "value": "nothing",
+      "label": "Nothing, it is their decision"
+     },
+     {
+      "value": "reason",
+      "label": "A written explanation of their reasoning"
+     }
+    ],
+    "answer": "copy",
+    "why": "You get a copy of the report they used and a written statement of your rights, and you are supposed to get it before they finalize the decision, so there is a window to point out an error. Separately, a denial like this entitles you to a free copy from the bureau itself. That comes up in the lesson on free reports."
+   }
+  },
+  {
+   "slug": "report-and-score",
+   "title": "The report and the score are different things",
+   "minutes": 4,
+   "hook": "One is a file. The other is somebody's opinion about the file, and you are owed the first one but not the second.",
+   "urgentFor": [
+    "not_yet_triaged"
+   ],
+   "cards": [
+    {
+     "title": "The file is the facts. The score is an opinion about them",
+     "body": "The report lists what happened. A score is a number a company calculates from that list, using a formula they own. Change the file and the score follows. Argue with the score and nothing happens, because there is nothing there to argue with.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Your free report may come with no number on it",
+     "body": "What you are owed by law is the file. A score is specifically not part of what they have to disclose. So when your report arrives in the mail and there is no number anywhere on it, nothing has gone wrong and nobody has cheated you. You got exactly what you were owed, and it is the more useful half.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681g(a)(1), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681g"
+    },
+    {
+     "title": "Your Social Security number can be blacked out",
+     "body": "You can require them to leave the first five digits of your Social off your own copy. That is a right you can insist on, not a favour. It is also the reason you can read your own report on a tablet in a room full of people.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681g(a)(1)(A), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681g"
+    }
+   ],
+   "check": {
+    "prompt": "Your free report arrives and there is no score on it. What happened?",
+    "choices": [
+     {
+      "value": "normal",
+      "label": "Nothing. A file disclosure does not have to include one"
+     },
+     {
+      "value": "error",
+      "label": "They made a mistake and you should write back"
+     },
+     {
+      "value": "nofile",
+      "label": "It means you have no score at all"
+     }
+    ],
+    "answer": "normal",
+    "why": "The law says they owe you the file, and specifically says scores are not part of that. Most mailed reports arrive without one. It says nothing about whether you have a score, and the file is the part that can actually be corrected."
+   }
+  },
+  {
+   "slug": "no-single-score",
+   "title": "There is no such thing as your credit score",
+   "minutes": 5,
+   "hook": "Not one number. Dozens, all real at the same time, and the free app on somebody's phone is showing a different one from the bank.",
+   "urgentFor": [
+    "thin_file",
+    "damaged_file"
+   ],
+   "cards": [
+    {
+     "title": "Three things multiply together",
+     "body": "Which bureau's file it was run against, which company's model did the running, and what the score is for. Three bureaus, several models in active use, and separate versions tuned for car loans and credit cards. Multiply those out and one person honestly has dozens of scores on the same day.",
+     "aside": "",
+     "cited": "CFPB, What is a credit score?; myFICO, FICO Score Versions, checked 2026-09-23",
+     "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-score-en-315/"
+    },
+    {
+     "title": "They do not even share a scale",
+     "body": "Most scores run 300 to 850. The ones car dealers and card companies pull run 250 to 900. So a 700 in one place is not the same as a 700 in another, and comparing them straight across tells you nothing.",
+     "aside": "",
+     "cited": "CFPB, What is a credit score?; myFICO, FICO Score Versions, checked 2026-09-23",
+     "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-score-en-315/"
+    },
+    {
+     "title": "Why the free app disagrees with the bank",
+     "body": "Free apps usually show a VantageScore. Most lenders use a FICO. Different companies, different formulas. Neither is lying to you. They are not measuring the same thing.",
+     "aside": "",
+     "cited": "CFPB, What is a credit score?; myFICO, FICO Score Versions, checked 2026-09-23",
+     "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-score-en-315/"
+    },
+    {
+     "title": "So which one is real?",
+     "body": "The one belonging to whoever is deciding about you. That is the whole answer. A landlord, a car dealer and a card company will each pull a different one, and all of them are real. Which is why the work is on the file, not on chasing a number.",
+     "aside": "It is also why this app does not show you a number. A score with no model, bureau and date attached is a guess that looks precise.",
+     "cited": "",
+     "url": ""
+    }
+   ],
+   "check": {
+    "prompt": "A free app shows 640. A car dealer says you are at 590. Who is wrong?",
+    "choices": [
+     {
+      "value": "neither",
+      "label": "Neither. Different model, different bureau, different scale"
+     },
+     {
+      "value": "app",
+      "label": "The app, those are never accurate"
+     },
+     {
+      "value": "dealer",
+      "label": "The dealer, they lowball to sell you a worse rate"
+     }
+    ],
+    "answer": "neither",
+    "why": "The app is almost certainly showing a VantageScore. The dealer pulled an auto-specific FICO, which runs on a 250 to 900 scale rather than 300 to 850, probably from a different bureau's file. Both numbers can be correct at once. Worth knowing before you assume somebody is running a game on you."
+   }
+  },
+  {
+   "slug": "what-moves-it",
+   "title": "What actually moves a score",
+   "minutes": 5,
+   "hook": "Five things, and two of them are most of it.",
+   "urgentFor": [
+    "thin_file",
+    "credit_invisible"
+   ],
+   "cards": [
+    {
+     "title": "The five, by weight",
+     "body": "Payment history is about 35 percent. How much you owe against what is available to you is about 30 percent. How long you have had credit, about 15 percent. Your mix of types of credit, about 10 percent. Recently opened accounts, about 10 percent.",
+     "aside": "",
+     "cited": "myFICO, What is in my FICO Scores, checked 2026-09-23",
+     "url": "https://www.myfico.com/credit-education/whats-in-your-credit-score"
+    },
+    {
+     "title": "Two of them are two thirds",
+     "body": "Paying on time and not using too much of what you have available are roughly 65 percent of it between them. Everything else is noise by comparison. If you only ever remember one thing from this course, remember that the boring answer is most of the answer.",
+     "aside": "",
+     "cited": "myFICO, What is in my FICO Scores, checked 2026-09-23",
+     "url": "https://www.myfico.com/credit-education/whats-in-your-credit-score"
+    },
+    {
+     "title": "The one nobody explains",
+     "body": "That second one is about the ratio, not the amount. A card with a 500 dollar limit carrying a 450 balance looks worse than a card with a 5,000 dollar limit carrying the same 450. Same debt. Very different picture. Paying a card down below about a third of its limit is the fastest legitimate move there is.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Time is the one you cannot rush",
+     "body": "Length of history only goes one way and only at one speed. Which is the real argument for starting inside rather than at the gate: an account opened now is already months old by the time anybody asks you for a credit check.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    }
+   ],
+   "check": {
+    "prompt": "You have 450 dollars and two cards, each with a 500 dollar limit and a 450 balance. What helps your score most?",
+    "choices": [
+     {
+      "value": "one",
+      "label": "Pay one card down to near zero"
+     },
+     {
+      "value": "split",
+      "label": "Split it evenly across both"
+     },
+     {
+      "value": "save",
+      "label": "Keep it in savings and pay the minimums"
+     }
+    ],
+    "answer": "one",
+    "why": "Clearing one card takes it from 90 percent used to nearly nothing, which is the part of the formula that moves fastest. Splitting it leaves both cards around 45 percent used, which is better than 90 but not by as much. Keep paying at least the minimum on the other one either way, because payment history is the bigger slice and a missed payment undoes this."
+   }
+  },
+  {
+   "slug": "old-debt",
+   "title": "Old debt does not last forever",
+   "minutes": 4,
+   "hook": "Most of it has to come off after seven years, and paying it does not restart the clock.",
+   "urgentFor": [
+    "damaged_file"
+   ],
+   "cards": [
+    {
+     "title": "Seven years, ten for bankruptcy",
+     "body": "Collection accounts and charge-offs have to come off seven years after the account first went delinquent. So do civil judgments and paid tax liens, and most other bad marks. Bankruptcy runs ten. After that they are not allowed to report it.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681c(a), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681c"
+    },
+    {
+     "title": "The clock starts at the original delinquency",
+     "body": "This is the part that gets people. The seven years runs from when you first fell behind on the original account, not from when a collector bought it and not from when you paid it. Paying an old debt does not restart anything. A collector who tells you it will is selling you something.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681c(a), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681c"
+    },
+    {
+     "title": "Court debt is a different animal",
+     "body": "Restitution, fines and child support do not work like credit accounts. Civil judgments largely came off credit reports back in 2017, and in New York restitution is collected by probation rather than reported as a debt. Child support arrears are the exception: states are required to report those. They all matter, and they belong in a different list from your credit accounts.",
+     "aside": "",
+     "cited": "42 U.S.C. 666(a)(7), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/42/666"
+    }
+   ],
+   "check": {
+    "prompt": "A collector says paying a five-year-old debt will help your credit. Is that right?",
+    "choices": [
+     {
+      "value": "partly",
+      "label": "Partly, but it will not reset the seven years"
+     },
+     {
+      "value": "yes",
+      "label": "Yes, paying always helps"
+     },
+     {
+      "value": "no",
+      "label": "No, never pay an old debt"
+     }
+    ],
+    "answer": "partly",
+    "why": "It may help, and on some newer scoring models a paid collection stops counting against you entirely. But it does not restart or extend the seven years, and it does not erase the entry. Anyone telling you that you have to pay to make it go away has it backwards: time makes it go away. Get any agreement in writing before money moves."
+   }
+  },
+  {
+   "slug": "free-reports",
+   "title": "Every way to get your report free",
+   "minutes": 5,
+   "hook": "There are more routes than the one everybody knows, and coming home qualifies you for several of them at once.",
+   "urgentFor": [
+    "not_yet_triaged",
+    "credit_invisible"
+   ],
+   "cards": [
+    {
+     "title": "One a year, from all three, by mail",
+     "body": "Every nationwide bureau owes you one free copy of your file every 12 months, through one central request, and they have 15 days from getting the request to send it. One letter to one address covers all three.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681j(a), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681j"
+    },
+    {
+     "title": "The mail route is the one that works from here",
+     "body": "The Annual Credit Report Request Form goes to the Annual Credit Report Request Service in Atlanta. No internet, no phone, no fee. The weekly free reports everyone talks about are online only and are a voluntary arrangement rather than a right, so they are no use to you in here.",
+     "aside": "",
+     "cited": "FTC, Free Credit Reports, checked 2026-09-23",
+     "url": "https://consumer.ftc.gov/articles/free-credit-reports"
+    },
+    {
+     "title": "Turned down for something? That is another free one",
+     "body": "If you are denied credit, an apartment, insurance or a job because of your credit report, you can get a free copy of the file they used, as long as you ask within 60 days of being told. This is separate from your annual one and does not use it up.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681j(b), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681j"
+    },
+    {
+     "title": "Unemployed or on assistance? Another one",
+     "body": "A free report is also owed once a year to anyone who certifies in writing that they are unemployed and planning to look for work in the next 60 days, that they receive public assistance, or that they think their file has errors from fraud. Somebody just home often qualifies under two or three of those at the same time.",
+     "aside": "Almost nobody knows this one. It is worth remembering for the first year out, when you will want to check more than once.",
+     "cited": "15 U.S.C. 1681j(c), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681j"
+    }
+   ],
+   "check": {
+    "prompt": "You used your annual free report in March. In July a landlord turns you down over your credit. Do you have to pay?",
+    "choices": [
+     {
+      "value": "free",
+      "label": "No. A denial entitles you to another free copy"
+     },
+     {
+      "value": "pay",
+      "label": "Yes, you already used this year's"
+     },
+     {
+      "value": "wait",
+      "label": "No, but you have to wait until next March"
+     }
+    ],
+    "answer": "free",
+    "why": "Being turned down because of a report starts its own entitlement, separate from the annual one, as long as you ask within 60 days. If you were also unemployed or on assistance at the time, that is another separate route again. These stack. Most people pay for something they were already owed."
+   }
+  },
+  {
+   "slug": "disputes",
+   "title": "What a dispute is, and the clock it starts",
+   "minutes": 5,
+   "hook": "It is the one part of this where somebody else is on a deadline instead of you.",
+   "urgentFor": [
+    "errors_present"
+   ],
+   "cards": [
+    {
+     "title": "You are telling them their file is wrong",
+     "body": "A dispute is a letter saying a specific item on your report is not accurate, and why. Not a complaint, not a request for sympathy. One item, one reason, in writing.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Thirty days, counted from when they get it",
+     "body": "They have 30 days to investigate, starting the day the letter lands, not the day you posted it. If you send more information during those 30 days they get up to 15 more, so it can run to 45. Then they have five business days to write and tell you the outcome.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681i(a)(1)(A), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681i"
+    },
+    {
+     "title": "Wrong, incomplete, or unprovable all count",
+     "body": "If what they find is inaccurate, incomplete, or they simply cannot verify it, they have to delete or fix it. That last one matters more than people expect. An old debt sold on three times may have nobody left who can prove it was ever yours.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681i(a)(5)-(6), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681i"
+    },
+    {
+     "title": "All three, every time",
+     "body": "An item deleted at Equifax is still sitting on the Experian and TransUnion files. One letter fixes one third of the problem. This is why every dispute here goes out as three letters.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "It works more often than people think",
+     "body": "In the FTC's study, about one in four people found at least one error on a report that could have mattered, and about one in twenty had one bad enough to cost them worse terms on a loan. One in five had an error put right after they disputed it. Disputing is not a long shot.",
+     "aside": "",
+     "cited": "FTC, Section 319 of the Fair and Accurate Credit Transactions Act of 2003: Fifth Interim Report to Congress, February 2013, checked 2026-09-23",
+     "url": "https://www.ftc.gov/reports/section-319-fair-accurate-credit-transactions-act-2003-fifth-interim-federal-trade-commission-report"
+    }
+   ],
+   "check": {
+    "prompt": "You mail a dispute on the 1st. It arrives on the 5th. When is the answer due?",
+    "choices": [
+     {
+      "value": "receipt",
+      "label": "30 days from the 5th, when they received it"
+     },
+     {
+      "value": "posted",
+      "label": "30 days from the 1st, when you posted it"
+     },
+     {
+      "value": "either",
+      "label": "There is no fixed deadline"
+     }
+    ],
+    "answer": "receipt",
+    "why": "The clock runs from receipt, not from the postmark, which is why anything sent from here should be tracked if possible. And if you send extra paperwork while they are investigating, you hand them up to 15 extra days, so send everything at once rather than in pieces."
+   }
+  },
+  {
+   "slug": "building-from-nothing",
+   "title": "Building a file from nothing",
+   "minutes": 5,
+   "hook": "No file is not the same as bad credit, and it is the faster of the two to fix.",
+   "urgentFor": [
+    "credit_invisible",
+    "thin_file"
+   ],
+   "cards": [
+    {
+     "title": "Empty moves faster than damaged",
+     "body": "Having no credit history is a different problem from having a bad one, and it is the better problem. There is nothing to argue with and nothing to wait out. You are building on clear ground.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "A secured card is your own money, held",
+     "body": "You put down a deposit, say 200 dollars, and that becomes your limit. Use a little of it, pay it off every month, and it reports as an ordinary credit card. The deposit comes back. The risk to the bank is nil, which is exactly why they will say yes to somebody with no history.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "A builder loan runs backwards",
+     "body": "The bank holds the money in an account, you make payments, and you get the money at the end. You are not borrowing anything. What you are buying is 12 months of on-time payment history, which is the single heaviest thing in the formula.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "The cheapest route is somebody else's card",
+     "body": "Being added as an authorized user on a family member's long-standing card can put their history on your file without you ever touching the card. It costs nothing and takes one phone call from them. Ask somebody who has had the same card a long time and always paid it.",
+     "aside": "It works both ways, so only ask somebody whose own record is solid.",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Rent, phone and power can count",
+     "body": "Payments you are already making can be reported, through services set up for it. It is the least work for the biggest effect, because you are getting credit for money that was leaving your pocket anyway.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    }
+   ],
+   "check": {
+    "prompt": "You have no credit file and 200 dollars. What starts the clock fastest?",
+    "choices": [
+     {
+      "value": "secured",
+      "label": "A secured card, used lightly and paid in full monthly"
+     },
+     {
+      "value": "wait",
+      "label": "Wait until you have more money saved"
+     },
+     {
+      "value": "loan",
+      "label": "Apply for a regular loan and see what happens"
+     }
+    ],
+    "answer": "secured",
+    "why": "The 200 becomes your limit and the account starts reporting straight away. Applying for regular credit with no file mostly produces refusals, and each one leaves a mark. Waiting costs you the one thing you cannot buy later, which is time on the account. Getting added as an authorized user on somebody else's card costs nothing at all and can run alongside it."
+   }
+  },
+  {
+   "slug": "identity-theft",
+   "title": "If somebody has been using your name",
+   "minutes": 4,
+   "hook": "It happens more to people inside than to anybody else, and the tools to stop it are free.",
+   "urgentFor": [
+    "errors_present",
+    "damaged_file"
+   ],
+   "cards": [
+    {
+     "title": "Why this hits this population hardest",
+     "body": "Your Social Security number has been on paperwork in a lot of hands. You have not seen a statement in years. Mail goes to an address that is not yours. Accounts opened in your name can run for a long time before anybody who cares finds out. If your report shows accounts you have never heard of, you are not confused, and it is not your fault.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "A freeze is free and it is the strong one",
+     "body": "A security freeze stops anybody opening new credit in your name. It has to be placed free of charge, within one business day of an electronic or phone request and three business days of a mailed one. Lifting it when you actually want credit is free too, within an hour if you do it electronically.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681c-1, checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681c-1"
+    },
+    {
+     "title": "A fraud alert is the lighter version",
+     "body": "An initial alert lasts at least a year and comes with a free copy of your file. File an identity theft report and you can get an extended alert: seven years, two free copies in the first year, and your name kept off unsolicited credit offers for five.",
+     "aside": "",
+     "cited": "15 U.S.C. 1681c-1, checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1681c-1"
+    },
+    {
+     "title": "An account you never opened is a dispute, not a debt",
+     "body": "Do not pay it and do not negotiate it. It goes down the dispute route, and unverifiable items have to be removed. Tell your coordinator which items you do not recognize. That sentence is the one that starts the legal clock.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    }
+   ],
+   "check": {
+    "prompt": "Your report shows a card opened two years ago that you have never heard of. What is the first move?",
+    "choices": [
+     {
+      "value": "dispute",
+      "label": "Tell your coordinator you do not recognize it"
+     },
+     {
+      "value": "pay",
+      "label": "Pay it off so it stops growing"
+     },
+     {
+      "value": "ignore",
+      "label": "Ignore it, it will age off in seven years"
+     }
+    ],
+    "answer": "dispute",
+    "why": "Saying you do not recognize it is what turns this into a dispute, and a dispute puts the bureau on a 30-day clock. Paying it can be read as agreeing it is yours. Waiting seven years means seven years of it sitting on your file while you are trying to rent somewhere. A freeze on top of that stops the next one."
+   }
+  },
+  {
+   "slug": "scams",
+   "title": "Spotting the people who will take your money",
+   "minutes": 4,
+   "hook": "Coming home with a bit of money and a bad report makes you a target. Two rules cover most of it.",
+   "urgentFor": [
+    "damaged_file",
+    "errors_present"
+   ],
+   "cards": [
+    {
+     "title": "Rule one: nobody may charge you before the work is done",
+     "body": "A credit repair company cannot legally take any money before it has fully performed what it promised. Not a deposit, not a setup fee, not a first month. If money is wanted up front, the law has already been broken and you have learned everything you need to know about them.",
+     "aside": "",
+     "cited": "15 U.S.C. 1679b(a)-(b), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1679b"
+    },
+    {
+     "title": "Rule two: anybody telling you to change your identity is setting you up",
+     "body": "Advising you to alter your identifying information to hide a bad record is specifically prohibited, and the person doing it is walking you into a fraud charge while they keep the fee. The same goes for anyone telling you to misstate your history.",
+     "aside": "",
+     "cited": "15 U.S.C. 1679b(a)-(b), checked 2026-09-23",
+     "url": "https://www.law.cornell.edu/uscode/text/15/1679b"
+    },
+    {
+     "title": "There is nothing they can do that you cannot",
+     "body": "Every dispute a paid company files is one you can file yourself, free, in a letter. There is no special channel and no relationship with the bureaus. What they are selling is the letter you are already getting help with here.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    },
+    {
+     "title": "Accurate is accurate",
+     "body": "If a debt is genuinely yours and correctly reported, nobody can remove it early. Anybody promising to delete accurate information is either lying or planning to dispute things they know are true, which wastes your time and can get the disputes dismissed as frivolous.",
+     "aside": "",
+     "cited": "",
+     "url": ""
+    }
+   ],
+   "check": {
+    "prompt": "A company offers to fix your credit for 99 dollars a month starting now. What does that tell you?",
+    "choices": [
+     {
+      "value": "illegal",
+      "label": "They are already breaking the law by charging before the work"
+     },
+     {
+      "value": "fair",
+      "label": "It is a fair price if it works"
+     },
+     {
+      "value": "check",
+      "label": "Nothing yet, check their reviews first"
+     }
+    ],
+    "answer": "illegal",
+    "why": "Taking money before the service is fully performed is prohibited outright. You do not need to read a single review: the payment structure alone tells you what they are. And the disputes they would file are ones you can file yourself for the price of a stamp."
+   }
+  }
+ ],
+ "courseMinutes": 50,
  "scan": {
   "lineFormat": "creditor | account number | opened | status | balance | dispute reason",
   "note": "The scanner reads the document and fills this form in. Nothing is saved until you confirm it, because an account number read wrong here becomes a dispute letter about the wrong account."
@@ -1887,7 +2648,11 @@ function guard(role) {
 }
 
 function bar(who, extra) {
+  // Always reachable. The course is the part of this product that keeps
+  // working after somebody goes home, so it is never more than one tap away.
   return '<div class="bar"><span class="wordmark">Bridge</span>' +
+    (APP === "inside"
+      ? '<a class="pill" href="#/inside/learn">Learn</a>' : "") +
     '<span class="who">' + esc(who) + '</span>' +
     '<div class="right">' + (extra || "") +
     (APP === "staff" ? "" :
@@ -1981,6 +2746,285 @@ route(/^\/inside\/teach$/, () => {
       'Keep going</button>' +
     '<div class="notes-always"><a class="btn quiet" href="#/inside/intake/2">' +
       '&larr; Back</a></div>' +
+    '</div></div>';
+});
+
+
+/* ---------- the credit course, mirroring app/lessons.py --------------- */
+//
+// Progress is per card rather than per lesson. A tablet session ends when the
+// dayroom closes, and losing four screens of reading to that is how somebody
+// decides an app is not worth starting.
+
+function lessonBySlug(slug) {
+  return RULES.lessons.filter((l) => l.slug === slug)[0] || null;
+}
+
+function lessonScreens(l) { return l.cards.length + 1; }
+
+function progressFor(c, slug) {
+  const store = c.lessons || {};
+  const row = store[slug] || {};
+  return {
+    card: row.card || 0,
+    done: !!row.done,
+    answered: row.answered || "",
+    doneOn: row.doneOn || "",
+  };
+}
+
+function markCard(c, slug, n) {
+  if (!c.lessons) c.lessons = {};
+  const row = c.lessons[slug] || {};
+  // Furthest reached, not latest: paging back to re-read costs nothing.
+  row.card = Math.max(row.card || 0, n);
+  c.lessons[slug] = row;
+  save();
+}
+
+function markAnswered(c, slug, choice) {
+  if (!c.lessons) c.lessons = {};
+  const row = c.lessons[slug] || {};
+  const first = !row.done;
+  row.answered = choice;
+  row.done = true;
+  if (first) {
+    row.doneOn = new Date().toISOString().slice(0, 10);
+    // An event with nobody attached does not go on this timeline. This one has
+    // a person and a date: they did it, today.
+    (c.timeline = c.timeline || []).push({
+      text: "You finished the lesson on " +
+        lessonBySlug(slug).title.toLowerCase(),
+      actor: "You",
+      on: new Date().toLocaleDateString(undefined,
+        { month: "long", day: "numeric" }),
+      done: true,
+    });
+  }
+  c.lessons[slug] = row;
+  save();
+}
+
+function courseStanding(c) {
+  const total = RULES.lessons.length;
+  const done = RULES.lessons.filter((l) => progressFor(c, l.slug).done).length;
+  const left = RULES.lessons
+    .filter((l) => !progressFor(c, l.slug).done)
+    .reduce((sum, l) => sum + l.minutes, 0);
+  return {
+    done: done,
+    total: total,
+    percent: total ? Math.round((done * 100) / total) : 0,
+    finished: done === total,
+    minutesLeft: left,
+  };
+}
+
+function nextLesson(c) {
+  const started = RULES.lessons.filter((l) => {
+    const r = progressFor(c, l.slug);
+    return r.card > 0 && !r.done;
+  });
+  if (started.length) return started[0];
+  const state = c.state || "";
+  const urgent = RULES.lessons.filter((l) =>
+    (l.urgentFor || []).indexOf(state) >= 0 && !progressFor(c, l.slug).done);
+  if (urgent.length) return urgent[0];
+  const rest = RULES.lessons.filter((l) => !progressFor(c, l.slug).done);
+  return rest.length ? rest[0] : null;
+}
+
+route(/^\/inside\/learn$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const st = courseStanding(c);
+  const nxt = nextLesson(c);
+  return '<div class="tablet">' + bar(c.name + " · the course") +
+    '<div class="pane"><h1>Learn about credit.</h1>' +
+    '<p class="lede">' + RULES.lessons.length + ' lessons, about ' +
+      RULES.courseMinutes + ' minutes in total. It saves where you stop, so ' +
+      'you can put the tablet down mid-sentence and pick it up tomorrow.</p>' +
+    '<div class="card ' + (st.finished ? "good" : "accent") + '">' +
+      '<div class="row"><span class="strong">' +
+      (st.finished ? "You have finished all " + st.total + "."
+        : st.done ? st.done + " of " + st.total + " done"
+        : "Nothing started yet") +
+      '</span><span class="tag teal" style="margin-left:auto">' +
+      st.percent + '%</span></div>' +
+      '<div class="track"><span style="width:' + st.percent + '%"></span></div>' +
+      (st.finished
+        ? '<a class="btn" href="#/inside/learn/finished">See what you covered</a>'
+        : nxt
+          ? '<span class="small">About ' + st.minutesLeft +
+            ' minutes left.</span><a class="btn" href="#/inside/learn/' +
+            nxt.slug + '">' + (st.done ? "Carry on with " : "Start with ") +
+            esc(nxt.title.toLowerCase()) + '</a>'
+          : "") +
+      '</div>' +
+    RULES.lessons.map((l) => {
+      const r = progressFor(c, l.slug);
+      const tag = r.done ? '<span class="tag teal">Done</span>'
+        : r.card > 0 ? '<span class="tag amber">' + r.card + ' of ' +
+            lessonScreens(l) + '</span>'
+        : (l.urgentFor || []).indexOf(c.state || "") >= 0
+          ? '<span class="tag amber">For you now</span>' : "";
+      return '<a class="card' + (r.done ? " soft" : "") +
+        '" href="#/inside/learn/' + l.slug +
+        '" style="text-decoration:none;color:inherit">' +
+        '<div class="row"><span class="strong">' + esc(l.title) + '</span>' +
+        '<span style="margin-left:auto">' + tag + '</span></div>' +
+        '<span class="small">' + esc(l.hook) + '</span>' +
+        '<span class="tiny">' + l.minutes + ' minutes · ' +
+        lessonScreens(l) + ' screens</span></a>';
+    }).join("") +
+    '<div class="card soft"><span class="strong">Where the facts come from' +
+      '</span><span class="small">Every rule in this course names the law or ' +
+      'the agency it comes from, and the date somebody checked it.</span>' +
+      '<a class="btn ghost" href="#/citations">See the full list</a></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/learn\/([a-z-]+)$/, (slug) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const at = progressFor(subject(), slug).card;
+  return go("#/inside/learn/" + slug + "/" +
+    Math.min(at, l.cards.length)), "";
+});
+
+route(/^\/inside\/learn\/([a-z-]+)\/(\d+)$/, (slug, n) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const c = subject();
+  const at = Math.max(0, Math.min(+n, l.cards.length));
+  markCard(c, slug, at);
+  const total = lessonScreens(l);
+  const r = progressFor(c, slug);
+
+  const head = '<div class="tablet">' + bar(l.title) +
+    '<div class="pane">' +
+    '<div class="row" style="gap:8px;align-items:center">' +
+    '<div class="track" style="flex:1"><span style="width:' +
+      Math.round(((at + 1) * 100) / total) + '%"></span></div>' +
+    '<span class="tiny">' + (at + 1) + ' of ' + total + '</span></div>' +
+    '<p class="tiny">Saved as you go. Close this and it opens here again.</p>';
+
+  if (at === l.cards.length) {
+    return head + '<h1>One question before you go.</h1>' +
+      '<p class="lede">' + esc(l.check.prompt) + '</p>' +
+      l.check.choices.map((ch) =>
+        '<label class="card accent" style="cursor:pointer">' +
+        '<input type="radio" name="choice" value="' + esc(ch.value) + '"' +
+        (r.answered === ch.value ? " checked" : "") + '>' +
+        '<span class="strong">' + esc(ch.label) + '</span></label>').join("") +
+      '<p class="tiny">Nothing is scored and nobody sees your answer. The ' +
+        'explanation is the same either way.</p>' +
+      '<button class="btn wide" onclick="answerLesson(\'' + slug +
+        '\')">Answer</button>' +
+      '<div class="row"><a class="btn ghost" href="#/inside/learn/' + slug +
+        '/' + (at - 1) + '">Back</a>' +
+      '<a class="btn ghost" href="#/inside/learn">Stop for now</a></div>' +
+      '</div></div>';
+  }
+
+  const card = l.cards[at];
+  return head + '<h1>' + esc(card.title) + '</h1>' +
+    '<p class="lede">' + esc(card.body) + '</p>' +
+    (card.aside
+      ? '<div class="card accent"><span class="small">' + esc(card.aside) +
+        '</span></div>' : "") +
+    (card.cited
+      ? '<div class="card soft"><span class="tiny">Where this comes from: ' +
+        esc(card.cited) + '</span></div>' : "") +
+    '<a class="btn wide" href="#/inside/learn/' + slug + '/' + (at + 1) + '">' +
+      (at + 1 === total - 1 ? "Last one, then a question" : "Next") + '</a>' +
+    '<div class="row">' +
+    (at > 0 ? '<a class="btn ghost" href="#/inside/learn/' + slug + '/' +
+      (at - 1) + '">Back</a>' : "") +
+    '<a class="btn ghost" href="#/inside/learn">Stop for now</a>' +
+    (slug === "no-single-score"
+      ? '<a class="btn ghost" href="#/inside/learn/scores">Every score model</a>'
+      : "") +
+    '</div></div></div>';
+});
+
+function answerLesson(slug) {
+  const picked = document.querySelector('input[name="choice"]:checked');
+  if (!picked) return;
+  markAnswered(subject(), slug, picked.value);
+  go(courseStanding(subject()).finished
+    ? "#/inside/learn/finished" : "#/inside/learn/" + slug + "/done");
+}
+
+route(/^\/inside\/learn\/([a-z-]+)\/done$/, (slug) => {
+  if (!guard("inside")) return "";
+  const l = lessonBySlug(slug);
+  if (!l) return go("#/inside/learn"), "";
+  const c = subject();
+  const r = progressFor(c, slug);
+  const st = courseStanding(c);
+  const nxt = nextLesson(c);
+  const chosen = l.check.choices.filter((ch) => ch.value === r.answered)[0];
+  // Right and wrong get the same explanation, and nothing on screen says
+  // wrong. A verdict in front of whoever is waiting for the tablet teaches
+  // people to stop answering.
+  return '<div class="tablet">' + bar(l.title) +
+    '<div class="pane">' +
+    '<div class="card good"><h1 style="margin:0">That\'s ' + st.done +
+      ' of ' + st.total + '.</h1>' +
+      '<div class="track"><span style="width:' + st.percent + '%"></span></div>' +
+      '<span class="small">' + esc(l.title) + ' is done and saved.</span></div>' +
+    '<div class="card accent">' +
+      (chosen ? '<span class="tiny">You answered: ' +
+        esc(chosen.label.toLowerCase()) + '</span>' : "") +
+      '<h3>' + (r.answered === l.check.answer
+        ? "That's the one." : "Here's the thing worth knowing.") + '</h3>' +
+      '<p class="small">' + esc(l.check.why) + '</p></div>' +
+    (nxt ? '<div class="card"><span class="strong">Next: ' + esc(nxt.title) +
+      '</span><span class="small">' + esc(nxt.hook) + '</span>' +
+      '<a class="btn" href="#/inside/learn/' + nxt.slug + '">Keep going</a>' +
+      '</div>' : "") +
+    '<div class="card soft"><span class="strong">Or stop here</span>' +
+      '<span class="small">' + st.minutesLeft + ' minutes left in the course, ' +
+      'whenever you want it.</span><div class="row">' +
+      '<a class="btn ghost" href="#/inside/learn">All lessons</a>' +
+      '<a class="btn ghost" href="#/inside/case">My case</a></div></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/learn\/finished$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const st = courseStanding(c);
+  if (!st.finished) return go("#/inside/learn"), "";
+  return '<div class="tablet">' + bar(c.name + " · the course") +
+    '<div class="pane">' +
+    '<div class="card good" style="text-align:center">' +
+      '<h1 style="margin:0">You finished the whole course.</h1>' +
+      '<p class="lede">All ' + st.total + ' lessons. About ' +
+      RULES.courseMinutes + ' minutes of it. You know more about how credit ' +
+      'actually works than most people who have never been inside.</p></div>' +
+    '<div class="card accent"><h3>This is not a certificate and it is worth ' +
+      'more than one</h3><p class="small">Nobody can take this back off you, ' +
+      'it does not expire, and it does not show up on any record. The next ' +
+      'time somebody tries to sell you a credit repair package, or a landlord ' +
+      'quotes you a number, you will know what you are looking at.</p></div>' +
+    '<div class="card"><span class="strong">What you covered</span>' +
+      RULES.lessons.map((l) =>
+        '<a class="rung" href="#/inside/learn/' + l.slug + '/0" ' +
+        'style="text-decoration:none;color:inherit"><div>' +
+        '<div class="small strong">' + esc(l.title) + '</div>' +
+        '<div class="tiny">' + esc(l.hook) + '</div></div></a>').join("") +
+      '</div>' +
+    '<div class="card soft"><span class="strong">The one thing to do with it ' +
+      'this week</span><span class="small">Ask your coordinator where your ' +
+      'birth certificate and Social Security card stand. That is the first ' +
+      'lesson, it has a real deadline, and it is the only part of this that ' +
+      'somebody else has to start for you.</span>' +
+      '<div class="row"><a class="btn" href="#/inside/case">Back to my case</a>' +
+      '<a class="btn ghost" href="#/inside/learn">All lessons</a></div></div>' +
     '</div></div>';
 });
 
