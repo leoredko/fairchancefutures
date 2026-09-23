@@ -56,7 +56,7 @@ def test_the_coordinator_scans_and_the_person_reads_it_on_the_tablet(client):
     assert saved.status_code == 303
 
     # It landed on the person's own screen, without the number that would make
-    # a shared dayroom tablet dangerous.
+    # a screen other people can read dangerous.
     sign_in_inside(client, identifier="28A0931")
     page = client.get("/inside/report").text
     assert "TransUnion" in page
@@ -93,7 +93,7 @@ def test_a_scanned_dispute_reason_becomes_the_flagged_item(client):
 
 def test_the_tablet_is_the_one_surface_that_can_never_send_a_report(client):
     """The helper is outside with a phone and a mailbox. The person inside is
-    on a shared kiosk with no camera and no way to attach anything, which is
+    on the tablet, which has no camera and no way to attach anything, which is
     the constraint the whole three-route design exists to work around."""
     from app.routes.inside import router as inside
 

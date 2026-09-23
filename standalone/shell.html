@@ -430,7 +430,8 @@ function classify(a) {
 /* ---------- reports --------------------------------------------------- */
 /* Mirrors app/report.py. The masking runs on the way in, not the way out: a
    report is stored already truncated, so no rendering mistake downstream can
-   put somebody's Social Security number on a shared dayroom screen. That the
+   put somebody's Social Security number on a screen other people can read.
+   That the
    number can be truncated at all is 15 U.S.C. 1681g(a)(1)(A), not a courtesy. */
 
 function maskSsn(value) {
@@ -738,7 +739,8 @@ route(/^\/enroll$/, () => {
       'style="letter-spacing:.5em;font-size:26px" ' +
       'onkeydown="if(event.key===\'Enter\')doEnroll()">' +
     '<button class="btn wide" onclick="doEnroll()">Save my PIN</button>' +
-    '<div class="card dashed"><span class="strong">This tablet is shared.</span>' +
+    '<div class="card dashed"><span class="strong">Your paperwork is in a lot ' +
+      'of hands.</span>' +
       '<span class="small">Don\'t use your birthday or any part of your own ' +
       'number. Anyone holding your paperwork can read those.</span>' +
       '<span class="small">If you forget it, your counselor can clear it and you ' +
@@ -878,7 +880,7 @@ route(/^\/inside\/intake\/(\d+)$/, (n) => {
       '</button>').join("") + '</div>';
   }
 
-  return '<div class="tablet">' + bar(c.name + " · Kiosk 04") +
+  return '<div class="tablet">' + bar(c.name) +
     '<div class="pane">' +
       '<div class="progress"><div class="track"><span style="width:' +
         Math.round(100 * n / total) + '%"></span></div>' +
@@ -940,9 +942,10 @@ route(/^\/inside\/teach$/, () => {
 
 /* ---------- the credit course, mirroring app/lessons.py --------------- */
 //
-// Progress is per card rather than per lesson. A tablet session ends when the
-// dayroom closes, and losing four screens of reading to that is how somebody
-// decides an app is not worth starting.
+// Progress is per card rather than per lesson. A session ends when movement is
+// called, the battery dies, or the tablet gets set down, and losing four
+// screens of reading to that is how somebody decides an app is not worth
+// starting.
 
 function lessonBySlug(slug) {
   return RULES.lessons.filter((l) => l.slug === slug)[0] || null;
@@ -1427,7 +1430,7 @@ route(/^\/inside\/authorization$/, () => {
                      "Change the address on file",
                      "See the Social Security number",
                      "See full account numbers"];
-  return '<div class="tablet">' + bar(c.name + " · Kiosk 04") +
+  return '<div class="tablet">' + bar(c.name) +
     '<div class="pane"><h1>Who is helping you</h1>' +
     (auth
       ? '<div class="card"><span class="strong">' + esc(auth.helper) + ', since ' +

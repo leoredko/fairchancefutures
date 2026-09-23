@@ -8,7 +8,7 @@ The one document that would settle it could not be read directly, and the
 secondary summary of it contradicted its own example, so this module accepts
 NYSIDs leniently and says why.
 
-That asymmetry is deliberate. At a kiosk, rejecting a number a person actually
+That asymmetry is deliberate. On the tablet, rejecting a number a person
 holds is the worst thing this code can do: they have no second channel, no help
 desk, and quite possibly one shot before the next person needs the tablet. When
 in doubt, let it through and let the lookup fail with a sentence they can act
@@ -39,7 +39,7 @@ NYSID_RE = re.compile(r"^(\d{8})([A-Z]?)$")
 
 
 class InvalidIdentifier(ValueError):
-    """Carries a sentence a person at a kiosk can act on."""
+    """Carries a sentence the person reading it can act on."""
 
 
 @dataclass(frozen=True)
@@ -106,11 +106,3 @@ SELF_SERVICE_YEAR = "28"
 def is_self_service(identifier: "Identifier") -> bool:
     return (identifier.kind is IdKind.DIN
             and identifier.normalized.startswith(SELF_SERVICE_YEAR))
-
-
-def looks_like(raw: str) -> IdKind | None:
-    """Non-raising check, for deciding what to show before someone submits."""
-    try:
-        return parse(raw).kind
-    except InvalidIdentifier:
-        return None

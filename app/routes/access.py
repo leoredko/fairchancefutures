@@ -277,7 +277,7 @@ def helper_enroll(
 @router.post("/signout")
 @router.get("/signout")
 def signout():
-    """Big, always reachable, one tap. A shared tablet needs a way out that
+    """Big, always reachable, one tap. A tablet read in a common area needs a way out that
     nobody has to look for."""
     response = RedirectResponse("/", status_code=303)
     response.delete_cookie(COOKIE_NAME, path="/")

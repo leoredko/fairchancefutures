@@ -201,7 +201,7 @@ def test_a_lesson_reopens_where_it_was_left(inside):
 
 
 def test_progress_survives_signing_out_and_back_in(inside):
-    """A tablet session ends when the dayroom closes. Losing four screens of
+    """A tablet session ends without warning. Losing four screens of
     reading to that is how somebody decides the app is not worth starting."""
     inside.get("/inside/learn/lesson/disputes/2")
     inside.get("/signout")

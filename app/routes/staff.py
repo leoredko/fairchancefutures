@@ -387,7 +387,7 @@ def save_report(
 
     The Social Security number is masked on the way in, not on the way out.
     Storing it whole and hiding it later would mean one templating mistake
-    puts somebody's SSN on a dayroom screen.
+    puts somebody's SSN on a screen somebody else can read.
     """
     coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.UPLOAD_FILE)

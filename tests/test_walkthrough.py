@@ -108,7 +108,7 @@ def test_the_walk_shows_the_persons_own_data_and_what_it_means(with_report):
 
 
 def test_the_report_never_shows_an_unmasked_social_on_the_walk(with_report):
-    """The tablet is shared and sits in a dayroom. This is the one thing on it
+    """The tablet is read where other people can see it. This is the one thing on it
     that must be true on every screen, not just the identity one."""
     for at in range(len(walkthrough.SECTIONS) + 1):
         page = with_report.get(f"/inside/report/0/read/{at}").text

@@ -133,7 +133,7 @@ FACTS: dict[str, Fact] = {
             "of their Social Security number out of their own file disclosure. "
             "On request, with proof of identity, the agency SHALL truncate it. "
             "This is a right, not a courtesy, and it is why the report can be "
-            "read on a shared tablet at all."
+            "read on the tablet at all."
         ),
         source="15 U.S.C. 1681g(a)(1)(A)",
         url="https://www.law.cornell.edu/uscode/text/15/1681g",

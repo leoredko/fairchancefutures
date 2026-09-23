@@ -44,8 +44,8 @@ The tablet is **not offline**. Bridge is loaded onto it and reaches the
 person's own record, which is why intake saves as it goes and the course keeps
 a place. What it cannot reach is the open web, which is the part that matters:
 every route a bureau offers a free citizen runs through a web page, and none of
-them are reachable from this device. One question per screen, because the
-tablet is shared and the session ends when the dayroom does.
+them are reachable from this device. One question per screen, because a
+session ends without warning.
 
 **Family or friend, phone.** Can receive mail, send the report in (a PDF, typed
 by hand, or photographed, offered in that order), print and mail letters, take a
@@ -68,7 +68,7 @@ expires first, never a roster.
 | Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. |
 | Referrals and outcomes | Never built past a sketch, and nothing depends on them. |
 | Account creation | There is no self-serve signup. Accounts are seeded, which is right: a person does not enrol themselves into a caseload, a counselor adds them. |
-| Password reset by email | Nobody inside has email. A counselor clears the PIN and the client sets a new one at the kiosk. |
+| Password reset by email | Nobody inside has outside email. A counselor clears the PIN and the client sets a new one on their tablet. |
 | Real offline support | The tablet reaches Bridge, so writes go to the server and save immediately. An earlier promise that "nothing is lost if you lose access for a week" was about a disconnected device, and it has been removed from the intake copy rather than left there untrue. If a facility turns out to have genuinely intermittent connectivity, IndexedDB plus replay is the real fix. |
 | Spanish | An EN / ES toggle was drawn early and removed rather than shipped as decoration over an English-only app. For this population it is a real requirement rather than a nice-to-have, and it should come back as translation rather than as a pill. |
 | Encryption, audit logging, retention policy | Assumed away with the rest of the compliance regime, for class. Named on the home page rather than hidden. |
@@ -88,9 +88,10 @@ standing without a signed form. Those two shape the product, and no waiver makes
 them disappear. They are `app/surfaces.py` and `app/authorization.py`, and
 `tests/test_constraints.py` fails if either quietly stops being true.
 
-Nor is the dayroom. A facility tablet is shared, and whoever used it before is
-standing behind whoever is using it now, so a Social Security number, a full
-account number and a date of birth never render on it. `app/redaction.py`
+Nor is line of sight. The tablet is issued to one person, but it is read in
+common areas with other people able to see the screen, and it is a vendor
+device the facility administers, so a Social Security number, a full account
+number and a date of birth never render on it. `app/redaction.py`
 enforces that for the tablet and the helper's phone, and deliberately not for
 the coordinator, who holds the file already.
 

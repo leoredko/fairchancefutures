@@ -207,13 +207,6 @@ def put_authorization(auth: Authorization) -> None:
 # accounts
 # --------------------------------------------------------------------------
 
-def get_account(account_id: str):
-    from app.auth import Account
-
-    raw = STATE.accounts.get(account_id)
-    return Account(**raw) if raw else None
-
-
 def put_account(account) -> None:
     from dataclasses import asdict as _asdict
 
@@ -226,15 +219,6 @@ def find_account(role: str, login_key: str):
 
     for raw in STATE.accounts.values():
         if raw["role"] == role and raw["login_key"] == login_key.upper():
-            return Account(**raw)
-    return None
-
-
-def account_for_client(client_id: str, role: str = "inside"):
-    from app.auth import Account
-
-    for raw in STATE.accounts.values():
-        if raw["role"] == role and raw["subject_id"] == client_id:
             return Account(**raw)
     return None
 

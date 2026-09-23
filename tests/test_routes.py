@@ -151,7 +151,7 @@ def test_triage_classifies_and_reorders_the_queue(staff):
 def test_the_tablet_and_the_helper_never_receive_the_sensitive_fields():
     """The boundary that is real is physical.
 
-    A shared dayroom tablet and a helper's phone are the two places a Social
+    A tablet read in a common area and a helper's phone are the two places a Social
     Security number cannot appear. This used to apply to the coordinator too,
     which was defending the wrong boundary: they hold the file already.
     """
@@ -422,10 +422,13 @@ def test_roles_is_generated_from_the_capability_table(client):
     assert "no camera roll" in page or "no open web" in page
 
 
-def test_roles_names_the_dayroom_boundary_rather_than_a_blanket_rule(client):
+def test_roles_grounds_the_boundary_in_where_the_device_is_read(client):
+    # The tablet is issued to one person rather than shared between them, so
+    # the reason these fields stop is line of sight and who administers the
+    # device, not who used it last.
     html = client.get("/roles").text
     assert "Social Security number" in html
-    assert "dayroom" in html
+    assert "line of sight" in html
     assert "coordinator's desk is neither" in html
 
 

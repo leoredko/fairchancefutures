@@ -19,20 +19,19 @@ thing that moves when the person moves it, is available on every screen, and
 keeps working after they go home. It is reachable from every screen and never
 gated behind intake.
 
-**Progress saves per card, not per lesson.** A tablet session ends when the
-dayroom closes, the tablet dies, or somebody else needs it. Losing four screens
+**Progress saves per card, not per lesson.** A tablet session ends when
+movement is called, the battery dies, or the tablet gets set down. Losing four screens
 of reading to that is how a person decides an app is not worth starting.
 Furthest card reached rather than latest, so paging back to re-read costs
 nothing.
 
 **Nothing is ever marked wrong.** The check question at the end of a lesson
 exists to make somebody commit to an answer before they read the explanation,
-because that is what makes the explanation stick. A verdict, delivered in a
-dayroom in front of whoever is waiting for the tablet, teaches people to stop
-answering.
+because that is what makes the explanation stick. A verdict, delivered where other
+people can read the screen, teaches people to stop answering.
 
-**One question per screen.** Facility tablets are slow, shared, and often
-metered by the minute. A six-field form is six chances to lose the session.
+**One question per screen.** Facility tablets are slow, and reading happens in
+short bursts. A six-field form is six chances to lose the session.
 
 **Position, never points.** Score shaming is a known engagement killer, so the
 client sees where they are on a road rather than a number they can feel bad
@@ -64,8 +63,9 @@ refuses them server-side.
 is an app provisioned onto the tablet. A product that depends on somebody
 inside being handed a URL and tapping Add to Home Screen does not get used.
 
-**The name is on the case screen.** On a shared tablet, seeing your own name is
-how you know you are not looking at whoever used it before you.
+**The name is on the case screen.** A counselor entered these details, not the
+person reading them, so seeing your own name is how you confirm they got it
+right before anything is sent anywhere in it.
 
 ## Family, on a phone
 
@@ -88,9 +88,10 @@ certificate, holds the sentence and commitment paperwork, and has the vital
 documents packet in their own folder. Hiding a Social Security number from
 somebody who is already holding it is not protection, it is performance.
 
-**The boundary that is real is physical.** A facility tablet is shared and sits
-in a dayroom with whoever used it last standing behind whoever is using it now,
-and a helper was promised they would never be asked to handle these fields. So
+**The boundary that is real is physical.** The tablet is issued to one person,
+so nobody inherits their session, but it is read in common areas with other
+people in line of sight and the facility administers the device, and a helper
+was promised they would never be asked to handle these fields. So
 `app/redaction.py` is strict for the tablet and the phone and empty for the
 desk. Two separate protections survive that: a scanned report stays truncated
 because that is how the document arrived, and the printed letter leaves the
