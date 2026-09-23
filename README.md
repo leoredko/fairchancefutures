@@ -1,6 +1,6 @@
 # Bridge
 
-Fair Chance Futures AI Lab 2026. Leo Redko.
+A capstone project by a team of Fair Chance Futures AI Lab fellows, 2026.
 
 A credit-repair workflow for people coming home, split across three surfaces
 because the three people involved genuinely cannot do each other's jobs.
@@ -215,6 +215,9 @@ app/identifiers.py     DIN and NYSID parsing
 app/auth.py            PINs, lockout, signed sessions
 app/session.py         who is asking, from the cookie rather than the URL
 app/caseplan.py        the DOCCS Offender Case Plan integration
+app/vendor.py          the coordinator's single sign-on handoff
+app/report.py          scanned reports, and masking the SSN on the way in
+app/scores.py          why there is no such thing as one credit score
 app/labels.py          human labels, so no column name reaches a screen
 app/intake.py          adding somebody to the caseload
 standalone/            the single openable file, and its build script
@@ -223,8 +226,22 @@ app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 163 tests
+tests/                 189 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
 ```
+
+## The team
+
+Bridge is a capstone project built by a team of fellows in the Fair Chance
+Futures AI Lab, 2026. Fair Chance Futures, formerly Justice Through Code, is a
+nonprofit affiliated with Columbia University.
+
+Research, design and implementation are the team's shared work. The
+practitioner interview cited throughout is with Brianne Cornish of FinEquity,
+used with her permission.
+
+Bridge is an independent project. It is not affiliated with, endorsed by, or
+operated by the New York State Department of Corrections and Community
+Supervision or any correctional facility.

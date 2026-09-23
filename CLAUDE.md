@@ -1,7 +1,7 @@
 # Working on Bridge
 
 Bridge is a credit-repair workflow for people coming home in New York State.
-Fair Chance Futures AI Lab 2026, Leo Redko.
+A capstone project by a team of Fair Chance Futures AI Lab fellows, 2026.
 
 Read `README.md` and `docs/SCOPE.md` before changing anything. This file is the
 short version of what a session needs to not break things.
