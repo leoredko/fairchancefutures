@@ -5,7 +5,13 @@
   <div class="bar">
     <span class="wordmark">Bridge</span>
     <span class="who">{{ client.display_name }} &middot; the course</span>
-    <div class="right"><a class="pill" href="/inside/case">My case</a></div>
+    <div class="right">
+      {% if intake_done %}
+      <a class="pill" href="/inside/case">My case</a>
+      {% else %}
+      <a class="pill" href="/inside">Back to my questions</a>
+      {% endif %}
+    </div>
     <div class="right"><a class="pill" href="/signout">Sign out</a></div>
   </div>
 

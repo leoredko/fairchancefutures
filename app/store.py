@@ -322,6 +322,13 @@ report_summary="Thin file, two disputed items",
         collections_count=0,
         last_pulled=(today - timedelta(days=186)).isoformat(),
         plan_step="Dispute letter mailed, waiting on the bureau",
+        # Answered on the tablet months ago. Without these he signs in to a
+        # live dispute and lands on intake question one.
+        intake_answers={
+            "knows_score": "no", "knows_how": "no",
+            "ever_had_account": "yes", "has_bank_account": "no",
+            "collections": "none_found", "obligations": ["none"],
+        },
         flagged_items=[
             {"creditor": "Midland Funding", "last_four": "4471",
              "reason": "never opened this account"},
@@ -366,6 +373,11 @@ report_summary="Thin file, two disputed items",
                  "reason": "not mine, wrong middle initial"},
             ],
             plan_step="Two items flagged. Dispute letter not drafted yet.",
+            intake_answers={
+                "knows_score": "roughly", "knows_how": "some_idea",
+                "ever_had_account": "yes", "has_bank_account": "yes",
+                "collections": "none_found", "obligations": ["child_support"],
+            },
         ),
         Client(
             id="j-whitfield", din="28A0931", nysid="00000033M",
@@ -388,6 +400,11 @@ plan_step="Triage session not yet held",
 report_summary="No file found on two of three bureaus",
             last_pulled=(today - timedelta(days=40)).isoformat(),
             plan_step="Builder loan opens after the third bureau answers",
+            intake_answers={
+                "knows_score": "no", "knows_how": "no",
+                "ever_had_account": "no", "has_bank_account": "no",
+                "collections": "unknown", "obligations": ["restitution"],
+            },
         ),
         Client(
             id="t-brennan", din="28D0775", nysid="00000055H",
@@ -401,6 +418,11 @@ report_summary="Full file, nine collections accounts",
             collections_count=9,
             last_pulled=(today - timedelta(days=70)).isoformat(),
             plan_step="Debt triage, then boosters. Expectation set in years.",
+            intake_answers={
+                "knows_score": "roughly", "knows_how": "yes",
+                "ever_had_account": "yes", "has_bank_account": "yes",
+                "collections": "many", "obligations": ["court_fines"],
+            },
         ),
     ]
 

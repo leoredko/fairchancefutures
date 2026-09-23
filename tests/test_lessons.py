@@ -153,12 +153,35 @@ def test_nothing_is_ever_hidden_from_the_index(person):
 # --------------------------------------------------------------------------
 
 def test_the_course_is_reachable_from_every_tablet_screen(inside):
-    """Always present is the whole design. A screen with no way into the course
-    is a dead end for the person this product is mostly for."""
-    for url in ("/inside/case", "/inside/report", "/inside/where-you-stand",
+    """Always present is the whole design, and it means every screen.
+
+    This test used to leave out the intake flow, and so did the template, on
+    the theory that a second exit next to a question loses somebody's place.
+    That was wrong twice over: every answer is saved as it is given, so
+    stepping out costs nothing, and a person part way through six questions
+    about credit has more reason to reach an explanation than less.
+    """
+    for url in ("/inside/intake/1", "/inside/intake/4", "/inside/how-this-works",
+                "/inside/case", "/inside/report", "/inside/where-you-stand",
                 "/inside/authorization", "/inside/learn/scores"):
         page = inside.get(url).text
         assert 'href="/inside/learn"' in page, url
+
+
+def test_stepping_out_of_intake_comes_back_to_the_question(client):
+    """Not to a case screen with nothing on it yet."""
+    signed_in = sign_in_inside(client, identifier="28A0931")   # no intake yet
+    course = signed_in.get("/inside/learn").text
+    assert 'href="/inside"' in course
+    assert "Back to my questions" in course
+
+    landed = signed_in.get("/inside", follow_redirects=False)
+    assert "/inside/intake/" in landed.headers["location"]
+
+
+def test_a_finished_client_gets_the_case_link_instead(inside):
+    course = inside.get("/inside/learn").text
+    assert "My case" in course
 
 
 def test_the_course_opens_without_finishing_intake(client):

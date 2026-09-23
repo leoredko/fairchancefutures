@@ -129,6 +129,10 @@ def learn(request: Request):
          "rows": lessons.index_rows(client),
          "standing": lessons.standing(client),
          "next_up": lessons.next_up(client),
+         # Somebody who stepped out of intake to read something gets sent back
+         # to the question they were on, not to a case screen that has nothing
+         # on it yet. /inside works out which that is.
+         "intake_done": len(client.intake_answers) >= len(INSIDE_QUESTIONS),
          "total_minutes": lessons.TOTAL_MINUTES},
     )
 

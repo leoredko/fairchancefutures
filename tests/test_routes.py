@@ -366,3 +366,27 @@ def test_the_counselor_can_see_the_din_and_the_facility(staff):
     html = staff.get("/staff/m-alvarez").text
     assert "Facility" not in html.split("Where this stops")[1][:400]
     assert "DIN" not in html.split("Where this stops")[1][:400]
+
+
+def test_a_seeded_client_with_a_live_case_lands_on_it_not_on_question_one(client):
+    """A person mid-dispute signing in and being asked "do you know what your
+    credit score is?" reads as an app that has lost their file. The seeded
+    caseload carries the answers those people would have given."""
+    signed_in = sign_in_inside(client, identifier="28A1187")
+    landed = signed_in.get("/inside", follow_redirects=False)
+    assert landed.headers["location"] == "/inside/case"
+
+
+def test_the_one_client_who_has_not_started_still_lands_on_intake(client):
+    """J. Whitfield is the fresh case on purpose, so he keeps question one."""
+    signed_in = sign_in_inside(client, identifier="28A0931")
+    landed = signed_in.get("/inside", follow_redirects=False)
+    assert "/inside/intake/" in landed.headers["location"]
+
+
+def test_seeded_intake_answers_prefill_the_triage_form(staff):
+    """The coordinator opens triage on a seeded client and the tablet answers
+    are already there, which is the whole point of the two question sets."""
+    html = staff.get("/staff/t-brennan/triage").text
+    checked = html.split('value="many"')[1].split(">")[0]
+    assert "checked" in checked
