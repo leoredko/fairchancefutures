@@ -16,6 +16,9 @@ that registry with a URL and a date.
 | Written results within 5 business days of completing the reinvestigation; inaccurate, incomplete or unverifiable items must be promptly deleted or modified | [15 U.S.C. 1681i(a)(5)-(6)](https://www.law.cornell.edu/uscode/text/15/1681i) |
 | One free file disclosure per 12 months per nationwide agency, through the centralized source, delivered within 15 days of the request | [15 U.S.C. 1681j(a)](https://www.law.cornell.edu/uscode/text/15/1681j) |
 | The mail route is the Annual Credit Report Request Form to Annual Credit Report Request Service, P.O. Box 105281, Atlanta, GA 30348-5281 | [FTC, Free Credit Reports](https://consumer.ftc.gov/articles/free-credit-reports) |
+| **New York restitution is docketed as a civil judgment**: the DA files a certified copy with the county clerk, who enters it as a judgment in a civil action, collectible as one | [N.Y. Crim. Proc. Law 420.10(6)(a)](https://www.nysenate.gov/legislation/laws/CPL/420.10) |
+| The county's chief elected official, the mayor in New York City, designates who collects it, other than the DA. In practice the county probation department, whose answer to non-payment is a violation of probation rather than a tradeline | [CPL 420.10(8)](https://www.nysenate.gov/legislation/laws/CPL/420.10), [Oneida County Probation](https://oneidacountyny.gov/departments/probation/restitution/) |
+| **So restitution does not by itself reach a credit report.** The judgment route closed when all civil judgments came off reports in July 2017, and the collecting agency does not furnish. The collections route stays open: a debt placed with a third-party collector can be reported like any other | [CFPB, removal of public records](https://www.consumerfinance.gov/about-us/blog/new-retrospective-on-removing-public-records/) |
 | Free weekly reports are a voluntary bureau program, online only, so they do not help a client inside | [FTC, Free Credit Reports](https://consumer.ftc.gov/articles/free-credit-reports) |
 | States must periodically report child support delinquencies to the bureaus, after notice and a chance to contest. Child support arrears do reach credit reports | [42 U.S.C. 666(a)(7)](https://www.law.cornell.edu/uscode/text/42/666) |
 | Civil judgments largely vanished from credit reports after July 2017 under the National Consumer Assistance Plan; tax liens fell about half | [CFPB, Quarterly Consumer Credit Trends: Public Records](https://www.consumerfinance.gov/data-research/research-reports/quarterly-consumer-credit-trends-public-records-credit-scores-and-credit-performance/) |
@@ -45,9 +48,11 @@ The app asserts none of these. Where one would be needed, the screen says so.
       rung 2 arrives more often than the ladder assumes.
 - [ ] **Whether a bureau honors a mid-dispute revocation** of a helper's
       authority. The app lets a client revoke instantly from the tablet.
-- [ ] **Whether criminal restitution is ever furnished to a bureau.** Civil
-      judgments are gone from reports, but restitution is a different
-      instrument and no primary source was found either way.
+- [ ] **Whether any New York county has designated a private collection
+      agency**, rather than its probation department, to collect restitution.
+      That is the one route by which restitution could reach a credit report,
+      and the designation is made county by county. Answering it means asking
+      counties, not reading a statute.
 - [ ] **Whether court fines and fees are furnished, and by whom.**
 - [ ] **The 6 to 9 month horizon for a credit-invisible client.** Sourced to the
       Cornish interview, Sep 21, uncorroborated, and labelled as such in the UI.

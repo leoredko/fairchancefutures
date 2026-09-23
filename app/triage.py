@@ -166,10 +166,17 @@ def _obligation_notes(answers: Answers) -> list[str]:
             continue
         if ob is Obligation.RESTITUTION:
             notes.append(
-                "Restitution goes to the obligations list, not the credit path. "
-                "Different mechanism, different screen. Whether restitution is "
-                "ever furnished to a bureau is still an open question, so the "
-                "app does not claim either way."
+                "Restitution goes to the obligations list, not the credit "
+                "path, and in New York it does not by itself reach a credit "
+                "report. It is docketed as a civil judgment, and civil "
+                "judgments came off credit reports in July 2017; the county "
+                "probation department that collects it answers non-payment "
+                "with a violation of probation, not a tradeline. The one route "
+                "that stays open is collections: if the debt is placed with a "
+                "third-party collector, that collector can report it like any "
+                "other account. (N.Y. Crim. Proc. Law 420.10(6)(a) and (8); "
+                "CFPB on the 2017 removal of public records, checked "
+                "2026-09-23.)"
             )
         elif ob is Obligation.CHILD_SUPPORT:
             notes.append(

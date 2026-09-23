@@ -174,3 +174,40 @@ def test_every_result_explains_itself():
     means a counselor cannot correct it."""
     for case in CASES:
         assert classify(case.answers).reasons, case.name
+
+
+def test_restitution_says_what_it_does_to_credit_rather_than_shrugging():
+    """This used to be the app's biggest open question and now it is answered.
+
+    The answer is "no, not by itself", and the reasoning is in the note because
+    each step of it could change independently: the 2017 public-record standards
+    could be revised, or a county could designate a private collector.
+    """
+    from app.triage import Answers, Obligation, classify
+    from app.triage import AccountHistory, BankAccount, Collections
+    from app.triage import Recognition, ReportResult
+
+    result = classify(Answers(
+        ever_had_account=AccountHistory.YES,
+        report_result=ReportResult.THIN_OR_STALE,
+        collections=Collections.NONE_FOUND,
+        has_bank_account=BankAccount.YES,
+        obligations=(Obligation.RESTITUTION,),
+        recognizes_everything=Recognition.ALL_MINE,
+    ))
+    note = " ".join(result.obligations_route)
+    assert "does not by itself reach a credit report" in note
+    assert "420.10" in note                 # the New York mechanism
+    assert "collector can report it" in note  # and the route that stays open
+    assert "open question" not in note
+
+
+def test_every_restitution_fact_carries_a_primary_source():
+    from app.sources import FACTS
+
+    keys = [k for k in FACTS if "restitution" in k]
+    assert len(keys) == 3, keys
+    for key in keys:
+        fact = FACTS[key]
+        assert fact.url.startswith("https://"), key
+        assert fact.source, key
