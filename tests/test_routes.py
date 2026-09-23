@@ -390,3 +390,47 @@ def test_seeded_intake_answers_prefill_the_triage_form(staff):
     html = staff.get("/staff/t-brennan/triage").text
     checked = html.split('value="many"')[1].split(">")[0]
     assert "checked" in checked
+
+
+def test_every_link_on_the_coordinator_queue_resolves(client):
+    """The queue linked to /roles from the first build and the route never
+    existed, so the main staff screen carried a dead link that pytest could not
+    see. This walks the nav rather than trusting it."""
+    import re
+
+    html = client.get("/staff").text
+    for href in set(re.findall(r'href="(/[^"#]*)"', html)):
+        assert client.get(href).status_code == 200, href
+
+
+def test_roles_is_generated_from_the_capability_table(client):
+    """Not a hand-written slide. If a capability moves in app/surfaces.py this
+    page moves with it, which is the whole reason to render it."""
+    import html as html_module
+
+    from app.surfaces import CAPABILITIES, Capability, Surface
+    from app import labels
+
+    # Unescaped, because several labels carry an apostrophe and the page is
+    # right to escape it. Comparing raw text to escaped HTML fails for the
+    # wrong reason.
+    page = html_module.unescape(client.get("/roles").text)
+    for capability in CAPABILITIES[Surface.INSIDE]:
+        assert labels.capability(capability) in page, capability
+    # And it says what the tablet cannot do, with the reason.
+    assert labels.capability(Capability.UPLOAD_FILE) in page
+    assert "no camera roll" in page or "no open web" in page
+
+
+def test_roles_names_the_dayroom_boundary_rather_than_a_blanket_rule(client):
+    html = client.get("/roles").text
+    assert "Social Security number" in html
+    assert "dayroom" in html
+    assert "coordinator's desk is neither" in html
+
+
+def test_no_enum_value_reaches_the_roles_page(client):
+    html = client.get("/roles").text
+    for raw in ("upload_file", "verify_identity", "manage_caseload",
+                "open_account", "view_ssn", "full_account_number"):
+        assert raw not in html, raw

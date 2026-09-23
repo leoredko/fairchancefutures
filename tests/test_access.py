@@ -305,16 +305,86 @@ def test_a_self_opened_case_works_all_the_way_through(client):
     assert "28-Z-4242" in client.get("/staff").text
 
 
-def test_a_self_service_case_flags_its_own_missing_facility(client):
-    """A coordinator entering somebody by hand cannot leave the facility blank,
-    because it is the envelope return address and the bureaus ask for it on
-    mail from a prison. This door has no screen that asks for it, so the gap
-    belongs on the work queue rather than surfacing when a letter is already
-    being printed."""
+def test_signing_in_with_a_din_fills_in_what_is_attached_to_it(client):
+    """The number is the only thing typed.
+
+    This used to invent a release date of today plus 180 days and leave the
+    facility blank, and both then drove real things: the queue ordering, the
+    quarterly review count and the 120-day document deadline. Asking somebody
+    to retype their own release date from memory on a metered tablet is asking
+    them to do a computer's job.
+    """
     from app.store import STATE
 
     sign_in_inside(client, identifier="28-Z-4410")
     made = STATE.clients["din-28z4410"]
-    assert made.facility == ""
-    assert "Facility missing" in made.needs
-    assert "Facility missing" in client.get("/staff").text
+
+    assert made.facility, "the envelope return address has to come from somewhere"
+    assert made.release_date
+    assert made.release_date_source in (
+        "Conditional release date", "Earliest release date")
+    assert made.doccs_record["din"] == "28Z4410"
+    assert made.doccs_record["parole_eligibility_date"]
+    assert made.doccs_record["maximum_expiration_date"]
+
+
+def test_the_lookup_never_supplies_a_date_of_birth(client):
+    """The public lookup does not return one: you can search by year of birth,
+    but the record that comes back has no DOB on it. So the dayroom rule holds
+    here by construction rather than by a check, and a DOB can never be said to
+    have come from this source."""
+    from app.doccs import LookupRecord, simulated_lookup
+
+    record = simulated_lookup("28Z4410")
+    assert "date_of_birth" not in record.as_dict()
+    assert not hasattr(record, "date_of_birth")
+    assert "date_of_birth" not in LookupRecord.__dataclass_fields__
+
+
+def test_the_same_din_always_looks_up_the_same_dates(client):
+    """Dates that moved between restarts would make the 120-day document
+    trigger flap on and off for the same person."""
+    from app.doccs import simulated_lookup
+
+    assert simulated_lookup("28Z4410") == simulated_lookup("28Z4410")
+    assert simulated_lookup("28Z4410") != simulated_lookup("28Q7788")
+
+
+def test_the_planning_date_is_never_the_parole_eligibility_date(client):
+    """Parole eligibility is the earliest a board could act, not a date
+    anybody goes home on. Telling somebody otherwise off the wrong field ends
+    trust in one screen."""
+    from app.doccs import simulated_lookup
+
+    record = simulated_lookup("28Z4410")
+    assert record.planning_date != record.parole_eligibility_date
+    assert record.planning_date == record.conditional_release_date
+    assert record.planning_date_label == "Conditional release date"
+
+
+def test_the_person_sees_their_own_record_read_back(client):
+    """Seeing the record come back correct is how somebody knows the app has
+    the right person before they trust it with anything else."""
+    signed_in = sign_in_inside(client, identifier="28-Z-4410")
+    page = signed_in.get("/inside/case").text
+    assert "What we already have for you" in page
+    assert "Conditional release date" in page
+    assert "Parole eligibility date" in page
+
+
+def test_the_tablet_names_which_date_it_is_planning_against(client):
+    """Telling somebody they go home on what is actually their parole
+    eligibility date is the kind of mistake that ends trust in one screen."""
+    signed_in = sign_in_inside(client, identifier="28-Z-4410")
+    page = signed_in.get("/inside/case").text
+    assert "not the same as your parole eligibility date" in page
+
+
+def test_no_column_name_from_the_lookup_reaches_the_tablet(client):
+    """House rule. These arrive as DOCCS field keys and must render as words."""
+    signed_in = sign_in_inside(client, identifier="28-Z-4410")
+    page = signed_in.get("/inside/case").text
+    for raw in ("conditional_release_date", "parole_eligibility_date",
+                "housing_facility", "post_release_supervision_max_expiration_date",
+                "date_received_original", "maximum_expiration_date"):
+        assert raw not in page, raw

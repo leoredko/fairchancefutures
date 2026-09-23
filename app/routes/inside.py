@@ -18,6 +18,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
 from app.deps import templates
+from app import doccs
 from app import lessons
 from app import report as report_module
 from app import walkthrough
@@ -487,6 +488,16 @@ def case(request: Request):
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
          "next_lesson": lessons.next_up(caller.client),
+         # Their own dates, read back to them. Seeing the record come back
+         # correct is how somebody knows the app has the right person before
+         # they trust it with anything else. No date of birth is in here to
+         # show: the lookup does not return one.
+         "record": [
+             {"label": labels.field(key), "value": caller.client.doccs_record[key]}
+             for key in doccs.SHOWN_TO_THE_PERSON
+             if caller.client.doccs_record.get(key)
+         ],
+         "release_source": caller.client.release_date_source,
          "synced": "just now"},
     )
 

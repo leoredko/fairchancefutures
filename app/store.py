@@ -72,6 +72,14 @@ class Client:
     plan_step: str = ""
     family_task: dict = field(default_factory=dict)
     report_pages: list[str] = field(default_factory=list)
+    # The record attached to this DIN, as the lookup returns it. Facility and
+    # the sentence dates come from here rather than from a person retyping them
+    # on a metered tablet. See app/doccs.py; note it carries no date of birth,
+    # because the public lookup does not return one.
+    doccs_record: dict = field(default_factory=dict)
+    # Which field the release date was taken from, so a screen can say so
+    # rather than implying somebody goes home on their parole eligibility date.
+    release_date_source: str = ""
     # Where this person has got to reading each of their own reports, and what
     # they said about it. Keyed by the report's position. See app/walkthrough.py.
     report_review: dict = field(default_factory=dict)

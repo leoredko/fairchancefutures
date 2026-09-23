@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Roles and scope{% endblock %}
+{% block body %}
+<div class="bar">
+  <a class="pill" href="/staff">&larr; Queue</a>
+  <span class="wordmark">Roles and scope</span>
+  <div class="right"><a class="pill" href="/citations">Citations</a></div>
+</div>
+
+<div class="desk" style="padding-top:28px">
+  <h1>Who can do what, and why not.</h1>
+  <p class="lede">Rendered from <span class="mono">app/surfaces.py</span>, which
+    the router asks before it does anything. This page cannot drift from the
+    behaviour, because it is the same table.</p>
+
+  <div class="grid three" style="align-items:start">
+    {% for surface in surfaces %}
+    <div class="card accent">
+      <span class="tag teal">{{ surface.device }}</span>
+      <h2>{{ surface.role }}</h2>
+      <h3>Can</h3>
+      {% for able in surface.can %}
+      <div class="row"><span class="tag green">Yes</span>
+        <span class="small">{{ able }}</span></div>
+      {% endfor %}
+      {% if surface.cannot %}
+      <h3 style="margin-top:12px">Cannot</h3>
+      {% for denied in surface.cannot %}
+      <div class="rung">
+        <div>
+          <div class="small strong">{{ denied.label }}</div>
+          <div class="tiny">{{ denied.reason }}</div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card">
+    <h3>Where the sensitive fields stop</h3>
+    <p class="small">Physical, not preferential. A facility tablet is shared and
+      sits in a dayroom with whoever used it last standing behind whoever is
+      using it now, and a helper was promised in the first ten seconds that they
+      would never be asked to handle these. The coordinator's desk is neither of
+      those places: they hold the sentence and commitment paperwork and request
+      the birth certificate, so hiding a number they already have protects
+      nobody.</p>
+    <div class="row">
+      {% for field in sensitive %}<span class="tag">{{ field }}</span>{% endfor %}
+    </div>
+    <p class="tiny">Enforced per surface in <span class="mono">app/redaction.py</span>.
+      Two protections are separate from this and survive it: a scanned report
+      stays truncated because that is how the document arrived, and the printed
+      dispute letter leaves the number blank for a pen because the envelope
+      travels through the helper's hands.</p>
+  </div>
+
+  <div class="grid two" style="align-items:start">
+    <div class="card soft">
+      <h3>Not assumed away</h3>
+      <p class="small">A person inside cannot verify identity online. The tablet
+        is connected, but only to what is loaded on it: there is no open web to
+        reach a bureau's knowledge-based authentication page, and no camera roll
+        or scanner to answer it with.</p>
+      <p class="small">A helper outside has no standing until they sign a scoped
+        form. Standing is a record, checked on every request, so a client who
+        cancels from the tablet cuts access off at the next tap.</p>
+      <p class="tiny"><span class="mono">tests/test_constraints.py</span> fails
+        if either quietly stops being true.</p>
+    </div>
+    <div class="card soft">
+      <h3>Never grantable to a helper</h3>
+      <p class="small">Not a policy paragraph, a list that is checked.
+        Constructing an authorization that names one of these raises rather than
+        being caught later.</p>
+      <div class="row">
+        {% for scope in forbidden %}<span class="tag rust">{{ scope }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

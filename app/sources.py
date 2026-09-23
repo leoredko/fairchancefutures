@@ -494,6 +494,46 @@ FACTS: dict[str, Fact] = {
         checked_on=CHECKED,
     ),
 
+    "lookup_returns_the_sentence_dates": Fact(
+        key="lookup_returns_the_sentence_dates",
+        statement=(
+            "The DOCCS incarcerated lookup answers on a DIN with the housing "
+            "or releasing facility, the date received, the earliest release "
+            "date, the parole eligibility date, the conditional release date, "
+            "the maximum expiration date and the post-release supervision "
+            "maximum expiration date. So none of those need to be typed in "
+            "from memory by the person they belong to."
+        ),
+        source="DOCCS, Inmate Information Data Definitions",
+        url="https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+        checked_on=CHECKED,
+    ),
+    "lookup_returns_no_date_of_birth": Fact(
+        key="lookup_returns_no_date_of_birth",
+        statement=(
+            "The lookup does not return a date of birth. A search can be "
+            "narrowed by year of birth, but the record that comes back does "
+            "not carry a DOB. So a date of birth in this app never came from "
+            "the lookup: it comes from the coordinator's own record."
+        ),
+        source="DOCCS, Inmate Information Data Definitions",
+        url="https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+        checked_on=CHECKED,
+    ),
+    "parole_eligibility_is_not_a_release_date": Fact(
+        key="parole_eligibility_is_not_a_release_date",
+        statement=(
+            "Parole eligibility is the point at which somebody becomes "
+            "eligible after serving their minimum term, not a date they go "
+            "home on. The conditional release date is the one a reentry plan "
+            "is built around, and the Time Allowance Committee considers "
+            "somebody four months before it."
+        ),
+        source="DOCCS, Inmate Information Data Definitions",
+        url="https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
+        checked_on=CHECKED,
+    ),
+
 }
 
 

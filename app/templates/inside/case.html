@@ -59,6 +59,30 @@
       <a class="btn ghost" href="/inside/learn/lesson/no-single-score">Learn why</a>
     </div>
 
+    {# Their own record, read back. Seeing it come back correct is how somebody
+       knows the app has the right person before they trust it with anything
+       else, and it is why nobody is asked to type a date they already know.
+       No date of birth appears here: the lookup does not return one, and a
+       dayroom tablet is the wrong place for it either way. #}
+    {% if record %}
+    <div class="card soft">
+      <span class="strong">What we already have for you</span>
+      <span class="small">Off your DIN. Nothing here was typed by you, and if
+        any of it is wrong, tell your coordinator.</span>
+      {% for row in record %}
+      <div class="row">
+        <span class="small">{{ row.label }}</span>
+        <span class="small strong" style="margin-left:auto">{{ row.value }}</span>
+      </div>
+      {% endfor %}
+      {% if release_source %}
+      <span class="tiny">Bridge plans against your
+        {{ release_source|lower }}. That is the date a reentry plan is built
+        around, and it is not the same as your parole eligibility date.</span>
+      {% endif %}
+    </div>
+    {% endif %}
+
     <div class="card">
       <span class="strong">Who is helping you</span>
       {% if auth %}

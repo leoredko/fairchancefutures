@@ -39,6 +39,29 @@ real answer with a real deadline on it.
 | No fee is charged when DOCCS requests a certified birth certificate in anticipation of release, and a certified copy of the sentence and commitment counts as the person's authorization, so no separate signature is needed | [N.Y. Public Health Law 4174](https://www.nysenate.gov/legislation/laws/PBH/4174) |
 | That waiver covers **New York** records. Somebody born in another state or country is not covered by it | Same statute, which governs records registered under that chapter. Stated as a limit of the statute rather than as a claim about what other states do |
 
+### What the DIN already answers, checked 2026-09-23
+
+Nobody should be asked to retype their own release date from memory on a
+metered tablet. `app/doccs.py` holds this; `simulated_lookup()` is the one
+function a real integration replaces.
+
+| Claim | Source |
+| --- | --- |
+| The lookup answers on a DIN with the housing or releasing facility, date received (original and current), earliest release date, parole eligibility date, conditional release date, maximum expiration date, and post-release supervision maximum expiration date | [DOCCS, Inmate Information Data Definitions](https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html) |
+| **It does not return a date of birth.** A search can be narrowed by year of birth, but the record that comes back carries no DOB. So a date of birth in this app never came from the lookup; it comes from the coordinator's own record | same page |
+| **Parole eligibility is not a release date.** It is the point at which somebody becomes eligible after serving their minimum term. The conditional release date is what a reentry plan is built around, and the Time Allowance Committee considers somebody four months before it | same page |
+
+Two consequences the code depends on. The dayroom rule holds here by
+construction rather than by a check, because there is no DOB on the record to
+render. And Bridge plans against the conditional release date, falling back to
+the earliest release date, never parole eligibility, and the screen names which
+one it used.
+
+Note on the open FPMS question below: this page's URL path contains `fpmsdoc`,
+but the page itself says only that the data comes from "the Department's 'live'
+computer data base" and names no system. So the question stays open rather than
+being answered by a URL.
+
 ### The curriculum, checked 2026-09-23
 
 Every lesson card that states a rule cites one of these by key, and a test

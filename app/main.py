@@ -128,6 +128,41 @@ def citations(request: Request):
     )
 
 
+@app.get("/roles", response_class=HTMLResponse)
+def roles(request: Request):
+    """Who can do what, rendered from the capability table itself.
+
+    The coordinator's queue has linked here since the first build and the route
+    never existed, so it was a dead link on the main staff screen. Worth
+    building rather than deleting: the capability table is the product spec, and
+    a page generated from it cannot drift from the behaviour the router
+    enforces.
+    """
+    from app import labels
+    from app.authorization import FORBIDDEN_SCOPES
+    from app.redaction import SENSITIVE
+
+    rows = []
+    for surface in Surface:
+        allowed = CAPABILITIES[surface]
+        rows.append({
+            "role": labels.role(surface.value),
+            "device": labels.device(surface.value),
+            "can": sorted(labels.capability(c) for c in allowed),
+            "cannot": sorted(
+                ({"label": labels.capability(c), "reason": DENIAL_REASON[c]}
+                 for c in DENIAL_REASON if c not in allowed),
+                key=lambda row: row["label"],
+            ),
+        })
+    return templates.TemplateResponse(
+        request, "roles.html",
+        {"surfaces": rows,
+         "sensitive": sorted(labels.field(f) for f in SENSITIVE),
+         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
+    )
+
+
 @app.get("/metrics", response_class=HTMLResponse)
 def metrics(request: Request):
     log = review_log()

@@ -36,6 +36,15 @@ FIELD: dict[str, str] = {
     "din": "DIN",
     "nysid": "NYSID",
     "facility": "Facility",
+    "housing_facility": "Facility",
+    "date_received_original": "Date first received",
+    "date_received_current": "Date received here",
+    "earliest_release_date": "Earliest release date",
+    "parole_eligibility_date": "Parole eligibility date",
+    "conditional_release_date": "Conditional release date",
+    "maximum_expiration_date": "Maximum expiration date",
+    "post_release_supervision_max_expiration_date":
+        "Post-release supervision ends",
 }
 
 # What a surface can and cannot do, in words rather than enum values.
