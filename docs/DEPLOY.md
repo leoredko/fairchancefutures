@@ -51,23 +51,36 @@ docker run -p 8000:8000 -v bridge_data:/data bridge
 Environment: `BRIDGE_DATA` is the only variable, and it is the path to the JSON
 store. Default is `data/bridge.json` relative to the working directory.
 
-## Installing on the tablet
+## Getting onto the tablet
 
-Open the deployed URL in the tablet's browser and use "Add to Home Screen". It
-installs standalone: no address bar, no browser chrome, its own icon.
+The destination is a progressive web app that arrives **already on the tablet**,
+provisioned by whoever manages the facility's devices. Not something a person
+discovers in a browser and installs themselves: nobody inside is going to be
+handed a URL and told to tap Add to Home Screen, and a product that depends on
+them doing so does not get used.
+
+That is a distribution question rather than a code one, and the code is the same
+either way. What it changes is the copy: nothing in this app should ever tell a
+person to install it.
 
 - `app/static/manifest.webmanifest` — name, colors, icons, `display: standalone`
-- `app/static/sw.js` — a service worker registered so browsers offer the install
+- `app/static/sw.js` — the service worker, registered so the app runs as an app
 - `scripts/make_icons.py` — regenerates the icons, so they are editable rather
   than a binary nobody can change
 
+To try the installed experience during development, open the deployed URL in a
+browser and use Add to Home Screen. That is a development convenience and not
+the shipping path.
+
 **The service worker does not cache anything.** It passes every request to the
-network. This is deliberate and the file says so: the deck's offline-first
-promise is a real feature, and a worker that quietly serves a stale case
-timeline while a statutory deadline moves is worse than having none. Doing
-offline properly means queueing writes in IndexedDB and replaying them on
-reconnect. That work is not done, and pretending otherwise on a screen that
-says "nothing is lost if you lose access for a week" would be the same kind of
-lie the EN/ES pill was.
+network, deliberately. A worker that quietly serves a stale case timeline while
+a statutory deadline moves is worse than having none.
+
+That is the right call while the tablet is connected, which it is: Bridge
+reaches the person's own record and nothing else. If a facility turns out to
+have genuinely intermittent connectivity, the fix is caching the app shell so it
+launches instantly, plus queueing writes in IndexedDB and replaying them on
+reconnect. Both are real work and neither is done, so the worker says so rather
+than implying otherwise.
 
 So: the tablet app assumes connectivity. Say that on the slide.

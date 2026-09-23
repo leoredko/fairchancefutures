@@ -14,11 +14,18 @@ short version of what a session needs to not break things.
     docs/VERIFY.md         every legal claim, its primary source and check date
     docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
-    design/                the original wireframe deck, a starting point only
 
-The deck is history, not a specification. It was a wireframe to get moving and
-the product has moved well past it. Do not treat a screen in it as a
-requirement.
+The product started from a wireframe deck. That deck has been deleted, and its
+references stripped out of the code and the docs, because it stopped describing
+the product and every change was being argued against a sketch. `docs/DESIGN-NOTES.md`
+states the design principles on their own authority. Do not reintroduce a
+screen-by-screen spec.
+
+Where this is going: a progressive web app provisioned onto a facility tablet,
+not a website somebody finds and installs. The browser build is how it is
+developed and demonstrated. `standalone/` is a demo artifact so the whole
+journey can be walked in three windows; it is not the product, and nothing in
+the app should tell a person to install anything.
 
 ## Two constraints everything follows from
 

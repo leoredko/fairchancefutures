@@ -1,8 +1,8 @@
 """The classifier. Six answers in, one of four states out, with a path attached.
 
-Screen 10 of the deck: this is the only screen where the app does something a
-person could not do on paper, and the only one whose output can be scored for
-accuracy. Everything else is a list, a letter, or a status.
+This is the only part of the app that does something a person could not do on
+paper, and the only one whose output can be scored for accuracy. Everything
+else is a list, a letter, or a status.
 
 Two design rules are load-bearing here.
 

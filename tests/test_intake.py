@@ -175,5 +175,5 @@ def test_a_bad_intake_comes_back_with_the_field_marked(client):
 
 
 def test_the_queue_links_to_the_intake_screen(client):
-    """Screen 07 of the deck has a New intake tab."""
+    """A coordinator can add somebody by hand from the caseload queue."""
     assert "/staff/new" in sign_in_staff(client).get("/staff").text

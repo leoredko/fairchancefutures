@@ -1,7 +1,7 @@
 """The caseworker desktop.
 
-Two screens in scope, per the deck: the triage session and the client detail
-with letter approval. Referrals and outcomes are not built.
+Two screens: the triage session and the client detail with letter approval.
+Referrals and outcomes are not built.
 
 Note what staff do NOT get: the raw client record never reaches a template.
 Everything goes through redaction.for_surface() first, so the SSN and full
@@ -83,7 +83,7 @@ def queue(request: Request):
 
 @router.get("/new", response_class=HTMLResponse)
 def new_intake(request: Request):
-    """The New intake tab from screen 07 of the deck."""
+    """Add somebody to the caseload by hand."""
     coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     return templates.TemplateResponse(

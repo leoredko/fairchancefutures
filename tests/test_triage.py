@@ -48,7 +48,7 @@ def a(**kw) -> Answers:
 
 CASES = [
     Case(
-        "J. Whitfield from the deck: no accounts, no file, nothing in "
+        "J. Whitfield from the seeded caseload: no accounts, no file, nothing in "
         "collections, no bank account, restitution of unknown amount",
         a(obligations=(Obligation.RESTITUTION,)),
         State.CREDIT_INVISIBLE,

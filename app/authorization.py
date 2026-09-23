@@ -46,7 +46,8 @@ class Scope(str, Enum):
 
 
 # Things a helper can never be granted, no matter what anyone signs in this app.
-# Screen 04 promises this in the first ten seconds. Keeping the promise is a
+# The helper's invitation promises this in the first ten seconds, because
+# ruling out the scam is what earns a second screen. Keeping the promise is a
 # list, checked, not a paragraph.
 FORBIDDEN_SCOPES = frozenset({
     "open_account",

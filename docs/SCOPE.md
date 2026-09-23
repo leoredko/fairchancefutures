@@ -19,7 +19,7 @@
 
 Each one works standing alone. Stop anywhere and there is still a demo.
 
-## What the deck had that the product no longer does
+## What an earlier design had that the product no longer does
 
 **The four-rung access ladder is gone.** It modeled what a credit bureau would
 demand and climbed a rung on each kickback. Nobody publishes how often the
@@ -65,12 +65,12 @@ expires first, never a roster.
 
 | Thing | Why not |
 | --- | --- |
-| Photo-to-text extraction | The genuinely hard engineering piece. The deck named the fallback and the fallback is what is built. Nothing else depends on it. |
-| Referrals and outcomes | Static in the deck, static here. |
+| Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. |
+| Referrals and outcomes | Never built past a sketch, and nothing depends on them. |
 | Account creation | There is no self-serve signup. Accounts are seeded, which is right: a person does not enrol themselves into a caseload, a counselor adds them. |
 | Password reset by email | Nobody inside has email. A counselor clears the PIN and the client sets a new one at the kiosk. |
-| Real offline support | The tablet reaches Bridge, so writes go to the server and save immediately. The deck's "nothing is lost if you lose access for a week" was a promise about a disconnected device, and it has been removed from the intake copy rather than left there untrue. If a facility turns out to have genuinely intermittent connectivity, IndexedDB plus replay is the real fix. |
-| Spanish | The deck showed an EN / ES toggle. Removed rather than shipped as decoration over an English-only app. |
+| Real offline support | The tablet reaches Bridge, so writes go to the server and save immediately. An earlier promise that "nothing is lost if you lose access for a week" was about a disconnected device, and it has been removed from the intake copy rather than left there untrue. If a facility turns out to have genuinely intermittent connectivity, IndexedDB plus replay is the real fix. |
+| Spanish | An EN / ES toggle was drawn early and removed rather than shipped as decoration over an English-only app. For this population it is a real requirement rather than a nice-to-have, and it should come back as translation rather than as a pill. |
 | Encryption, audit logging, retention policy | Assumed away with the rest of the compliance regime, for class. Named on the home page rather than hidden. |
 
 ## Assumed away, with the instructors' sign-off
