@@ -1936,7 +1936,8 @@ function seedClients() {
       facility: "Sing Sing Correctional Facility",
       release: iso(118), clock: 118, state: "errors_present",
       stateLabel: "Errors on the report", needs: "Dispute letter to approve",
-      helper: "Denise", helperCode: "BRIDGE-4417", rung: 1,
+      helper: "Denise", helperCode: "BRIDGE-4417",
+      documents: { birthCertificate: false, nonDriverId: false },
       reportSummary: "Thin file, two disputed items", lastPulled: iso(-186),
       collections: 0, consent: ["report_sharing"], consentOn: iso(-205),
       lesson: "Lesson 3, what a secured card actually is. Four minutes.",
@@ -1958,7 +1959,8 @@ function seedClients() {
       facility: "Bedford Hills Correctional Facility",
       release: iso(9), clock: 9, state: "errors_present",
       stateLabel: "Errors present", needs: "Dispute letter to approve",
-      helper: "Rosa", helperCode: "BRIDGE-8802", rung: 1,
+      helper: "Rosa", helperCode: "BRIDGE-8802",
+      documents: { birthCertificate: false, nonDriverId: false },
       reportSummary: "Thin file, two disputed items", lastPulled: iso(-22),
       collections: 0, consent: ["report_sharing"], consentOn: iso(-21),
       lesson: "", flagged: [
@@ -1975,7 +1977,8 @@ function seedClients() {
       facility: "Sing Sing Correctional Facility",
       release: iso(21), clock: 21, state: "not_yet_triaged",
       stateLabel: "Not yet triaged", needs: "No report on file",
-      helper: null, helperCode: "BRIDGE-2231", rung: 1,
+      helper: null, helperCode: "BRIDGE-2231",
+      documents: { birthCertificate: false, nonDriverId: false },
       reportSummary: "", lastPulled: "", collections: 0,
       consent: ["report_sharing"], consentOn: iso(-4), lesson: "",
       flagged: [], answers: {}, reports: [], taskDone: false,
@@ -1987,7 +1990,8 @@ function seedClients() {
       facility: "Fishkill Correctional Facility",
       release: iso(64), clock: -4, state: "credit_invisible",
       stateLabel: "Credit invisible", needs: "Bureau answer overdue",
-      helper: "Ama", helperCode: "BRIDGE-7712", rung: 2,
+      helper: "Ama", helperCode: "BRIDGE-7712",
+      documents: { birthCertificate: true, nonDriverId: false },
       reportSummary: "No file found on two of three bureaus", lastPulled: iso(-40),
       collections: 0, consent: ["report_sharing"], consentOn: iso(-90),
       lesson: "", flagged: [], answers: {}, reports: [], taskDone: true,
@@ -2000,7 +2004,8 @@ function seedClients() {
       facility: "Woodbourne Correctional Facility",
       release: iso(-42), clock: 200, state: "damaged_file",
       stateLabel: "Damaged file", needs: "Missed 2 check-ins",
-      helper: null, helperCode: "BRIDGE-5540", rung: 4,
+      helper: null, helperCode: "BRIDGE-5540",
+      documents: { birthCertificate: true, nonDriverId: true },
       reportSummary: "Full file, nine collections accounts", lastPulled: iso(-70),
       collections: 9, consent: ["report_sharing"], consentOn: iso(-160),
       lesson: "", flagged: [], answers: {}, reports: [], taskDone: true,
@@ -2493,7 +2498,9 @@ function openCase(din, display) {
     id, name: display, first: "", din, nysid: "", facility: "",
     release, clock: 180, state: "not_yet_triaged",
     stateLabel: "Not yet triaged", needs: "Intake not finished",
-    helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
+    helper: null, helperCode: code,
+    documents: { birthCertificate: false, nonDriverId: false },
+    reportSummary: "", lastPulled: "",
     collections: 0, consent: ["report_sharing"],
     consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
     answers: {}, reports: [], taskDone: false, authorization: null, timeline: []
@@ -3723,7 +3730,9 @@ window.createClient = function () {
     id, name, first: name.split(" ")[0], din, nysid, facility: f.facility,
     release: f.release, clock: days, state: "not_yet_triaged",
     stateLabel: "Not yet triaged", needs: "No report on file",
-    helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
+    helper: null, helperCode: code,
+    documents: { birthCertificate: false, nonDriverId: false },
+    reportSummary: "", lastPulled: "",
     collections: 0, consent: ["report_sharing"],
     consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
     answers: {}, reports: [], taskDone: false, authorization: null, timeline: []
@@ -3992,12 +4001,6 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
         '<span class="tag">Address history</span>' +
         (shares ? "" : '<span class="tag">Report summary</span>') + '</div></div>' +
       casePlanCard(c) +
-      '<div class="card"><h3>Getting the reports released</h3>' +
-        '<p class="small">Start light. Escalate only when a bureau pushes back.</p>' +
-        '<span class="tag green">Cleared at rung ' + c.rung + '</span>' +
-        ladderRows(c) +
-        '<button class="btn ghost" onclick="escalate(\'' + id + '\')">' +
-        'A bureau kicked it back, climb one rung</button></div>' +
     '</div>' +
     '<div class="stack">' +
       (pending.length ? letterCard(id, pending[0], pending.length, drafts.length)
@@ -4041,18 +4044,19 @@ function dinDisplay(d) {
 /* The vendor case plan. An Offender Rehabilitation Coordinator already keeps a
    plan of goals and tasks and reviews it quarterly, so Bridge contributes to
    its financial domain rather than being a second system. The vital documents
-   packet reentry staff already assemble is exactly what rung 2 of the access
-   ladder asks for, which is why it is surfaced here. */
+   packet reentry staff already assemble is what actually gates the work, which
+   is why it is surfaced here. The birth certificate and the Social Security
+   card must both be on file before the non-driver ID application goes in. */
 function casePlanCard(c) {
   const docs = [
     ["Social Security card", true,
      "Needed for every report request and every dispute."],
-    ["Birth certificate", c.rung > 1,
+    ["Birth certificate", !!(c.documents && c.documents.birthCertificate),
      "The state can request a certified copy at no cost using sentence and " +
      "commitment paperwork."],
-    ["Non-driver ID", c.rung > 2,
-     "Free for people receiving public assistance, SNAP or Medicaid. This is " +
-     "what clears rung 2 when a bureau cannot match the file."]
+    ["Non-driver ID", !!(c.documents && c.documents.nonDriverId),
+     "Free for people receiving public assistance, SNAP or Medicaid. The " +
+     "application cannot go in until the two above are both on file."]
   ];
   const complete = docs.every((d) => d[1]);
   const days = Math.round((new Date(c.release) - Date.now()) / 86400000);
@@ -4072,34 +4076,10 @@ function casePlanCard(c) {
       '</div>').join("") +
     '<p class="small' + (complete ? ' strong' : '') + '">' +
       (complete
-        ? 'The vital documents packet is complete, so rung 2 needs no new paperwork.'
-        : 'Still needed for rung 2: ' +
+        ? 'The vital documents packet is complete. Nothing is waiting on paperwork.'
+        : 'Still needed: ' +
           docs.filter((d) => !d[1]).map((d) => d[0]).join(", ") + '.') +
     '</p></div>';
-}
-
-function ladderRows(c) {
-  const rungs = [
-    ["Plain request", "Name, SSN, date of birth, address history. Signed by the client.",
-     "One signature. No notary, no trip, no helper required."],
-    ["Identity documents", "Copy of ID, proof of address.",
-     "Sent when a bureau cannot match the file."],
-    ["Limited power of attorney",
-     "Notarized, scoped to credit reports and disputes, twelve months.",
-     "A notary trip at the law library. Only when the helper must act alone."],
-    ["Program release", "The org's own release form, signed by the client.",
-     "No outside helper at all. Slower, but nothing stops."]
-  ];
-  return rungs.map((r, i) => {
-    const n = i + 1;
-    const status = n < c.rung ? "Kicked back" : n === c.rung ? "Worked" : "Not needed";
-    return '<div class="rung' + (n === c.rung ? " active" : "") + '">' +
-      '<span class="n">' + n + '</span><div>' +
-      '<div class="small strong">' + n + ' · ' + r[0] + '</div>' +
-      '<div class="tiny">' + r[1] + '</div><div class="tiny">' + r[2] + '</div>' +
-      '<span class="tag' + (status === "Worked" ? " green" : "") + '">' + status +
-      '</span></div></div>';
-  }).join("");
 }
 
 function letterCard(id, draft, pendingCount, total) {
@@ -4153,16 +4133,6 @@ window.approve = function (id, draftId) {
   const c = DB.clients[id];
   c.timeline.push({ text: "Ms. Reyes approved your dispute letter to " + draft.bureau,
                     actor: "Your counselor", on: shortDate(), done: true });
-  save(); render();
-};
-
-window.escalate = function (id) {
-  const c = DB.clients[id];
-  // One rung, not four. With no helper, the POA rung is skipped: a power of
-  // attorney with nobody to hold it is a notary trip for nothing.
-  if (c.rung === 1) c.rung = 2;
-  else if (c.rung === 2) c.rung = liveAuth(c) ? 3 : 4;
-  else if (c.rung === 3) c.rung = 4;
   save(); render();
 };
 
