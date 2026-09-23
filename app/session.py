@@ -26,7 +26,6 @@ from app.store import STATE, Client
 SIGNIN_FOR = {
     "inside": "/signin",
     "family": "/helper",
-    "staff": "/staff-signin",
 }
 
 
@@ -51,6 +50,17 @@ class Caller:
 
 def current(request: Request) -> Session | None:
     return read(request.cookies.get(COOKIE_NAME))
+
+
+def require_coordinator(request: Request):
+    """The coordinator is already signed in to the vendor case plan system.
+
+    No PIN, no enrolment, no sign-in screen. Bridge opens inside the system
+    they already spend their day in, and identity arrives with the request.
+    """
+    from app.vendor import current_coordinator
+
+    return current_coordinator(request)
 
 
 def require_role(request: Request, role: str) -> Caller:

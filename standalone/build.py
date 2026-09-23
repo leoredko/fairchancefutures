@@ -79,7 +79,7 @@ def rules() -> dict:
 # All three read the same storage key, so served from one folder or one host
 # they share a caseload; published to three different origins they do not.
 APPS = {
-    "inside": "Bridge",
+    "inside": "Bridge for the tablet",
     "family": "Bridge for helpers",
     "staff": "Bridge for coordinators",
 }

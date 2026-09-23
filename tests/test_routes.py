@@ -14,8 +14,7 @@ from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
 
 def test_the_front_page_needs_no_session(client):
     assert client.get("/").status_code == 200
-    for url in ["/metrics", "/citations", "/signin", "/helper",
-                "/staff-signin"]:
+    for url in ["/metrics", "/citations", "/signin", "/helper"]:
         assert client.get(url).status_code == 200, url
 
 
@@ -25,8 +24,9 @@ def test_each_surface_loads_once_signed_in(client):
                 "/inside/authorization"]:
         assert client.get(url).status_code == 200, url
 
-    sign_in_staff(client)
-    for url in ["/staff", "/staff/m-alvarez", "/staff/j-whitfield/triage"]:
+    # The coordinator surface needs no sign-in; the vendor system did it.
+    for url in ["/staff", "/staff/new", "/staff/m-alvarez",
+                "/staff/j-whitfield/triage"]:
         assert client.get(url).status_code == 200, url
 
 

@@ -916,7 +916,18 @@ const RULES = {
    would be deployed separately. All three read the same storage key, so served
    from one folder or one host they share a caseload. */
 const APP = "family";
-const DOOR = { inside: "#/signin", family: "#/helper", staff: "#/staff-signin" };
+const DOOR = { inside: "#/signin", family: "#/helper", staff: "#/staff" };
+
+/* A coordinator does not sign in to Bridge. They are already signed in to the
+   vendor case plan system, which is where Bridge opens, so the coordinator app
+   has no sign-in screen, no PIN and no enrolment. Identity arrives with them.
+   A real deployment verifies a signed assertion here; this build asserts the
+   demo coordinator, and it is the only place that identity enters the app. */
+const VENDOR_COORDINATOR = {
+  staff_id: "REYES",
+  display_name: "D. Reyes",
+  title: "Offender Rehabilitation Coordinator"
+};
 
 /* ---------- storage ------------------------------------------------- */
 
@@ -1423,11 +1434,6 @@ route(/^\/helper$/, () => idScreen({
     'it isn\'t us.</span></div>'
 }));
 
-route(/^\/staff-signin$/, () => idScreen({
-  shell: "desk", title: "Counselor sign in", lede: "Staff ID.",
-  placeholder: "REYES", role: "staff", help: ""
-}));
-
 function idScreen(opts) {
   const err = PENDING && PENDING.error ? denied(PENDING.error) : "";
   if (PENDING) PENDING.error = null;
@@ -1603,6 +1609,10 @@ function denied(msg) {
 /* ---------- screens: inside ------------------------------------------- */
 
 function guard(role) {
+  if (role === "staff") {
+    // Single sign-on: nothing to check, nowhere to send them.
+    return { role: "staff", subject: "", coordinator: VENDOR_COORDINATOR };
+  }
   const s = session();
   if (!s || s.role !== role) { go(DOOR[APP]); return null; }
   return s;
@@ -1612,7 +1622,9 @@ function bar(who, extra) {
   return '<div class="bar"><span class="wordmark">Bridge</span>' +
     '<span class="who">' + esc(who) + '</span>' +
     '<div class="right">' + (extra || "") +
-    '<a class="pill" href="#" onclick="signOut();return false">Sign out</a></div></div>';
+    (APP === "staff" ? "" :
+      '<a class="pill" href="#" onclick="signOut();return false">Sign out</a>') +
+    '</div></div>';
 }
 
 route(/^\/inside$/, () => {
@@ -2006,7 +2018,8 @@ window.sendPages = function () {
 route(/^\/staff$/, () => {
   if (!guard("staff")) return "";
   const rows = Object.values(DB.clients).sort((a, b) => a.clock - b.clock);
-  return '<div>' + bar("Signed in as D. Reyes",
+  return '<div>' + bar(VENDOR_COORDINATOR.display_name + " \u00b7 " +
+      VENDOR_COORDINATOR.title,
       '<a class="pill" href="#/staff/new">New intake</a>' +
       '<span class="pill">' + rows.length + ' clients</span>') +
     '<div class="sheet" style="padding-top:24px">' +
@@ -2288,6 +2301,7 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
         '<span class="tag">Full account numbers</span>' +
         '<span class="tag">Address history</span>' +
         (shares ? "" : '<span class="tag">Report summary</span>') + '</div></div>' +
+      casePlanCard(c) +
       '<div class="card"><h3>Getting the reports released</h3>' +
         '<p class="small">Start light. Escalate only when a bureau pushes back.</p>' +
         '<span class="tag green">Cleared at rung ' + c.rung + '</span>' +
@@ -2332,6 +2346,46 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
 function dinDisplay(d) {
   const m = /^(\d{2})([A-Z])(\d{4})$/.exec(d || "");
   return m ? m[1] + "-" + m[2] + "-" + m[3] : (d || "");
+}
+
+/* The vendor case plan. An Offender Rehabilitation Coordinator already keeps a
+   plan of goals and tasks and reviews it quarterly, so Bridge contributes to
+   its financial domain rather than being a second system. The vital documents
+   packet reentry staff already assemble is exactly what rung 2 of the access
+   ladder asks for, which is why it is surfaced here. */
+function casePlanCard(c) {
+  const docs = [
+    ["Social Security card", true,
+     "Needed for every report request and every dispute."],
+    ["Birth certificate", c.rung > 1,
+     "The state can request a certified copy at no cost using sentence and " +
+     "commitment paperwork."],
+    ["Non-driver ID", c.rung > 2,
+     "Free for people receiving public assistance, SNAP or Medicaid. This is " +
+     "what clears rung 2 when a bureau cannot match the file."]
+  ];
+  const complete = docs.every((d) => d[1]);
+  const days = Math.round((new Date(c.release) - Date.now()) / 86400000);
+  const reviews = Math.max(0, Math.floor(days / 91));
+
+  return '<div class="card accent"><h3>Offender Case Plan</h3>' +
+    '<p class="tiny">Kept by the coordinator in the vendor system. Bridge ' +
+      'reads it and writes back to the financial domain only.</p>' +
+    '<p class="small"><span class="strong">' + reviews + ' quarterly review' +
+      (reviews === 1 ? '' : 's') + '</span> left before release</p>' +
+    '<h3 style="margin-top:4px">Vital documents</h3>' +
+    docs.map((d) => '<div class="row">' +
+      '<span class="tag ' + (d[1] ? 'green' : 'amber') + '">' +
+        (d[1] ? 'On file' : 'Needed') + '</span>' +
+      '<span class="small strong">' + esc(d[0]) + '</span>' +
+      '<span class="tiny" style="flex-basis:100%">' + esc(d[2]) + '</span>' +
+      '</div>').join("") +
+    '<p class="small' + (complete ? ' strong' : '') + '">' +
+      (complete
+        ? 'The vital documents packet is complete, so rung 2 needs no new paperwork.'
+        : 'Still needed for rung 2: ' +
+          docs.filter((d) => !d[1]).map((d) => d[0]).join(", ") + '.') +
+    '</p></div>';
 }
 
 function ladderRows(c) {

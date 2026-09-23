@@ -49,7 +49,7 @@ from app.store import (
     put_review_log,
     review_log,
 )
-from app.session import require_role
+from app.session import require_coordinator
 from app.surfaces import Capability, Surface, require
 from app.triage import PATH, STATE_LABEL, Answers, Classification, State, classify
 
@@ -73,20 +73,24 @@ def _ladder_rows(client) -> list[dict]:
 @router.get("", response_class=HTMLResponse)
 def queue(request: Request):
     """A work queue, not a roster. Sorted by what expires soonest."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     clients = sorted(STATE.clients.values(), key=lambda c: c.clock_sort)
-    return templates.TemplateResponse(request, "staff/queue.html", {"clients": clients})
+    return templates.TemplateResponse(
+        request, "staff/queue.html",
+        {"clients": clients, "coordinator": coordinator},
+    )
 
 
 @router.get("/new", response_class=HTMLResponse)
 def new_intake(request: Request):
     """The New intake tab from screen 07 of the deck."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     return templates.TemplateResponse(
         request, "staff/new.html",
-        {"facilities": FACILITIES, "form": {}, "error": None, "field": None},
+        {"facilities": FACILITIES, "form": {}, "error": None, "field": None,
+         "coordinator": coordinator},
     )
 
 
@@ -104,7 +108,7 @@ def create_client(
     No PIN is set here. A counselor who could set a client's PIN would be a
     counselor who knows it.
     """
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
 
     form = {"display_name": display_name, "din": din, "nysid": nysid,
@@ -120,7 +124,7 @@ def create_client(
         return templates.TemplateResponse(
             request, "staff/new.html",
             {"facilities": FACILITIES, "form": form, "error": str(exc),
-             "field": exc.field},
+             "field": exc.field, "coordinator": coordinator},
             status_code=400,
         )
 
@@ -163,20 +167,20 @@ def create_client(
 
 @router.get("/{client_id}/triage", response_class=HTMLResponse)
 def triage_form(request: Request, client_id: str):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     return templates.TemplateResponse(
         request, "staff/triage.html",
         {"client": client, "questions": STAFF_QUESTIONS,
          "answers": _prefill(client), "result": _stored_result(client),
-         "all_states": _all_states()},
+         "all_states": _all_states(), "coordinator": coordinator},
     )
 
 
 @router.post("/{client_id}/triage", response_class=HTMLResponse)
 async def triage_run(request: Request, client_id: str):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.TRIAGE_CLIENT)
     client = get_client(client_id)
     form = await request.form()
@@ -224,18 +228,18 @@ async def triage_run(request: Request, client_id: str):
         request, "staff/triage.html",
         {"client": client, "questions": STAFF_QUESTIONS,
          "answers": _prefill(client), "result": result,
-         "all_states": _all_states()},
+         "all_states": _all_states(), "coordinator": coordinator},
     )
 
 
 @router.get("/{client_id}", response_class=HTMLResponse)
 def client_detail(request: Request, client_id: str, created: int = 0):
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
 
     view = for_surface(asdict(client), Surface.STAFF, set(client.consent_scopes))
-    plan = simulated_plan(client.id, "D. Reyes", client.release_date)
+    plan = simulated_plan(client.id, coordinator.display_name, client.release_date)
     drafts = drafts_for(client_id)
     pending = next((d for d in drafts if d["approved_on"] is None), None)
     approved = [d for d in drafts if d["approved_on"]]
@@ -266,6 +270,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          "reviews_left": quarterly_reviews_left(
              date.fromisoformat(client.release_date)),
          "rung_two": ladder_rung_available(plan, 2),
+         "coordinator": coordinator,
          "review_summary": review_log().summary(),
          "just_created": bool(created),
          "helper_code": next(
@@ -282,7 +287,7 @@ def draft_letter(request: Request, client_id: str, item: int = Form(0)):
     An item deleted at Equifax is still sitting on the Experian and TransUnion
     files, so drafting one letter would leave two thirds of the job undone.
     """
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     if not client.flagged_items:
@@ -306,7 +311,7 @@ def approve_letter(
     request: Request, client_id: str, draft_id: str, body: str = Form(...)
 ):
     """Approval records whether the reviewer edited first. That is the metric."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.APPROVE_LETTER)
     client = get_client(client_id)
     row = next((d for d in drafts_for(client_id) if d["id"] == draft_id), None)
@@ -334,7 +339,7 @@ def approve_letter(
 @router.post("/{client_id}/ladder/escalate")
 def escalate(request: Request, client_id: str):
     """A bureau kicked the request back. Climb exactly one rung, not four."""
-    require_role(request, "staff")
+    coordinator = require_coordinator(request)
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     client = get_client(client_id)
     auth = get_authorization(client_id)

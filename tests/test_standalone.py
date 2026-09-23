@@ -158,3 +158,31 @@ def test_it_still_disclaims_any_official_affiliation(pages: dict):
 def test_they_stay_small_enough_to_email(pages: dict):
     for role, html in pages.items():
         assert len(html.encode()) < 2_000_000, role
+
+
+def test_the_coordinator_app_has_no_sign_in_at_all(pages: dict):
+    """They are already signed in to the vendor case plan system. Asking for a
+    second credential would be asking them to remember a password for a tab
+    they never deliberately opened."""
+    staff = pages["staff"]
+    assert 'staff: "#/staff"' in staff          # the door is the queue itself
+    assert "staff-signin" not in staff
+    assert "VENDOR_COORDINATOR" in staff
+
+
+def test_only_the_two_surfaces_without_another_system_ask_for_a_pin(pages: dict):
+    """A person on a facility tablet has no other system to be signed in to,
+    and a helper has no institutional identity at all. Those two authenticate
+    here because there is nowhere else they could have."""
+    for role in ("inside", "family"):
+        assert "#/enroll" in pages[role], role
+    assert 'if (role === "staff")' in pages["staff"]
+
+
+def test_the_three_titles_are_not_confusable(pages: dict):
+    import re
+
+    titles = {role: re.search(r"<title>(.*?)</title>", html).group(1)
+              for role, html in pages.items()}
+    assert len(set(titles.values())) == 3, titles
+    assert titles["staff"] == "Bridge for coordinators"
