@@ -264,13 +264,19 @@ def _ladder(cleared_at: int) -> dict[str, str]:
 
 
 def seed() -> None:
-    """The caseload from screens 07 through 09, as data."""
+    """The caseload from screens 07 through 09, as data.
+
+    Everyone here is invented. The DINs all start 28, meaning a 2028 intake,
+    which has not happened yet, so none of them can collide with a real
+    person's number in the public DOCCS lookup. The NYSIDs are obviously
+    sequential for the same reason.
+    """
     today = date.today()
 
     marcus = Client(
         id="marcus-w",
-        din="22A1187",
-        nysid="04418823L",
+        din="28A1187",
+        nysid="00000011L",
         facility="Sing Sing Correctional Facility",
         display_name="Marcus W.",
         first_name="Marcus",
@@ -316,7 +322,7 @@ def seed() -> None:
 
     others = [
         Client(
-            id="m-alvarez", din="23B0042", nysid="05529117K",
+            id="m-alvarez", din="28B0042", nysid="00000022K",
             facility="Bedford Hills Correctional Facility", display_name="M. Alvarez", first_name="Maria",
             release_date=(today + timedelta(days=9)).isoformat(),
             case_state="errors_present", state_label="Errors present",
@@ -336,7 +342,7 @@ def seed() -> None:
             plan_step="Two items flagged. Dispute letter not drafted yet.",
         ),
         Client(
-            id="j-whitfield", din="24A0931", nysid="06180244M",
+            id="j-whitfield", din="28A0931", nysid="00000033M",
             facility="Sing Sing Correctional Facility", display_name="J. Whitfield", first_name="James",
             release_date=(today + timedelta(days=21)).isoformat(),
             case_state="not_yet_triaged", state_label="Not yet triaged",
@@ -347,7 +353,7 @@ def seed() -> None:
             plan_step="Triage session not yet held",
         ),
         Client(
-            id="r-osei", din="21C2204", nysid="03927761J",
+            id="r-osei", din="28C2204", nysid="00000044J",
             facility="Fishkill Correctional Facility", display_name="R. Osei", first_name="Rashid",
             release_date=(today + timedelta(days=64)).isoformat(),
             case_state="credit_invisible", state_label="Credit invisible",
@@ -360,7 +366,7 @@ def seed() -> None:
             plan_step="Builder loan opens after the third bureau answers",
         ),
         Client(
-            id="t-brennan", din="19A0775", nysid="02214508H",
+            id="t-brennan", din="28D0775", nysid="00000055H",
             facility="Woodbourne Correctional Facility", display_name="T. Brennan", first_name="Tom",
             release_date=(today - timedelta(days=42)).isoformat(),
             case_state="damaged_file", state_label="Damaged file",

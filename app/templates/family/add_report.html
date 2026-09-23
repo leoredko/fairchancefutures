@@ -5,7 +5,7 @@
   <div class="bar">
     <span class="wordmark">Bridge</span>
     <span class="who">The report came</span>
-    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/notes/toggle">{% if show_notes %}Hide notes{% else %}Design notes{% endif %}</a><a class="pill" href="/signout">Sign out</a></div>
   </div>
 
   <form class="pane" method="post" action="/family/report"

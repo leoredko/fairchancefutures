@@ -49,9 +49,19 @@ New York only, because the identifiers are.
 
 | Surface | What you sign in with |
 | --- | --- |
-| Inside | A DIN (`22-A-1187`) or a NYSID (`04418823L`), then a PIN you choose |
+| Inside | A DIN (`28-A-1187`) or a NYSID (`00000011L`), then a PIN you choose |
 | Family | The code printed on the letter that came in the mail, then a PIN |
 | Staff | A staff ID, then a PIN |
+
+Accounts are created by a counselor from **New intake** on the caseload queue,
+which is the New intake tab on screen 07 of the deck. That creates the case
+file, a sign-in for each number entered, and the helper code that goes on the
+letter to whoever is helping from outside. No PIN is set at creation: a PIN a
+counselor could choose would be a PIN a counselor knows.
+
+Every seeded DIN starts `28`, meaning a 2028 intake, which has not happened
+yet, so none of them can collide with a real person in the public DOCCS
+lookup.
 
 Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
 resetting one *clears* it rather than choosing a new one, so the only person who
@@ -196,7 +206,7 @@ app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 132 tests
+tests/                 157 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons

@@ -25,7 +25,7 @@ NEVER_RENDERED = frozenset({"ssn", "full_account_number", "date_of_birth"})
 # denied even to staff.
 VISIBLE: dict[Surface, frozenset[str]] = {
     Surface.INSIDE: frozenset({
-        "display_name", "release_date", "case_state", "plan_step",
+        "display_name", "release_date", "case_state", "plan_step", "din",
         "helper_first_name", "authorization_summary", "timeline",
     }),
     Surface.FAMILY: frozenset({
@@ -33,6 +33,7 @@ VISIBLE: dict[Surface, frozenset[str]] = {
     }),
     Surface.STAFF: frozenset({
         "display_name", "release_date", "case_state", "plan_step", "timeline",
+        "din", "nysid", "facility",
         "helper_first_name", "authorization_summary", "flagged_items",
         "report_summary", "collections_count", "last_pulled", "ladder_status",
     }),
@@ -53,7 +54,7 @@ PLUMBING = frozenset({
     "ladder_rung", "ladder_status", "family_task", "report_pages", "lesson",
     "first_name", "helper_name", "timeline", "plan_step", "release_date",
     "display_name", "authorization_summary", "task", "mailing_deadline",
-    "client_first_name",
+    "client_first_name", "din", "nysid", "facility",
 })
 
 

@@ -10,253 +10,323 @@
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 <link rel="icon" href="data:image/png;base64,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">
 <style>
-/* Bridge design tokens, lifted from the design deck.
-   No web fonts and no CDN: the tablet surface is offline-first and metered by
-   the minute, so the app makes zero outbound requests to render. */
+/* Bridge.
+   Palette and type from the design deck. No web fonts and no CDN: the tablet
+   surface is metered by the minute, so the app makes zero outbound requests
+   to render. */
 
 :root {
   --ink: #1F1D1A;
+  --ink-2: #4A453E;
   --muted: #6B655D;
-  --border: #D9D4CB;
-  --track: #E8E3DA;
+  --faint: #918A80;
+  --line: #E4DFD6;
+  --line-strong: #D2CBC0;
+  --track: #EBE6DD;
   --surface: #FAF8F5;
+  --raise: #FFFFFF;
   --page: #FFFFFF;
   --rust: #B4522A;
+  --rust-soft: #FBF1EC;
   --blue: #26618F;
+  --blue-soft: #EFF4F8;
   --green: #2F6B4F;
+  --green-soft: #EDF4F0;
   --danger: #8C2F1F;
+  --danger-soft: #FCF1EE;
 
   --display: "Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
 
-  --radius: 14px;
-  --radius-sm: 10px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-pill: 999px;
+
+  /* One elevation, used sparingly. Borders everywhere is what made the first
+     version read as a wireframe. */
+  --lift: 0 1px 2px rgba(31, 29, 26, .04), 0 1px 1px rgba(31, 29, 26, .03);
+  --lift-2: 0 2px 8px rgba(31, 29, 26, .06), 0 1px 2px rgba(31, 29, 26, .04);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   background: var(--surface);
   color: var(--ink);
   font-family: var(--body);
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
-a { color: inherit; }
+a { color: var(--blue); text-underline-offset: 2px; }
+a:hover { color: var(--ink); }
+
+/* Everything focusable gets a visible ring. A kiosk gets tabbed through by
+   people who cannot see well, and by staff who never touch the screen. */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
 /* ---- shells ------------------------------------------------------------ */
 
-/* Tablet surface. Fixed frame, large targets, one question per screen. */
-.tablet {
-  width: min(768px, 100%);
-  min-height: 100vh;
-  margin: 0 auto;
-  background: var(--page);
-  display: flex;
-  flex-direction: column;
-}
-
-/* Phone surface. One task on screen at a time. */
-.phone {
-  width: min(430px, 100%);
-  min-height: 100vh;
-  margin: 0 auto;
-  background: var(--page);
-  display: flex;
-  flex-direction: column;
-}
-
-/* Desktop surface. A work queue, never a roster. */
-.desk {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px 64px;
-}
+.tablet { width: min(768px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column; }
+.phone  { width: min(430px, 100%); min-height: 100vh; margin: 0 auto;
+          background: var(--page); display: flex; flex-direction: column; }
+.desk   { max-width: 1140px; margin: 0 auto; padding: 0 24px 72px; }
 
 .bar {
-  padding: 20px 28px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--line);
+  background: var(--page);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 20;
 }
-.bar .wordmark { font-family: var(--display); font-weight: 700; font-size: 19px; }
+.bar .wordmark {
+  font-family: var(--display); font-weight: 700; font-size: 18px;
+  letter-spacing: -.01em;
+}
 .bar .who { font-size: 14px; color: var(--muted); }
-.bar .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.bar .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
-.pill {
-  font-size: 12.5px;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 6px 12px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.pane {
-  flex-grow: 1;
-  padding: 34px 34px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  min-height: 0;
-}
-.phone .pane { padding: 24px 22px 28px; gap: 18px; }
+.pane { flex-grow: 1; padding: 32px 32px 40px; display: flex;
+        flex-direction: column; gap: 22px; min-height: 0; }
+.phone .pane { padding: 22px 20px 32px; gap: 18px; }
 
 /* ---- type -------------------------------------------------------------- */
 
-h1 { font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1.15; }
-.phone h1 { font-size: 27px; }
-h2 { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.2; }
-h3 { font-family: var(--display); font-weight: 600; font-size: 16px; }
-.lede { font-size: 17px; color: var(--muted); }
-.small { font-size: 14px; color: var(--muted); }
-.tiny { font-size: 13px; color: var(--muted); }
-.strong { font-weight: 600; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 32px;
+     line-height: 1.18; letter-spacing: -.018em; }
+.phone h1 { font-size: 26px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 19px;
+     line-height: 1.25; letter-spacing: -.01em; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
+     letter-spacing: -.005em; }
+
+.lede  { font-size: 17px; line-height: 1.5; color: var(--ink-2); }
+.small { font-size: 14.5px; color: var(--ink-2); }
+.tiny  { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.strong { font-weight: 600; color: var(--ink); }
+.dim { color: var(--faint); }
 
 /* ---- progress ---------------------------------------------------------- */
 
-.progress { display: flex; align-items: center; gap: 12px; }
-.track { flex-grow: 1; height: 8px; border-radius: 4px; background: var(--track); position: relative; }
-.track > span { position: absolute; inset: 0 auto 0 0; height: 8px; border-radius: 4px; background: var(--rust); }
+.progress { display: flex; align-items: center; gap: 14px; }
+.track { flex-grow: 1; height: 6px; border-radius: var(--r-pill);
+         background: var(--track); overflow: hidden; }
+.track > span { display: block; height: 100%; border-radius: var(--r-pill);
+                background: var(--rust); transition: width .25s ease; }
 
 /* ---- choices, buttons -------------------------------------------------- */
 
-.choices { display: flex; flex-direction: column; gap: 14px; }
+.choices { display: flex; flex-direction: column; gap: 12px; }
 
 .choice {
-  display: block;
-  width: 100%;
-  text-align: left;
+  display: block; width: 100%; text-align: left;
   background: var(--page);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px;
-  font: inherit;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  padding: 20px; font: inherit; font-size: 19px; font-weight: 600;
+  color: inherit; text-decoration: none; cursor: pointer;
+  transition: border-color .12s ease, background .12s ease;
 }
-.choice:hover, .choice:focus-visible { border-color: var(--ink); }
-.choice.selected { border-color: var(--ink); }
-.choice .note { display: block; font-size: 14.5px; font-weight: 400; color: var(--muted); margin-top: 7px; line-height: 1.45; }
+.choice:hover { border-color: var(--ink); background: var(--surface); }
+.choice.selected { border-color: var(--ink); border-width: 2px; }
+.choice .note { display: block; font-size: 14.5px; font-weight: 400;
+                color: var(--muted); margin-top: 6px; line-height: 1.45; }
+
+input.choice { font-weight: 500; }
+input.choice::placeholder { color: var(--faint); font-weight: 400; }
 
 .btn {
-  display: inline-block;
-  background: var(--ink);
-  color: var(--page);
-  border: 2px solid var(--ink);
-  border-radius: var(--radius-sm);
-  padding: 15px 22px;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
+  display: inline-block; background: var(--ink); color: var(--page);
+  border: 1.5px solid var(--ink); border-radius: var(--r);
+  padding: 13px 20px; font: inherit; font-weight: 600; font-size: 15.5px;
+  cursor: pointer; text-decoration: none; text-align: center;
+  transition: opacity .12s ease;
 }
-.btn.wide { width: 100%; }
-.btn.ghost { background: transparent; color: var(--ink); border-color: var(--border); }
-.btn.quiet { background: transparent; color: var(--muted); border-color: transparent; padding: 10px 0; text-decoration: underline; }
+.btn:hover { opacity: .88; color: var(--page); }
+.btn.wide { width: 100%; padding: 16px 20px; font-size: 17px; }
+.btn.ghost { background: transparent; color: var(--ink);
+             border-color: var(--line-strong); }
+.btn.ghost:hover { background: var(--surface); color: var(--ink); }
+.btn.quiet { background: transparent; color: var(--muted);
+             border-color: transparent; padding: 8px 0;
+             text-decoration: underline; font-weight: 500; }
+.btn.quiet:hover { color: var(--ink); }
 
 /* ---- cards ------------------------------------------------------------- */
 
 .card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  background: var(--page);
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  background: var(--raise);
+  box-shadow: var(--lift);
+  display: flex; flex-direction: column; gap: 10px;
 }
-.card.soft { background: var(--surface); }
-.card.dashed { border-style: dashed; background: var(--surface); }
-.card.warn { border-color: var(--rust); }
+.card.soft { background: var(--surface); box-shadow: none; }
+.card.dashed { border-style: dashed; background: var(--surface);
+               box-shadow: none; border-color: var(--line-strong); }
+.card.warn { border-color: #E8C9BC; background: var(--rust-soft);
+             box-shadow: none; }
+.card > .tag, .stack > .tag { align-self: flex-start; }
 
 .grid { display: grid; gap: 16px; }
 .grid.two { grid-template-columns: 1fr 1fr; }
 .grid.three { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 900px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
 
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.spacer { margin-top: auto; }
+
 /* ---- timeline ---------------------------------------------------------- */
 
-.timeline { display: flex; flex-direction: column; gap: 0; }
-.event { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--track); }
+.timeline { display: flex; flex-direction: column; }
+.event { display: flex; gap: 14px; padding: 14px 0;
+         border-bottom: 1px solid var(--track); }
 .event:last-child { border-bottom: 0; }
 .dot {
-  flex: 0 0 26px; height: 26px; border-radius: 13px;
+  flex: 0 0 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 600;
-  background: var(--ink); color: var(--page);
+  font-size: 12px; font-weight: 600;
+  background: var(--ink); color: var(--page); margin-top: 2px;
 }
-.event.pending .dot { background: var(--page); color: var(--muted); border: 1px solid var(--border); }
+.event.pending .dot { background: var(--page); color: var(--faint);
+                      border: 1.5px solid var(--line-strong); }
 
 /* ---- table ------------------------------------------------------------- */
 
-.queue { width: 100%; border-collapse: collapse; background: var(--page); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.queue th { text-align: left; font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); font-weight: 600; }
-.queue td { padding: 16px; border-bottom: 1px solid var(--track); vertical-align: top; }
+.queue {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--raise); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--lift);
+}
+.queue th {
+  text-align: left; font-size: 12px; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--muted); padding: 11px 18px;
+  border-bottom: 1px solid var(--line); background: var(--surface);
+  font-weight: 600;
+}
+.queue td { padding: 16px 18px; border-bottom: 1px solid var(--track);
+            vertical-align: top; }
 .queue tr:last-child td { border-bottom: 0; }
+.queue tbody tr:hover { background: var(--surface); }
 .queue tr.overdue td:first-child { box-shadow: inset 3px 0 0 var(--rust); }
 
-.tag { display: inline-block; font-size: 12.5px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); white-space: nowrap; }
-.tag.rust { border-color: var(--rust); color: var(--rust); }
-.tag.blue { border-color: var(--blue); color: var(--blue); }
-.tag.green { border-color: var(--green); color: var(--green); }
+/* ---- tags -------------------------------------------------------------- */
+
+.tag {
+  display: inline-block; font-size: 12.5px; font-weight: 500;
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  padding: 3px 11px; color: var(--muted); white-space: nowrap;
+  background: var(--page);
+}
+.tag.rust  { border-color: #E3BCAB; color: var(--rust);  background: var(--rust-soft); }
+.tag.blue  { border-color: #BFD3E3; color: var(--blue);  background: var(--blue-soft); }
+.tag.green { border-color: #BCD6C7; color: var(--green); background: var(--green-soft); }
 
 /* ---- ladder ------------------------------------------------------------ */
 
-.rung { display: flex; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--page); }
-.rung.active { border-color: var(--ink); border-width: 2px; }
-.rung .n { font-family: var(--display); font-weight: 700; color: var(--muted); flex: 0 0 22px; }
+.rung { display: flex; gap: 14px; padding: 14px 16px;
+        border: 1px solid var(--line); border-radius: var(--r);
+        background: var(--page); }
+.rung.active { border-color: var(--ink); border-width: 1.5px;
+               background: var(--surface); }
+.rung .n { font-family: var(--display); font-weight: 700; color: var(--faint);
+           flex: 0 0 20px; font-size: 15px; }
 
 /* ---- letter ------------------------------------------------------------ */
 
 .letter {
-  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  background: var(--page);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 20px;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.65;
+  white-space: pre-wrap; background: var(--page);
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 22px; color: var(--ink-2);
 }
-textarea.letter { width: 100%; min-height: 380px; resize: vertical; }
+textarea.letter { width: 100%; min-height: 420px; resize: vertical; }
+@media (max-width: 560px) { .letter { font-size: 10.5px; line-height: 1.5; } }
 
-/* ---- notes ------------------------------------------------------------- */
+/* ---- design notes ------------------------------------------------------
+   Rationale from the design deck. Off by default, because annotations inside
+   the product are what make a product look like a wireframe. The toggle is in
+   the top bar; turn it on when walking somebody through why a screen is the
+   way it is. */
 
-.notes { margin-top: auto; border-top: 1px dashed var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 9px; }
-.note-design { font-size: 13.5px; line-height: 1.45; color: var(--rust); }
-.note-build { font-size: 13.5px; line-height: 1.45; color: var(--blue); }
+.notes { display: none; }
+body.show-notes .notes {
+  margin-top: auto; padding-top: 18px;
+  border-top: 1px dashed var(--line-strong);
+  display: flex; flex-direction: column; gap: 8px;
+}
+body.show-notes .card.notes-card { display: flex; }
+.card.notes-card { display: none; }
+.note-design { font-size: 13px; line-height: 1.5; color: var(--rust); }
+.note-build  { font-size: 13px; line-height: 1.5; color: var(--blue); }
+.notes .btn.quiet { align-self: flex-start; }
 
-.denied { border: 1px solid var(--danger); border-radius: var(--radius); padding: 18px; background: #FDF6F4; display: flex; flex-direction: column; gap: 8px; }
+/* The back link lives in .notes on some screens and has to survive the
+   toggle being off. */
+.notes-always { margin-top: auto; padding-top: 18px; display: flex;
+                flex-direction: column; gap: 8px; }
+
+/* ---- denial ------------------------------------------------------------ */
+
+.denied {
+  border: 1px solid #E0BCB2; border-radius: var(--r-lg); padding: 18px 20px;
+  background: var(--danger-soft); display: flex; flex-direction: column; gap: 8px;
+}
 .denied .what { font-weight: 600; color: var(--danger); }
 
-.stack { display: flex; flex-direction: column; gap: 12px; }
-.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.spacer { margin-top: auto; }
+/* ---- forms ------------------------------------------------------------- */
 
-fieldset { border: 0; display: flex; flex-direction: column; gap: 14px; }
+fieldset { border: 0; display: flex; flex-direction: column; gap: 12px; }
 legend { padding: 0; }
-input[type="radio"], input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--rust); }
-label.check { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; }
+label.check {
+  display: flex; gap: 12px; align-items: flex-start;
+  border: 1px solid var(--line-strong); border-radius: var(--r);
+  padding: 13px 15px; cursor: pointer; background: var(--page);
+  transition: border-color .12s ease;
+}
+label.check:hover { border-color: var(--ink-2); }
+input[type="radio"], input[type="checkbox"] {
+  width: 19px; height: 19px; accent-color: var(--rust); flex: none;
+  margin-top: 1px;
+}
 
-.card > .tag, .stack > .tag { align-self: flex-start; }
-.notes .btn.quiet { align-self: flex-start; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field > label { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.field .hint { font-size: 12.5px; color: var(--muted); }
+.field input, .field select {
+  font: inherit; font-size: 16px; padding: 12px 14px;
+  border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  background: var(--page); color: var(--ink); width: 100%;
+}
+.field input:focus, .field select:focus { border-color: var(--ink); }
+.field.bad input, .field.bad select { border-color: var(--danger); }
+.field .mono { font-family: var(--mono); letter-spacing: .06em; }
 
 /* The triage form is six questions on one screen, for a 30 to 45 minute
    session. Tablet-sized targets would make it three scrolls long. */
-.compact fieldset { gap: 6px; margin-bottom: 4px; }
+.compact fieldset { gap: 6px; margin-bottom: 6px; }
 .compact label.check { padding: 8px 12px; }
-.compact input[type="radio"], .compact input[type="checkbox"] { width: 17px; height: 17px; }
-.compact legend { margin-top: 10px; }
+.compact input[type="radio"], .compact input[type="checkbox"] {
+  width: 16px; height: 16px;
+}
+.compact legend { margin-top: 12px; }
+
+@media print {
+  .bar, .btn, .notes, .demo-bar { display: none !important; }
+  .letter { border: 0; padding: 0; font-size: 11pt; }
+  body { background: #fff; }
+}
 
 
 /* Standalone-only: this build has no server, so the shell centres itself and
@@ -847,8 +917,17 @@ function load() {
 }
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(DB)); }
-  catch (e) { /* nothing to do; the session still works until reload */ }
+  try {
+    DB.savedAt = new Date().toISOString();
+    localStorage.setItem(KEY, JSON.stringify(DB));
+  } catch (e) { /* nothing to do; the session still works until reload */ }
+}
+
+function lastSavedText() {
+  if (!DB.savedAt) return "not yet";
+  const d = new Date(DB.savedAt);
+  return d.toLocaleString(undefined,
+    { dateStyle: "medium", timeStyle: "short" });
 }
 
 function reset() {
@@ -868,7 +947,7 @@ function seedClients() {
   return {
     "marcus-w": {
       id: "marcus-w", name: "Marcus W.", first: "Marcus",
-      din: "22A1187", nysid: "04418823L",
+      din: "28A1187", nysid: "00000011L",
       facility: "Sing Sing Correctional Facility",
       release: iso(118), clock: 118, state: "errors_present",
       stateLabel: "Errors on the report", needs: "Dispute letter to approve",
@@ -890,7 +969,7 @@ function seedClients() {
     },
     "m-alvarez": {
       id: "m-alvarez", name: "M. Alvarez", first: "Maria",
-      din: "23B0042", nysid: "05529117K",
+      din: "28B0042", nysid: "00000022K",
       facility: "Bedford Hills Correctional Facility",
       release: iso(9), clock: 9, state: "errors_present",
       stateLabel: "Errors present", needs: "Dispute letter to approve",
@@ -907,7 +986,7 @@ function seedClients() {
     },
     "j-whitfield": {
       id: "j-whitfield", name: "J. Whitfield", first: "James",
-      din: "24A0931", nysid: "06180244M",
+      din: "28A0931", nysid: "00000033M",
       facility: "Sing Sing Correctional Facility",
       release: iso(21), clock: 21, state: "not_yet_triaged",
       stateLabel: "Not yet triaged", needs: "No report on file",
@@ -919,7 +998,7 @@ function seedClients() {
     },
     "r-osei": {
       id: "r-osei", name: "R. Osei", first: "Rashid",
-      din: "21C2204", nysid: "03927761J",
+      din: "28C2204", nysid: "00000044J",
       facility: "Fishkill Correctional Facility",
       release: iso(64), clock: -4, state: "credit_invisible",
       stateLabel: "Credit invisible", needs: "Bureau answer overdue",
@@ -932,7 +1011,7 @@ function seedClients() {
     },
     "t-brennan": {
       id: "t-brennan", name: "T. Brennan", first: "Tom",
-      din: "19A0775", nysid: "02214508H",
+      din: "28D0775", nysid: "00000055H",
       facility: "Woodbourne Correctional Facility",
       release: iso(-42), clock: 200, state: "damaged_file",
       stateLabel: "Damaged file", needs: "Missed 2 check-ins",
@@ -1226,12 +1305,27 @@ function render() {
 
 window.addEventListener("hashchange", render);
 
+function notesOn() {
+  try { return localStorage.getItem("bridge.notes") === "1"; } catch (e) { return false; }
+}
+
+window.toggleNotes = function () {
+  try { localStorage.setItem("bridge.notes", notesOn() ? "0" : "1"); } catch (e) {}
+  applyNotes(); render();
+};
+
+function applyNotes() {
+  document.body.classList.toggle("show-notes", notesOn());
+}
+
 function demoBar() {
   const s = session();
   return '<div class="demo-bar">' +
     '<strong>Bridge</strong> <span>prototype &middot; fictional caseload</span>' +
     (s ? ' <span>&middot; signed in: ' + esc(s.role) + '</span>' : '') +
     '<span class="sp"></span>' +
+    '<a href="#" onclick="toggleNotes();return false">' +
+      (notesOn() ? "hide design notes" : "design notes") + '</a>' +
     '<a href="#/citations">what we checked</a>' +
     '<a href="#/scope">scope</a>' +
     (s ? '<a href="#" onclick="signOut();return false">sign out</a>' : '') +
@@ -1254,21 +1348,21 @@ route(/^\/$/, () => {
       '<div class="row"><a class="btn" href="#/' + esc(s.role) + '">Continue</a>' +
       '<a class="btn ghost" href="#" onclick="signOut();return false">Sign out</a></div></div>' : '') +
     '<div class="grid three">' +
-      card("Inside", "facility tablet",
+      card("Inside", "Facility tablet",
         "Answer intake, see where you stand, watch named people work your case, " +
         "cancel a helper's authorization.", "#/signin", "Sign in with your DIN or NYSID") +
-      card("Family", "phone",
+      card("Family", "Phone",
         "Receive the mail, photograph the reports, print and mail letters. " +
         "One task on screen at a time.", "#/helper", "Use the code from the letter") +
-      card("Caseworker", "desktop",
+      card("Caseworker", "Desktop",
         "Triage, read the report, approve letters, hold the deadline across a " +
         "full caseload.", "#/staff-signin", "Staff sign in") +
     '</div>' +
     '<div class="card warn" style="margin-top:26px"><h3>Demo logins</h3>' +
       '<p class="small">Fictional caseload, no way to create an account, so the ' +
       'seeded logins are here. Everyone picks their own PIN the first time.</p>' +
-      loginRow("Inside", "DIN 22-A-1187 or NYSID 04418823L", "Marcus W.") +
-      loginRow("Inside, not yet triaged", "DIN 24-A-0931", "J. Whitfield") +
+      loginRow("Inside", "DIN 28-A-1187 or NYSID 00000011L", "Marcus W.") +
+      loginRow("Inside, not yet triaged", "DIN 28-A-0931", "J. Whitfield") +
       loginRow("Helper", "code BRIDGE-4417", "Denise, helping Marcus") +
       loginRow("Counselor", "staff ID REYES", "D. Reyes") +
     '</div>' +
@@ -1646,16 +1740,18 @@ route(/^\/inside\/authorization$/, () => {
   if (!guard("inside")) return "";
   const c = subject();
   const auth = liveAuth(c);
-  const forbidden = ["open account", "apply for credit", "move money",
-                     "change address", "view SSN", "view full account numbers"];
+  const forbidden = ["Open an account", "Apply for credit", "Move money",
+                     "Change the address on file",
+                     "See the Social Security number",
+                     "See full account numbers"];
   return '<div class="tablet">' + bar(c.name + " · Kiosk 04") +
     '<div class="pane"><h1>Who is helping you</h1>' +
     (auth
       ? '<div class="card"><span class="strong">' + esc(auth.helper) + ', since ' +
           esc(auth.signed) + '</span><span class="small">Expires ' + esc(auth.expires) +
           '. Rung 1 of the access ladder: a plain signed request.</span>' +
-          '<div class="row">' + ["receive mail", "submit report images",
-            "mail dispute letter", "be contacted by staff"].map((s) =>
+          '<div class="row">' + ["Receive the mail", "Add photos of the reports",
+            "Mail a letter we print", "Be contacted by the counselor"].map((s) =>
             '<span class="tag">' + s + '</span>').join("") + '</div></div>' +
         '<div class="card dashed"><span class="strong">Nobody gets more than they ' +
           'need</span><span class="small">Whoever helps you cannot open an account ' +
@@ -1892,7 +1988,8 @@ window.addPages = function (input) {
 window.sendPages = function () {
   const c = subject();
   if (!c.pages.length) { alert("Add at least one photo first."); return; }
-  c.timeline.push({ text: c.pages.length + " page(s) of the report added",
+  c.timeline.push({ text: c.pages.length + " page" +
+                          (c.pages.length === 1 ? "" : "s") + " of the report added",
                     actor: liveAuth(c).helper, on: shortDate(), done: true });
   save(); go("#/family/task");
 };
@@ -1903,6 +2000,7 @@ route(/^\/staff$/, () => {
   if (!guard("staff")) return "";
   const rows = Object.values(DB.clients).sort((a, b) => a.clock - b.clock);
   return '<div>' + bar("Signed in as D. Reyes",
+      '<a class="pill" href="#/staff/new">New intake</a>' +
       '<span class="pill">' + rows.length + ' clients</span>') +
     '<div class="sheet" style="padding-top:24px">' +
     '<h1>Needs you this week</h1>' +
@@ -1933,6 +2031,139 @@ function clockText(c) {
   if (c.clock > 180) return "Out " + Math.round((c.clock - 180) / 7 + 6) + " weeks";
   return "Releases in " + c.clock + " days";
 }
+
+let INTAKE = { form: {}, error: null, field: null };
+let JUST_CREATED = null;
+
+route(/^\/staff\/new$/, () => {
+  if (!guard("staff")) return "";
+  const f = INTAKE.form, bad = (k) => INTAKE.field === k ? " bad" : "";
+  const err = INTAKE.error;
+  INTAKE.error = null; INTAKE.field = null;
+
+  return '<div>' + bar("New intake") +
+    '<div class="sheet" style="padding-top:26px;max-width:620px">' +
+    '<h1>Add someone to the caseload</h1>' +
+    '<p class="lede" style="margin:10px 0 20px">You add them. They pick their ' +
+      'own PIN the first time they sign in, and nobody here ever sees it.</p>' +
+    (err ? '<div class="denied" style="margin-bottom:18px">' +
+      '<span class="what">' + esc(err) + '</span></div>' : "") +
+    '<div class="stack">' +
+    field("name", "Name", f.name, "Marcus W.",
+          "However the person is addressed. Capitalization is tidied up for you.",
+          bad("name")) +
+    '<div class="grid two">' +
+      field("din", "DIN", f.din, "28-A-1187",
+            "Two digits, a letter, four digits.", bad("din"), true) +
+      field("nysid", "NYSID", f.nysid, "00000011L",
+            "Eight digits, sometimes a letter.", bad("nysid"), true) +
+    '</div>' +
+    '<p class="tiny" style="margin-top:-4px">Either one is enough. If you have ' +
+      'both, the person can sign in with whichever they remember.</p>' +
+    field("facility", "Facility", f.facility, "Sing Sing Correctional Facility",
+          "Goes on the envelope as the return address. The bureaus ask for it " +
+          "on mail from a prison.", bad("facility")) +
+    field("release", "Release date", f.release, "", 
+          "The queue sorts by what expires soonest.", bad("release"), false, "date") +
+    '<button class="btn wide" onclick="createClient()" style="margin-top:4px">' +
+      'Add to the caseload</button>' +
+    '</div>' +
+    '<div class="card soft" style="margin-top:20px"><h3>What this creates</h3>' +
+      '<p class="small">A case file, a sign-in for each number you enter, and a ' +
+      'helper code to put on the letter that goes out to whoever is helping ' +
+      'from the outside.</p>' +
+      '<p class="small">No PIN is set. Every account is PIN-less until the ' +
+      'person it belongs to picks one, which is the only way a PIN means ' +
+      'anything.</p></div>' +
+    '<p style="margin-top:16px"><a class="btn ghost" href="#/staff">&larr; Queue</a></p>' +
+    '</div></div>';
+});
+
+function field(id, label, value, placeholder, hint, bad, mono, type) {
+  return '<div class="field' + (bad || "") + '">' +
+    '<label for="' + id + '">' + esc(label) + '</label>' +
+    '<input id="' + id + '" type="' + (type || "text") + '"' +
+      (mono ? ' class="mono" autocapitalize="characters"' : "") +
+      ' value="' + esc(value || "") + '" placeholder="' + esc(placeholder) + '">' +
+    '<span class="hint">' + esc(hint) + '</span></div>';
+}
+
+function tidyName(raw) {
+  // Roman numerals shout, name suffixes do not: "Andre Quinones Jr. III".
+  return (raw || "").split(/\s+/).filter(Boolean).map((w) => {
+    const bare = w.replace(/\.$/, "").toUpperCase();
+    if (/^(II|III|IV|V|VI)$/.test(bare)) return bare;
+    if (/^(JR|SR)$/.test(bare)) return bare[0] + bare.slice(1).toLowerCase() + ".";
+    if (w.replace(".", "").length === 1) return w.toUpperCase();
+    // O'Brien and McDonald both need a second capital. Getting somebody's own
+    // name wrong on their own screen is a small disrespect people notice.
+    let out = w[0].toUpperCase() + w.slice(1).toLowerCase();
+    const ap = out.indexOf("'");
+    if (ap > 0 && ap <= 2 && out.length > ap + 1)
+      out = out.slice(0, ap + 1) + out[ap + 1].toUpperCase() + out.slice(ap + 2);
+    const pre = out.startsWith("Mac") ? "Mac" : out.startsWith("Mc") ? "Mc" : "";
+    if (pre && out.length > pre.length + 1)
+      out = pre + out[pre.length].toUpperCase() + out.slice(pre.length + 1);
+    return out;
+  }).join(" ");
+}
+
+window.createClient = function () {
+  const get = (id) => (document.getElementById(id).value || "").trim();
+  const f = { name: get("name"), din: get("din"), nysid: get("nysid"),
+              facility: get("facility"), release: get("release") };
+  INTAKE.form = f;
+
+  const fail = (field, msg) => { INTAKE.field = field; INTAKE.error = msg; render(); };
+
+  const name = tidyName(f.name);
+  if (name.length < 2) return fail("name", "Enter the person's name.");
+  if (!f.din && !f.nysid) return fail("din", "Enter a DIN, a NYSID, or both.");
+
+  let din = "", nysid = "";
+  if (f.din) {
+    let p; try { p = parseId(f.din); } catch (e) { return fail("din", e.message); }
+    if (p.kind !== "DIN") return fail("din", "That is a NYSID. Put it in the NYSID box instead.");
+    din = p.key;
+    if (Object.values(DB.clients).some((c) => c.din === din))
+      return fail("din", p.display + " is already on the caseload.");
+  }
+  if (f.nysid) {
+    let p; try { p = parseId(f.nysid); } catch (e) { return fail("nysid", e.message); }
+    if (p.kind !== "NYSID") return fail("nysid", "That is a DIN. Put it in the DIN box instead.");
+    nysid = p.key;
+    if (Object.values(DB.clients).some((c) => c.nysid === nysid))
+      return fail("nysid", nysid + " is already on the caseload.");
+  }
+  if (!f.facility) return fail("facility",
+    "Name the facility. It goes on the envelope as the return address, and the " +
+    "bureaus ask for it on mail from a prison.");
+  if (!f.release || isNaN(new Date(f.release)))
+    return fail("release", "Enter the release date.");
+
+  const days = Math.round((new Date(f.release) - Date.now()) / 86400000);
+  let id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  if (DB.clients[id]) id = id + "-" + (din || nysid).toLowerCase();
+
+  let code;
+  do { code = "BRIDGE-" + String(Math.floor(1000 + Math.random() * 9000)); }
+  while (Object.values(DB.clients).some((c) => c.helperCode === code));
+
+  DB.clients[id] = {
+    id, name, first: name.split(" ")[0], din, nysid, facility: f.facility,
+    release: f.release, clock: days, state: "not_yet_triaged",
+    stateLabel: "Not yet triaged", needs: "No report on file",
+    helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
+    collections: 0, consent: ["report_sharing"],
+    consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
+    answers: {}, pages: [], taskDone: false, authorization: null, timeline: []
+  };
+  ensureAccounts();
+  save();
+  INTAKE = { form: {}, error: null, field: null };
+  JUST_CREATED = id;
+  go("#/staff/" + id);
+};
 
 route(/^\/staff\/([\w-]+)\/triage$/, (id) => {
   if (!guard("staff")) return "";
@@ -1966,7 +2197,7 @@ route(/^\/staff\/([\w-]+)\/triage$/, (id) => {
           '<div class="small strong">' + esc(s.label) + '</div>' +
           '<div class="tiny">' + esc(s.plan) + '</div></div></div>').join("") +
       '</div></div></div>' +
-    '<div class="card dashed" style="margin-top:20px"><p class="note-design">' +
+    '<div class="card dashed notes-card" style="margin-top:20px"><p class="note-design">' +
       'Design note: this classifier is the actual product. Everything else is ' +
       'letters and lists. It is also the only piece you can measure for ' +
       'accuracy, which is what makes it defensible in a demo.</p></div>' +
@@ -2026,9 +2257,23 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
   const approved = drafts.filter((d) => d.approved);
   const shares = c.consent.indexOf("report_sharing") >= 0;
 
+  const fresh = JUST_CREATED === id;
+  JUST_CREATED = null;
+
   return '<div>' + bar(c.name,
       '<span class="tag rust">' + esc(c.stateLabel) + '</span>') +
-    '<div class="sheet" style="padding-top:22px"><div class="grid two" style="align-items:start">' +
+    '<div class="sheet" style="padding-top:22px">' +
+    (fresh ? '<div class="card" style="margin-bottom:18px;border-color:#BCD6C7">' +
+      '<h3>' + esc(c.name) + ' is on the caseload</h3>' +
+      '<p class="small">They sign in on the tablet with ' +
+      (c.din ? 'DIN <strong>' + esc(dinDisplay(c.din)) + '</strong>' : '') +
+      (c.din && c.nysid ? ' or ' : '') +
+      (c.nysid ? 'NYSID <strong>' + esc(c.nysid) + '</strong>' : '') +
+      ', and pick their own PIN.</p>' +
+      '<p class="small">Helper code for the letter going out: ' +
+      '<strong style="font-family:var(--mono)">' + esc(c.helperCode) + '</strong></p>' +
+      '</div>' : "") +
+    '<div class="grid two" style="align-items:start">' +
     '<div class="stack">' +
       '<div class="card"><h3>Credit picture</h3>' +
         (shares
@@ -2039,9 +2284,10 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
       '<div class="card"><h3>Not shared with you</h3>' +
         '<p class="small">Full account numbers, SSN, address history, employer ' +
         'records. You see what you need to act. Nothing else.</p>' +
-        '<div class="row"><span class="tag">ssn</span>' +
-        '<span class="tag">full_account_number</span>' +
-        (shares ? "" : '<span class="tag">report_summary</span>') + '</div></div>' +
+        '<div class="row"><span class="tag">Social Security number</span>' +
+        '<span class="tag">Full account numbers</span>' +
+        '<span class="tag">Address history</span>' +
+        (shares ? "" : '<span class="tag">Report summary</span>') + '</div></div>' +
       '<div class="card"><h3>Getting the reports released</h3>' +
         '<p class="small">Start light. Escalate only when a bureau pushes back.</p>' +
         '<span class="tag green">Cleared at rung ' + c.rung + '</span>' +
@@ -2053,8 +2299,9 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
       (pending.length ? letterCard(id, pending[0], pending.length, drafts.length)
         : (c.flagged.length
           ? '<div class="card"><h3>No letter waiting</h3>' +
-            '<p class="small">' + c.flagged.length + ' flagged item(s) with no ' +
-            'draft yet. One item drafts three letters, one per bureau.</p>' +
+            '<p class="small">' + c.flagged.length + ' flagged ' +
+            (c.flagged.length === 1 ? 'item' : 'items') + ', no letters ' +
+            'drafted yet. One item drafts three letters, one per bureau.</p>' +
             c.flagged.map((f, i) => '<label class="check">' +
               '<input type="radio" name="item" value="' + i + '"' +
               (i === 0 ? " checked" : "") + '><span class="small">' +
@@ -2066,6 +2313,11 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
             '<p class="small">Nothing to dispute.</p></div>')) +
       '<div class="card"><h3>Plan progress</h3><p class="small">' +
         esc(planStep(c, drafts)) + '</p></div>' +
+      '<div class="card soft"><h3>Saved on this device</h3>' +
+        '<p class="tiny">Everything on this screen is written to this browser ' +
+        'as you go. Close the tab, reopen the file, sign back in and it is all ' +
+        'still here. Nothing is sent anywhere.</p>' +
+        '<p class="tiny">Last saved: ' + esc(lastSavedText()) + '</p></div>' +
       '<div class="card soft"><h3>Approved so far</h3>' +
         (approved.length ? approved.map((d) => '<p class="small">&middot; ' +
           esc(d.bureau) + ', approved ' + esc(d.approved) +
@@ -2082,6 +2334,11 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
     '<p style="margin-top:14px"><a class="btn ghost" href="#/staff">&larr; Queue</a></p>' +
     '</div></div>';
 });
+
+function dinDisplay(d) {
+  const m = /^(\d{2})([A-Z])(\d{4})$/.exec(d || "");
+  return m ? m[1] + "-" + m[2] + "-" + m[3] : (d || "");
+}
 
 function ladderRows(c) {
   const rungs = [
@@ -2214,22 +2471,23 @@ route(/^\/scope$/, () => {
     '<p class="lede" style="margin:10px 0 20px">Who can do what is set by physics ' +
       'and law, not by preference. That is what splits the app.</p>' +
     '<div class="grid three">' +
-      scopeCard("Inside", "facility tablet",
-        ["answer intake", "see where you stand", "see the case timeline",
-         "name a helper", "cancel an authorization"],
-        ["verify identity online", "receive mail", "upload a file", "mail a letter",
-         "read the raw report"],
+      scopeCard("Inside", "Facility tablet",
+        ["Answer the intake questions", "See where the case stands",
+         "See the case timeline", "Name someone to help",
+         "Cancel a helper's authorization"],
+        ["Verify identity online", "Receive mail", "Upload a file",
+         "Mail a letter", "Read the full credit report"],
         "Offline-first in the real product. Metered by the minute. One question per screen.") +
-      scopeCard("Family or friend", "phone",
-        ["receive mail", "photograph the reports", "print and mail letters",
-         "take a call from the counselor"],
-        ["act without a signed, scoped authorization", "see the caseload",
-         "read or judge the report", "approve a letter"],
+      scopeCard("Family or friend", "Phone",
+        ["Receive mail", "Photograph the reports", "Print and mail letters",
+         "Take a call from the counselor"],
+        ["Act without a signed, scoped authorization", "See the caseload",
+         "Read or judge the report", "Approve a letter"],
         "One task on screen at a time. Long silences between tasks, by design.") +
-      scopeCard("Caseworker", "desktop",
-        ["triage", "read the report", "approve letters", "hold the deadline",
-         "run a full caseload"],
-        ["see more of the file than consent covers", "choose a client's PIN"],
+      scopeCard("Caseworker", "Desktop",
+        ["Run a triage session", "Read the report", "Approve letters",
+         "Hold the deadline", "Manage a full caseload"],
+        ["See more of the file than consent covers", "Choose a client's PIN"],
         "Work queue sorted by what expires first. Never a roster.") +
     '</div>' +
     '<div class="grid two" style="margin-top:20px;align-items:start">' +

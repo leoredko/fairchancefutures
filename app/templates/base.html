@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="/static/icon-192.png">
 <link rel="stylesheet" href="/static/bridge.css">
 </head>
-<body>
+<body class="{% if show_notes %}show-notes{% endif %}">
 {% block body %}{% endblock %}
 <script src="/static/exclusive.js" defer></script>
 <script>

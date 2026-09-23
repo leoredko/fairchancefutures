@@ -30,16 +30,16 @@ from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
 
 # --- identifiers -----------------------------------------------------------
 
-@pytest.mark.parametrize("raw", ["22A1187", "22-A-1187", "22 a 1187", "22a1187"])
+@pytest.mark.parametrize("raw", ["28A1187", "28-A-1187", "28 a 1187", "28a1187"])
 def test_a_din_is_read_however_it_is_typed(raw):
     """Somebody is copying this off a printed sheet onto a shared tablet."""
     parsed = parse(raw)
     assert parsed.kind is IdKind.DIN
-    assert parsed.normalized == "22A1187"
-    assert parsed.display == "22-A-1187"
+    assert parsed.normalized == "28A1187"
+    assert parsed.display == "28-A-1187"
 
 
-@pytest.mark.parametrize("raw", ["04418823L", "04418823", "044-188-23 l"])
+@pytest.mark.parametrize("raw", ["00000011L", "04418823", "044-188-23 l"])
 def test_a_nysid_is_accepted_with_or_without_the_check_letter(raw):
     """Which letters are valid is NOT confirmed, so we never reject on it.
     A real number refused at a kiosk is the worst outcome available here."""
@@ -81,16 +81,16 @@ def test_the_obvious_pins_are_refused(weak):
 def test_a_pin_taken_from_your_own_number_is_refused():
     """Anyone holding the paperwork can read it."""
     with pytest.raises(AuthError) as caught:
-        check_pin_strength("441882", identifier="04418823L")
+        check_pin_strength("000001", identifier="00000011L")
     assert "your own number" in str(caught.value)
 
 
 def test_a_reasonable_pin_is_accepted():
-    check_pin_strength("834712", identifier="04418823L")
+    check_pin_strength("834712", identifier="00000011L")
 
 
 def test_enrolment_needs_the_two_entries_to_match():
-    account = Account("a", "inside", "c", "22A1187")
+    account = Account("a", "inside", "c", "28A1187")
     with pytest.raises(AuthError):
         enroll(account, "834712", "834713")
     assert not account.enrolled
@@ -99,7 +99,7 @@ def test_enrolment_needs_the_two_entries_to_match():
 # --- lockout ---------------------------------------------------------------
 
 def _enrolled():
-    account = Account("a", "inside", "c", "22A1187")
+    account = Account("a", "inside", "c", "28A1187")
     enroll(account, PIN, PIN)
     return account
 
@@ -209,17 +209,17 @@ def test_the_url_no_longer_carries_identity(client):
 
 
 def test_a_client_signs_in_with_either_of_their_numbers(client):
-    sign_in_inside(client, identifier="22A1187")
+    sign_in_inside(client, identifier="28A1187")
     assert "Marcus" in client.get("/inside/case").text
     client.get("/signout")
 
     # The NYSID reaches the same account, already enrolled, same PIN.
-    sign_in_inside(client, identifier="04418823L")
+    sign_in_inside(client, identifier="00000011L")
     assert "Marcus" in client.get("/inside/case").text
 
 
 def test_one_person_cannot_reach_another_persons_case(client):
-    sign_in_inside(client, identifier="24A0931")       # J. Whitfield
+    sign_in_inside(client, identifier="28A0931")       # J. Whitfield
     page = client.get("/inside/case").text
     assert "Whitfield" in page or "James" in page
     assert "Marcus" not in page

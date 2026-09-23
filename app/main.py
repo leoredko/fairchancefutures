@@ -11,12 +11,18 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import (
+    FileResponse,
+    HTMLResponse,
+    JSONResponse,
+    RedirectResponse,
+)
 from fastapi.staticfiles import StaticFiles
 
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized, RUNG_DETAIL, Rung
 from app.bureaus import BUREAUS
 from app.sources import FACTS, OPEN_QUESTIONS
+from app import labels
 from app.deps import templates
 from app.routes import access, family, inside, staff
 from app.store import STATE, boot, review_log
@@ -35,9 +41,9 @@ app = FastAPI(title="Bridge", lifespan=lifespan)
 # fictional caseload and no way to create an account. Delete this dict and the
 # card that renders it before anything real goes near it.
 DEMO_LOGINS = [
-    {"role": "Inside, on the tablet", "how": "DIN 22-A-1187 or NYSID 04418823L",
+    {"role": "Inside, on the tablet", "how": "DIN 28-A-1187 or NYSID 00000011L",
      "who": "Marcus W.", "url": "/signin"},
-    {"role": "Inside, not yet triaged", "how": "DIN 24-A-0931",
+    {"role": "Inside, not yet triaged", "how": "DIN 28-A-0931",
      "who": "J. Whitfield", "url": "/signin"},
     {"role": "Helper, on a phone", "how": "code BRIDGE-4417",
      "who": "Denise, helping Marcus", "url": "/helper"},
@@ -92,6 +98,24 @@ def not_authorized(request: Request, exc: NotAuthorized):
 # The manifest and the worker are served from the root, not from /static.
 # A service worker can only control pages at or below its own path, so one
 # parked under /static could never claim the app.
+@app.get("/notes/toggle", include_in_schema=False)
+def toggle_notes(request: Request):
+    """Design rationale from the deck, on or off.
+
+    Off by default: annotations inside a product are what make a product look
+    like a wireframe. On when walking somebody through why a screen is the way
+    it is.
+    """
+    on = request.cookies.get("bridge_notes") == "1"
+    back = request.headers.get("referer") or "/"
+    response = RedirectResponse(back, status_code=303)
+    if on:
+        response.delete_cookie("bridge_notes", path="/")
+    else:
+        response.set_cookie("bridge_notes", "1", path="/", max_age=60 * 60 * 24 * 30)
+    return response
+
+
 @app.get("/manifest.webmanifest", include_in_schema=False)
 def manifest() -> FileResponse:
     return FileResponse(
@@ -145,9 +169,9 @@ def roles(request: Request):
         allowed = CAPABILITIES[surface]
         surfaces.append({
             "title": title, "device": device, "rule": rule,
-            "can": [c.value.replace("_", " ") for c in sorted(allowed, key=lambda c: c.value)],
+            "can": [labels.capability(c) for c in sorted(allowed, key=lambda c: c.value)],
             "cannot": [
-                f"{c.value.replace('_', ' ')} — {DENIAL_REASON.get(c, '')}"
+                f"{labels.capability(c)} — {DENIAL_REASON.get(c, '')}"
                 for c in sorted(every - allowed, key=lambda c: c.value)
             ],
         })
@@ -157,7 +181,7 @@ def roles(request: Request):
     return templates.TemplateResponse(
         request, "roles.html",
         {"surfaces": surfaces, "ladder": ladder, "verify": verify,
-         "forbidden": sorted(f.replace("_", " ") for f in FORBIDDEN_SCOPES)},
+         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
     )
 
 
