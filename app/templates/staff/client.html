@@ -29,10 +29,20 @@
           carries it to you. Scanning it here is what puts it on their tablet.</p>
       </div>
 
+      {# The coordinator holds this file already. What is worth showing them is
+         not a list of what Bridge is keeping back, which would be theatre, but
+         where these fields do stop travelling. #}
       <div class="card">
-        <h3>Not shared with you</h3>
+        <h3>Where this stops</h3>
         <p class="small">{{ withheld_note }}</p>
-        <div class="row">{% for f in view.withheld %}<span class="tag">{{ labels.field(f) }}</span>{% endfor %}</div>
+        <div class="row">
+          {% for f in tablet_never_shows %}<span class="tag">{{ labels.field(f) }}</span>{% endfor %}
+        </div>
+        {% if view.withheld %}
+        <p class="tiny">Withheld from you on this client:
+          {% for f in view.withheld %}{{ labels.field(f) }}{{ ", " if not loop.last }}{% endfor %}.
+          That is the client's consent setting, not a Bridge rule.</p>
+        {% endif %}
       </div>
 
       <div class="card accent">

@@ -136,22 +136,48 @@ def test_triage_classifies_and_reorders_the_queue(staff):
     assert whitfield.clock_sort < 0
 
 
-def test_staff_never_receive_the_sensitive_fields(staff):
+def test_the_tablet_and_the_helper_never_receive_the_sensitive_fields():
+    """The boundary that is real is physical.
+
+    A shared dayroom tablet and a helper's phone are the two places a Social
+    Security number cannot appear. This used to apply to the coordinator too,
+    which was defending the wrong boundary: they hold the file already.
+    """
+    import app.store as store
+
+    record = asdict(store.STATE.clients["m-alvarez"])
+    record["ssn"] = "078-05-1120"
+
+    for surface in (Surface.INSIDE, Surface.FAMILY):
+        view = for_surface(record, surface, {"report_sharing"})
+        for field in NEVER_RENDERED:
+            assert field not in view.fields, f"{surface}: {field}"
+        assert "ssn" in view.withheld
+
+
+def test_the_coordinator_sees_the_file_they_already_hold(staff):
+    """They request the birth certificate and hold the sentence and commitment
+    paperwork. Hiding the number from them protects nobody."""
     import app.store as store
 
     record = store.STATE.clients["m-alvarez"]
     record.ssn = "078-05-1120"
-    record.full_account_number = "4147202398761111"
-
-    html = staff.get("/staff/m-alvarez").text
-    # The values are absent from the rendered page, not merely styled away.
-    assert record.ssn not in html
-    assert record.full_account_number not in html
 
     view = for_surface(asdict(record), Surface.STAFF, {"report_sharing"})
-    for field in NEVER_RENDERED:
-        assert field not in view.fields
-    assert "ssn" in view.withheld
+    assert view.get("ssn") == "078-05-1120"
+    assert "ssn" not in view.withheld
+
+
+def test_a_scanned_report_stays_truncated_even_for_the_coordinator(staff):
+    """A separate protection from the one above, and it survives it. The
+    disclosure is requested truncated, so that is what the document says."""
+    import app.store as store
+
+    staff.post("/staff/m-alvarez/report",
+               data={"bureau": "Equifax", "consumer_name": "M. Alvarez",
+                     "ssn_on_document": "078-05-1120", "accounts": "Cap One | 1111"})
+    stored = store.STATE.reports["m-alvarez"][-1]
+    assert stored["ssn_on_document"] == "XXX-XX-1120"
 
 
 def test_consent_off_hides_the_report_from_staff(staff):
@@ -293,8 +319,11 @@ def test_no_database_column_names_reach_a_screen(staff):
     for raw in ("full_account_number", "report_summary", "case_state",
                 "clock_sort", "ladder_rung"):
         assert raw not in html, raw
+    # The where-this-stops card names the fields in words, which is what proves
+    # the label registry is being used rather than the column names.
     assert "Social Security number" in html
     assert "Full account numbers" in html
+    assert "Date of birth" in html
 
 
 def test_the_counselor_can_see_the_din_and_the_facility(staff):
@@ -302,5 +331,5 @@ def test_the_counselor_can_see_the_din_and_the_facility(staff):
     DIN has to be on it. They were being reported as withheld, which was
     wrong and confusing."""
     html = staff.get("/staff/m-alvarez").text
-    assert "Facility" not in html.split("Not shared with you")[1][:400]
-    assert "DIN" not in html.split("Not shared with you")[1][:400]
+    assert "Facility" not in html.split("Where this stops")[1][:400]
+    assert "DIN" not in html.split("Where this stops")[1][:400]

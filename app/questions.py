@@ -34,11 +34,20 @@ class Question:
     multi: bool = False
 
 
-OFFLINE_NOTE = {
-    "title": "Nothing here needs the internet.",
-    "body": "Your answers save on the tablet and sync whenever it connects. "
-            "Nothing is lost if you lose access for a week.",
+# This used to promise that nothing was lost if the tablet went offline for a
+# week, which was not true: writes go straight to the record. It is also not
+# the right reassurance. The tablet is online, in the narrow sense that it
+# reaches Bridge and nothing else, so the honest promise is the one the app can
+# actually keep, which is that an answer is saved the moment it is given.
+SAVED_AS_YOU_GO = {
+    "title": "Every answer saves as you give it.",
+    "body": "This app is already on the tablet and it only talks to your own "
+            "record. Stop halfway, hand the tablet back, come again on "
+            "Thursday, and it opens on the question you were on.",
 }
+
+# Kept under the old name so nothing importing it silently gets nothing.
+OFFLINE_NOTE = SAVED_AS_YOU_GO
 
 
 # The tablet asks what a person knows before it asks what they have. Somebody

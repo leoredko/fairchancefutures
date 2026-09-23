@@ -39,6 +39,7 @@ from app.intake import (
 from app import labels
 from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
+from app.redaction import SENSITIVE as TABLET_NEVER_SHOWS
 from app.redaction import WITHHELD_NOTE, for_surface
 from app.report import (
     LINE_FORMAT,
@@ -269,6 +270,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
     return templates.TemplateResponse(
         request, "staff/client.html",
         {"client": client, "view": view, "withheld_note": WITHHELD_NOTE,
+         "tablet_never_shows": sorted(TABLET_NEVER_SHOWS),
          "plan_step": _plan_step(client, drafts),
          "ladder": _ladder_rows(client), "draft": pending,
          "draft_caption": caption, "approved": approved,

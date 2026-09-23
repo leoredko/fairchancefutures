@@ -1,8 +1,14 @@
 """Surface capabilities.
 
-Constraint one, from the design deck: a person inside cannot verify identity
-online, receive mail, upload a file, or browse out to a bureau. That is not a
-policy we chose and it is not a setting. It is where the tablet physically sits.
+Constraint one: a person inside cannot verify identity online, receive mail,
+upload a file, or browse out to a bureau. That is not a policy we chose and it
+is not a setting. It is where the tablet physically sits.
+
+The tablet is not offline. Bridge is loaded onto it and reaches the person's
+own record, which is why intake saves as it goes and why the course keeps a
+person's place. What it cannot do is reach out to the open web, which is the
+part that matters here: every route a bureau offers a free citizen runs through
+a web page, and none of those pages are reachable from this device.
 
 So capability lives here, in one table, and the router asks this module before
 it does anything. Hiding a button in a template is decoration. This is the
@@ -69,9 +75,11 @@ CAPABILITIES: dict[Surface, frozenset[Capability]] = {
 # Every one of these is physics or law, not a preference we could toggle.
 DENIAL_REASON: dict[Capability, str] = {
     Capability.VERIFY_IDENTITY:
-        "No identity verification happens on a facility tablet. There is no "
-        "camera roll, no document scanner, and no open web to reach a bureau's "
-        "knowledge-based authentication page.",
+        "No identity verification happens on a facility tablet. The tablet is "
+        "connected, but only to the applications loaded onto it: there is no "
+        "open web, so a bureau's knowledge-based authentication page cannot be "
+        "reached, and there is no camera roll and no document scanner to "
+        "answer it with.",
     Capability.RECEIVE_MAIL:
         "Credit reports arrive on paper, to a street address. A person inside "
         "does not have one that receives mail on their behalf.",

@@ -1,13 +1,29 @@
 """Field-level minimization.
 
 The compliance paperwork is assumed away for this build, the same way the
-facility approvals are. What is not assumed away is the product behavior: a
-caseworker approving a dispute letter sees the two flagged items and not the
-Social Security number, the full account numbers, the address history or the
-employer records.
+facility approvals are. What is not assumed away is the product behavior:
+default deny, per field, per surface, with a named reason the UI can print.
 
-Screen 09 puts that on the slide. This module is what makes the slide true.
-Default deny, per field, per surface, with a named reason the UI can print.
+This module used to withhold the Social Security number from the coordinator
+as well, which was defending the wrong boundary. The coordinator works inside
+the case plan system. They hold the sentence and commitment paperwork, they are
+the one who requests the birth certificate, and the vital documents packet sits
+in their file. An app that hides a number they are already holding is not
+protecting anybody, it is performing.
+
+The boundary that is real is physical. A facility tablet is shared, it sits in
+a dayroom, and whoever used it before is standing behind whoever is using it
+now. So the tablet never renders a Social Security number, a full account
+number or a date of birth, and neither does a helper's phone, because a helper
+was promised in the first ten seconds that they would never be asked to handle
+those. The coordinator's desk is neither of those places.
+
+Two protections survive that change and are not the same as this one. The
+credit report is requested already truncated and masked again on the way in, so
+even a coordinator reads XXX-XX-4417 off a scanned report, because that is what
+the document itself says. And the printed dispute letter still leaves the
+number blank for a pen, not because of what the coordinator knows but because
+the envelope travels through the helper's hands.
 """
 
 from __future__ import annotations
@@ -16,10 +32,22 @@ from dataclasses import dataclass
 
 from app.surfaces import Surface
 
-# Fields nobody sees through this app, on any surface, ever. The dispute letter
-# leaves a blank line and the client writes the number by hand on the printed
-# copy. That is not a limitation, it is the design.
-NEVER_RENDERED = frozenset({"ssn", "full_account_number", "date_of_birth"})
+# The fields worth naming out loud when a surface does not get them.
+SENSITIVE = frozenset({"ssn", "full_account_number", "date_of_birth"})
+
+# Which surfaces must never render them. Physical, not preferential: a shared
+# dayroom tablet and a helper's phone are the two places these cannot appear.
+# The coordinator's desk already holds the file, so withholding there is
+# theatre rather than protection.
+WITHHELD_FROM: dict[Surface, frozenset[str]] = {
+    Surface.INSIDE: SENSITIVE,
+    Surface.FAMILY: SENSITIVE,
+    Surface.STAFF: frozenset(),
+}
+
+# The tablet's rule, kept under its old name so anything still importing it
+# gets the strict set rather than silently getting nothing.
+NEVER_RENDERED = SENSITIVE
 
 # Fields a surface may see, when consent covers them. Anything not listed is
 # denied even to staff.
@@ -32,17 +60,25 @@ VISIBLE: dict[Surface, frozenset[str]] = {
     Surface.FAMILY: frozenset({
         "client_first_name", "task", "mailing_deadline", "authorization_summary",
     }),
+    # The coordinator sees the file they already hold, including the Social
+    # Security number a mailed dispute has to carry and the date of birth the
+    # bureaus match on. Consent still narrows it: report sharing turned off
+    # keeps the report fields out, because that is a decision the client made
+    # rather than a boundary the room imposes.
     Surface.STAFF: frozenset({
         "display_name", "release_date", "case_state", "plan_step", "timeline",
         "din", "nysid", "facility",
+        "ssn", "date_of_birth", "full_account_number",
         "helper_first_name", "authorization_summary", "flagged_items",
         "report_summary", "collections_count", "last_pulled", "ladder_status",
     }),
 }
 
 WITHHELD_NOTE = (
-    "Full account numbers, SSN, address history, employer records. You see "
-    "what you need to act. Nothing else."
+    "You already hold this file, so Bridge does not pretend otherwise. What it "
+    "does enforce: none of this reaches the tablet in the dayroom or the "
+    "helper's phone, and a scanned report stays truncated because that is how "
+    "it arrived."
 )
 
 
@@ -97,8 +133,9 @@ def for_surface(record: dict, surface: Surface, consent_scopes: set[str] | None 
         if key not in PLUMBING:
             withheld.append(key)
 
+    denied = WITHHELD_FROM[Surface(surface)]
     for key, value in record.items():
-        if key in NEVER_RENDERED:
+        if key in denied:
             withhold(key)
             continue
         if key not in allowed:
