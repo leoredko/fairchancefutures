@@ -111,7 +111,7 @@ PATH: dict[State, dict[str, str]] = {
         "horizon": "The bureaus must deliver within 15 days of receiving the "
                    "request. Add mail time in both directions.",
         "source": "15 U.S.C. 1681j(a), checked 2026-09-23.",
-        "first_step": "Mail the Annual Credit Report Request Form at rung 1.",
+        "first_step": "Mail the Annual Credit Report Request Form.",
     },
 }
 

@@ -15,7 +15,7 @@ from datetime import date
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
+from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
 from app.deps import templates
 from app import lessons
@@ -497,7 +497,7 @@ def authorization(request: Request):
         request, "inside/authorization.html",
         {"client": caller.client, "auth": auth,
          "scopes": sorted(labels.scope(s) for s in auth.scopes) if auth else [],
-         "rung_label": RUNG_DETAIL[auth.rung]["label"] if auth else "",
+         "standing_label": STANDING_DETAIL[auth.standing]["label"] if auth else "",
          "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
     )
 

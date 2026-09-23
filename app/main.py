@@ -19,7 +19,7 @@ from fastapi.responses import (
 )
 from fastapi.staticfiles import StaticFiles
 
-from app.authorization import FORBIDDEN_SCOPES, NotAuthorized, RUNG_DETAIL, Rung
+from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
 from app.sources import FACTS, OPEN_QUESTIONS
 from app import labels

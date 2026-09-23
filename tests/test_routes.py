@@ -217,12 +217,27 @@ def test_letter_leaves_the_ssn_blank_for_a_pen(staff):
     assert "Midland Funding" in body
 
 
-def test_ladder_escalates_one_rung_on_a_kickback(staff):
-    import app.store as store
-    assert store.STATE.clients["m-alvarez"].ladder_rung == 1
-    staff.post("/staff/m-alvarez/ladder/escalate")
-    assert store.STATE.clients["m-alvarez"].ladder_rung == 2
-    assert store.STATE.clients["m-alvarez"].ladder_status["1"] == "Kicked back"
+def test_the_client_page_says_what_is_blocking_the_id(staff):
+    """This replaced the four-rung access ladder.
+
+    The ladder modelled what a bureau would demand, which no public source
+    establishes. What documents somebody actually has is knowable, is already
+    reviewed quarterly by their coordinator, and has a real deadline attached.
+    """
+    html = staff.get("/staff/m-alvarez").text
+    assert "What is blocking the ID" in html
+    # The birth certificate is the one with no deadline of its own, which is
+    # exactly why it is the one that gets left.
+    assert "Birth certificate" in html
+    assert "10 weeks" in html
+    # And the page says which 120 days it means, because there are two and
+    # mixing them up costs somebody their ID.
+    assert "120 days after release" in html
+
+
+def test_the_escalate_route_is_gone(staff):
+    """Climbing a rung was the ladder's only verb. Nothing should answer it."""
+    assert staff.post("/staff/m-alvarez/ladder/escalate").status_code == 404
 
 
 def test_offline_writes_land_in_the_sync_queue(inside):

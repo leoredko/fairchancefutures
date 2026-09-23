@@ -54,7 +54,7 @@
       {% endif %}
 
       {# The coordinator holds this file already. What is worth showing them is
-         not a list of what Bridge is keeping back, which would be theatre, but
+         not a list of what Bridge is keeping back, which would be theater, but
          where these fields do stop travelling. #}
       <div class="card">
         <h3>Where this stops</h3>
@@ -86,27 +86,30 @@
           <span class="tiny" style="flex-basis:100%">{{ doc.note }}</span>
         </div>
         {% endfor %}
-        <p class="small {{ 'strong' if rung_two[0] else '' }}">{{ rung_two[1] }}</p>
+        <p class="small {{ 'strong' if documents.ready else '' }}">{{ documents.summary }}</p>
       </div>
 
-      <div class="card">
-        <h3>Getting the report released</h3>
-        <p class="small">Start light. Escalate only when a bureau pushes back.</p>
-        <span class="tag green">Cleared at rung {{ client.ladder_rung }}</span>
-        {% for r in ladder %}
-        <div class="rung {% if r.n == client.ladder_rung %}active{% endif %}">
-          <span class="n">{{ r.n }}</span>
-          <div>
-            <div class="small strong">{{ r.label }}</div>
-            <div class="tiny">{{ r.asks_for }}</div>
-            <div class="tiny">{{ r.cost }}</div>
-            <span class="tag {{ 'green' if r.status == 'Worked' else '' }}">{{ r.status }}</span>
-          </div>
-        </div>
+      {# This replaced a four-rung ladder that modeled what a bureau would
+         demand. Nobody publishes that, so it was a guess with a state machine
+         around it. What a person has in their file is knowable, is already
+         reviewed quarterly, and has a real deadline. #}
+      <div class="card {{ 'warn' if documents.urgent else '' }}">
+        <h3>What is blocking the ID</h3>
+        <p class="tiny">{{ documents.days_to_release }} days to release
+          &middot; the Social Security card application goes in at 120.</p>
+        {% if documents.urgent %}
+        {% for line in documents.urgent %}
+        <div class="rung active"><div><div class="small">{{ line }}</div></div></div>
         {% endfor %}
-        <form method="post" action="/staff/{{ client.id }}/ladder/escalate">
-          <button class="btn ghost" type="submit">A bureau kicked it back, climb one rung</button>
-        </form>
+        {% else %}
+        <p class="small">Nothing outstanding. Both documents that gate the ID
+          application are on file.</p>
+        {% endif %}
+        {% if not documents.has_photo_id %}
+        <p class="tiny">No non-driver ID yet. Note that the release ID a person
+          walks out with expires 120 days after release, which is a different
+          120 days from the one above.</p>
+        {% endif %}
       </div>
     </div>
 

@@ -151,7 +151,7 @@ def task_done(request: Request):
 
 @router.get("/packet", response_class=HTMLResponse)
 def packet(request: Request):
-    """The rung 1 request letter, ready to print. Signature by hand, SSN by hand."""
+    """The request letter, ready to print. Signature by hand, SSN by hand."""
     from app.letters import draft_report_request
 
     caller = require_role(request, "family")

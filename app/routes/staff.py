@@ -17,14 +17,13 @@ from datetime import date
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from app.authorization import RUNG_DETAIL, Rung, next_rung
 from app.bureaus import BUREAUS
 from app.caseplan import (
     DOCUMENT_LABEL,
     DOCUMENT_NOTE,
     PLAN_NAME,
     Document,
-    ladder_rung_available,
+    document_readiness,
     quarterly_reviews_left,
     simulated_plan,
 )
@@ -68,20 +67,6 @@ from app.surfaces import Capability, Surface, require
 from app.triage import PATH, STATE_LABEL, Answers, Classification, State, classify
 
 router = APIRouter(prefix="/staff")
-
-
-def _ladder_rows(client) -> list[dict]:
-    rows = []
-    for rung in Rung:
-        detail = RUNG_DETAIL[rung]
-        rows.append({
-            "n": int(rung),
-            "label": f"{int(rung)} · {detail['label']}",
-            "asks_for": detail["asks_for"],
-            "cost": detail["cost"],
-            "status": client.ladder_status.get(str(int(rung)), "Not needed"),
-        })
-    return rows
 
 
 @router.get("", response_class=HTMLResponse)
@@ -273,7 +258,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
         {"client": client, "view": view, "withheld_note": WITHHELD_NOTE,
          "tablet_never_shows": sorted(TABLET_NEVER_SHOWS),
          "plan_step": _plan_step(client, drafts),
-         "ladder": _ladder_rows(client), "draft": pending,
+         "draft": pending,
          "draft_caption": caption, "approved": approved,
          "flagged": client.flagged_items if "flagged_items" in view else [],
          "plan": plan,
@@ -284,7 +269,8 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          ],
          "reviews_left": quarterly_reviews_left(
              date.fromisoformat(client.release_date)),
-         "rung_two": ladder_rung_available(plan, 2),
+         "documents": document_readiness(
+             plan, date.fromisoformat(client.release_date)),
          "coordinator": coordinator,
          # What the client said reading their own report. A claim, not a
          # dispute: it arrives here to be checked against the paper, which is
@@ -495,24 +481,6 @@ def approve_letter(
             "on": date.today().strftime("%B %-d"),
             "done": True,
         })
-    return RedirectResponse(f"/staff/{client_id}", status_code=303)
-
-
-@router.post("/{client_id}/ladder/escalate")
-def escalate(request: Request, client_id: str):
-    """A bureau kicked the request back. Climb exactly one rung, not four."""
-    coordinator = require_coordinator(request)
-    require(Surface.STAFF, Capability.MANAGE_CASELOAD)
-    client = get_client(client_id)
-    auth = get_authorization(client_id)
-    helper_present = auth is not None and auth.is_live()
-    nxt = next_rung(Rung(client.ladder_rung), helper_present)
-    if nxt is None:
-        return RedirectResponse(f"/staff/{client_id}", status_code=303)
-    with mutate():
-        client.ladder_status[str(client.ladder_rung)] = "Kicked back"
-        client.ladder_rung = int(nxt)
-        client.ladder_status[str(int(nxt))] = "In progress"
     return RedirectResponse(f"/staff/{client_id}", status_code=303)
 
 

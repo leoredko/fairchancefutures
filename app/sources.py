@@ -533,9 +533,13 @@ INTERVIEWS: tuple[dict, str] = (
 
 
 OPEN_QUESTIONS: tuple[str, ...] = (
-    "What actually makes a bureau escalate past a plain signed request. The "
-    "access ladder assumes rung 1 usually clears; no public source confirms how "
-    "often that is true.",
+    "What actually makes a bureau escalate past a plain signed request. No "
+    "public source says how often a plain request clears, and Experian asks "
+    "for an ID copy with every mailed dispute regardless. This used to be "
+    "load-bearing: a four-rung access ladder was built on the assumption that "
+    "the cheapest route usually works. The ladder is gone and the product now "
+    "turns on document readiness instead, which is knowable, so this is a "
+    "question worth answering rather than a hole under the design.",
     "Whether a bureau honors a mid-dispute revocation of a helper's authority.",
     "Whether any New York county has designated a private collection agency, "
     "rather than its probation department, to collect restitution. That is the "

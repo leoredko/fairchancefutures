@@ -38,7 +38,7 @@ SENSITIVE = frozenset({"ssn", "full_account_number", "date_of_birth"})
 # Which surfaces must never render them. Physical, not preferential: a shared
 # dayroom tablet and a helper's phone are the two places these cannot appear.
 # The coordinator's desk already holds the file, so withholding there is
-# theatre rather than protection.
+# theater rather than protection.
 WITHHELD_FROM: dict[Surface, frozenset[str]] = {
     Surface.INSIDE: SENSITIVE,
     Surface.FAMILY: SENSITIVE,
@@ -70,7 +70,7 @@ VISIBLE: dict[Surface, frozenset[str]] = {
         "din", "nysid", "facility",
         "ssn", "date_of_birth", "full_account_number",
         "helper_first_name", "authorization_summary", "flagged_items",
-        "report_summary", "collections_count", "last_pulled", "ladder_status",
+        "report_summary", "collections_count", "last_pulled",
     }),
 }
 
@@ -88,7 +88,7 @@ WITHHELD_NOTE = (
 PLUMBING = frozenset({
     "id", "clock", "clock_sort", "needs", "state_label", "case_state",
     "consent_scopes", "consent_recorded_on", "classification", "intake_answers",
-    "ladder_rung", "ladder_status", "family_task", "report_pages",
+    "family_task", "report_pages",
     "lesson_progress", "report_review",
     "first_name", "helper_name", "timeline", "plan_step", "release_date",
     "display_name", "authorization_summary", "task", "mailing_deadline",

@@ -200,7 +200,7 @@ def draft_report_request(
     """One request to the centralized source covers all three bureaus.
 
     This is the route that works with no internet, which is the whole reason it
-    is the first rung of the ladder and the whole reason the inside surface
+    is the cheapest route in and the whole reason the inside surface
     exists.
     """
     today = today or date.today()
