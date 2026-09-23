@@ -738,7 +738,8 @@ route(/^\/enroll$/, () => {
       'style="letter-spacing:.5em;font-size:26px" ' +
       'onkeydown="if(event.key===\'Enter\')doEnroll()">' +
     '<button class="btn wide" onclick="doEnroll()">Save my PIN</button>' +
-    '<div class="card dashed"><span class="strong">This tablet is shared.</span>' +
+    '<div class="card dashed"><span class="strong">Your paperwork is in a lot ' +
+      'of hands.</span>' +
       '<span class="small">Don\'t use your birthday or any part of your own ' +
       'number. Anyone holding your paperwork can read those.</span>' +
       '<span class="small">If you forget it, your counselor can clear it and you ' +
@@ -878,7 +879,7 @@ route(/^\/inside\/intake\/(\d+)$/, (n) => {
       '</button>').join("") + '</div>';
   }
 
-  return '<div class="tablet">' + bar(c.name + " · Kiosk 04") +
+  return '<div class="tablet">' + bar(c.name) +
     '<div class="pane">' +
       '<div class="progress"><div class="track"><span style="width:' +
         Math.round(100 * n / total) + '%"></span></div>' +
@@ -1427,7 +1428,7 @@ route(/^\/inside\/authorization$/, () => {
                      "Change the address on file",
                      "See the Social Security number",
                      "See full account numbers"];
-  return '<div class="tablet">' + bar(c.name + " · Kiosk 04") +
+  return '<div class="tablet">' + bar(c.name) +
     '<div class="pane"><h1>Who is helping you</h1>' +
     (auth
       ? '<div class="card"><span class="strong">' + esc(auth.helper) + ', since ' +

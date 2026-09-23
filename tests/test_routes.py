@@ -422,10 +422,13 @@ def test_roles_is_generated_from_the_capability_table(client):
     assert "no camera roll" in page or "no open web" in page
 
 
-def test_roles_names_the_dayroom_boundary_rather_than_a_blanket_rule(client):
+def test_roles_grounds_the_boundary_in_where_the_device_is_read(client):
+    # The tablet is issued to one person rather than shared between them, so
+    # the reason these fields stop is line of sight and who administers the
+    # device, not who used it last.
     html = client.get("/roles").text
     assert "Social Security number" in html
-    assert "dayroom" in html
+    assert "line of sight" in html
     assert "coordinator's desk is neither" in html
 
 
