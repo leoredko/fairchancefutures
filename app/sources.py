@@ -247,6 +247,53 @@ FACTS: dict[str, Fact] = {
             "instructions-for-disputing-by-mail/",
         checked_on=CHECKED,
     ),
+
+    # New York restitution, answered 2026-09-23. Three steps that together
+    # close what had been the largest open question in this file. The answer
+    # is "no, not by itself", and the reasoning matters more than the verdict,
+    # because each step could change independently.
+    "restitution_is_a_civil_judgment": Fact(
+        key="restitution_is_a_civil_judgment",
+        statement=(
+            "In New York a restitution order becomes a civil judgment. The "
+            "district attorney files a certified copy with the county clerk, "
+            "who enters it in the same manner as a judgment in a civil action, "
+            "and it may then be collected in the same manner as one."
+        ),
+        source="N.Y. Crim. Proc. Law 420.10(6)(a)",
+        url="https://www.nysenate.gov/legislation/laws/CPL/420.10",
+        checked_on=CHECKED,
+    ),
+    "restitution_collected_by_a_public_agency": Fact(
+        key="restitution_collected_by_a_public_agency",
+        statement=(
+            "The county's chief elected official, and in New York City the "
+            "mayor, must designate an official or organization other than the "
+            "district attorney to collect and administer restitution. In "
+            "practice that is the county probation department, whose lever for "
+            "non-payment is a violation of probation rather than a credit "
+            "tradeline."
+        ),
+        source="N.Y. Crim. Proc. Law 420.10(8); Oneida County Probation",
+        url="https://oneidacountyny.gov/departments/probation/restitution/",
+        checked_on=CHECKED,
+    ),
+    "restitution_does_not_reach_the_bureaus": Fact(
+        key="restitution_does_not_reach_the_bureaus",
+        statement=(
+            "So a New York restitution order does not by itself reach a credit "
+            "report. The judgment route is closed, because the public-record "
+            "standards that took effect in July 2017 removed all civil "
+            "judgments from credit reports, and the agency that collects "
+            "restitution does not furnish to the bureaus. What remains is the "
+            "collections route: a debt placed with a third-party collector can "
+            "be reported as a collection account like any other."
+        ),
+        source="CFPB, A new retrospective on the removal of public records",
+        url="https://www.consumerfinance.gov/about-us/blog/"
+            "new-retrospective-on-removing-public-records/",
+        checked_on=CHECKED,
+    ),
 }
 
 
@@ -290,9 +337,10 @@ OPEN_QUESTIONS: tuple[str, ...] = (
     "access ladder assumes rung 1 usually clears; no public source confirms how "
     "often that is true.",
     "Whether a bureau honors a mid-dispute revocation of a helper's authority.",
-    "Whether criminal restitution is ever furnished to a consumer reporting "
-    "agency. Civil judgments are gone from reports, but restitution is a "
-    "different instrument and no primary source was found either way.",
+    "Whether any New York county has designated a private collection agency, "
+    "rather than its probation department, to collect restitution. That is the "
+    "one route by which restitution could reach a credit report, and the "
+    "designation is made county by county.",
     "Whether court fines and fees are furnished, and by whom.",
     "The 6 to 9 month horizon for a credit-invisible client. Sourced to the "
     "Cornish interview, Sep 21, and not corroborated by a second source.",
