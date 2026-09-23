@@ -12,6 +12,9 @@ itself marked in scope is implemented and runnable.
 ./run.sh          # installs, tests, serves on http://127.0.0.1:8000
 ```
 
+Tests run in CI on every push and pull request, on Python 3.11 and 3.12
+(`.github/workflows/tests.yml`).
+
 Or by hand:
 
 ```bash
@@ -120,4 +123,5 @@ app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
 tests/                 53 tests
+.github/workflows/     pytest on 3.11 and 3.12
 ```
