@@ -24,6 +24,47 @@ pytest
 uvicorn app.main:app --reload
 ```
 
+## The file you can just open
+
+`standalone/bridge.html` is the whole product in one file: no server, no
+install, no network. Double-click it, email it, put it on a USB stick, or open
+it on a tablet and use Add to Home Screen. Everything a person does stays in
+that browser and is sent nowhere.
+
+```bash
+python3 standalone/build.py     # regenerate it after changing the app
+```
+
+It is generated, not hand-maintained. The four triage states, the letter
+templates, the verified facts and the bureau addresses come straight out of the
+Python modules, and `tests/test_standalone.py` fails if the two ever disagree.
+
+The server app in `app/` is the real architecture: three surfaces, one shared
+case, enforcement server-side. The single file is the same product with the
+server folded into the page so it can be handed to somebody.
+
+## Signing in
+
+New York only, because the identifiers are.
+
+| Surface | What you sign in with |
+| --- | --- |
+| Inside | A DIN (`22-A-1187`) or a NYSID (`04418823L`), then a PIN you choose |
+| Family | The code printed on the letter that came in the mail, then a PIN |
+| Staff | A staff ID, then a PIN |
+
+Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
+resetting one *clears* it rather than choosing a new one, so the only person who
+ever knows a client's PIN is the client. PINs are PBKDF2-hashed with a per-user
+salt and the plaintext never reaches the store. The DIN format is confirmed
+from DOCCS; the NYSID check letter is not, so it is accepted and never
+validated, because rejecting a real number at a kiosk is the worst thing this
+code can do.
+
+The threat model is the next person to pick up the tablet, not a remote
+attacker: 15 minute idle timeout on the kiosk, a shift-length one for staff,
+lockout after five wrong PINs, obvious PINs refused, sign-out on every screen.
+
 ## What is assumed away
 
 Signed off for class, the same way the political red tape was: facility and DOC
@@ -146,12 +187,16 @@ app/redaction.py       per-surface, per-field minimization
 app/letters.py         templated letters and the edit-rate log
 app/bureaus.py         the three bureaus, addresses, and where they came from
 app/sources.py         every legal fact, its primary source, and the check date
+app/identifiers.py     DIN and NYSID parsing
+app/auth.py            PINs, lockout, signed sessions
+app/session.py         who is asking, from the cookie rather than the URL
+standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 design/                the source design deck, unpacked
 docs/                  scope and the verify-before-demo list
-tests/                 77 tests
+tests/                 132 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
