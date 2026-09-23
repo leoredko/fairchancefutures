@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}You finished the course{% endblock %}
+
+{% block head %}
+<style>
+  /* The only celebration in Bridge, and it is deliberately quiet. Confetti in
+     a facility dayroom reads as a slot machine, which is the wrong register
+     for a person who has just done fifty minutes of real work. A rise and a
+     glow, once, and no sound. Anybody who has turned motion down gets the
+     end state with no movement at all. */
+  /* Nothing here may depend on the animation running. A delayed fade hides
+     the content it is decorating until it fires, so a slow tablet, a paused
+     animation or a screenshot shows a blank card. Transform only: the text is
+     readable at every instant, animation or no animation. */
+  .rise { animation: rise .7s cubic-bezier(.2,.7,.3,1) backwards; }
+  .rise-2 { animation-delay: .12s; }
+  .rise-3 { animation-delay: .24s; }
+  @keyframes rise {
+    from { transform: translateY(14px); }
+    to   { transform: none; }
+  }
+  .seal {
+    display: grid; place-items: center;
+    width: 84px; height: 84px; border-radius: 50%;
+    background: #0E7C6B; color: #fff;
+    font-size: 38px; line-height: 1; margin: 0 auto 8px;
+    animation: pop .6s cubic-bezier(.2,1.4,.4,1) backwards;
+  }
+  @keyframes pop {
+    from { transform: scale(.6); }
+    to   { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rise, .seal { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }} &middot; the course</span>
+    <div class="right"><a class="pill" href="/inside/case">My case</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <div class="card good rise" style="text-align:center">
+      <div class="seal">&check;</div>
+      <h1 style="margin:0">You finished the whole course.</h1>
+      <p class="lede">All {{ standing.total }} lessons. About {{ minutes }}
+        minutes of it. You know more about how credit actually works than most
+        people who have never been inside.</p>
+    </div>
+
+    <div class="card accent rise rise-2">
+      <h3>This is not a certificate and it is worth more than one</h3>
+      <p class="small">Nobody can take this back off you, it does not expire,
+        and it does not show up on any record. It is just yours now. The next
+        time somebody tries to sell you a credit repair package, or a landlord
+        quotes you a number, you will know what you are looking at.</p>
+    </div>
+
+    <div class="card rise rise-3">
+      <span class="strong">What you covered</span>
+      <div class="stack">
+        {% for item in curriculum %}
+        <a class="rung" href="/inside/learn/lesson/{{ item.slug }}/0"
+           style="text-decoration:none;color:inherit">
+          <div>
+            <div class="small strong">{{ item.title }}</div>
+            <div class="tiny">{{ item.hook }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="tiny">Any of them opens again. Re-reading one does not undo
+        anything.</p>
+    </div>
+
+    <div class="card soft">
+      <span class="strong">The one thing to do with it this week</span>
+      <span class="small">Ask your coordinator where your birth certificate and
+        Social Security card stand. That is the first lesson, it has a real
+        deadline, and it is the only part of this that somebody else has to
+        start for you.</span>
+      <div class="row">
+        <a class="btn" href="/inside/case">Back to my case</a>
+        <a class="btn ghost" href="/inside/learn">All lessons</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -27,6 +27,7 @@ VISIBLE: dict[Surface, frozenset[str]] = {
     Surface.INSIDE: frozenset({
         "display_name", "release_date", "case_state", "plan_step", "din",
         "helper_first_name", "authorization_summary", "timeline",
+        "lesson_progress",
     }),
     Surface.FAMILY: frozenset({
         "client_first_name", "task", "mailing_deadline", "authorization_summary",
@@ -51,7 +52,8 @@ WITHHELD_NOTE = (
 PLUMBING = frozenset({
     "id", "clock", "clock_sort", "needs", "state_label", "case_state",
     "consent_scopes", "consent_recorded_on", "classification", "intake_answers",
-    "ladder_rung", "ladder_status", "family_task", "report_pages", "lesson",
+    "ladder_rung", "ladder_status", "family_task", "report_pages",
+    "lesson_progress",
     "first_name", "helper_name", "timeline", "plan_step", "release_date",
     "display_name", "authorization_summary", "task", "mailing_deadline",
     "client_first_name", "din", "nysid", "facility",

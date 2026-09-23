@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Learn about credit{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ client.display_name }} &middot; the course</span>
+    <div class="right"><a class="pill" href="/inside/case">My case</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>Learn about credit.</h1>
+    <p class="lede">{{ standing.total }} lessons, about {{ total_minutes }}
+      minutes in total. Take one at a time. It saves where you stop, so you can
+      put the tablet down mid-sentence and pick it up tomorrow.</p>
+
+    <div class="card {{ 'good' if standing.finished else 'accent' }}">
+      <div class="row">
+        <span class="strong">
+          {% if standing.finished %}
+          You have finished all {{ standing.total }}.
+          {% elif standing.done %}
+          {{ standing.done }} of {{ standing.total }} done
+          {% else %}
+          Nothing started yet
+          {% endif %}
+        </span>
+        <span class="tag teal" style="margin-left:auto">{{ standing.percent }}%</span>
+      </div>
+      <div class="track"><span style="width: {{ standing.percent }}%"></span></div>
+      {% if not standing.finished %}
+      <span class="small">About {{ standing.minutes_left }} minutes left in the
+        whole course.</span>
+      {% endif %}
+      {% if standing.finished %}
+      <a class="btn" href="/inside/learn/finished">See what you covered</a>
+      {% elif next_up %}
+      <a class="btn" href="/inside/learn/lesson/{{ next_up.slug }}">
+        {% if standing.done %}Carry on with{% else %}Start with{% endif %}
+        {{ next_up.title|lower }}</a>
+      {% endif %}
+    </div>
+
+    <div class="stack">
+      {% for row in rows %}
+      <a class="card {% if row.done %}soft{% endif %}"
+         href="/inside/learn/lesson/{{ row.lesson.slug }}"
+         style="text-decoration:none;color:inherit">
+        <div class="row">
+          <span class="strong">{{ row.lesson.title }}</span>
+          <span style="margin-left:auto">
+            {% if row.done %}<span class="tag teal">Done</span>
+            {% elif row.started %}<span class="tag amber">{{ row.card }} of {{ row.screens }}</span>
+            {% elif row.for_you %}<span class="tag amber">For you now</span>
+            {% endif %}
+          </span>
+        </div>
+        <span class="small">{{ row.lesson.hook }}</span>
+        <span class="tiny">{{ row.lesson.minutes }} minutes &middot;
+          {{ row.screens }} screens</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="card soft">
+      <span class="strong">Where the facts come from</span>
+      <span class="small">Every rule in this course names the law or the agency
+        it comes from, and the date somebody checked it. Nothing here is
+        somebody's opinion about how credit works.</span>
+      <a class="btn ghost" href="/citations">See the full list</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

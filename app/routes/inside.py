@@ -18,6 +18,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.authorization import FORBIDDEN_SCOPES, RUNG_DETAIL
 from app import labels
 from app.deps import templates
+from app import lessons
 from app.questions import INSIDE_QUESTIONS, inside_question, teaching_for
 from app.session import require_role
 from app.store import (
@@ -110,6 +111,157 @@ def how_this_works(request: Request):
     )
 
 
+@router.get("/learn", response_class=HTMLResponse)
+def learn(request: Request):
+    """The course index. Reachable from every screen, at any point in a case.
+
+    Deliberately not gated on intake. Somebody who signs in, reads two lessons
+    and answers no questions has still got something out of this, and making
+    the course wait behind a form would lose exactly the people it is for.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    client = caller.client
+    return templates.TemplateResponse(
+        request, "inside/learn.html",
+        {"client": client,
+         "rows": lessons.index_rows(client),
+         "standing": lessons.standing(client),
+         "next_up": lessons.next_up(client),
+         "total_minutes": lessons.TOTAL_MINUTES},
+    )
+
+
+@router.get("/learn/lesson/{slug}", response_class=HTMLResponse)
+def lesson_resume(request: Request, slug: str):
+    """Open a lesson where it was left, not at the beginning.
+
+    The whole reason progress is stored per card. Somebody who read four
+    screens yesterday and lost the tablet should not have to read them again.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    try:
+        found = lessons.lesson(slug)
+    except KeyError:
+        return RedirectResponse("/inside/learn", status_code=303)
+    at = lessons.progress(caller.client, slug)["card"]
+    return RedirectResponse(
+        f"/inside/learn/lesson/{found.slug}/{min(at, len(found.cards))}",
+        status_code=303,
+    )
+
+
+@router.get("/learn/lesson/{slug}/{index:int}", response_class=HTMLResponse)
+def lesson_card(request: Request, slug: str, index: int):
+    """One card, or the check question when index is past the last card."""
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    try:
+        found = lessons.lesson(slug)
+    except KeyError:
+        return RedirectResponse("/inside/learn", status_code=303)
+
+    index = max(0, min(index, len(found.cards)))
+    with mutate():
+        lessons.record_card(caller.client, slug, index)
+
+    row = lessons.progress(caller.client, slug)
+    return templates.TemplateResponse(
+        request, "inside/lesson.html",
+        {"client": caller.client, "lesson": found, "index": index,
+         "card": found.cards[index] if index < len(found.cards) else None,
+         "is_check": index == len(found.cards),
+         "answered": row["answered"],
+         "done": row["done"],
+         "standing": lessons.standing(caller.client)},
+    )
+
+
+@router.post("/learn/lesson/{slug}/check", response_class=HTMLResponse)
+async def lesson_check(request: Request, slug: str):
+    """Answer the check. Any answer finishes the lesson.
+
+    The explanation is the teaching; the question only exists to make somebody
+    commit before they read it. Marking them wrong in a dayroom, in front of
+    whoever is waiting for the tablet, would teach them to stop answering.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    try:
+        found = lessons.lesson(slug)
+    except KeyError:
+        return RedirectResponse("/inside/learn", status_code=303)
+
+    form = await request.form()
+    choice = (form.get("choice") or "").strip()
+    already = lessons.is_complete(caller.client, slug)
+
+    with mutate():
+        lessons.record_answer(caller.client, slug, choice)
+        # A finished lesson is a real thing a named person did on a real date,
+        # which is what this timeline is for. Recorded once, not on every
+        # re-read.
+        if not already:
+            caller.client.timeline.append({
+                "text": f"You finished the lesson on {found.title.lower()}",
+                "actor": "You",
+                "on": date.today().strftime("%B %-d"),
+                "done": True,
+            })
+
+    return RedirectResponse(f"/inside/learn/lesson/{slug}/done", status_code=303)
+
+
+@router.get("/learn/lesson/{slug}/done", response_class=HTMLResponse)
+def lesson_done(request: Request, slug: str):
+    """The explanation, then what is next. Shown after the check is answered."""
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    try:
+        found = lessons.lesson(slug)
+    except KeyError:
+        return RedirectResponse("/inside/learn", status_code=303)
+
+    client = caller.client
+    row = lessons.progress(client, slug)
+    standing = lessons.standing(client)
+    # Finishing the last one is the only moment in this app worth a noise, so
+    # the whole-course screen takes over rather than sitting under a lesson.
+    if standing["finished"]:
+        return RedirectResponse("/inside/learn/finished", status_code=303)
+
+    return templates.TemplateResponse(
+        request, "inside/lesson_done.html",
+        {"client": client, "lesson": found, "answered": row["answered"],
+         "chosen": next((c for c in found.check.choices
+                         if c.value == row["answered"]), None),
+         "was_the_defensible_one": row["answered"] == found.check.answer,
+         "standing": standing,
+         "next_up": lessons.next_up(client)},
+    )
+
+
+@router.get("/learn/finished", response_class=HTMLResponse)
+def learn_finished(request: Request):
+    """Every lesson done. The one screen in Bridge that celebrates.
+
+    Earned rather than given: it cannot be reached without an answer recorded
+    on all of them. Somebody who has not finished gets sent back to the course.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    client = caller.client
+    if not lessons.finished_course(client):
+        return RedirectResponse("/inside/learn", status_code=303)
+    return templates.TemplateResponse(
+        request, "inside/learn_finished.html",
+        {"client": client, "standing": lessons.standing(client),
+         "curriculum": lessons.CURRICULUM,
+         "minutes": lessons.TOTAL_MINUTES},
+    )
+
+
 @router.get("/learn/scores", response_class=HTMLResponse)
 def learn_scores(request: Request):
     """Why the number a landlord sees is not the number a free app showed."""
@@ -199,6 +351,8 @@ def case(request: Request):
         request, "inside/case.html",
         {"client": caller.client, "timeline": caller.client.timeline,
          "auth": auth if auth and auth.is_live() else None,
+         "course": lessons.standing(caller.client),
+         "next_lesson": lessons.next_up(caller.client),
          "synced": "just now"},
     )
 

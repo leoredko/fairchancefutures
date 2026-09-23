@@ -4,6 +4,7 @@
 <div class="tablet">
   <div class="bar">
     <span class="wordmark">Bridge</span>
+    <a class="pill" href="/inside/learn">Learn</a>
     <span class="who">{{ client.display_name }} &middot; your case</span>
     <div class="right"><span class="pill">Last synced {{ synced }}</span></div>
     <div class="right"><a class="pill" href="/signout">Sign out</a></div>
@@ -24,12 +25,25 @@
       {% endfor %}
     </div>
 
-    {% if client.lesson %}
-    <div class="card soft">
-      <span class="strong">Your one thing this week</span>
-      <span class="small">{{ client.lesson }} Ms. Reyes will ask you about it Thursday.</span>
+    <div class="card {{ 'good' if course.finished else 'accent' }}">
+      <span class="strong">
+        {% if course.finished %}You finished the credit course
+        {% elif course.done %}The credit course, {{ course.done }} of {{ course.total }} done
+        {% else %}Learn how credit actually works{% endif %}
+      </span>
+      <div class="track"><span style="width: {{ course.percent }}%"></span></div>
+      {% if course.finished %}
+      <span class="small">All {{ course.total }} lessons. Any of them opens
+        again whenever you want it.</span>
+      <a class="btn ghost" href="/inside/learn">Look back over them</a>
+      {% elif next_lesson %}
+      <span class="small">{{ next_lesson.hook }}</span>
+      <span class="tiny">{{ next_lesson.title }} &middot;
+        {{ next_lesson.minutes }} minutes &middot; saves where you stop</span>
+      <a class="btn" href="/inside/learn/lesson/{{ next_lesson.slug }}">
+        {% if course.done %}Carry on{% else %}Start the course{% endif %}</a>
+      {% endif %}
     </div>
-    {% endif %}
 
     <div class="card accent">
       <span class="strong">Your credit reports</span>
@@ -42,7 +56,7 @@
       <span class="strong">There is no single credit score</span>
       <span class="small">A landlord, a car dealer and a card company each look
         at a different one. Worth ten minutes.</span>
-      <a class="btn ghost" href="/inside/learn/scores">Learn why</a>
+      <a class="btn ghost" href="/inside/learn/lesson/no-single-score">Learn why</a>
     </div>
 
     <div class="card">

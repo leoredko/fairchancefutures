@@ -72,9 +72,12 @@ class Client:
     collections_count: int = 0
     last_pulled: str = ""
     plan_step: str = ""
-    lesson: str = ""
     family_task: dict = field(default_factory=dict)
     report_pages: list[str] = field(default_factory=list)
+    # Where this person has got to in the credit course, per lesson.
+    # A plain dict so it survives the JSON round trip and crosses to the
+    # standalone build without a schema. See app/lessons.py.
+    lesson_progress: dict = field(default_factory=dict)
     # Never rendered by any surface. Present so the redaction tests have
     # something real to withhold.
     ssn: str = "***-**-****"
@@ -329,7 +332,6 @@ def seed() -> None:
         collections_count=0,
         last_pulled=(today - timedelta(days=186)).isoformat(),
         plan_step="Dispute letter mailed, waiting on the bureau",
-        lesson="Lesson 3, what a secured card actually is. Four minutes.",
         flagged_items=[
             {"creditor": "Midland Funding", "last_four": "4471",
              "reason": "never opened this account"},

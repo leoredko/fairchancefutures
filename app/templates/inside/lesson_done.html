@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }}, done{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">{{ lesson.title }}</span>
+    <div class="right"><a class="pill" href="/inside/learn">All lessons</a></div>
+    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <div class="card good">
+      <h1 style="margin:0">That's {{ standing.done }} of {{ standing.total }}.</h1>
+      <div class="track"><span style="width: {{ standing.percent }}%"></span></div>
+      <span class="small">{{ lesson.title }} is done and saved to your record.</span>
+    </div>
+
+    {# Right or wrong gets the same explanation, and the wording never says
+       wrong. Somebody reading this in a dayroom does not need a verdict. #}
+    <div class="card accent">
+      {% if chosen %}
+      <span class="tiny">You answered: {{ chosen.label|lower }}</span>
+      {% endif %}
+      <h3>{% if was_the_defensible_one %}That's the one.{% else %}Here's the thing worth knowing.{% endif %}</h3>
+      <p class="small">{{ lesson.check.why }}</p>
+    </div>
+
+    <div class="stack">
+      {% if next_up %}
+      <div class="card">
+        <span class="strong">Next: {{ next_up.title }}</span>
+        <span class="small">{{ next_up.hook }}</span>
+        <span class="tiny">{{ next_up.minutes }} minutes</span>
+        <a class="btn" href="/inside/learn/lesson/{{ next_up.slug }}">Keep going</a>
+      </div>
+      {% endif %}
+
+      <div class="card soft">
+        <span class="strong">Or stop here</span>
+        <span class="small">{{ standing.minutes_left }} minutes left in the
+          course, whenever you want it. It will open where you left off.</span>
+        <div class="row">
+          <a class="btn ghost" href="/inside/learn">All lessons</a>
+          <a class="btn ghost" href="/inside/case">My case</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

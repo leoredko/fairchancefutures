@@ -294,6 +294,206 @@ FACTS: dict[str, Fact] = {
             "new-retrospective-on-removing-public-records/",
         checked_on=CHECKED,
     ),
+    # ----------------------------------------------------------------------
+    # Getting the documents, which gates everything else. Added 2026-09-23
+    # after the vital-documents question turned out to have a real answer with
+    # a real deadline attached.
+    # ----------------------------------------------------------------------
+    "documents_gate_the_id": Fact(
+        key="documents_gate_the_id",
+        statement=(
+            "A birth certificate and a Social Security card must both be on "
+            "file before the non-driver ID application can even be submitted. "
+            "The Offender Rehabilitation Coordinator prioritizes getting them "
+            "and reviews each person's document status quarterly."
+        ),
+        source="DOCCS and DMV Identification Card Program, Annual Legislative "
+               "Report 2025",
+        url="https://doccs.ny.gov/system/files/documents/2026/06/"
+            "2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf",
+        checked_on=CHECKED,
+    ),
+    "social_security_card_at_120_days": Fact(
+        key="social_security_card_at_120_days",
+        statement=(
+            "At 120 days before release, a person is encouraged to apply for a "
+            "Social Security card. Anyone without a birth certificate is "
+            "encouraged to apply for one at any point, and earlier is better "
+            "because it is the slower of the two."
+        ),
+        source="DOCCS and DMV Identification Card Program, Annual Legislative "
+               "Report 2025",
+        url="https://doccs.ny.gov/system/files/documents/2026/06/"
+            "2025-doccs-dmv-identification-card-program-annual-legislative-report.pdf",
+        checked_on=CHECKED,
+    ),
+    "release_id_expires_at_120_days": Fact(
+        key="release_id_expires_at_120_days",
+        statement=(
+            "The DOCCS Released Offender Identification Card expires 120 days "
+            "after release. That is the window to take it to a DMV office and "
+            "exchange it for a non-driver photo ID. Note that this is a "
+            "different 120 days from the one before release, and confusing the "
+            "two costs somebody their ID."
+        ),
+        source="DOCCS, Obtaining DMV Identification",
+        url="https://doccs.ny.gov/obtaining-dmv-identification",
+        checked_on=CHECKED,
+    ),
+    "birth_certificate_no_fee": Fact(
+        key="birth_certificate_no_fee",
+        statement=(
+            "No fee is charged when DOCCS requests a certified birth "
+            "certificate for somebody in anticipation of their release, and a "
+            "certified copy of the sentence and commitment counts as that "
+            "person's authorization, so no separate signature is needed. This "
+            "covers New York records. Somebody born in another state or "
+            "another country is not covered by it."
+        ),
+        source="N.Y. Public Health Law 4174",
+        url="https://www.nysenate.gov/legislation/laws/PBH/4174",
+        checked_on=CHECKED,
+    ),
+
+    # ----------------------------------------------------------------------
+    # The rest of the curriculum. Every lesson card that states a rule cites
+    # one of these by key, so a claim with no source cannot render.
+    # ----------------------------------------------------------------------
+    "negative_information_ages_off": Fact(
+        key="negative_information_ages_off",
+        statement=(
+            "Most negative information has to come off a credit report after "
+            "seven years: collection accounts and charge-offs seven years from "
+            "when they first went delinquent, civil judgments and paid tax "
+            "liens seven years, other adverse items seven years. Bankruptcies "
+            "run ten years. The clock is counted from the original delinquency, "
+            "so paying an old debt does not restart it."
+        ),
+        source="15 U.S.C. 1681c(a)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681c",
+        checked_on=CHECKED,
+    ),
+    "who_may_pull_a_report": Fact(
+        key="who_may_pull_a_report",
+        statement=(
+            "A credit report may only be given out for a purpose the law "
+            "lists: a credit application, an insurance decision, employment "
+            "with the person's written permission, a court order, child "
+            "support enforcement, or the person's own written instructions. "
+            "Curiosity is not on the list."
+        ),
+        source="15 U.S.C. 1681b(a)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681b",
+        checked_on=CHECKED,
+    ),
+    "employer_needs_written_permission": Fact(
+        key="employer_needs_written_permission",
+        statement=(
+            "An employer cannot pull a credit report without telling the "
+            "person clearly and in writing and getting written permission "
+            "first. If they then decide against hiring based on it, they have "
+            "to hand over a copy of the report and a written statement of the "
+            "person's rights before they act on it."
+        ),
+        source="15 U.S.C. 1681b(b)(2)-(3)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681b",
+        checked_on=CHECKED,
+    ),
+    "free_report_after_a_denial": Fact(
+        key="free_report_after_a_denial",
+        statement=(
+            "Turned down for credit, an apartment, insurance or a job because "
+            "of a credit report? The bureau has to give a free copy of that "
+            "file, on request within 60 days of being told about the decision."
+        ),
+        source="15 U.S.C. 1681j(b)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681j",
+        checked_on=CHECKED,
+    ),
+    "free_report_unemployed_or_on_assistance": Fact(
+        key="free_report_unemployed_or_on_assistance",
+        statement=(
+            "A free report is also owed, once every 12 months, to anybody who "
+            "certifies in writing that they are unemployed and intend to look "
+            "for work in the next 60 days, that they receive public welfare "
+            "assistance, or that they believe their file contains errors from "
+            "fraud. Somebody coming home often qualifies under more than one."
+        ),
+        source="15 U.S.C. 1681j(c)",
+        url="https://www.law.cornell.edu/uscode/text/15/1681j",
+        checked_on=CHECKED,
+    ),
+    "score_factor_weights": Fact(
+        key="score_factor_weights",
+        statement=(
+            "A FICO score is built from five things: payment history about 35 "
+            "percent, how much is owed against available credit about 30 "
+            "percent, length of credit history about 15 percent, credit mix "
+            "about 10 percent, and new credit about 10 percent. Those weights "
+            "are for the general population and shift depending on what is in "
+            "a particular file."
+        ),
+        source="myFICO, What is in my FICO Scores",
+        url="https://www.myfico.com/credit-education/whats-in-your-credit-score",
+        checked_on=CHECKED,
+    ),
+    "credit_repair_cannot_charge_up_front": Fact(
+        key="credit_repair_cannot_charge_up_front",
+        statement=(
+            "A credit repair company may not take any money before the service "
+            "it promised has been fully performed. It also may not tell a "
+            "person to misstate their credit history, or advise them to alter "
+            "their identifying information to hide a bad record. Both are "
+            "prohibited outright."
+        ),
+        source="15 U.S.C. 1679b(a)-(b)",
+        url="https://www.law.cornell.edu/uscode/text/15/1679b",
+        checked_on=CHECKED,
+    ),
+    "security_freeze_is_free": Fact(
+        key="security_freeze_is_free",
+        statement=(
+            "A security freeze stops new credit being opened in somebody's "
+            "name and must be placed free of charge, within one business day "
+            "of an electronic or phone request and three business days of a "
+            "mailed one. Lifting it is free too, within one hour "
+            "electronically."
+        ),
+        source="15 U.S.C. 1681c-1",
+        url="https://www.law.cornell.edu/uscode/text/15/1681c-1",
+        checked_on=CHECKED,
+    ),
+    "extended_fraud_alert": Fact(
+        key="extended_fraud_alert",
+        statement=(
+            "An initial fraud alert lasts at least one year and comes with a "
+            "free copy of the file. Somebody who files an identity theft "
+            "report can get an extended alert that lasts seven years, comes "
+            "with two free copies in the first 12 months, and keeps their name "
+            "off unsolicited credit offers for five years."
+        ),
+        source="15 U.S.C. 1681c-1",
+        url="https://www.law.cornell.edu/uscode/text/15/1681c-1",
+        checked_on=CHECKED,
+    ),
+    "dispute_outcomes": Fact(
+        key="dispute_outcomes",
+        statement=(
+            "In the FTC's 2013 study, about one in four consumers identified "
+            "at least one potential material error on a credit report. One in "
+            "five had an error that the agency corrected after they disputed "
+            "it. About one in twenty had errors serious enough to mean less "
+            "favorable terms on a loan. The one-in-five figure is the share "
+            "whose error was corrected, which is not the same as the share who "
+            "had one."
+        ),
+        source="FTC, Section 319 of the Fair and Accurate Credit Transactions "
+               "Act of 2003: Fifth Interim Report to Congress, February 2013",
+        url="https://www.ftc.gov/reports/section-319-fair-accurate-credit-"
+            "transactions-act-2003-fifth-interim-federal-trade-commission-report",
+        checked_on=CHECKED,
+    ),
+
 }
 
 
