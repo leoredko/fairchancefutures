@@ -256,7 +256,7 @@ app/questions.py       the two question sets, and why they differ
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 docs/                  scope and the verify-before-demo list
-tests/                 274 tests
+tests/                 297 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
