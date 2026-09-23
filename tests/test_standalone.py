@@ -120,3 +120,22 @@ def test_it_says_what_it_is(page: str):
 
 def test_it_stays_small_enough_to_email(page: str):
     assert len(page.encode()) < 2_000_000
+
+
+def test_it_says_when_it_is_being_previewed_rather_than_run(page: str):
+    """A sandboxed preview frame has no crypto.subtle and throws on
+    localStorage. Without this the PIN button silently does nothing, which is
+    the worst possible failure on the one screen a person has to get past."""
+    assert "contextProblem" in page
+    assert "This page is being previewed, not run." in page
+    # The banner text is assembled by concatenation, so match a stable span
+    # rather than anything that straddles a join.
+    assert "Download the file and open it directly in a" in page
+
+
+def test_no_sign_in_failure_can_be_silent(page: str):
+    """Both entry points route their errors to the screen instead of the console."""
+    for entry in ("window.doEnroll", "window.doSignIn"):
+        block = page.split(entry, 1)[1][:200]
+        assert "try {" in block and "catch" in block, entry
+    assert "failureText" in page

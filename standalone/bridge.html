@@ -1003,6 +1003,39 @@ function hexToBytes(h) {
   return out;
 }
 
+/* Some places will render this page but not let it work: a sandboxed preview
+   iframe with an opaque origin has no crypto.subtle and throws on
+   localStorage. Without this check the PIN button just silently does nothing,
+   which is the worst possible failure for the one screen a person has to get
+   past. Detect it and say what to do instead. */
+
+function contextProblem() {
+  const missing = [];
+  try {
+    if (!window.crypto || !window.crypto.subtle) missing.push("crypto.subtle");
+  } catch (e) { missing.push("crypto.subtle"); }
+  try {
+    const k = "__bridge_probe__";
+    localStorage.setItem(k, "1"); localStorage.removeItem(k);
+  } catch (e) { missing.push("localStorage"); }
+  return missing.length ? missing : null;
+}
+
+const CONTEXT_PROBLEM = contextProblem();
+
+function contextBanner() {
+  if (!CONTEXT_PROBLEM) return "";
+  return '<div class="denied" style="margin:16px;border-radius:14px">' +
+    '<span class="what">This page is being previewed, not run.</span>' +
+    '<p class="small">Bridge needs <strong>' + CONTEXT_PROBLEM.join(" and ") +
+    '</strong>, which this preview window does not allow, so signing in will ' +
+    'not work here.</p>' +
+    '<p class="small"><strong>Download the file and open it directly in a ' +
+    'browser</strong>, or drag it onto a browser tab. Chrome, Safari, Edge and ' +
+    'Firefox all run it fine from your Downloads folder. Nothing needs to be ' +
+    'installed.</p></div>';
+}
+
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 15 * 60 * 1000;
 const IDLE_MS = 15 * 60 * 1000;
@@ -1215,13 +1248,15 @@ function render() {
     const m = r.pattern.exec(hash);
     if (m) {
       Promise.resolve(r.view.apply(null, m.slice(1))).then((html) => {
-        document.getElementById("app").innerHTML = demoBar() + html;
+        document.getElementById("app").innerHTML =
+          demoBar() + contextBanner() + html;
         window.scrollTo(0, 0);
       });
       return;
     }
   }
-  document.getElementById("app").innerHTML = demoBar() + notFound();
+  document.getElementById("app").innerHTML =
+    demoBar() + contextBanner() + notFound();
 }
 
 window.addEventListener("hashchange", render);
@@ -1401,6 +1436,18 @@ route(/^\/enroll$/, () => {
 });
 
 window.doEnroll = async function () {
+  try { await enrollNow(); }
+  catch (e) { PENDING.error = failureText(e); render(); }
+};
+
+function failureText(e) {
+  return CONTEXT_PROBLEM
+    ? "This preview window will not let the page save a PIN. Download the " +
+      "file and open it in a browser."
+    : "Something went wrong saving that: " + (e && e.message ? e.message : e);
+}
+
+async function enrollNow() {
   const a = document.getElementById("p1").value;
   const b = document.getElementById("p2").value;
   if (a !== b) { PENDING.error = "Those two PINs are not the same. Try again."; return render(); }
@@ -1442,6 +1489,11 @@ route(/^\/pin$/, () => {
 });
 
 window.doSignIn = async function () {
+  try { await signInNow(); }
+  catch (e) { PENDING.error = failureText(e); render(); }
+};
+
+async function signInNow() {
   const pin = document.getElementById("pinfield").value;
   const acct = DB.accounts[PENDING.account.id];
 
