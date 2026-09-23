@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Client detail and approval{% endblock %}
+{% block body %}
+<div class="bar">
+  <a class="pill" href="/staff">&larr; Queue</a>
+  <span class="wordmark">{{ view.display_name }}</span>
+  <span class="tag rust">{{ client.state_label }}</span>
+  <div class="right"><span class="small">Consent recorded
+    {{ client.consent_recorded_on }} &middot;
+    report sharing {{ 'on' if 'report_sharing' in client.consent_scopes else 'off' }}</span></div>
+</div>
+
+<div class="desk" style="padding-top:28px">
+  <div class="grid two" style="align-items:start">
+    <div class="stack">
+      <div class="card">
+        <h3>Credit picture</h3>
+        {% if 'report_summary' in view %}
+        <p class="small strong">{{ view['report_summary'] }}</p>
+        <p class="tiny">Last pulled {{ view['last_pulled'] }}, by mail</p>
+        {% else %}
+        <p class="small">Report sharing is off for this client. Nothing to show,
+          and that is the consent record doing its job.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Not shared with you</h3>
+        <p class="small">{{ withheld_note }}</p>
+        <div class="row">{% for f in view.withheld %}<span class="tag">{{ f }}</span>{% endfor %}</div>
+      </div>
+
+      <div class="card">
+        <h3>Getting the report released</h3>
+        <p class="small">Start light. Escalate only when a bureau pushes back.</p>
+        <span class="tag green">Cleared at rung {{ client.ladder_rung }}</span>
+        {% for r in ladder %}
+        <div class="rung {% if r.n == client.ladder_rung %}active{% endif %}">
+          <span class="n">{{ r.n }}</span>
+          <div>
+            <div class="small strong">{{ r.label }}</div>
+            <div class="tiny">{{ r.asks_for }}</div>
+            <div class="tiny">{{ r.cost }}</div>
+            <span class="tag {{ 'green' if r.status == 'Worked' else '' }}">{{ r.status }}</span>
+          </div>
+        </div>
+        {% endfor %}
+        <form method="post" action="/staff/{{ client.id }}/ladder/escalate">
+          <button class="btn ghost" type="submit">A bureau kicked it back, climb one rung</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="stack">
+      {% if draft %}
+      <div class="card warn">
+        <h3>Dispute letter awaiting your approval</h3>
+        <p class="small">{{ draft_caption }}</p>
+        <form method="post" action="/staff/{{ client.id }}/letters/{{ draft.id }}/approve">
+          <textarea class="letter" name="body">{{ draft.body }}</textarea>
+          <div class="card soft" style="margin:12px 0">
+            {% for c in draft.citations %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
+          </div>
+          <div class="row">
+            <button class="btn" type="submit">Approve and print</button>
+          </div>
+          <p class="tiny" style="margin-top:8px">If you change the wording before
+            approving, that is recorded. The edit rate is the accuracy metric.</p>
+        </form>
+      </div>
+      {% else %}
+      <div class="card">
+        <h3>No letter waiting</h3>
+        {% if flagged %}
+        <p class="small">{{ flagged|length }} flagged item(s) with no draft yet.</p>
+        <form method="post" action="/staff/{{ client.id }}/letters/draft">
+          {% for f in flagged %}
+          <label class="check"><input type="radio" name="item" value="{{ loop.index0 }}"
+            {% if loop.first %}checked{% endif %}>
+            <span class="small">{{ f.creditor }}, ending {{ f.last_four }} &mdash; {{ f.reason }}</span></label>
+          {% endfor %}
+          <button class="btn" type="submit" style="margin-top:12px">Draft the dispute letter</button>
+        </form>
+        {% else %}
+        <p class="small">Nothing flagged. Nothing to dispute.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="card">
+        <h3>Plan progress</h3>
+        <p class="small">{{ client.plan_step }}</p>
+      </div>
+
+      <div class="card soft">
+        <h3>Approved so far</h3>
+        {% for d in approved %}
+        <p class="small">&middot; {{ d.kind }} to {{ d.bureau }}, approved {{ d.approved_on }}
+          {% if d.edited_before_approval %}<span class="tag rust">edited first</span>{% endif %}</p>
+        {% else %}
+        <p class="small">None yet.</p>
+        {% endfor %}
+        <p class="tiny">{{ review_summary }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card dashed" style="margin-top:24px">
+    <p class="note-design">Design note: staff see enough to act, never the whole
+      file by default. Data minimization is a feature you can put on a slide,
+      and here it is enforced in app/redaction.py.</p>
+    <p class="note-build">Measure this: how often does the reviewer edit before
+      approving. That number is the accuracy metric, and reporting it honestly
+      is the DoNotPay lesson.</p>
+  </div>
+</div>
+{% endblock %}

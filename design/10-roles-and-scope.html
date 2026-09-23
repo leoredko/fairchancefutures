@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Roles, surfaces and scope</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+
+
+</helmet>
+<div style="width: 1280px; height: 1080px; box-sizing: border-box; background: #FFFFFF; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px;">
+
+  <div style="display: flex; align-items: baseline; gap: 14px;">
+    <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 27px;">Three roles, three surfaces</h1>
+    <span style="font-size: 13px; color: #6B655D;">Who can do what is set by physics and law, not by preference. That is what splits the app.</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;">
+
+    <div style="border: 2px solid #1F1D1A; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 9px;">
+      <div style="display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;">Inside</span>
+        <span style="font-size: 11px; color: #6B655D;">facility tablet</span>
+      </div>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>Can:</strong> answer intake, learn, see status, approve what's said about them.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #9B2C1B;"><strong>Cannot:</strong> verify identity, receive mail, upload files, open accounts, browse the open web.</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #6B655D; border-top: 1px dashed #D9D4CB; padding-top: 8px;">Offline-first. Metered by the minute. One question per screen.</span>
+    </div>
+
+    <div style="border: 2px solid #1F1D1A; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 9px;">
+      <div style="display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;">Family or friend</span>
+        <span style="font-size: 11px; color: #6B655D;">phone, web</span>
+      </div>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>Can:</strong> receive mail, photograph the report, print and mail letters, take a call.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #9B2C1B;"><strong>Cannot:</strong> act without a signed, scoped authorization. Never asked to read or judge the report.</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #6B655D; border-top: 1px dashed #D9D4CB; padding-top: 8px;">One task on screen at a time. Long silences between tasks, by design.</span>
+    </div>
+
+    <div style="border: 2px solid #1F1D1A; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 9px;">
+      <div style="display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;">Caseworker</span>
+        <span style="font-size: 11px; color: #6B655D;">desktop</span>
+      </div>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>Can:</strong> triage, read the report, approve letters, hold the deadline, run 30 clients at once.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #9B2C1B;"><strong>Cannot:</strong> see more of the file than consent covers. Locked by default, not by policy memo.</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #6B655D; border-top: 1px dashed #D9D4CB; padding-top: 8px;">Work queue sorted by what expires first. Never a roster.</span>
+    </div>
+
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; flex-grow: 1; min-height: 0;">
+
+    <div style="border: 2px solid #B4522A; border-radius: 12px; padding: 18px; background: #FDF6F2; display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: #8C3D1E;">Build first</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;">Screen 09, triage. Six answers in, one of four states out, with the path attached.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;">It is the only screen where the app does something a person could not do on paper, and the only one whose output can be scored for accuracy.</span>
+      <span style="margin-top: auto; font-size: 12px; line-height: 1.4; color: #8C3D1E;">Everything else is a list, a letter, or a status.</span>
+    </div>
+
+    <div style="border: 1px solid #D9D4CB; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;">Then, in order</span>
+      <span style="font-size: 12.5px; color: #3A3733;">2. Intake, the six questions (tablet)</span>
+      <span style="font-size: 12.5px; color: #3A3733;">3. Letter draft and approval (desktop)</span>
+      <span style="font-size: 12.5px; color: #3A3733;">4. Family task screen and report upload</span>
+      <span style="font-size: 12.5px; color: #3A3733;">5. Case status timeline (tablet)</span>
+      <span style="margin-top: auto; font-size: 12px; line-height: 1.4; color: #6B655D;">Each one works standing alone. Stop anywhere and you still have a demo.</span>
+    </div>
+
+    <div style="border: 1px solid #D9D4CB; border-radius: 12px; padding: 18px; background: #FAF8F5; display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;">Verify before demo day</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #3A3733;">Dispute and reinvestigation window, and what starts the clock</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #3A3733;">Whether court fines, restitution and child support report, and when</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #3A3733;">Free report entitlement and the mail-in route</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #3A3733;">What actually triggers a bureau to escalate past rung 1</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #3A3733;">Which ID documents each bureau accepts at rung 2</span>
+      <span style="font-size: 11.5px; line-height: 1.4; color: #2F6B4F; border-top: 1px dashed #D9D4CB; padding-top: 8px;">Settled Sep 21: requirements vary by person. Some clear on name and SSN alone. POA is one accepted route, not the gate. Notary available at every facility law library.</span>
+      <span style="margin-top: auto; font-size: 12px; line-height: 1.4; color: #26618F;">Primary sources only. This is the part that can go visibly wrong on stage.</span>
+    </div>
+
+  </div>
+
+  <div style="border: 2px solid #B4522A; border-radius: 12px; padding: 18px; display: flex; gap: 24px; align-items: flex-start;">
+    <div style="flex-grow: 0; width: 210px;">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; color: #8C3D1E;">The access ladder</span>
+      <p style="margin: 5px 0 0; font-size: 12px; line-height: 1.4; color: #6B655D;">What a bureau asks for varies per person and cannot be known in advance. So the app tries the cheapest rung first.</p>
+    </div>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>1. Plain request.</strong> Name, SSN, date of birth, address history, client's signature. For many people this is the whole story.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>2. Identity documents.</strong> ID copy and proof of address, when a bureau cannot match the file.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>3. Limited POA.</strong> Only when the helper has to act alone. Scoped to credit reports and disputes, twelve months, notarized at the law library, revocable from the tablet.</span>
+      <span style="font-size: 12.5px; line-height: 1.45; color: #3A3733;"><strong>4. Program release.</strong> No outside helper at all. The org receives and acts under its own form.</span>
+      <span style="font-size: 12px; line-height: 1.4; color: #26618F; border-top: 1px dashed #D9D4CB; padding-top: 8px;">Never make everyone pay the cost of the hardest case. Forcing a notary trip on someone who would have cleared with a signature is how a tool gets abandoned at step one.</span>
+    </div>
+  </div>
+
+  <div style="border-top: 2px solid #1F1D1A; padding-top: 14px; display: flex; gap: 28px;">
+    <p style="margin: 0; flex-grow: 1; font-size: 12.5px; line-height: 1.45; color: #B4522A;">Assumed away, with the instructors' sign-off: facility and DOC approval, incumbent tablet vendor access, bureau data agreements, and funding for the counselor role. Say this on a slide rather than hoping nobody asks.</p>
+    <p style="margin: 0; flex-grow: 1; font-size: 12.5px; line-height: 1.45; color: #26618F;">Not assumed away: a person inside cannot verify identity online, and a helper outside has no standing without a signed form. Those two shape the product, and no waiver makes them disappear.</p>
+  </div>
+
+</div>
+</x-dc>
+
+
+
+</body></html>

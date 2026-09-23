@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Bridge{% endblock %}
+{% block body %}
+<div class="desk" style="padding-top:48px">
+  <h1 style="font-size:40px">Bridge</h1>
+  <p class="lede" style="margin:12px 0 8px">
+    Three roles, three surfaces. Who can do what is set by physics and law, not
+    by preference. That is what splits the app.
+  </p>
+  <p class="small" style="margin-bottom:28px">
+    Pick a surface. Each one enforces its own limits server-side, so the tablet
+    cannot upload a file even if you go looking for the URL.
+  </p>
+
+  <div class="grid three">
+    <div class="card">
+      <h2>Inside</h2>
+      <span class="tag">facility tablet</span>
+      <p class="small">Answer intake, see status, approve what is said about you,
+        cancel a helper's authorization.</p>
+      <a class="btn" href="/inside/marcus-w">Open the tablet</a>
+    </div>
+    <div class="card">
+      <h2>Family</h2>
+      <span class="tag">phone, web</span>
+      <p class="small">Receive the mail, photograph the report, print and mail
+        letters. One task on screen at a time.</p>
+      <a class="btn" href="/family/marcus-w">Open the helper view</a>
+    </div>
+    <div class="card">
+      <h2>Caseworker</h2>
+      <span class="tag">desktop</span>
+      <p class="small">Triage, read the report, approve letters, hold the
+        deadline across a full caseload.</p>
+      <a class="btn" href="/staff">Open the queue</a>
+    </div>
+  </div>
+
+  <div class="card soft" style="margin-top:28px">
+    <h3>What this build assumes away</h3>
+    <p class="small">Facility and DOC approval, incumbent tablet vendor access,
+      bureau data agreements, funding for the counselor role, and the PII
+      compliance regime that would govern a real deployment. Signed off for
+      class. It is on a slide rather than hidden.</p>
+    <h3 style="margin-top:8px">What it does not assume away</h3>
+    <p class="small">A person inside cannot verify identity online, and a helper
+      outside has no standing without a signed form. Those two shape the
+      product, and no waiver makes them disappear. They are enforced in
+      <span class="strong">app/surfaces.py</span> and
+      <span class="strong">app/authorization.py</span>.</p>
+    <p class="small"><a href="/roles">Roles, surfaces and scope &rarr;</a> &nbsp;
+      <a href="/metrics">Accuracy metric &rarr;</a></p>
+  </div>
+</div>
+{% endblock %}

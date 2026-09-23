@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Inside, where you stand{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">Where you stand</span>
+    <div class="right"><span class="pill">EN / ES</span></div>
+  </div>
+
+  <div class="pane">
+    <h1>Here's where you're starting.</h1>
+
+    <div class="row" style="gap:8px">
+      {% for step in ["Getting started", "Building", "Strong"] %}
+      <div style="flex:1">
+        <div class="track"><span style="width: {{ 100 if loop.index0 < position else 0 }}%"></span></div>
+        <div class="tiny" style="margin-top:6px">{{ step }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="small">No number. No grade. A position on the road, and the things
+      that move you along it.</p>
+
+    <div class="stack">
+      {% for item in moves %}
+      <div class="event">
+        <div class="dot">{{ loop.index }}</div>
+        <div>
+          <div class="strong">{{ item.title }}</div>
+          <div class="small">{{ item.body }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <a class="btn" href="/inside/{{ client.id }}/case">See what's happening on my case</a>
+
+    <div class="notes">
+      <p class="note-design">Design note: score shaming is a known engagement
+        killer. Position, never points.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

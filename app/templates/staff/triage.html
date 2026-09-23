@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Triage, the four states{% endblock %}
+{% block body %}
+<div class="bar">
+  <a class="pill" href="/staff">&larr; Queue</a>
+  <span class="wordmark">Triage, {{ client.display_name }}</span>
+</div>
+
+<div class="desk" style="padding-top:28px">
+  <p class="lede">Six questions, one classification, one path. Built for a 30 to
+    45 minute session.</p>
+
+  <div class="grid two" style="margin-top:20px; align-items:start">
+    <form method="post" action="/staff/{{ client.id }}/triage" class="card compact">
+      <h2>What we asked</h2>
+      {% for q in questions %}
+      <fieldset>
+        <legend class="small strong">{{ q.prompt }}</legend>
+        {% for opt in q.options %}
+        <label class="check">
+          <input type="{{ 'checkbox' if q.multi else 'radio' }}" name="{{ q.field }}"
+                 value="{{ opt.value }}"
+                 {% if q.multi %}{% if opt.value in (answers.get(q.field) or []) %}checked{% endif %}
+                 {% else %}{% if answers.get(q.field) == opt.value %}checked{% endif %}
+                 {% if loop.first and not answers.get(q.field) %}checked{% endif %}{% endif %}>
+          <span class="small">{{ opt.label }}</span>
+        </label>
+        {% endfor %}
+      </fieldset>
+      {% endfor %}
+      <button class="btn" type="submit">Classify</button>
+    </form>
+
+    <div class="stack">
+      {% if result %}
+      <div class="card warn">
+        <span class="tag rust">{{ result.label }}</span>
+        <h2>Where that lands him</h2>
+        <p class="small strong">{{ result.path.plan }}</p>
+        <p class="small">{{ result.path.horizon }}</p>
+        <p class="tiny">{{ result.path.source }}</p>
+        <p class="small strong">First step: {{ result.path.first_step }}</p>
+        {% if result.jumps_queue %}
+        <span class="tag rust">Jumps the queue: this is the only state with a
+          legal clock attached.</span>
+        {% endif %}
+        {% if result.needs_human_review %}
+        <span class="tag blue">Flagged for a second look before the path is set.</span>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Why</h3>
+        {% for r in result.reasons %}<p class="small">&middot; {{ r }}</p>{% endfor %}
+      </div>
+
+      {% if result.obligations_route %}
+      <div class="card soft">
+        <h3>Court obligations</h3>
+        {% for note in result.obligations_route %}<p class="small">&middot; {{ note }}</p>{% endfor %}
+      </div>
+      {% endif %}
+      {% endif %}
+
+      <div class="card">
+        <h3>The four states</h3>
+        {% for s in all_states %}
+        <div class="rung {% if result and result.state.value == s.key %}active{% endif %}">
+          <span class="n">{{ loop.index }}</span>
+          <div><div class="small strong">{{ s.label }}</div>
+               <div class="tiny">{{ s.plan }}</div></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card dashed" style="margin-top:24px">
+    <p class="note-design">Design note: this classifier is the actual product.
+      Everything else is letters and lists. It is also the only piece you can
+      measure for accuracy, which is what makes it defensible in a demo.</p>
+  </div>
+</div>
+{% endblock %}
