@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Send the reports in{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar">
+    <span class="wordmark">Bridge</span>
+    <span class="who">Helping {{ client.first_name }}</span>
+  </div>
+
+  <div class="pane">
+  {% if how == "done" %}
+    <h1>Got it. Thank you.</h1>
+    <p class="lede">It is on Ms. Reyes's desk. She checks it against the paper
+      before anything is sent to a bureau, and {{ client.first_name }} can read
+      it on his tablet once she has.</p>
+    <div class="card soft">
+      <span class="strong">What you sent</span>
+      {% for r in sent %}
+      <span class="small">{{ r.bureau }} &middot; {{ r.source_label }}
+        &middot; {{ 'checked' if r.confirmed else 'waiting on Ms. Reyes' }}</span>
+      <span class="tiny">{{ r.next_step }}</span>
+      {% endfor %}
+    </div>
+    <a class="btn wide" href="/family/task">Back</a>
+
+  {% elif how == "typed" %}
+    <h1>Type what it says.</h1>
+    <p class="lede">The accounts are the part that matters. Skip anything you
+      cannot read and Ms. Reyes will fill it in with {{ client.first_name }}.</p>
+    <form method="post" action="/family/report" class="stack">
+      <input type="hidden" name="how" value="typed">
+      <div class="field">
+        <label for="bureau">Which company sent it</label>
+        <input id="bureau" name="bureau" placeholder="Equifax, Experian or TransUnion">
+        <span class="hint">It is printed at the top. One of those three.</span>
+      </div>
+      <div class="field">
+        <label for="pulled_on">Date on the report</label>
+        <input id="pulled_on" name="pulled_on" type="date">
+      </div>
+      <div class="field">
+        <label for="accounts">The accounts</label>
+        <textarea id="accounts" name="accounts" rows="8" spellcheck="false"
+                  placeholder="Midland Funding | xxxx4471 | 2019-02 | Open | $1,204 |"></textarea>
+        <span class="hint">One per line. Name of the company, then the account
+          number, then whatever else is printed, separated by the | key. Put a
+          note at the end only if {{ client.first_name }} says the item is not
+          his.</span>
+      </div>
+      <p class="tiny">Do not type his Social Security number anywhere. It is not
+        needed here and we do not want it.</p>
+      <button class="btn wide" type="submit">Send it to Ms. Reyes</button>
+    </form>
+
+  {% elif how == "photo" %}
+    <h1>Photograph every page.</h1>
+    <p class="lede">Flat on a table, good light, one page per photo. Crooked is
+      fine.</p>
+    <div class="card warn">
+      <span class="strong">This is the slow way, and here is why</span>
+      <span class="small">Nothing here reads the words out of a picture. A photo
+        means Ms. Reyes sits down with {{ client.first_name }} and types it in
+        by hand. It works, it just takes longer than the other two. Use it if
+        the other two are not possible.</span>
+    </div>
+    <form method="post" action="/family/report" enctype="multipart/form-data"
+          class="stack">
+      <input type="hidden" name="how" value="photo">
+      <label class="check">
+        <input type="file" name="files" accept="image/*" capture="environment" multiple>
+        <span class="small">Take photos, or pick from your camera roll</span>
+      </label>
+      <button class="btn wide" type="submit">Send them to Ms. Reyes</button>
+    </form>
+
+  {% else %}
+    <h1>How do you have it?</h1>
+    <p class="lede">Any of these works. The first is the easiest if you have
+      the choice.</p>
+
+    <form method="post" action="/family/report" enctype="multipart/form-data"
+          class="card">
+      <input type="hidden" name="how" value="pdf">
+      <span class="strong">1. It is a PDF on my computer or phone</span>
+      <span class="small">Best way. Nothing is lost and it takes one tap. If you
+        ordered the report online, this is what you have.</span>
+      <label class="check">
+        <input type="file" name="files" accept="application/pdf,.pdf" multiple>
+        <span class="small">Choose the PDF</span>
+      </label>
+      <button class="btn" type="submit">Send the PDF</button>
+    </form>
+
+    <div class="card">
+      <span class="strong">2. I have it on paper and I will type it</span>
+      <span class="small">About twenty minutes. Exact, and it goes straight onto
+        Ms. Reyes's desk ready to check. No scanner, no app.</span>
+      <a class="btn amber" href="/family/report?how=typed">Type it in</a>
+    </div>
+
+    <div class="card soft">
+      <span class="strong">3. I will take photos of it</span>
+      <span class="small">Last resort, and slower than it looks. Nothing here
+        reads the words out of a picture, so somebody has to type it in later
+        anyway. That somebody is Ms. Reyes, with
+        {{ client.first_name }}.</span>
+      <a class="btn ghost" href="/family/report?how=photo">Use the camera</a>
+    </div>
+
+    <div class="card dashed">
+      <span class="strong">Or none of the above</span>
+      <span class="small">Send the paper in to {{ client.first_name }} at the
+        facility. He walks it to Ms. Reyes and she scans it at her desk. Slowest
+        of all, and it still works.</span>
+    </div>
+
+    {% if sent %}
+    <div class="card">
+      <span class="strong">Already sent</span>
+      {% for r in sent %}
+      <span class="small">{{ r.bureau }} &middot; {{ r.source_label }}
+        &middot; {{ 'checked' if r.confirmed else 'waiting on Ms. Reyes' }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <span class="strong">Where this goes</span>
+      <span class="small">To Ms. Reyes and to {{ client.first_name }}. Not to
+        us, not to anyone else, and never to a company that wants to sell him
+        something.</span>
+    </div>
+    <a class="btn quiet" href="/family/task">Back</a>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

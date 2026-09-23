@@ -23,6 +23,37 @@
   </div>
   {% endif %}
 
+  {% if waiting %}
+  <div class="card good" style="margin-bottom:20px">
+    <h3>Waiting on you</h3>
+    <p class="small">These came in from outside. Nothing here reaches
+      {{ client.display_name }}'s tablet or drafts a letter until you have read
+      it against the document.</p>
+  </div>
+  {% for w in waiting %}
+  <form method="post" action="/staff/{{ client.id }}/report/{{ w.index }}/confirm"
+        class="card" style="margin-bottom:20px">
+    <div class="row">
+      <h3>{{ w.report.bureau }}</h3>
+      <span class="tag amber" style="margin-left:auto">{{ w.report.source_label }}</span>
+    </div>
+    <p class="small">Sent in by {{ w.report.scanned_by }} on {{ w.report.scanned_on }}.
+      {{ w.report.next_step }}</p>
+    {% if w.report.pages %}
+    <p class="tiny">{{ w.report.pages | length }} page{{ '' if w.report.pages | length == 1 else 's' }}
+      attached. Open them alongside this form and type what they say.</p>
+    {% endif %}
+    <div class="field">
+      <label for="w{{ w.index }}">Accounts</label>
+      <textarea id="w{{ w.index }}" name="accounts" rows="6" class="mono"
+                spellcheck="false">{{ w.lines }}</textarea>
+      <span class="hint">{{ line_format }}</span>
+    </div>
+    <button class="btn">Checked against the document, add it</button>
+  </form>
+  {% endfor %}
+  {% endif %}
+
   <form method="post" action="/staff/{{ client.id }}/report/scan"
         style="margin-bottom:18px">
     <button class="btn">Scan the document</button>

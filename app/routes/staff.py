@@ -43,6 +43,7 @@ from app.redaction import WITHHELD_NOTE, for_surface
 from app.report import (
     LINE_FORMAT,
     SCANNER_NOTE,
+    Source,
     from_scan,
     mask_ssn,
     parse_accounts,
@@ -54,6 +55,7 @@ from app.store import (
     drafts_for,
     get_authorization,
     mutate,
+    pending_reports,
     put_report,
     put_review_log,
     review_log,
@@ -309,8 +311,55 @@ def scan_report_form(request: Request, client_id: str):
          "form": simulated_scan(client), "scanned": False,
          "bureaus": [b.name for b in BUREAUS],
          "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
-         "existing": stored_reports(client_id)},
+         "existing": stored_reports(client_id),
+         "waiting": _waiting(client_id)},
     )
+
+
+@router.post("/{client_id}/report/{index}/confirm")
+def confirm_report(request: Request, client_id: str, index: int,
+                   accounts: str = Form("")):
+    """Sign off on something that arrived from outside.
+
+    A PDF, a typed list, a stack of photographs: none of them become a dispute
+    letter until a person who can be named has read them against the document.
+    That is the same accuracy check as the letter edit rate, moved to the input
+    side where a wrong account number is still cheap to fix.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.READ_FULL_REPORT)
+    client = get_client(client_id)
+
+    rows = STATE.reports.get(client_id, [])
+    if not 0 <= index < len(rows):
+        return RedirectResponse(f"/staff/{client_id}", status_code=303)
+
+    parsed = parse_accounts(accounts)
+    with mutate():
+        row = rows[index]
+        if parsed:
+            row["accounts"] = parsed
+        row["confirmed"] = True
+        row["scanned_on"] = date.today().isoformat()
+        row["scanned_by"] = coordinator.display_name
+        disputed = [a for a in row["accounts"] if a.get("disputed")]
+        if disputed:
+            client.flagged_items = [
+                {"creditor": a["creditor"],
+                 "last_four": "".join(c for c in a["number"] if c.isdigit())[-4:],
+                 "reason": a.get("note", "")}
+                for a in disputed
+            ]
+            client.needs = "Dispute letter to approve"
+        client.last_pulled = row["pulled_on"]
+        client.report_summary = f"{row['bureau']}: {len(row['accounts'])} accounts"
+        client.timeline.append({
+            "text": f"Your {row['bureau']} report was checked and added to your record",
+            "actor": "Your counselor",
+            "on": date.today().strftime("%B %-d"),
+            "done": True,
+        })
+    return RedirectResponse(f"/staff/{client_id}/report", status_code=303)
 
 
 @router.post("/{client_id}/report/scan", response_class=HTMLResponse)
@@ -325,7 +374,8 @@ def scan_report_run(request: Request, client_id: str):
          "form": simulated_scan(client), "scanned": True,
          "bureaus": [b.name for b in BUREAUS],
          "scanner_note": SCANNER_NOTE, "line_format": LINE_FORMAT,
-         "existing": stored_reports(client_id)},
+         "existing": stored_reports(client_id),
+         "waiting": _waiting(client_id)},
     )
 
 
@@ -358,6 +408,7 @@ def save_report(
         pulled_on=pulled_on,
         accounts=rows,
         ssn_on_document=mask_ssn(ssn_on_document),
+        source=Source.SCAN,
     )
 
     disputed = [r for r in rows if r["disputed"]]
@@ -458,6 +509,24 @@ def escalate(request: Request, client_id: str):
 
 
 # --------------------------------------------------------------------------
+
+def _waiting(client_id: str) -> list[dict]:
+    """Reports from outside, each with the index the confirm route needs and
+    its accounts already back in the pipe format the coordinator edits."""
+    out = []
+    for i, report in enumerate(stored_reports(client_id)):
+        if report.confirmed:
+            continue
+        out.append({
+            "index": i,
+            "report": report,
+            "lines": "\n".join(
+                " | ".join([a.creditor, a.number, a.opened, a.status,
+                            a.balance, a.note])
+                for a in report.accounts),
+        })
+    return out
+
 
 def _enum(field: str, form):
     from app import triage

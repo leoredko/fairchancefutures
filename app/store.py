@@ -224,16 +224,29 @@ def account_for_client(client_id: str, role: str = "inside"):
     return None
 
 
-def stored_reports(client_id: str) -> list:
-    """The scanned reports, rebuilt as documents a person can read."""
+def stored_reports(client_id: str, *, confirmed_only: bool = False) -> list:
+    """The reports on file, rebuilt as documents a person can read.
+
+    confirmed_only is what the tablet asks for. A report a helper typed in or
+    photographed has not been checked by anyone yet, and showing somebody an
+    unverified list of their own debts is worse than showing them nothing.
+    """
     from app.report import Account, CreditReport
 
     out = []
     for raw in STATE.reports.get(client_id, []):
         data = dict(raw)
         data["accounts"] = [Account(**a) for a in raw.get("accounts", [])]
-        out.append(CreditReport(**data))
+        report = CreditReport(**data)
+        if confirmed_only and not report.confirmed:
+            continue
+        out.append(report)
     return out
+
+
+def pending_reports(client_id: str) -> list:
+    """Waiting on a human. This is the coordinator's queue, not a status flag."""
+    return [r for r in stored_reports(client_id) if not r.confirmed]
 
 
 def put_report(report) -> None:

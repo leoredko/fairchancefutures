@@ -141,7 +141,10 @@ def read_report(request: Request):
     """
     caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
-    reports = stored_reports(caller.client.id)
+    # Confirmed only. A report a helper typed or photographed has not been
+    # checked by anyone yet, and showing somebody an unverified list of
+    # their own debts is worse than showing them nothing.
+    reports = stored_reports(caller.client.id, confirmed_only=True)
     return templates.TemplateResponse(
         request, "inside/report.html",
         {"client": caller.client, "reports": reports},

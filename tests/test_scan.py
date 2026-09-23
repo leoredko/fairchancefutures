@@ -91,18 +91,90 @@ def test_a_scanned_dispute_reason_becomes_the_flagged_item(client):
                         "reason": "wrong middle initial"}]
 
 
-def test_no_other_surface_can_put_a_report_in(client):
-    """The helper used to photograph it. That flow is gone on purpose."""
-    from app.routes.family import router as family
+def test_the_tablet_is_the_one_surface_that_can_never_send_a_report(client):
+    """The helper is outside with a phone and a mailbox. The person inside is
+    on a shared kiosk with no camera and no way to attach anything, which is
+    the constraint the whole three-route design exists to work around."""
     from app.routes.inside import router as inside
 
-    for router in (family, inside):
-        for route in router.routes:
-            if "POST" in getattr(route, "methods", set()):
-                assert "report" not in route.path, route.path
-
-    sign_in_helper(client, code="BRIDGE-4417")
-    assert client.get("/family/report").status_code == 404
-
-    # And the tablet never had the capability in the first place.
+    for route in inside.routes:
+        if "POST" in getattr(route, "methods", set()):
+            assert "report" not in route.path, route.path
     assert not can(Surface.INSIDE, Capability.UPLOAD_FILE)
+
+
+def test_the_helper_has_three_ways_in_and_the_pdf_is_offered_first(client):
+    sign_in_helper(client, code="BRIDGE-4417")
+    page = client.get("/family/report").text
+    assert page.index("It is a PDF") < page.index("I will type it")
+    assert page.index("I will type it") < page.index("take photos")
+
+
+def test_a_typed_report_lands_on_the_coordinator_desk_not_the_tablet(client):
+    """Accuracy check on the input side. These fields become a dispute letter,
+    and a letter about the wrong account number is worse than no letter."""
+    sign_in_helper(client, code="BRIDGE-4417")
+    client.post("/family/report", data={
+        "how": "typed", "bureau": "Experian",
+        "accounts": "Midland Funding | xxxx4471 | 2019-02 | Open | $1,204 | not his",
+    })
+
+    from app.store import pending_reports, stored_reports
+
+    assert len(pending_reports("marcus-w")) == 1
+    assert stored_reports("marcus-w", confirmed_only=True) == []
+
+    # And the person does not see it yet.
+    sign_in_inside(client, identifier="28A1187")
+    assert "Experian" not in client.get("/inside/report").text
+
+    # The coordinator reads it against the paper and signs off.
+    client.post("/staff/marcus-w/report/0/confirm", data={
+        "accounts": "Midland Funding | xxxx4471 | 2019-02 | Open | $1,204 | not his",
+    })
+    assert pending_reports("marcus-w") == []
+
+    sign_in_inside(client, identifier="28A1187")
+    assert "Experian" in client.get("/inside/report").text
+
+
+def test_the_coordinator_scanning_at_their_own_desk_needs_no_second_signoff(client):
+    """They are reading the paper as they type it. A confirm step here would be
+    asking the same person to check their own work twice in one sitting."""
+    client.post("/staff/r-osei/report", data={
+        "bureau": "Equifax", "consumer_name": "R. Osei", "accounts": "Cap One",
+    })
+    from app.store import pending_reports, stored_reports
+
+    assert pending_reports("r-osei") == []
+    assert len(stored_reports("r-osei", confirmed_only=True)) == 1
+
+
+def test_a_photo_says_out_loud_that_it_is_the_slow_way(client):
+    """Nothing here reads words out of a picture. Offering the camera without
+    saying that is how somebody waits three weeks for a transcription nobody
+    scheduled."""
+    sign_in_helper(client, code="BRIDGE-4417")
+    page = client.get("/family/report?how=photo").text
+    assert "reads the words out of a picture" in page
+
+    client.post("/family/report", data={"how": "photo"})
+    from app.store import pending_reports
+
+    waiting = pending_reports("marcus-w")
+    assert len(waiting) == 1
+    assert "slowest route" in waiting[0].next_step
+
+
+def test_no_report_route_anywhere_stores_a_whole_social_security_number(client):
+    """Every door, not just the coordinator's."""
+    sign_in_helper(client, code="BRIDGE-4417")
+    client.post("/family/report", data={
+        "how": "typed", "bureau": "Equifax", "ssn_on_document": "123-45-6789",
+        "accounts": "Cap One",
+    })
+    import json
+
+    from app.store import _serialize
+
+    assert "123-45" not in json.dumps(_serialize())

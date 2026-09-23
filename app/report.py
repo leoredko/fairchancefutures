@@ -25,6 +25,46 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from datetime import date
+from enum import Enum
+
+
+class Source(str, Enum):
+    """How the document got here, best route first.
+
+    The order is not cosmetic. A PDF is the whole document, exact, and costs
+    the helper one tap. Typed data is exact too but costs them twenty minutes
+    and can carry a typo. A photograph is last because nothing in this build
+    reads data out of a picture: somebody has to sit down and transcribe it,
+    and that somebody is the coordinator.
+    """
+
+    PDF = "pdf"
+    TYPED = "typed"
+    PHOTO = "photo"
+    SCAN = "scan"      # the coordinator's own scanner, at the desk
+
+
+SOURCE_LABEL: dict[Source, str] = {
+    Source.PDF: "PDF sent in by the helper",
+    Source.TYPED: "Typed in by the helper",
+    Source.PHOTO: "Photographed by the helper",
+    Source.SCAN: "Scanned at the coordinator's desk",
+}
+
+# Which routes land finished, and which land on somebody's desk. A coordinator
+# scanning at their own desk confirms as they go, so that one is done. Anything
+# arriving from outside is checked by a human before it can become a dispute
+# letter about an account number nobody verified.
+SELF_CONFIRMING = frozenset({Source.SCAN})
+
+SOURCE_NEXT_STEP: dict[Source, str] = {
+    Source.PDF: "Your coordinator reads the fields off the PDF and confirms them.",
+    Source.TYPED: "Your coordinator checks what you typed against the paper.",
+    Source.PHOTO: "Your coordinator reads the photos with the person and types "
+                  "the accounts in. This is the slowest route, which is why it "
+                  "is the last one offered.",
+    Source.SCAN: "Confirmed at the desk.",
+}
 
 
 def mask_ssn(value: str) -> str:
@@ -77,6 +117,19 @@ class CreditReport:
     inquiries: list[str] = field(default_factory=list)
     public_records: list[str] = field(default_factory=list)
     score: str = ""
+    source: str = Source.SCAN.value
+    # A report nobody has checked does not reach the person's tablet and does
+    # not draft a letter. It sits on the coordinator's desk saying so.
+    confirmed: bool = True
+    pages: list[str] = field(default_factory=list)
+
+    @property
+    def source_label(self) -> str:
+        return SOURCE_LABEL.get(Source(self.source), "Added to the record")
+
+    @property
+    def next_step(self) -> str:
+        return SOURCE_NEXT_STEP.get(Source(self.source), "")
 
     @property
     def safe_ssn(self) -> str:
@@ -122,6 +175,8 @@ def from_scan(
     pulled_on: str = "",
     accounts: list[dict] | None = None,
     ssn_on_document: str = "",
+    source: Source = Source.SCAN,
+    pages: list[str] | None = None,
     today: date | None = None,
 ) -> CreditReport:
     """Build the record from what the coordinator's scan produced.
@@ -139,6 +194,9 @@ def from_scan(
         scanned_by=scanned_by,
         consumer_name=consumer_name,
         ssn_on_document=ssn_on_document,
+        source=Source(source).value,
+        confirmed=Source(source) in SELF_CONFIRMING,
+        pages=list(pages or []),
         accounts=[
             Account(
                 creditor=a.get("creditor", ""),

@@ -940,7 +940,145 @@ const RULES = {
   ]
  },
  "disputeTemplate": "{today}\n\n{address_block}\n\nRe: Request to remove inaccurate information\nName: {client_name}\nSSN: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\nAddresses for the past two years: [client completes by hand]\n\nI am writing to dispute the following information in my file. The item listed\nbelow is not mine. I did not open this account and I request that it be\nremoved.\n\nItem: {creditor}, account ending {last_four}\nReason: {reason}\n\nPlease investigate this item and send me the results in writing. If the item\ncannot be verified, please delete it from my file.\n\nI understand you have 30 days from the date you receive this letter to complete\nyour investigation, and that you must send me the results in writing within 5\nbusiness days of completing it.\n\nSincerely,\n\n\n____________________________\n{client_name}\n",
- "requestTemplate": "{today}\n\n{address_block}\n\nRe: Request for free annual credit reports, by mail\n\nPlease send copies of my credit file from all three nationwide credit\nreporting companies: Equifax, Experian and TransUnion.\n\nFull name (with any suffix): {client_name}\nPrisoner identification number ({id_label}): {identification}\nCurrent address:\n{current_address}\nAddresses during the two years preceding incarceration:\n  [client completes by hand]\nSocial Security number: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\n\nI am requesting these reports by mail because I do not have internet or phone\naccess to complete an identity check.\n\nSincerely,\n\n\n____________________________\n{client_name}\n\n--------------------------------------------------------------------------\nFOR WHOEVER ADDRESSES THE ENVELOPE\n\nThe return address on the envelope must be the correctional institution, and\nthe prisoner identification number must appear on the envelope. The bureaus\nask for this specifically on mail from a facility, and a request without it\ncan come back.\n\n    Return address:  {client_name}, {identification}\n                     {facility}\n\n    Send to:         Annual Credit Report Request Service\n                     P.O. Box 105281\n                     Atlanta, GA 30348-5281\n--------------------------------------------------------------------------\n"
+ "requestTemplate": "{today}\n\n{address_block}\n\nRe: Request for free annual credit reports, by mail\n\nPlease send copies of my credit file from all three nationwide credit\nreporting companies: Equifax, Experian and TransUnion.\n\nFull name (with any suffix): {client_name}\nPrisoner identification number ({id_label}): {identification}\nCurrent address:\n{current_address}\nAddresses during the two years preceding incarceration:\n  [client completes by hand]\nSocial Security number: [client writes by hand on the printed copy]\nDate of birth: [client writes by hand on the printed copy]\n\nI am requesting these reports by mail because I do not have internet or phone\naccess to complete an identity check.\n\nSincerely,\n\n\n____________________________\n{client_name}\n\n--------------------------------------------------------------------------\nFOR WHOEVER ADDRESSES THE ENVELOPE\n\nThe return address on the envelope must be the correctional institution, and\nthe prisoner identification number must appear on the envelope. The bureaus\nask for this specifically on mail from a facility, and a request without it\ncan come back.\n\n    Return address:  {client_name}, {identification}\n                     {facility}\n\n    Send to:         Annual Credit Report Request Service\n                     P.O. Box 105281\n                     Atlanta, GA 30348-5281\n--------------------------------------------------------------------------\n",
+ "teaching": {
+  "no": {
+   "headline": "Here is the part most people have not been told.",
+   "points": [
+    {
+     "title": "You can get all three reports free, by mail",
+     "body": "One letter to one address covers Equifax, Experian and TransUnion. No internet, no phone, no fee. We fill it in and your coordinator sends it."
+    },
+    {
+     "title": "You can have your Social Security number blacked out",
+     "body": "You can require them to leave out the first five digits of your Social when they send your own file. That is the law, not a favour, and it is why you can read the report on this tablet at all."
+    },
+    {
+     "title": "It may not come with a score, and that is normal",
+     "body": "A free report has to show your file. It does not have to show a number. What matters here is what is on the file, not the number somebody puts on it."
+    },
+    {
+     "title": "When it arrives, bring it to your coordinator",
+     "body": "The reports come back on paper. Your coordinator scans them into your record, and then you can read them right here."
+    }
+   ]
+  },
+  "some_idea": {
+   "headline": "Here is the part most people have not been told.",
+   "points": [
+    {
+     "title": "You can get all three reports free, by mail",
+     "body": "One letter to one address covers Equifax, Experian and TransUnion. No internet, no phone, no fee. We fill it in and your coordinator sends it."
+    },
+    {
+     "title": "You can have your Social Security number blacked out",
+     "body": "You can require them to leave out the first five digits of your Social when they send your own file. That is the law, not a favour, and it is why you can read the report on this tablet at all."
+    },
+    {
+     "title": "It may not come with a score, and that is normal",
+     "body": "A free report has to show your file. It does not have to show a number. What matters here is what is on the file, not the number somebody puts on it."
+    },
+    {
+     "title": "When it arrives, bring it to your coordinator",
+     "body": "The reports come back on paper. Your coordinator scans them into your record, and then you can read them right here."
+    }
+   ]
+  },
+  "yes": {
+   "headline": "Quick confirmation, then we start.",
+   "points": [
+    {
+     "title": "One letter, all three bureaus, free",
+     "body": "We fill it in and your coordinator sends it."
+    },
+    {
+     "title": "Your Social will be blacked out",
+     "body": "We ask them to leave out the first five digits, which the law lets you require."
+    },
+    {
+     "title": "Bring the paper to your coordinator",
+     "body": "They scan it in and then you can read it here."
+    }
+   ]
+  }
+ },
+ "scores": {
+  "summary": "About 21 different scores can describe one person on one day: 7 widely used models against 3 bureau files. Base scores run 300 to 850; auto and card scores run 250 to 900.",
+  "models": [
+   {
+    "name": "FICO Score 8",
+    "use": "General lending",
+    "range": "300 to 850",
+    "note": "The base score most lenders use. If somebody says 'your FICO' with no other detail, this is usually the one they mean."
+   },
+   {
+    "name": "FICO Score 9",
+    "use": "General lending",
+    "range": "300 to 850",
+    "note": "The version worth knowing about. A third-party collection that has been PAID no longer counts against you at all, and an unpaid medical collection counts for less. Whether a lender uses it is up to them, which is why paying a collection can move one score and not another."
+   },
+   {
+    "name": "FICO Score 10 and 10T",
+    "use": "General lending",
+    "range": "300 to 850",
+    "note": "The newest base versions. 10T reads trended data, meaning the direction your balances have moved over time rather than just where they sit today."
+   },
+   {
+    "name": "FICO Auto Score",
+    "use": "Buying a car",
+    "range": "250 to 900",
+    "note": "What a car lender pulls. Note the range: 250 to 900, not 300 to 850. A 700 here is not the same 700 you saw somewhere else."
+   },
+   {
+    "name": "FICO Bankcard Score",
+    "use": "A credit card",
+    "range": "250 to 900",
+    "note": "What a card issuer pulls, also on the 250 to 900 scale."
+   },
+   {
+    "name": "FICO Score 2, 4 and 5",
+    "use": "A mortgage",
+    "range": "300 to 850",
+    "note": "Mortgage lenders use older versions, and a different one per bureau: 2 at Experian, 4 at TransUnion, 5 at Equifax. Somebody who improved their FICO 8 has not necessarily moved these."
+   },
+   {
+    "name": "VantageScore",
+    "use": "General lending",
+    "range": "300 to 850",
+    "note": "A different company's model entirely, not a FICO version. Many free score apps show a VantageScore, which is part of why the number in a free app often does not match a lender's."
+   }
+  ],
+  "explainers": [
+   {
+    "question": "Which one is my real score?",
+    "answer": "The one belonging to whoever is deciding about you. A landlord, a car dealer and a card issuer will each pull a different model from a different bureau, and all three numbers are real."
+   },
+   {
+    "question": "Why is the free app's number different from the bank's?",
+    "answer": "Free apps usually show a VantageScore, and most lenders use a FICO. Different company, different model. Neither is wrong; they are not measuring the same thing."
+   },
+   {
+    "question": "Why do the three bureaus disagree?",
+    "answer": "They hold different files. Not every lender reports to all three, so an account on one report can be missing from another. Same model, different input, different answer."
+   },
+   {
+    "question": "I paid off a collection and nothing changed. Why?",
+    "answer": "On FICO 9 a paid third-party collection stops counting against you. On FICO 8, which more lenders still use, it does not. Paying it was still the right call, and the change shows up unevenly."
+   },
+   {
+    "question": "I have no score at all. Is that worse than a bad one?",
+    "answer": "No. Empty moves faster than damaged does. Building a file from nothing is the fastest of the four situations; repairing a damaged one takes years."
+   },
+   {
+    "question": "Does the free report I get by mail show a score?",
+    "answer": "It does not have to, and usually will not. A file disclosure has to show what is in your file. A score is a number somebody calculates from that file, and it is not part of what they owe you."
+   }
+  ]
+ },
+ "scan": {
+  "lineFormat": "creditor | account number | opened | status | balance | dispute reason",
+  "note": "The scanner reads the document and fills this form in. Nothing is saved until you confirm it, because an account number read wrong here becomes a dispute letter about the wrong account."
+ }
 };
 
 /* Which application this file is. The build emits one file per surface, so a
@@ -1027,7 +1165,7 @@ function seedClients() {
         { creditor: "Midland Funding", last4: "4471", reason: "never opened this account" },
         { creditor: "Second Chance Auto", last4: "0912", reason: "paid in full, still showing open" }
       ],
-      answers: {}, pages: [], taskDone: false, authorization: null,
+      answers: {}, reports: [], taskDone: false, authorization: null,
       timeline: [
         { text: "Denise mailed the request for your reports", actor: "Your sister", on: "March 1", done: true },
         { text: "They came back. Two things look wrong.", actor: "Denise added it", on: "March 18", done: true },
@@ -1048,7 +1186,7 @@ function seedClients() {
         { creditor: "Midland Funding", last4: "4471", reason: "never opened this account" },
         { creditor: "Cavalry SPV", last4: "8802", reason: "not mine, wrong middle initial" }
       ],
-      answers: {}, pages: [], taskDone: false,
+      answers: {}, reports: [], taskDone: false,
       authorization: { helper: "Rosa", signed: iso(-21), expires: iso(344), revoked: null },
       timeline: [{ text: "Rosa agreed to help", actor: "Your helper", on: "Sept 2", done: true }]
     },
@@ -1061,7 +1199,7 @@ function seedClients() {
       helper: null, helperCode: "BRIDGE-2231", rung: 1,
       reportSummary: "", lastPulled: "", collections: 0,
       consent: ["report_sharing"], consentOn: iso(-4), lesson: "",
-      flagged: [], answers: {}, pages: [], taskDone: false,
+      flagged: [], answers: {}, reports: [], taskDone: false,
       authorization: null, timeline: []
     },
     "r-osei": {
@@ -1073,7 +1211,7 @@ function seedClients() {
       helper: "Ama", helperCode: "BRIDGE-7712", rung: 2,
       reportSummary: "No file found on two of three bureaus", lastPulled: iso(-40),
       collections: 0, consent: ["report_sharing"], consentOn: iso(-90),
-      lesson: "", flagged: [], answers: {}, pages: [], taskDone: true,
+      lesson: "", flagged: [], answers: {}, reports: [], taskDone: true,
       authorization: { helper: "Ama", signed: iso(-90), expires: iso(275), revoked: null },
       timeline: [{ text: "Ama mailed the request", actor: "Your helper", on: "June 25", done: true }]
     },
@@ -1086,7 +1224,7 @@ function seedClients() {
       helper: null, helperCode: "BRIDGE-5540", rung: 4,
       reportSummary: "Full file, nine collections accounts", lastPulled: iso(-70),
       collections: 9, consent: ["report_sharing"], consentOn: iso(-160),
-      lesson: "", flagged: [], answers: {}, pages: [], taskDone: true,
+      lesson: "", flagged: [], answers: {}, reports: [], taskDone: true,
       authorization: null, timeline: []
     }
   };
@@ -1324,6 +1462,86 @@ function classify(a) {
   return done("thin_file");
 }
 
+/* ---------- reports --------------------------------------------------- */
+/* Mirrors app/report.py. The masking runs on the way in, not the way out: a
+   report is stored already truncated, so no rendering mistake downstream can
+   put somebody's Social Security number on a shared dayroom screen. That the
+   number can be truncated at all is 15 U.S.C. 1681g(a)(1)(A), not a courtesy. */
+
+function maskSsn(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits ? "XXX-XX-" + digits.slice(-4) : "XXX-XX-XXXX";
+}
+
+function maskAccount(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length >= 4 ? "ending " + digits.slice(-4) : "number withheld";
+}
+
+/* One account per line, fields separated by a pipe. Forgiving on purpose: a
+   coordinator fixing a misread should not have to count pipes. */
+function parseAccounts(text) {
+  return String(text || "").split("\n").map((line) => {
+    const parts = line.split("|").map((x) => x.trim());
+    while (parts.length < 6) parts.push("");
+    return { creditor: parts[0], number: parts[1], opened: parts[2],
+             status: parts[3], balance: parts[4],
+             disputed: !!parts[5], note: parts[5] };
+  }).filter((r) => r.creditor);
+}
+
+function reportSummaryLine(r) {
+  if (!r.accounts.length) return "No accounts on file with this bureau.";
+  const disputed = r.accounts.filter((a) => a.disputed).length;
+  return r.accounts.length + " account" + (r.accounts.length === 1 ? "" : "s") +
+    (disputed ? ", " + disputed + " disputed" : "");
+}
+
+/* How the document got here, best route first. The order is about cost to the
+   helper and accuracy to the case: a PDF is the whole document for one tap,
+   typing is exact but costs an evening, and a photograph is last because
+   nothing here reads data out of a picture. Somebody transcribes it later. */
+const SOURCE_LABEL = {
+  pdf: "PDF sent in by the helper",
+  typed: "Typed in by the helper",
+  photo: "Photographed by the helper",
+  scan: "Scanned at the coordinator's desk"
+};
+
+const SOURCE_NEXT_STEP = {
+  pdf: "Your coordinator reads the fields off the PDF and confirms them.",
+  typed: "Your coordinator checks what you typed against the paper.",
+  photo: "Your coordinator reads the photos with the person and types the " +
+         "accounts in. This is the slowest route, which is why it is the last " +
+         "one offered.",
+  scan: "Confirmed at the desk."
+};
+
+/* Only the coordinator's own scanner lands finished: they are reading the
+   paper as they type it. Everything arriving from outside waits for a human,
+   because these fields become a dispute letter and a letter about the wrong
+   account number is worse than no letter. */
+function selfConfirming(source) { return source === "scan"; }
+
+function confirmedReports(c) { return (c.reports || []).filter((r) => r.confirmed); }
+function pendingReports(c) { return (c.reports || []).filter((r) => !r.confirmed); }
+
+function accountLines(r) {
+  return (r.accounts || []).map((a) => [a.creditor, a.number, a.opened,
+    a.status, a.balance, a.note].join(" | ")).join("\n");
+}
+
+/* What the coordinator's scanner hands over. This is the one function a real
+   integration replaces; the confirm step and everything after it are real. */
+function simulatedScan(c) {
+  const lines = (c.flagged || []).map((f) =>
+    f.creditor + " | xxxx" + f.last4 + " |  | Open | $0 | " + f.reason);
+  if (!lines.length)
+    lines.push("Cap One Platinum | xxxx2210 | 2016-04 | Closed, paid | $0 | ");
+  return { bureau: "Equifax", name: c.name, ssn: "XXX-XX-4417",
+           pulled: "", accounts: lines.join("\n") };
+}
+
 /* ---------- letters --------------------------------------------------- */
 
 function today() {
@@ -1446,9 +1664,9 @@ function notFound() {
 let PENDING = null;   // { role, key, display, account }
 
 route(/^\/signin$/, () => idScreen({
-  shell: "tablet", title: "Your number",
-  lede: "Your DIN or your NYSID. Either one works.",
-  placeholder: "98-A-0004", role: "inside",
+  shell: "tablet", title: "DIN number or NYS ID",
+  lede: "Either one works.",
+  placeholder: "28-A-1187", role: "inside",
   help: '<div class="card soft"><span class="strong">Dashes and spaces don\'t matter.</span>' +
     '<span class="small">A DIN is two numbers, a letter, then four numbers. A ' +
     'NYSID is eight numbers, sometimes with a letter on the end.</span></div>' +
@@ -1499,7 +1717,7 @@ function openCase(din, display) {
     helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
     collections: 0, consent: ["report_sharing"],
     consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
-    answers: {}, pages: [], taskDone: false, authorization: null, timeline: []
+    answers: {}, reports: [], taskDone: false, authorization: null, timeline: []
   };
   ensureAccounts();
   save();
@@ -1721,9 +1939,124 @@ window.answerMulti = function (n, field) {
 };
 
 function advance(n) {
+  // Question 2 asks whether the person knows how to find their score. The
+  // answer is the only one here whose purpose is teaching rather than triage,
+  // so it is answered on the spot instead of at the end.
+  if (n === 2) return go("#/inside/teach");
   go(n >= RULES.insideQuestions.length
     ? "#/inside/stand" : "#/inside/intake/" + (n + 1));
 }
+
+route(/^\/inside\/teach$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const t = RULES.teaching[c.answers.knows_how] || RULES.teaching.no;
+  return '<div class="tablet">' + bar(c.name + " \u00b7 how this works") +
+    '<div class="pane"><h1>' + esc(t.headline) + '</h1>' +
+    t.points.map((pt) =>
+      '<div class="card"><span class="strong">' + esc(pt.title) + '</span>' +
+      '<span class="small">' + esc(pt.body) + '</span></div>').join("") +
+    '<div class="card soft"><span class="strong">There is no such thing as ' +
+      'one credit score.</span><span class="small">' + esc(RULES.scores.summary) +
+      '</span><a class="btn ghost" href="#/inside/learn/scores">Show me</a></div>' +
+    '<button class="btn wide" onclick="go(\'#/inside/intake/3\')">' +
+      'Keep going</button>' +
+    '<div class="notes-always"><a class="btn quiet" href="#/inside/intake/2">' +
+      '&larr; Back</a></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/learn\/scores$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  return '<div class="tablet">' + bar(c.name + " \u00b7 about scores") +
+    '<div class="pane"><h1>Which one is my real score?</h1>' +
+    '<p class="lede">The one belonging to whoever is deciding about you. That ' +
+      'is not a dodge, it is how the system works.</p>' +
+    '<div class="card accent"><span class="small strong">' +
+      esc(RULES.scores.summary) + '</span></div>' +
+    '<div class="card soft"><span class="strong">Three things multiply</span>' +
+      '<span class="small">Which bureau: Equifax, Experian and TransUnion hold ' +
+      'different files, because not every lender reports to all three.</span>' +
+      '<span class="small">Which model: FICO and VantageScore are different ' +
+      'companies, and FICO alone has several versions in active use.</span>' +
+      '<span class="small">Which industry: car lenders and card issuers use ' +
+      'scores tuned to their own risk, on a different scale entirely.</span>' +
+      '</div>' +
+    '<h2>The models</h2>' +
+    RULES.scores.models.map((m) =>
+      '<div class="card"><div class="row">' +
+      '<span class="strong">' + esc(m.name) + '</span>' +
+      '<span class="tag teal" style="margin-left:auto">' + esc(m.range) + '</span>' +
+      '</div><span class="tiny">' + esc(m.use) + '</span>' +
+      '<span class="small">' + esc(m.note) + '</span></div>').join("") +
+    '<h2>Questions people actually ask</h2>' +
+    RULES.scores.explainers.map((e) =>
+      '<div class="card soft"><span class="strong">' + esc(e.question) + '</span>' +
+      '<span class="small">' + esc(e.answer) + '</span></div>').join("") +
+    '<div class="notes-always"><a class="btn quiet" href="#/inside/case">' +
+      '&larr; Back to my case</a></div>' +
+    '</div></div>';
+});
+
+route(/^\/inside\/report$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  // Confirmed only. A report a helper typed or photographed has not been
+  // checked by anyone yet, and showing somebody an unverified list of their
+  // own debts is worse than showing them nothing.
+  const ready = confirmedReports(c);
+  if (!ready.length)
+    return '<div class="tablet">' + bar(c.name + " \u00b7 your reports") +
+      '<div class="pane"><h1>Nothing here yet.</h1>' +
+      '<p class="lede">Your reports come back on paper. When they arrive, bring ' +
+        'them to your counselor and they will scan them into your record. Then ' +
+        'you can read them here.</p>' +
+      '<div class="card soft"><span class="strong">You do not photograph ' +
+        'anything</span><span class="small">There is no camera in this app and ' +
+        'there does not need to be. The paper goes to your counselor, the ' +
+        'counselor scans it, and it shows up here.</span></div>' +
+      '<a class="btn ghost" href="#/inside/case">Back to my case</a>' +
+      '</div></div>';
+
+  return '<div class="tablet">' + bar(c.name + " \u00b7 your reports") +
+    '<div class="pane"><h1>Your credit reports.</h1>' +
+    '<div class="card accent"><span class="strong">Your Social Security number ' +
+      'is blacked out</span><span class="small">Only the last four digits ' +
+      'appear. The request asked them to leave the first five out, which the ' +
+      'law lets you require, and this screen covers them again regardless.' +
+      '</span><span class="tiny">15 U.S.C. 1681g(a)(1)(A)</span></div>' +
+    ready.map((r) =>
+      '<div class="card"><div class="row"><span class="strong">' + esc(r.bureau) +
+      '</span><span class="tag teal" style="margin-left:auto">' +
+      esc(reportSummaryLine(r)) + '</span></div>' +
+      '<span class="tiny">Pulled ' + esc(r.pulled) + ' \u00b7 scanned in ' +
+        esc(r.scannedOn) + ' by ' + esc(r.scannedBy) + '</span>' +
+      '<span class="small">' + esc(r.name) + '</span>' +
+      '<span class="small" style="font-family:var(--mono)">' + esc(r.ssn) + '</span>' +
+      '<span class="strong">Score</span>' +
+      '<span class="small">No score on this report. A file disclosure does not ' +
+        'have to include one, and most mailed reports do not.</span>' +
+      '<span class="strong">Accounts</span>' +
+      (r.accounts.length
+        ? r.accounts.map((a) => '<div class="rung' + (a.disputed ? " active" : "") +
+            '"><div><div class="small strong">' + esc(a.creditor) + '</div>' +
+            '<div class="tiny">' + esc(maskAccount(a.number)) +
+            (a.opened ? " \u00b7 opened " + esc(a.opened) : "") +
+            (a.status ? " \u00b7 " + esc(a.status) : "") +
+            (a.balance ? " \u00b7 " + esc(a.balance) : "") + '</div>' +
+            (a.disputed ? '<span class="tag amber">Disputed: ' + esc(a.note) +
+              '</span>' : "") + '</div></div>').join("")
+        : '<span class="small">No accounts on file with this bureau. That is ' +
+          'not the same as bad credit, and it moves faster than damaged does.' +
+          '</span>') +
+      '</div>').join("") +
+    '<div class="row">' +
+      '<button class="btn" onclick="window.print()">Save as PDF</button>' +
+      '<a class="btn ghost" href="#/inside/case">Back to my case</a>' +
+      '<a class="btn ghost" href="#/inside/learn/scores">Why is there no score?</a>' +
+      '</div></div></div>';
+});
 
 route(/^\/inside\/stand$/, () => {
   if (!guard("inside")) return "";
@@ -1779,6 +2112,16 @@ route(/^\/inside\/case$/, () => {
     (c.lesson ? '<div class="card soft"><span class="strong">Your one thing this week</span>' +
       '<span class="small">' + esc(c.lesson) + ' Ms. Reyes will ask you about it ' +
       'Thursday.</span></div>' : "") +
+    '<div class="card"><span class="strong">Your credit reports</span>' +
+      (confirmedReports(c).length
+        ? '<span class="small">' + confirmedReports(c).length + ' on file. Your ' +
+          'Social Security number is covered on every page.</span>'
+        : '<span class="small">None yet. When the paper arrives, bring it to ' +
+          'your counselor and they will scan it in.</span>') +
+      '<a class="btn ghost" href="#/inside/report">Read them</a></div>' +
+    '<div class="card soft"><span class="strong">There is no such thing as one ' +
+      'credit score</span><span class="small">' + esc(RULES.scores.summary) +
+      '</span><a class="btn ghost" href="#/inside/learn/scores">Why</a></div>' +
     '<div class="card"><span class="strong">Who is helping you</span>' +
       (auth
         ? '<span class="small">' + esc(auth.helper) + ' can receive your mail and ' +
@@ -1934,16 +2277,17 @@ route(/^\/family\/task$/, () => {
   if (!auth) return invitation(c);
 
   let task = null;
-  if (!c.pages.length && !c.taskDone) {
+  if (!c.reports.length && !c.taskDone) {
     task = { head: "Print the request, have " + c.first + " sign it, mail it.",
              detail: "We filled in everything except the signature, including the " +
                "prisoner ID number the bureaus ask for on the envelope. One stamp.",
              url: "#/family/packet", cta: "Print the packet",
              skip: "markMailed()", skipLabel: "I already mailed it" };
-  } else if (!c.pages.length) {
-    task = { head: "The reports should be arriving. Photograph them when they do.",
-             detail: "Flat on a table, good light, one page per photo.",
-             url: "#/family/report", cta: "Add the reports", skip: null };
+  } else if (!c.reports.length) {
+    task = { head: "When the reports arrive, send them in.",
+             detail: "Three ways, and any of them works. The easiest is a PDF " +
+               "if you have one.",
+             url: "#/family/report", cta: "Send the reports in", skip: null };
   }
 
   return '<div class="phone">' + bar(auth.helper + " · helping " + c.first) +
@@ -1953,7 +2297,8 @@ route(/^\/family\/task$/, () => {
         '<div class="card"><span class="strong">Do this</span>' +
         '<span class="small">' + esc(task.head) + '</span>' +
         '<span class="tiny">' + esc(task.detail) + '</span>' +
-        '<a class="btn" href="' + task.url + '">' + esc(task.cta) + '</a>' +
+        (task.url ? '<a class="btn" href="' + task.url + '">' +
+          esc(task.cta) + '</a>' : "") +
         (task.skip ? '<button class="btn quiet" onclick="' + task.skip + '">' +
           esc(task.skipLabel) + '</button>' : "") + '</div>' +
         '<div class="card soft"><span class="strong">Then nothing, for about ' +
@@ -2004,45 +2349,133 @@ route(/^\/family\/packet$/, () => {
       '<a class="btn ghost" href="#/family/task">Back</a></div></div>';
 });
 
-route(/^\/family\/report$/, () => {
+route(/^\/family\/report(?:\?how=(\w+))?$/, (how) => {
   if (!guard("family")) return "";
   const c = subject();
-  if (!liveAuth(c)) return invitation(c);
-  return '<div class="phone">' + bar("The reports came") + '<div class="pane">' +
-    '<h1>Take photos of every page.</h1>' +
-    '<p class="lede">Flat on a table, good light, one page per photo. Crooked is fine.</p>' +
-    '<label class="check"><input type="file" accept="image/*" multiple ' +
-      'capture="environment" onchange="addPages(this)">' +
-      '<span class="small">Take a photo, or pick from your camera roll</span></label>' +
-    (c.pages.length ? '<div class="card soft">' + c.pages.map((p) =>
-      '<div class="row"><span class="small strong">' + esc(p) + '</span>' +
-      '<span class="tag green" style="margin-left:auto">Added</span></div>').join("") +
-      '</div>' : "") +
-    '<button class="btn wide" onclick="sendPages()">Send to Ms. Reyes</button>' +
-    '<div class="card dashed"><span class="strong">Can\'t photograph it?</span>' +
-      '<span class="small">Bring it to Ms. Reyes and she\'ll enter it with you. ' +
-      'No photo is better than a bad one.</span></div>' +
-    '<div class="card"><span class="strong">Where this goes</span>' +
-      '<span class="small">To Ms. Reyes and to ' + esc(c.first) + '. Not to us, ' +
-      'not to anyone else, and never to a company that wants to sell them ' +
-      'something.</span></div>' +
-    '</div></div>';
+  const auth = liveAuth(c);
+  if (!auth) return invitation(c);
+  how = how || "";
+  const sentCard = (c.reports || []).length
+    ? '<div class="card"><span class="strong">Already sent</span>' +
+      c.reports.map((r) => '<span class="small">' + esc(r.bureau) +
+        ' \u00b7 ' + esc(SOURCE_LABEL[r.source] || "Added") + ' \u00b7 ' +
+        (r.confirmed ? "checked" : "waiting on Ms. Reyes") + '</span>').join("") +
+      '</div>'
+    : "";
+
+  if (how === "done")
+    return '<div class="phone">' + bar("Helping " + c.first) + '<div class="pane">' +
+      '<h1>Got it. Thank you.</h1>' +
+      '<p class="lede">It is on Ms. Reyes\'s desk. She checks it against the ' +
+        'paper before anything is sent to a bureau, and ' + esc(c.first) +
+        ' can read it on the tablet once she has.</p>' + sentCard +
+      '<a class="btn wide" href="#/family/task">Back</a></div></div>';
+
+  if (how === "typed")
+    return '<div class="phone">' + bar("Helping " + c.first) + '<div class="pane">' +
+      '<h1>Type what it says.</h1>' +
+      '<p class="lede">The accounts are the part that matters. Skip anything ' +
+        'you cannot read and Ms. Reyes will fill it in with ' + esc(c.first) +
+        '.</p>' +
+      field("fbureau", "Which company sent it", "", "Equifax, Experian or TransUnion",
+            "It is printed at the top. One of those three.", "", false) +
+      field("fpulled", "Date on the report", "", "", "", "", false, "date") +
+      '<div class="field"><label for="faccounts">The accounts</label>' +
+        '<textarea id="faccounts" rows="7" spellcheck="false" ' +
+        'style="font-family:var(--mono);font-size:13px" ' +
+        'placeholder="Midland Funding | xxxx4471 | 2019-02 | Open | $1,204 |">' +
+        '</textarea><span class="hint">One per line. Name of the company, then ' +
+        'the account number, then whatever else is printed, separated by the | ' +
+        'key. Put a note at the end only if ' + esc(c.first) + ' says the item ' +
+        'is not theirs.</span></div>' +
+      '<p class="tiny">Do not type a Social Security number anywhere. It is not ' +
+        'needed here and we do not want it.</p>' +
+      '<button class="btn wide" onclick="sendReport(\'typed\')">' +
+        'Send it to Ms. Reyes</button>' +
+      '<a class="btn quiet" href="#/family/report">Back</a></div></div>';
+
+  if (how === "photo")
+    return '<div class="phone">' + bar("Helping " + c.first) + '<div class="pane">' +
+      '<h1>Photograph every page.</h1>' +
+      '<p class="lede">Flat on a table, good light, one page per photo. ' +
+        'Crooked is fine.</p>' +
+      '<div class="card warn"><span class="strong">This is the slow way, and ' +
+        'here is why</span><span class="small">Nothing here reads the words out ' +
+        'of a picture. A photo means Ms. Reyes sits down with ' + esc(c.first) +
+        ' and types it in by hand. It works, it just takes longer than the ' +
+        'other two. Use it if the other two are not possible.</span></div>' +
+      '<label class="check"><input id="fphotos" type="file" accept="image/*" ' +
+        'capture="environment" multiple><span class="small">Take photos, or ' +
+        'pick from your camera roll</span></label>' +
+      '<button class="btn wide" onclick="sendReport(\'photo\')">' +
+        'Send them to Ms. Reyes</button>' +
+      '<a class="btn quiet" href="#/family/report">Back</a></div></div>';
+
+  return '<div class="phone">' + bar("Helping " + c.first) + '<div class="pane">' +
+    '<h1>How do you have it?</h1>' +
+    '<p class="lede">Any of these works. The first is the easiest if you have ' +
+      'the choice.</p>' +
+    '<div class="card"><span class="strong">1. It is a PDF on my computer or ' +
+      'phone</span><span class="small">Best way. Nothing is lost and it takes ' +
+      'one tap. If you ordered the report online, this is what you have.</span>' +
+      '<label class="check"><input id="fpdf" type="file" ' +
+      'accept="application/pdf,.pdf" multiple><span class="small">Choose the ' +
+      'PDF</span></label>' +
+      '<button class="btn" onclick="sendReport(\'pdf\')">Send the PDF</button>' +
+      '</div>' +
+    '<div class="card"><span class="strong">2. I have it on paper and I will ' +
+      'type it</span><span class="small">About twenty minutes. Exact, and it ' +
+      'goes straight onto Ms. Reyes\'s desk ready to check. No scanner, no app.' +
+      '</span><a class="btn amber" href="#/family/report?how=typed">Type it in' +
+      '</a></div>' +
+    '<div class="card soft"><span class="strong">3. I will take photos of it' +
+      '</span><span class="small">Last resort, and slower than it looks. ' +
+      'Nothing here reads the words out of a picture, so somebody has to type ' +
+      'it in later anyway. That somebody is Ms. Reyes, with ' + esc(c.first) +
+      '.</span><a class="btn ghost" href="#/family/report?how=photo">Use the ' +
+      'camera</a></div>' +
+    '<div class="card dashed"><span class="strong">Or none of the above</span>' +
+      '<span class="small">Send the paper in to ' + esc(c.first) + ' at the ' +
+      'facility. They walk it to Ms. Reyes and she scans it at her desk. ' +
+      'Slowest of all, and it still works.</span></div>' + sentCard +
+    '<a class="btn quiet" href="#/family/task">Back</a></div></div>';
 });
 
-window.addPages = function (input) {
-  const c = subject();
-  for (let i = 0; i < input.files.length; i++)
-    c.pages.push("Page " + (c.pages.length + 1));
-  save(); render();
-};
+window.sendReport = function (how) {
+  const c = subject(), auth = liveAuth(c);
+  const val = (id) => { const el = document.getElementById(id);
+                        return el ? (el.value || "").trim() : ""; };
+  const picked = (id) => { const el = document.getElementById(id);
+                           return el && el.files ? el.files.length : 0; };
 
-window.sendPages = function () {
-  const c = subject();
-  if (!c.pages.length) { alert("Add at least one photo first."); return; }
-  c.timeline.push({ text: c.pages.length + " page" +
-                          (c.pages.length === 1 ? "" : "s") + " of the report added",
-                    actor: liveAuth(c).helper, on: shortDate(), done: true });
-  save(); go("#/family/task");
+  const count = how === "pdf" ? picked("fpdf")
+              : how === "photo" ? picked("fphotos") : 0;
+  if (how !== "typed" && !count) {
+    alert("Choose at least one file first.");
+    return;
+  }
+  const lines = how === "typed" ? val("faccounts") : "";
+  if (how === "typed" && !lines) { alert("Type at least one account."); return; }
+
+  // Names and a page count, never the bytes. This build never holds a picture
+  // of anybody's credit report, which is a smaller promise than it sounds and
+  // the only one it can actually keep.
+  c.reports.push({
+    bureau: val("fbureau") || "Not stated on the copy",
+    name: c.name, ssn: "XXX-XX-XXXX",
+    pulled: val("fpulled") || new Date().toISOString().slice(0, 10),
+    scannedOn: new Date().toISOString().slice(0, 10),
+    scannedBy: auth.helper,
+    accounts: parseAccounts(lines),
+    source: how, confirmed: selfConfirming(how),
+    pages: Array.from({ length: count }, (_, i) => "Page " + (i + 1))
+  });
+  c.timeline.push({
+    text: how === "pdf" ? "The report came in as a PDF"
+        : how === "typed" ? "Your helper typed the report in"
+        : "Your helper photographed the report",
+    actor: auth.helper, on: shortDate(), done: true });
+  save(); go("#/family/report?how=done");
 };
 
 /* ---------- screens: staff -------------------------------------------- */
@@ -2205,7 +2638,7 @@ window.createClient = function () {
     helper: null, helperCode: code, rung: 1, reportSummary: "", lastPulled: "",
     collections: 0, consent: ["report_sharing"],
     consentOn: new Date().toISOString().slice(0, 10), lesson: "", flagged: [],
-    answers: {}, pages: [], taskDone: false, authorization: null, timeline: []
+    answers: {}, reports: [], taskDone: false, authorization: null, timeline: []
   };
   ensureAccounts();
   save();
@@ -2293,6 +2726,139 @@ window.runTriage = function (id) {
   save(); render();
 };
 
+let SCANNED = null;   // { id, form } while a scan is on screen, unsaved
+
+route(/^\/staff\/([\w-]+)\/report$/, (id) => {
+  if (!guard("staff")) return "";
+  const c = DB.clients[id];
+  if (!c) return notFound();
+  const fresh = SCANNED && SCANNED.id === id;
+  const f = fresh ? SCANNED.form : simulatedScan(c);
+
+  return '<div>' + bar("Scan a report \u00b7 " + c.name) +
+    '<div class="sheet" style="padding-top:22px;max-width:760px">' +
+    '<h1>Read the paper into the record.</h1>' +
+    '<p class="lede" style="margin:10px 0 18px">' + esc(c.name) + ' brought the ' +
+      'report they received. Scan it here and it appears on their tablet, with ' +
+      'the Social Security number covered.</p>' +
+    (c.reports.length ? '<div class="card soft"><span class="strong">Already on ' +
+      'file</span>' + c.reports.map((r) => '<span class="small">' + esc(r.bureau) +
+      ' \u00b7 ' + esc(reportSummaryLine(r)) + ' \u00b7 scanned ' +
+      esc(r.scannedOn) + ' by ' + esc(r.scannedBy) + '</span>').join("") +
+      '</div>' : "") +
+    (pendingReports(c).length
+      ? '<div class="card accent"><span class="strong">Waiting on you</span>' +
+        '<span class="small">These came in from outside. Nothing here reaches ' +
+        esc(c.name) + '\'s tablet or drafts a letter until you have read it ' +
+        'against the document.</span></div>' +
+        c.reports.map((r, i) => r.confirmed ? "" :
+          '<div class="card"><div class="row"><span class="strong">' +
+          esc(r.bureau) + '</span><span class="tag amber" ' +
+          'style="margin-left:auto">' + esc(SOURCE_LABEL[r.source]) + '</span>' +
+          '</div><span class="small">Sent in by ' + esc(r.scannedBy) + ' on ' +
+          esc(r.scannedOn) + '. ' + esc(SOURCE_NEXT_STEP[r.source]) + '</span>' +
+          (r.pages && r.pages.length ? '<span class="tiny">' + r.pages.length +
+            ' page' + (r.pages.length === 1 ? "" : "s") + ' attached. Open them ' +
+            'alongside this form and type what they say.</span>' : "") +
+          '<div class="field"><label for="w' + i + '">Accounts</label>' +
+          '<textarea id="w' + i + '" rows="6" spellcheck="false" ' +
+          'style="font-family:var(--mono);font-size:13px">' +
+          esc(accountLines(r)) + '</textarea>' +
+          '<span class="hint">' + esc(RULES.scan.lineFormat) + '</span></div>' +
+          '<button class="btn" onclick="confirmReport(\'' + id + '\',' + i +
+          ')">Checked against the document, add it</button></div>').join("")
+      : "") +
+    '<div class="row"><button class="btn" onclick="runScan(\'' + id + '\')">' +
+      'Scan the document</button></div>' +
+    '<p class="tiny">' + esc(RULES.scan.note) + '</p>' +
+    (fresh ? '<div class="card accent"><span class="strong">Scanned. Check it ' +
+      'before you save.</span><span class="small">Everything below came off the ' +
+      'page. Fix anything the scanner misread, then confirm.</span></div>' : "") +
+    '<div class="grid two">' +
+      field("sbureau", "Bureau", f.bureau, "Equifax", "One report per bureau. Their files differ.", "", false) +
+      field("spulled", "Date on the report", f.pulled, "", "Leave blank and today is used.", "", false, "date") +
+    '</div><div class="grid two">' +
+      field("sname", "Name as printed", f.name, "", "A name spelled wrong on the file is itself a dispute.", "", false) +
+      field("sssn", "Social Security number as printed", f.ssn, "XXX-XX-4417", "Only the last four are kept. The rest is thrown away here, before anything is saved.", "", true) +
+    '</div>' +
+    '<div class="field"><label for="saccounts">Accounts</label>' +
+      '<textarea id="saccounts" rows="8" spellcheck="false" ' +
+      'style="font-family:var(--mono);font-size:13px">' + esc(f.accounts) +
+      '</textarea><span class="hint">One per line: ' + esc(RULES.scan.lineFormat) +
+      '. Put a reason on the line only if the person says the item is wrong. ' +
+      'That is what drafts the dispute letters.</span></div>' +
+    '<div class="row" style="margin-top:14px">' +
+      '<button class="btn" onclick="saveScan(\'' + id + '\')">' +
+      'Confirm and save to the record</button>' +
+      '<a class="btn ghost" href="#/staff/' + id + '">Cancel</a></div>' +
+    '</div></div>';
+});
+
+/* Sign off on something that arrived from outside. Same accuracy check as the
+   letter edit rate, moved to the input side where a wrong account number is
+   still cheap to fix. */
+window.confirmReport = function (id, i) {
+  const c = DB.clients[id], r = c.reports[i];
+  const el = document.getElementById("w" + i);
+  if (el) r.accounts = parseAccounts(el.value);
+  r.confirmed = true;
+  r.scannedOn = new Date().toISOString().slice(0, 10);
+  r.scannedBy = VENDOR_COORDINATOR.display_name;
+  const disputed = r.accounts.filter((a) => a.disputed);
+  if (disputed.length) {
+    c.flagged = disputed.map((a) => ({
+      creditor: a.creditor,
+      last4: String(a.number).replace(/\D/g, "").slice(-4),
+      reason: a.note }));
+    c.needs = "Dispute letter to approve";
+  }
+  c.lastPulled = r.pulled;
+  c.reportSummary = r.bureau + ": " + reportSummaryLine(r);
+  c.timeline.push({ text: "Your " + r.bureau + " report was checked and added " +
+                          "to your record", actor: "Your counselor",
+                    on: shortDate(), done: true });
+  save(); render();
+};
+
+window.runScan = function (id) {
+  SCANNED = { id, form: simulatedScan(DB.clients[id]) };
+  render();
+};
+
+window.saveScan = function (id) {
+  const c = DB.clients[id];
+  const get = (x) => (document.getElementById(x).value || "").trim();
+  const rows = parseAccounts(get("saccounts"));
+  const report = {
+    bureau: get("sbureau") || "Equifax",
+    name: get("sname") || c.name,
+    // Masked here, on the way in. Nothing downstream has to remember to.
+    ssn: maskSsn(get("sssn")),
+    pulled: get("spulled") || new Date().toISOString().slice(0, 10),
+    scannedOn: new Date().toISOString().slice(0, 10),
+    scannedBy: VENDOR_COORDINATOR.display_name,
+    accounts: rows,
+    source: "scan", confirmed: true, pages: []
+  };
+  c.reports.push(report);
+  c.lastPulled = report.pulled;
+  c.reportSummary = report.bureau + ": " + reportSummaryLine(report);
+  const disputed = rows.filter((r) => r.disputed);
+  if (disputed.length) {
+    c.flagged = disputed.map((r) => ({
+      creditor: r.creditor,
+      last4: String(r.number).replace(/\D/g, "").slice(-4),
+      reason: r.note
+    }));
+    c.needs = "Dispute letter to approve";
+  }
+  c.timeline.push({ text: "Your " + report.bureau + " report was scanned into " +
+                          "your record", actor: "Your counselor",
+                    on: shortDate(), done: true });
+  SCANNED = null;
+  save(); go("#/staff/" + id);
+};
+
 route(/^\/staff\/([\w-]+)$/, (id) => {
   if (!guard("staff")) return "";
   const c = DB.clients[id];
@@ -2325,7 +2891,11 @@ route(/^\/staff\/([\w-]+)$/, (id) => {
           ? '<p class="small strong">' + esc(c.reportSummary || "Nothing on file yet") + '</p>' +
             (c.lastPulled ? '<p class="tiny">Last pulled ' + esc(c.lastPulled) + ', by mail</p>' : "")
           : '<p class="small">Report sharing is off for this client. Nothing to ' +
-            'show, and that is the consent record doing its job.</p>') + '</div>' +
+            'show, and that is the consent record doing its job.</p>') +
+        '<a class="btn ghost" href="#/staff/' + id + '/report">Scan a report in</a>' +
+        '<p class="tiny">The paper comes back to the facility and the person ' +
+        'carries it to you. Scanning it here is what puts it on their tablet.' +
+        '</p></div>' +
       '<div class="card"><h3>Not shared with you</h3>' +
         '<p class="small">Full account numbers, SSN, address history, employer ' +
         'records. You see what you need to act. Nothing else.</p>' +
