@@ -149,9 +149,24 @@ def simulated_lookup(din: str, today: date | None = None) -> LookupRecord:
     today = today or date.today()
     key = (din or "").upper().replace("-", "")
 
-    # Somewhere between four months and six years out, so the caseload spans
-    # people near the gate and people who are not.
-    days_out = _stable_offset(key, spread=2000, floor=120)
+    # Bucketed rather than one flat range, and the reason is a demo that was
+    # quietly misleading. A flat 120-to-2120 days put seven DINs in eight more
+    # than a year out, so anybody typing a number to try the app almost always
+    # landed on the course order for somebody years from the gate and never saw
+    # the documents lesson lead. The behaviour was right and effectively
+    # unreachable.
+    #
+    # These weights are a caseload, not a statistic: Bridge is built around the
+    # six months before release, so most of a real coordinator's list is near
+    # the gate, with a tail of people who are not. Nothing reads the buckets;
+    # they only shape what a DIN typed at random produces.
+    bucket = _stable_offset(key, 100, floor=0)
+    if bucket < 45:          # near the gate, inside the planning window
+        days_out = _stable_offset(key, spread=300, floor=45)
+    elif bucket < 78:        # one to three years
+        days_out = _stable_offset(key, spread=730, floor=400)
+    else:                    # three to six years, where the course is the point
+        days_out = _stable_offset(key, spread=1000, floor=1150)
     conditional = today + timedelta(days=days_out)
 
     return LookupRecord(
