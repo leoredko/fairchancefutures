@@ -3,11 +3,27 @@
 Two things are set up here: a container that runs anywhere, and a web app
 manifest so the inside surface installs to a tablet home screen.
 
-Neither has been deployed from this repo yet. The Dockerfile has not been built
-in CI (no Docker daemon in the environment it was written in), but the exact
-file layout, start command, health check and data path were run and verified
-outside a container. Expect the first `fly deploy` to work; do not be shocked
-if it needs one nudge.
+Not deployed from this repo yet, but no longer untested. There is still no
+Docker daemon in the environment this was written in, so the image has never
+been built. What has been done instead is a faithful rehearsal of it: a clean
+directory holding only what the Dockerfile copies, a fresh virtual environment
+with only what `requirements.txt` lists, and then the Dockerfile's own start
+command against a stand-in for the mounted volume.
+
+    /healthz  /  /signin  /citations  /staff      all 200
+    /data/bridge.json                             written on first boot
+    app/translations/es.po                        inside the image, 63 KB
+    startup log                                   no errors
+
+That rules out the things a first deploy usually dies on: a missing
+dependency, a file the Dockerfile forgot to copy, a path that only resolves on
+a developer's machine, a volume that never gets written. What it cannot rule
+out is the base image itself, since the rehearsal ran on 3.11 and the
+Dockerfile pins 3.12. CI runs the full suite on both, so that gap is covered
+from the other side.
+
+Expect the first `fly deploy` to work. Do not be shocked if it needs one
+nudge.
 
 ## Before anything: this app has no authentication
 
@@ -18,10 +34,22 @@ seeded fake clients and disqualifying for anything else.
 The Fly config sets `X-Robots-Tag: noindex, nofollow` so it at least stays out
 of search results. Do not put a real person's data behind this URL.
 
-## Fly.io
+## Fly.io, which is faster to wake and costs a couple of dollars
+
+Worth it if a spin-down mid-demo would be fatal, or if you want the data to
+survive. Needs the CLI, so it needs a terminal and a local clone of the repo.
+
+**Install flyctl** ([docs](https://fly.io/docs/flyctl/install/)). On Windows,
+in PowerShell:
+
+```powershell
+iwr https://fly.io/install.ps1 -useb | iex
+```
+
+Close and reopen PowerShell afterwards so the new command is found. Then:
 
 ```bash
-fly auth login
+fly auth signup      # or: fly auth login, if you already have an account
 fly launch --copy-config --no-deploy      # pick a name nobody has taken
 fly volumes create bridge_data --size 1 --region ewr
 fly deploy
@@ -36,10 +64,35 @@ then restart, and you are back to a clean stage.
 Keep it to one machine. A second machine gets its own volume and would serve a
 different caseload depending on which one answered.
 
-## Render
+## Render, which needs no terminal
 
-Point Render at the repo; it reads `render.yaml`. Same shape: Docker runtime,
-health check on `/healthz`, 1 GB disk mounted at `/data`.
+The shortest path to a URL, and the one to take first. No CLI to install, no
+local clone, no account beyond GitHub.
+
+1. Sign in at [render.com](https://render.com) with GitHub.
+2. **New**, then **Blueprint**.
+3. Pick this repository. Render reads `render.yaml` and does the rest.
+
+**Free instances cannot have a persistent disk.** Render rejects a blueprint
+that asks for `plan: free` and a disk together, which is what this file used to
+do. It now asks for neither, so the JSON store is container-local and resets
+whenever the service restarts, which on the free plan it does after a spell
+with no traffic.
+
+For a demo that is survivable and sometimes what you want: a restart reseeds
+the caseload, so Marcus is back with his three reports and a clean stage. What
+it costs is anything not in the seed. A PIN somebody set, a lesson they
+finished, a county they picked. To keep those, the service has to be paid:
+move off `plan: free` and add the `disk:` block that `render.yaml` carries in
+a comment.
+
+`BRIDGE_SECRET` is set by the blueprint rather than left to the app. Without a
+disk, the app's own generated key would live in the store that resets, so
+everybody would be signed out on every restart rather than only losing data.
+
+**The other cost of free:** an instance with no traffic spins down, and the
+next request waits for it to come back. Open the URL a few minutes before
+presenting so the first person to see it is you, not the room.
 
 ## Anywhere else
 

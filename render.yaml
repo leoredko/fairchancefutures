@@ -1,4 +1,28 @@
 # render.yaml — Render Blueprint. Point Render at this repo and it reads this.
+#
+# This is the deploy that needs no terminal: no CLI to install, no local clone,
+# no account beyond GitHub. Render Dashboard, New, Blueprint, pick the repo.
+#
+# No disk here, and that is not an oversight. Render's free instances cannot
+# have one, so asking for both is a blueprint Render refuses. The trade is that
+# the JSON store is container-local and resets whenever the service restarts,
+# which on the free plan it does after a spell of no traffic.
+#
+# For a demo that is survivable and occasionally what you want: every restart
+# reseeds the caseload, so Marcus is back with his three reports and a clean
+# stage. What it costs is anything done during a session that is not in the
+# seed: a PIN somebody set, a lesson they finished, a county they picked.
+#
+# To keep those, the service has to be paid. Add this under the service and
+# move off `plan: free`:
+#
+#     disk:
+#       name: bridge-data
+#       mountPath: /data
+#       sizeGB: 1
+#
+# Or use Fly instead, where a volume is a couple of dollars a month. See
+# docs/DEPLOY.md.
 services:
   - type: web
     name: bridge-fcf
@@ -7,9 +31,12 @@ services:
     plan: free
     healthCheckPath: /healthz
     envVars:
+      # Container-local, because there is no disk to point at. Inside /srv so
+      # it is writable without extra permissions.
       - key: BRIDGE_DATA
-        value: /data/bridge.json
-    disk:
-      name: bridge-data
-      mountPath: /data
-      sizeGB: 1
+        value: /srv/data/bridge.json
+      # Set explicitly rather than left to the app. Without a disk the app's
+      # own generated key would live in the store that resets, so everybody
+      # would be signed out on every restart rather than only losing the data.
+      - key: BRIDGE_SECRET
+        generateValue: true
