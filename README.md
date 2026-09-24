@@ -160,6 +160,7 @@ Three things the app says that a person would otherwise find out too late:
 | Inside, tablet | `/inside` | Six intake questions, one per screen. Position not score. Case timeline with named people. Cancel a helper's authorization. |
 | Family, phone | `/family` | The invitation that rules out everything a scam would ask for. Exactly one task on screen. Print the request packet. Send the report in three ways. |
 | Caseworker, desktop | `/staff` | Work queue sorted by what expires first. Triage session. Letter draft and approval. What is blocking the ID. What the client flagged on their own report. |
+| Inside, tablet | `/signin` | **English or Español**, chosen at the door before anything else, with the languages the app does not have named rather than hidden. |
 | — | `/citations` | Every verified fact with its source and check date, and the open questions alongside them. |
 | — | `/metrics` | The edit rate. |
 
@@ -226,10 +227,6 @@ holding Social Security numbers is most of the work.
   out of the intake copy rather than left there untrue. If a facility
   turns out to have genuinely intermittent connectivity, IndexedDB plus
   replay-on-reconnect is the real fix.
-- Spanish. An EN / ES toggle was drawn early and removed rather than shipped as
-  decoration over an English-only app. For this population it is a real
-  requirement rather than a nice-to-have, and it should come back as
-  translation rather than as a pill.
 - Real auth. Anyone who can reach the URL is the surface named in the URL. The
   surface split is enforced, the identity behind it is not.
 
@@ -253,6 +250,8 @@ app/vendor.py          the coordinator's single sign-on handoff
 app/report.py          scanned reports, and masking the SSN on the way in
 app/scores.py          why there is no such thing as one credit score
 app/labels.py          human labels, so no column name reaches a screen
+app/i18n.py            the course in Spanish, and the switch that removes it
+app/translations/      es.po, translated once and committed. No runtime model.
 app/intake.py          adding somebody to the caseload
 standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
@@ -261,11 +260,12 @@ app/freshness.py       which check dates have gone stale, across all three
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 docs/                  scope and the verify-before-demo list
-tests/                 318 tests
+tests/                 336 tests
 .github/workflows/     pytest on 3.11 and 3.12
 Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
 scripts/check_centers.py  diffs NYC Open Data against app/centers.py
+scripts/i18n_extract.py   rebuilds es.po from the lessons, never losing work
 ```
 
 ## The team
