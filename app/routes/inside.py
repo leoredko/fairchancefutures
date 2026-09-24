@@ -20,6 +20,7 @@ from app import labels
 from app.deps import templates
 from app import doccs
 from app import i18n
+from app.sources import FACTS
 from app import lessons
 from app import report as report_module
 from app import walkthrough
@@ -280,6 +281,76 @@ def learn_finished(request: Request):
                              for l in lessons.CURRICULUM),
          "minutes": lessons.TOTAL_MINUTES},
     )
+
+
+@router.get("/request", response_class=HTMLResponse)
+def request_own_report(request: Request):
+    """Ask for your own report, with nobody on the outside.
+
+    This is the answer to the question the product could not previously
+    answer out loud: what happens to somebody with no family, no friend, no
+    one taking their calls. The helper surface reads like *the* route when it
+    is only the faster one, and a person without anybody was being quietly
+    told the product was not built for them.
+
+    Nothing here needs a person outside, and nothing here needs the open web:
+
+      the request      one form to one address covers all three bureaus, and
+                       it is paper, so there is no identity quiz to fail
+      the delivery     it comes back to the facility as ordinary mail
+      the signature    a notary is available inside within 72 hours of asking
+      the return       the person carries it to their coordinator, who scans
+                       it at the desk, which the product already treats as
+                       confirmed because they are reading the paper as they
+                       type
+    """
+    from app.letters import draft_report_request
+
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    client = caller.client
+    draft = draft_report_request(
+        client_id=client.id,
+        client_name=client.display_name,
+        # To the facility, in their own name. No helper, no outside address.
+        delivery_address=f"{client.display_name}, {client.facility}",
+        identification=client.din,
+        id_label="DIN",
+        facility=client.facility,
+    )
+    asked = any(e.get("text", "").startswith("You asked for your credit report")
+                for e in client.timeline)
+    return templates.TemplateResponse(
+        request, "inside/request.html",
+        {"client": client, "draft": draft, "asked": asked,
+         "lang": i18n.from_request(request),
+         "notary": FACTS["notary_in_the_law_library"],
+         "mail_route": FACTS["free_report_mail_route"],
+         "within_days": FACTS["free_report_entitlement"]},
+    )
+
+
+@router.post("/request")
+def ask_for_own_report(request: Request):
+    """Recorded as something this person did, on a date, under their own name.
+
+    Not a status flag. From the Cornish interview: an event with nobody
+    attached reads as a scam from inside, so this goes on the timeline the
+    same way finishing a lesson does, because it is the same kind of thing.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_OWN_STATUS)
+    client = caller.client
+    with mutate():
+        if not any(e.get("text", "").startswith("You asked for your credit report")
+                   for e in client.timeline):
+            client.timeline.append({
+                "text": "You asked for your credit report from all three bureaus",
+                "actor": "You",
+                "on": date.today().strftime("%B %-d"),
+                "done": True,
+            })
+    return RedirectResponse("/inside/request", status_code=303)
 
 
 @router.get("/after", response_class=HTMLResponse)

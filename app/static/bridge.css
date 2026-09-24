@@ -526,3 +526,10 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 @media (prefers-reduced-motion: reduce) {
   .splash { display: none !important; }
 }
+
+/* A numbered step keeps its number beside its sentence. `.row` wraps, which is
+   right for tags and wrong here: a long step put the number on one line and
+   the words on the next, so the list stopped looking like a list. */
+.row.step { flex-wrap: nowrap; align-items: flex-start; }
+.row.step > .tag { flex: none; margin-top: 1px; }
+.row.step > .small { flex: 1; }
