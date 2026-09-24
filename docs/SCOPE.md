@@ -32,6 +32,10 @@ release. See `app/authorization.py` for the full reasoning.
 Bridge contains no AI today. [docs/AI.md](AI.md) says where a model would
 fit if one were added, and why none of the other candidate places survive.
 
+No surface here belongs to somebody after release. [docs/RETENTION.md](RETENTION.md)
+says what that costs, what survives the gate anyway, and what would have to be
+built.
+
 ## Three roles, three surfaces
 
 Who can do what is set by physics and law, not by preference. That is what
@@ -69,7 +73,7 @@ expires first, never a roster.
 | Thing | Why not |
 | --- | --- |
 | Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. This is the one place a model belongs, and [docs/AI.md](AI.md) specifies it: what it is given, what it returns, who confirms it, and what it is never allowed to do. |
-| Referrals and outcomes | Never built past a sketch, and nothing depends on them. |
+| Referrals and outcomes | Never built past a sketch, and nothing depends on them. A post-release handoff to a community lender is a partnership rather than a feature. See [docs/RETENTION.md](RETENTION.md). |
 | Account creation | There is no self-serve signup. Accounts are seeded, which is right: a person does not enrol themselves into a caseload, a counselor adds them. |
 | Password reset by email | Nobody inside has outside email. A counselor clears the PIN and the client sets a new one on their tablet. |
 | Real offline support | The tablet reaches Bridge, so writes go to the server and save immediately. An earlier promise that "nothing is lost if you lose access for a week" was about a disconnected device, and it has been removed from the intake copy rather than left there untrue. If a facility turns out to have genuinely intermittent connectivity, IndexedDB plus replay is the real fix. |

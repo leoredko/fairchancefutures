@@ -80,6 +80,9 @@ integration assumes and `app/caseplan.py` for the code.
 Bridge contains no AI. Where a model would fit, and the four places it must
 not go, are specified in [docs/AI.md](docs/AI.md).
 
+What happens to somebody after they walk out, and which of the obvious answers
+the evidence rules out, is [docs/RETENTION.md](docs/RETENTION.md).
+
 Design rationale lives in [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md).
 
 Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
