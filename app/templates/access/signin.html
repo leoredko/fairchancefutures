@@ -7,6 +7,25 @@
     <span class="who">New York State</span>
   </div>
 
+  {% if languages|length > 2 %}
+  <form class="pane" method="post" action="/language" style="padding-bottom:0">
+    <input type="hidden" name="back" value="/signin">
+    <div class="langbar">
+      {% for choice in languages %}
+        {% if choice.ready %}
+          <button class="langpick{% if choice.code == lang %} on{% endif %}"
+                  type="submit" name="lang" value="{{ choice.code }}">{{ choice.name }}</button>
+        {% else %}
+          <span class="langpick ghost" title="{{ choice.note }}">{{ choice.name }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% for choice in languages %}{% if not choice.ready %}
+      <p class="tiny" style="margin:6px 2px 0">{{ choice.note }}</p>
+    {% endif %}{% endfor %}
+  </form>
+  {% endif %}
+
   <form class="pane" method="post" action="/signin" autocomplete="off">
     <h1>DIN number or NYS ID</h1>
     <p class="lede">Either one works.</p>

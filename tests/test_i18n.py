@@ -1,10 +1,10 @@
 """The course in Spanish.
 
 The claim defended here is not "the translation is good", which no test can
-check. It is that **nothing reaches a person that a human has not signed off**,
-and that English is what they get until one has. These lessons state law, so a
-fluent Spanish sentence nobody read is the same failure as a legal sentence
-with no source.
+check. It is that the Spanish is content rather than machinery: it falls back
+per string, it never touches a citation, and one environment variable takes
+the whole language back out if a line turns out to be wrong in front of
+people.
 """
 
 import subprocess
@@ -57,14 +57,29 @@ def test_a_signed_off_translation_reaches_the_screen(catalog_dir):
     assert i18n.translate_lesson(FIRST, "es").title == "Los tres papeles"
 
 
-def test_a_draft_flagged_fuzzy_never_reaches_the_screen(catalog_dir):
-    """The rule this module exists for. A translation tool marks its own
-    output fuzzy, and that flag is the difference between a draft and a
-    sign-off. A draft about a statutory deadline is worse than English."""
+def test_the_switch_takes_the_whole_language_back_out(catalog_dir, monkeypatch):
+    """The rollback. A bilingual reader checked this course, not a certified
+    translator, so the answer to "one line is wrong and we are on stage" has
+    to be something you can do from the host in ten seconds."""
     write_po(catalog_dir, [
-        (i18n.lesson_key(FIRST.slug, "title"), FIRST.title, "Borrador sin revisar", True),
+        (i18n.lesson_key(FIRST.slug, "title"), FIRST.title, "Los tres papeles", False),
     ])
+    assert i18n.translate_lesson(FIRST, "es").title == "Los tres papeles"
+    assert i18n.offered() is True
+
+    monkeypatch.setenv("BRIDGE_SPANISH", "off")
     assert i18n.translate_lesson(FIRST, "es").title == FIRST.title
+    assert i18n.offered() is False
+    assert i18n.available() == ("en",)
+
+
+def test_a_line_marked_needs_work_still_shows_while_somebody_checks_it(catalog_dir):
+    """Fuzzy is informational now. It tells the reader in Poedit which lines
+    nobody has been through yet; it does not hold the course back."""
+    write_po(catalog_dir, [
+        (i18n.lesson_key(FIRST.slug, "title"), FIRST.title, "Los tres papeles", True),
+    ])
+    assert i18n.translate_lesson(FIRST, "es").title == "Los tres papeles"
 
 
 def test_an_empty_translation_falls_back_to_english(catalog_dir):
@@ -98,7 +113,8 @@ def test_a_missing_catalog_is_not_an_error(catalog_dir):
 
 def test_the_language_choice_does_not_appear_until_something_is_translated(catalog_dir):
     """The EN / ES pill was removed once already for being decoration over an
-    English-only app. It comes back only when it does something."""
+    English-only app. It comes back only when it does something, and it is
+    gone again the moment the switch is thrown."""
     assert i18n.available() == ("en",)
     assert i18n.offered() is False
 

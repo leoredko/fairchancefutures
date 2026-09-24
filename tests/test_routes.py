@@ -292,11 +292,44 @@ def test_no_wireframe_annotations_survive_in_the_product(client, staff):
         assert "Design note:" not in staff.get(url).text, url
 
 
-def test_the_en_es_pill_is_gone(inside):
-    """There is no Spanish and lang is hardcoded en. A toggle that does not
-    toggle is worse than no toggle."""
+def test_the_language_choice_is_at_the_door_and_nowhere_else(client, inside):
+    """The EN / ES pill was removed for being decoration over an English-only
+    app. The choice is back because the Spanish is real, and it lives at the
+    sign-in door: somebody who reads Spanish should not have to get through an
+    English screen to find out the app speaks to them. It does not follow them
+    around the app afterwards, because it is made once."""
+    door = client.get("/signin").text
+    assert "Español" in door
+    assert "EN / ES" not in door
+
     for url in ["/inside/intake/1", "/inside/authorization"]:
         assert "EN / ES" not in inside.get(url).text
+
+
+def test_the_door_names_the_languages_it_does_not_have(client):
+    """Somebody who reads neither English nor Spanish finds that out here,
+    from a screen that admits it, rather than by working through a course in a
+    language they cannot read."""
+    door = client.get("/signin").text
+    assert "Other" in door
+    assert "coming" in door.lower()
+
+
+def test_choosing_a_language_sets_it_and_comes_back(client):
+    chosen = client.post("/language", data={"lang": "es", "back": "/signin"},
+                         follow_redirects=False)
+    assert chosen.status_code == 303
+    assert chosen.headers["location"] == "/signin"
+    assert "bridge_lang" in chosen.cookies
+
+
+def test_the_door_will_not_forward_you_off_this_app(client):
+    """An open redirect on a sign-in page is somebody else's phishing page
+    wearing our address."""
+    for bad in ["https://example.com/x", "//example.com/x"]:
+        out = client.post("/language", data={"lang": "es", "back": bad},
+                          follow_redirects=False)
+        assert out.headers["location"] == "/signin", bad
 
 
 def test_citations_page_lists_every_fact_with_its_source(client):

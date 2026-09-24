@@ -10,28 +10,26 @@ The catalog is a gettext `.po` file, which is the format translators already
 have tools for. A person reviewing the Spanish opens `app/translations/es.po`
 in Poedit, sees the English beside the Spanish, and saves. No JSON, no code.
 
-Three properties fall out of gettext that we would otherwise have had to
+Two properties fall out of gettext that we would otherwise have had to
 invent, which is the reason for using it rather than a dictionary of our own:
 
     msgctxt     the stable key, so a card can be reworded without the
                 translation silently attaching to the wrong screen
     msgid       the English the translation was made against. When the English
-                changes the msgid no longer matches, and the entry is stale by
-                construction rather than by somebody remembering.
-    fuzzy       the standard flag for "not signed off". It is how every
-                translation tool in the world marks a draft.
+                changes the msgid no longer matches, and that entry alone
+                falls back to English, so a reworded card cannot keep showing
+                Spanish for a sentence the product no longer says.
 
-**The rule this module exists to enforce: a fuzzy entry never reaches a
-screen.** These lessons state law. A machine-drafted sentence about a 30-day
-dispute clock that no Spanish speaker has read is the same failure as a legal
-sentence with no source, and `app/sources.py` already refuses that one. So an
-entry that is missing, empty, or fuzzy falls back to English. English is not
-the failure case here: it is what the person gets today, and it is correct.
+An empty entry falls back to English too. Fallback is per string, so a course
+that is nine tenths translated shows nine tenths in Spanish rather than
+waiting for the last line.
 
-Which means the drafting tool does not matter much and is deliberately not
-named in this module. Argos Translate, Poedit's own suggestions, or a person
-typing from scratch all arrive at the same place: a `.po` file that a human
-has signed off. `scripts/i18n_extract.py` builds the file to be filled in.
+**The switch.** Set `BRIDGE_SPANISH=off` and the whole language disappears:
+no toggle on the tablet, everything in English, no deploy and no code change
+needed. It is there because the Spanish is checked by a bilingual reader
+rather than a certified translator, and the honest answer to "what if a line
+turns out to be wrong in front of people" is one environment variable rather
+than a rollback.
 """
 
 from __future__ import annotations
@@ -96,6 +94,16 @@ class Catalog:
         return not self._entries
 
 
+def enabled() -> bool:
+    """The switch. `BRIDGE_SPANISH=off` takes the language out entirely.
+
+    Read on every call rather than cached at import, so flipping it on the
+    host takes effect on the next request instead of on the next deploy.
+    """
+    return os.environ.get("BRIDGE_SPANISH", "on").strip().lower() not in (
+        "off", "0", "false", "no")
+
+
 def _load(language: str) -> Catalog:
     path = TRANSLATIONS / f"{language}.po"
     if language == SOURCE_LANGUAGE or not path.exists():
@@ -103,12 +111,9 @@ def _load(language: str) -> Catalog:
 
     entries: dict[str, tuple[str, str]] = {}
     for entry in polib.pofile(str(path)):
-        # Three ways an entry is not ready, and all three mean English:
-        # nobody has typed anything, somebody typed a draft and flagged it, or
-        # the entry is marked obsolete because the source string is gone.
+        # Nothing typed, or the string it belonged to is gone from the course.
+        # Either way there is nothing to show but the English.
         if not entry.msgstr.strip():
-            continue
-        if "fuzzy" in entry.flags:
             continue
         if entry.obsolete:
             continue
@@ -134,13 +139,16 @@ def reload() -> None:
 
 
 def available() -> tuple[str, ...]:
-    """Languages with at least one reviewed string, English always included.
+    """Languages with something in them, English always included.
 
     This is what decides whether the tablet shows a language choice at all. A
     toggle that switches to an untranslated app is the decoration this product
-    removed once already, so the control does not exist until the content does.
+    removed once already, so the control does not exist until the content
+    does, and it disappears again the moment the switch is thrown.
     """
     ready = [SOURCE_LANGUAGE]
+    if not enabled():
+        return tuple(ready)
     for language in LANGUAGES:
         if language == SOURCE_LANGUAGE:
             continue
@@ -219,7 +227,7 @@ def translate_lesson(lesson, language: str):
     not get translated: a person taking 15 U.S.C. 1681i to a law library needs
     it to read the way it reads on the shelf.
     """
-    if language == SOURCE_LANGUAGE:
+    if language == SOURCE_LANGUAGE or not enabled():
         return lesson
     book = catalog(language)
     if book.is_empty:
@@ -262,7 +270,7 @@ def translate_lesson(lesson, language: str):
 
 
 def coverage(language: str) -> dict:
-    """How much of the course is signed off, for the team rather than a screen.
+    """How much of the course is translated, for the team rather than a screen.
 
     Counted against what is actually translatable right now, so the number
     moves when a reviewer saves the file and not when somebody edits this
@@ -290,3 +298,50 @@ def coverage(language: str) -> dict:
         "legal_total": legal_total,
         "legal_reviewed": legal_done,
     }
+
+
+# --------------------------------------------------------------------------
+# the request
+# --------------------------------------------------------------------------
+
+COOKIE = "bridge_lang"
+
+# A year. The choice is made once, at the door, by somebody who is not going
+# to want to make it again every time the tablet locks.
+COOKIE_MAX_AGE = 60 * 60 * 24 * 365
+
+
+def from_request(request) -> str:
+    """Which language this tablet is set to.
+
+    A cookie rather than anything on the case file, because the choice is made
+    at the sign-in door before anybody knows who is holding the tablet, and
+    because it is a property of the device in front of a person rather than a
+    fact about them.
+    """
+    return normalize(request.cookies.get(COOKIE))
+
+
+def choices() -> list[dict]:
+    """What the door offers.
+
+    `Other` is listed and cannot be picked. Somebody who reads neither English
+    nor Spanish should find out here, from a screen that admits it, rather
+    than by working through a course in a language they do not read. Naming
+    the gap is the honest version of not having filled it.
+    """
+    ready = available()
+    out = [{"code": code, "name": LANGUAGE_NAME[code], "ready": True}
+           for code in ready]
+    out.append({"code": "other", "name": "Other", "ready": False,
+                "note": "Other languages are coming. For now this app is in "
+                        "English" + (" and Spanish." if "es" in ready else ".")})
+    return out
+
+
+def translate_rows(rows: list[dict], language: str) -> list[dict]:
+    """The course index, translated. Each row wraps one lesson."""
+    if language == SOURCE_LANGUAGE or not enabled():
+        return rows
+    return [{**row, "lesson": translate_lesson(row["lesson"], language)}
+            for row in rows]

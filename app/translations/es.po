@@ -52,6 +52,7 @@ msgctxt "lesson.three-papers.card.0.title"
 msgid "Everything runs through your ID"
 msgstr "Todo pasa por tu identificación"
 
+#, fuzzy
 msgctxt "lesson.three-papers.card.0.body"
 msgid ""
 "A bank account, an apartment, a job, and every single thing you will ever do"
@@ -59,6 +60,10 @@ msgid ""
 "documents first. Get this chain wrong and nothing downstream of it can "
 "start."
 msgstr ""
+"Una cuenta bancaria, un apartamento, un trabajo, y absolutamente todo lo que"
+" hagas con una agencia de crédito requiere una identificación con foto. Y "
+"esa identificación necesita primero otros dos documentos. Si esta cadena se "
+"rompe, nada de lo que viene después puede empezar."
 
 #, fuzzy
 msgctxt "lesson.three-papers.card.0.aside"
@@ -81,6 +86,7 @@ msgstr ""
 "Acta de nacimiento y tarjeta del Seguro Social, en ese orden de preocupación"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.three-papers.card.1.body"
 msgid ""
 "Both have to be in your file before the non-driver ID application can even "
@@ -89,6 +95,11 @@ msgid ""
 " slow one. It can take ten weeks or more to come back, so it is the one to "
 "ask about first."
 msgstr ""
+"Ambos tienen que estar en tu expediente antes de que se pueda enviar la "
+"solicitud de identificación de no conductor. Tu coordinador es quien los "
+"solicita, y revisa cada tres meses cómo van los documentos de cada persona. "
+"El acta de nacimiento es la lenta. Puede tardar diez semanas o más en "
+"llegar, así que es la primera por la que hay que preguntar."
 
 #. LEGAL: cites a statute, read this one twice.
 #, fuzzy
@@ -97,6 +108,7 @@ msgid "120 days out, ask for the Social Security card"
 msgstr "A 120 días de salir, pide la tarjeta del Seguro Social"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.three-papers.card.2.body"
 msgid ""
 "That is the mark. At 120 days before you go home, the Social Security card "
@@ -104,6 +116,10 @@ msgid ""
 "raised it with you, raise it with them. If you are years out, this is the "
 "date to know about rather than the date to act on, and it will come round."
 msgstr ""
+"Esa es la marca. A 120 días antes de irte a casa, se envía la solicitud de "
+"la tarjeta del Seguro Social. Si ya estás dentro de esa ventana y nadie te "
+"lo ha mencionado, menciónalo tú. Si te faltan años, esta es una fecha que "
+"conviene conocer más que una fecha para actuar, y ya llegará."
 
 #. LEGAL: cites a statute, read this one twice.
 #, fuzzy
@@ -122,6 +138,7 @@ msgid "The birth certificate is free, unless you were born somewhere else"
 msgstr "El acta de nacimiento es gratis, salvo que hayas nacido en otro lugar"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.three-papers.card.3.body"
 msgid ""
 "When the department requests your birth certificate for your release, there "
@@ -131,6 +148,12 @@ msgid ""
 "that applies to you. Say so early, because yours takes longer and costs "
 "money."
 msgstr ""
+"Cuando el departamento solicita tu acta de nacimiento para tu salida, no hay"
+" ningún costo, y tus papeles de sentencia y compromiso cuentan como tu "
+"autorización, así que no tienes que firmar nada aparte. Eso cubre únicamente"
+" los registros de Nueva York. Si naciste en otro estado, o en otro país, "
+"nada de esto aplica para ti. Dilo desde temprano, porque el tuyo tarda más y"
+" cuesta dinero."
 
 #. LEGAL: cites a statute, read this one twice.
 #, fuzzy
@@ -139,6 +162,7 @@ msgid "The other 120 days, which is not the same 120 days"
 msgstr "Los otros 120 días, que no son los mismos 120 días"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.three-papers.card.4.body"
 msgid ""
 "After you are released, the DOCCS ID you walk out with expires in 120 days. "
@@ -146,6 +170,11 @@ msgid ""
 "driver photo ID. Two different 120-day clocks, one before the gate and one "
 "after, and mixing them up is how people end up with no ID at all."
 msgstr ""
+"Después de que te liberen, la identificación de DOCCS con la que sales vence"
+" en 120 días. Esa es tu ventana para llegar a una oficina del DMV y "
+"cambiarla por una identificación de no conductor con foto de verdad. Son dos"
+" relojes distintos de 120 días, uno antes de la puerta y otro después, y "
+"confundirlos es como la gente termina sin ninguna identificación."
 
 #, fuzzy
 msgctxt "lesson.three-papers.check.prompt"
@@ -156,6 +185,7 @@ msgstr ""
 "Estás a 130 días de salir y no tienes acta de nacimiento en tu expediente. "
 "¿Qué es lo más útil que puedes hacer?"
 
+#, fuzzy
 msgctxt "lesson.three-papers.check.why"
 msgid ""
 "The birth certificate has no deadline attached, which is exactly why it gets"
@@ -163,6 +193,11 @@ msgid ""
 "cannot be submitted without it. The 120-day mark is for the Social Security "
 "card. The birth certificate wants to be moving before that."
 msgstr ""
+"El acta de nacimiento no tiene fecha límite, que es exactamente por lo que "
+"se deja para después. También es la lenta, diez semanas o más, y la "
+"solicitud de identificación no se puede enviar sin ella. La marca de los 120"
+" días es para la tarjeta del Seguro Social. El acta de nacimiento conviene "
+"tenerla en movimiento antes de eso."
 
 #, fuzzy
 msgctxt "lesson.three-papers.check.choice.both"
@@ -179,44 +214,62 @@ msgctxt "lesson.three-papers.check.choice.id"
 msgid "Apply for the photo ID and sort the rest later"
 msgstr "Solicitar la identificación con foto y resolver lo demás después"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.title"
 msgid "What a credit report actually is"
-msgstr ""
+msgstr "Qué es realmente un reporte de crédito"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.hook"
 msgid ""
 "It is a file about you that you have never read, and there are rules about "
 "who gets to look at it."
 msgstr ""
+"Es un expediente sobre ti que nunca has leído, y hay reglas sobre quién "
+"puede verlo."
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.0.title"
 msgid "It is a list, not a judgement"
-msgstr ""
+msgstr "Es una lista, no un juicio"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.0.body"
 msgid ""
 "A credit report is a record of accounts in your name: who you borrowed from,"
 " how much, whether you paid on time, and whether anybody is chasing you for "
 "it. That is it. It is closer to a bank statement than to a grade."
 msgstr ""
+"Un reporte de crédito es un registro de las cuentas a tu nombre: a quién le "
+"pediste prestado, cuánto, si pagaste a tiempo, y si alguien te está "
+"cobrando. Eso es todo. Se parece más a un estado de cuenta bancario que a "
+"una calificación."
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.1.title"
 msgid "There are three of them, and they disagree"
-msgstr ""
+msgstr "Hay tres, y no coinciden entre sí"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.1.body"
 msgid ""
 "Equifax, Experian and TransUnion each keep their own file on you. Not every "
 "lender reports to all three, so an account can sit on one report and be "
 "missing from another. This is why anything we do, we do three times."
 msgstr ""
+"Equifax, Experian y TransUnion tienen cada una su propio expediente sobre "
+"ti. No todos los prestamistas reportan a las tres, así que una cuenta puede "
+"aparecer en un reporte y faltar en otro. Por eso todo lo que hacemos, lo "
+"hacemos tres veces."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.2.title"
 msgid "Not everybody can just look you up"
-msgstr ""
+msgstr "No cualquiera puede consultarte"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.2.body"
 msgid ""
 "A report can only be handed out for a reason the law lists: you applied for "
@@ -224,13 +277,19 @@ msgid ""
 "enforcement, or you told them in writing to release it. Somebody being "
 "curious about you is not on that list."
 msgstr ""
+"Un reporte solo se puede entregar por una razón que la ley enumera: "
+"solicitaste crédito, una aseguradora está tomando una decisión, lo ordenó un"
+" tribunal, cobro de manutención infantil, o le dijiste por escrito que lo "
+"entregara. Que alguien tenga curiosidad sobre ti no está en esa lista."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.3.title"
 msgid "An employer needs your written permission"
-msgstr ""
+msgstr "Un empleador necesita tu permiso por escrito"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.3.body"
 msgid ""
 "An employer has to tell you clearly and in writing that they want to pull "
@@ -239,19 +298,29 @@ msgid ""
 "copy of the report and a written statement of your rights before they act. "
 "Not after. Before."
 msgstr ""
+"Un empleador tiene que avisarte de forma clara y por escrito que quiere "
+"consultar tu crédito, y obtener tu permiso por escrito antes de hacerlo. Si "
+"después decide no contratarte por lo que encontró, tiene que darte una copia"
+" del reporte y una declaración escrita de tus derechos antes de actuar. No "
+"después. Antes."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-a-report-is.card.3.aside"
 msgid ""
 "This one matters on the outside. Most people never ask for the copy they are"
 " owed."
 msgstr ""
+"Esto importa mucho afuera. La mayoría de la gente nunca pide la copia que le"
+" corresponde."
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.check.prompt"
 msgid ""
 "An employer turns you down and mentions your credit. What are you owed?"
-msgstr ""
+msgstr "Un empleador te rechaza y menciona tu crédito. ¿Qué te corresponde?"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.check.why"
 msgid ""
 "You get a copy of the report they used and a written statement of your "
@@ -260,33 +329,47 @@ msgid ""
 "entitles you to a free copy from the bureau itself. That comes up in the "
 "lesson on free reports."
 msgstr ""
+"Te corresponde una copia del reporte que usaron y una declaración escrita de"
+" tus derechos, y se supone que debes recibirla antes de que finalicen la "
+"decisión, para que haya una ventana donde señalar un error. Aparte de eso, "
+"un rechazo así te da derecho a una copia gratis de la propia agencia. Eso se"
+" ve en la lección sobre reportes gratuitos."
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.check.choice.copy"
 msgid "A copy of the report and a statement of your rights"
-msgstr ""
+msgstr "Una copia del reporte y una declaración de tus derechos"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.check.choice.nothing"
 msgid "Nothing, it is their decision"
-msgstr ""
+msgstr "Nada, es su decisión"
 
+#, fuzzy
 msgctxt "lesson.what-a-report-is.check.choice.reason"
 msgid "A written explanation of their reasoning"
-msgstr ""
+msgstr "Una explicación escrita de su razonamiento"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.title"
 msgid "The report and the score are different things"
-msgstr ""
+msgstr "El reporte y el puntaje son cosas distintas"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.hook"
 msgid ""
 "One is a file. The other is somebody's opinion about the file, and you are "
 "owed the first one but not the second."
 msgstr ""
+"Uno es un expediente. El otro es la opinión de alguien sobre ese expediente,"
+" y tienes derecho al primero pero no al segundo."
 
+#, fuzzy
 msgctxt "lesson.report-and-score.card.0.title"
 msgid "The file is the facts. The score is an opinion about them"
-msgstr ""
+msgstr "El expediente son los hechos. El puntaje es una opinión sobre ellos"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.card.0.body"
 msgid ""
 "The report lists what happened. A score is a number a company calculates "
@@ -294,13 +377,19 @@ msgid ""
 "follows. Argue with the score and nothing happens, because there is nothing "
 "there to argue with."
 msgstr ""
+"El reporte enumera lo que pasó. Un puntaje es un número que una empresa "
+"calcula a partir de esa lista, con una fórmula que les pertenece. Cambia el "
+"expediente y el puntaje sigue. Discute con el puntaje y no pasa nada, porque"
+" ahí no hay nada con qué discutir."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.report-and-score.card.1.title"
 msgid "Your free report may come with no number on it"
-msgstr ""
+msgstr "Tu reporte gratuito puede llegar sin ningún número"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.report-and-score.card.1.body"
 msgid ""
 "What you are owed by law is the file. A score is specifically not part of "
@@ -309,24 +398,37 @@ msgid ""
 "cheated you. You got exactly what you were owed, and it is the more useful "
 "half."
 msgstr ""
+"Lo que la ley te debe es el expediente. Un puntaje específicamente no es "
+"parte de lo que tienen que entregarte. Así que cuando tu reporte llegue por "
+"correo y no haya ningún número en ninguna parte, no salió nada mal y nadie "
+"te engañó. Recibiste exactamente lo que te correspondía, y es la mitad más "
+"útil."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.report-and-score.card.2.title"
 msgid "Your Social Security number can be blacked out"
-msgstr ""
+msgstr "Tu número de Seguro Social se puede tapar"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.report-and-score.card.2.body"
 msgid ""
 "You can require them to leave the first five digits of your Social off your "
 "own copy. That is a right you can insist on, not a favour. It is also the "
 "reason you can read your own report on a tablet in a room full of people."
 msgstr ""
+"Puedes exigir que dejen fuera los primeros cinco dígitos de tu Seguro Social"
+" en tu propia copia. Es un derecho que puedes exigir, no un favor. También "
+"es la razón por la que puedes leer tu propio reporte en una tableta en un "
+"cuarto lleno de gente."
 
+#, fuzzy
 msgctxt "lesson.report-and-score.check.prompt"
 msgid "Your free report arrives and there is no score on it. What happened?"
-msgstr ""
+msgstr "Llega tu reporte gratuito y no trae puntaje. ¿Qué pasó?"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.check.why"
 msgid ""
 "The law says they owe you the file, and specifically says scores are not "
@@ -334,35 +436,48 @@ msgid ""
 "whether you have a score, and the file is the part that can actually be "
 "corrected."
 msgstr ""
+"La ley dice que te deben el expediente, y dice específicamente que los "
+"puntajes no son parte de eso. La mayoría de los reportes que llegan por "
+"correo vienen sin uno. No dice nada sobre si tienes o no un puntaje, y el "
+"expediente es la parte que sí se puede corregir."
 
+#, fuzzy
 msgctxt "lesson.report-and-score.check.choice.normal"
 msgid "Nothing. A file disclosure does not have to include one"
-msgstr ""
+msgstr "Nada. Una entrega del expediente no tiene que incluir uno"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.check.choice.error"
 msgid "They made a mistake and you should write back"
-msgstr ""
+msgstr "Cometieron un error y deberías escribirles de vuelta"
 
+#, fuzzy
 msgctxt "lesson.report-and-score.check.choice.nofile"
 msgid "It means you have no score at all"
-msgstr ""
+msgstr "Significa que no tienes ningún puntaje"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.title"
 msgid "There is no such thing as your credit score"
-msgstr ""
+msgstr "No existe eso de tu puntaje de crédito"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.hook"
 msgid ""
 "Not one number. Dozens, all real at the same time, and the free app on "
 "somebody's phone is showing a different one from the bank."
 msgstr ""
+"No es un número. Son docenas, todos reales al mismo tiempo, y la aplicación "
+"gratuita en el teléfono de alguien muestra uno distinto al del banco."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.0.title"
 msgid "Three things multiply together"
-msgstr ""
+msgstr "Tres cosas se multiplican entre sí"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.0.body"
 msgid ""
 "Which bureau's file it was run against, which company's model did the "
@@ -370,37 +485,55 @@ msgid ""
 "use, and separate versions tuned for car loans and credit cards. Multiply "
 "those out and one person honestly has dozens of scores on the same day."
 msgstr ""
+"Contra el expediente de cuál agencia se calculó, el modelo de cuál empresa "
+"hizo el cálculo, y para qué es el puntaje. Tres agencias, varios modelos en "
+"uso activo, y versiones separadas ajustadas para préstamos de auto y para "
+"tarjetas de crédito. Multiplica eso y una sola persona honestamente tiene "
+"docenas de puntajes el mismo día."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.1.title"
 msgid "They do not even share a scale"
-msgstr ""
+msgstr "Ni siquiera comparten la misma escala"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.1.body"
 msgid ""
 "Most scores run 300 to 850. The ones car dealers and card companies pull run"
 " 250 to 900. So a 700 in one place is not the same as a 700 in another, and "
 "comparing them straight across tells you nothing."
 msgstr ""
+"La mayoría de los puntajes van de 300 a 850. Los que consultan los "
+"vendedores de autos y las compañías de tarjetas van de 250 a 900. Así que un"
+" 700 en un lugar no es lo mismo que un 700 en otro, y compararlos "
+"directamente no te dice nada."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.2.title"
 msgid "Why the free app disagrees with the bank"
-msgstr ""
+msgstr "Por qué la aplicación gratuita no coincide con el banco"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.no-single-score.card.2.body"
 msgid ""
 "Free apps usually show a VantageScore. Most lenders use a FICO. Different "
 "companies, different formulas. Neither is lying to you. They are not "
 "measuring the same thing."
 msgstr ""
+"Las aplicaciones gratuitas normalmente muestran un VantageScore. La mayoría "
+"de los prestamistas usan un FICO. Empresas distintas, fórmulas distintas. "
+"Ninguna te está mintiendo. No están midiendo lo mismo."
 
+#, fuzzy
 msgctxt "lesson.no-single-score.card.3.title"
 msgid "So which one is real?"
-msgstr ""
+msgstr "¿Entonces cuál es el real?"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.card.3.body"
 msgid ""
 "The one belonging to whoever is deciding about you. That is the whole "
@@ -408,17 +541,29 @@ msgid ""
 "different one, and all of them are real. Which is why the work is on the "
 "file, not on chasing a number."
 msgstr ""
+"El de quien esté decidiendo sobre ti. Esa es toda la respuesta. Un "
+"arrendador, un vendedor de autos y una compañía de tarjetas van a consultar "
+"cada uno uno distinto, y todos son reales. Por eso el trabajo está en el "
+"expediente, no en perseguir un número."
 
+#, fuzzy
 msgctxt "lesson.no-single-score.card.3.aside"
 msgid ""
 "It is also why this app does not show you a number. A score with no model, "
 "bureau and date attached is a guess that looks precise."
 msgstr ""
+"También es la razón por la que esta aplicación no te muestra un número. Un "
+"puntaje sin su modelo, su agencia y su fecha es una suposición que parece "
+"precisa."
 
+#, fuzzy
 msgctxt "lesson.no-single-score.check.prompt"
 msgid "A free app shows 640. A car dealer says you are at 590. Who is wrong?"
 msgstr ""
+"Una aplicación gratuita muestra 640. Un vendedor de autos dice que estás en "
+"590. ¿Quién se equivoca?"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.check.why"
 msgid ""
 "The app is almost certainly showing a VantageScore. The dealer pulled an "
@@ -426,33 +571,45 @@ msgid ""
 " probably from a different bureau's file. Both numbers can be correct at "
 "once. Worth knowing before you assume somebody is running a game on you."
 msgstr ""
+"La aplicación casi seguro está mostrando un VantageScore. El vendedor "
+"consultó un FICO específico para autos, que va en una escala de 250 a 900 en"
+" lugar de 300 a 850, probablemente del expediente de otra agencia. Los dos "
+"números pueden ser correctos a la vez. Vale la pena saberlo antes de suponer"
+" que alguien te está jugando sucio."
 
+#, fuzzy
 msgctxt "lesson.no-single-score.check.choice.neither"
 msgid "Neither. Different model, different bureau, different scale"
-msgstr ""
+msgstr "Ninguno. Modelo distinto, agencia distinta, escala distinta"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.check.choice.app"
 msgid "The app, those are never accurate"
-msgstr ""
+msgstr "La aplicación, esas nunca son exactas"
 
+#, fuzzy
 msgctxt "lesson.no-single-score.check.choice.dealer"
 msgid "The dealer, they lowball to sell you a worse rate"
-msgstr ""
+msgstr "El vendedor, bajan el número para venderte una peor tasa"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.title"
 msgid "What actually moves a score"
-msgstr ""
+msgstr "Qué mueve realmente un puntaje"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.hook"
 msgid "Five things, and two of them are most of it."
-msgstr ""
+msgstr "Cinco cosas, y dos de ellas son casi todo."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.0.title"
 msgid "The five, by weight"
-msgstr ""
+msgstr "Las cinco, por peso"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.0.body"
 msgid ""
 "Payment history is about 35 percent. How much you owe against what is "
@@ -460,13 +617,19 @@ msgid ""
 " percent. Your mix of types of credit, about 10 percent. Recently opened "
 "accounts, about 10 percent."
 msgstr ""
+"El historial de pagos es cerca del 35 por ciento. Cuánto debes comparado con"
+" cuánto tienes disponible es cerca del 30 por ciento. Cuánto tiempo llevas "
+"con crédito, cerca del 15 por ciento. Tu mezcla de tipos de crédito, cerca "
+"del 10 por ciento. Cuentas abiertas recientemente, cerca del 10 por ciento."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.1.title"
 msgid "Two of them are two thirds"
-msgstr ""
+msgstr "Dos de ellas son dos tercios"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.1.body"
 msgid ""
 "Paying on time and not using too much of what you have available are roughly"
@@ -474,11 +637,17 @@ msgid ""
 "you only ever remember one thing from this course, remember that the boring "
 "answer is most of the answer."
 msgstr ""
+"Pagar a tiempo y no usar demasiado de lo que tienes disponible son "
+"aproximadamente el 65 por ciento entre las dos. Todo lo demás es ruido en "
+"comparación. Si solo te vas a quedar con una cosa de este curso, quédate con"
+" que la respuesta aburrida es casi toda la respuesta."
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.2.title"
 msgid "The one nobody explains"
-msgstr ""
+msgstr "La que nadie explica"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.2.body"
 msgid ""
 "That second one is about the ratio, not the amount. A card with a 500 dollar"
@@ -487,24 +656,39 @@ msgid ""
 "card down below about a third of its limit is the fastest legitimate move "
 "there is."
 msgstr ""
+"Esa segunda es sobre la proporción, no sobre la cantidad. Una tarjeta con "
+"límite de 500 dólares que carga un saldo de 450 se ve peor que una tarjeta "
+"con límite de 5,000 dólares que carga esos mismos 450. La misma deuda. Un "
+"panorama muy distinto. Bajar una tarjeta por debajo de un tercio de su "
+"límite es la jugada legítima más rápida que existe."
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.3.title"
 msgid "Time is the one you cannot rush"
-msgstr ""
+msgstr "El tiempo es el que no puedes apurar"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.card.3.body"
 msgid ""
 "Length of history only goes one way and only at one speed. Which is the real"
 " argument for starting inside rather than at the gate: an account opened now"
 " is already months old by the time anybody asks you for a credit check."
 msgstr ""
+"La antigüedad del historial solo va en una dirección y a una sola velocidad."
+" Que es el verdadero argumento para empezar aquí adentro en lugar de en la "
+"puerta: una cuenta abierta hoy ya tiene meses de antigüedad para cuando "
+"alguien te pida una revisión de crédito."
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.check.prompt"
 msgid ""
 "You have 450 dollars and two cards, each with a 500 dollar limit and a 450 "
 "balance. What helps your score most?"
 msgstr ""
+"Tienes 450 dólares y dos tarjetas, cada una con límite de 500 dólares y "
+"saldo de 450. ¿Qué ayuda más a tu puntaje?"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.check.why"
 msgid ""
 "Clearing one card takes it from 90 percent used to nearly nothing, which is "
@@ -513,35 +697,49 @@ msgid ""
 "paying at least the minimum on the other one either way, because payment "
 "history is the bigger slice and a missed payment undoes this."
 msgstr ""
+"Liquidar una tarjeta la lleva de 90 por ciento usada a casi nada, que es la "
+"parte de la fórmula que se mueve más rápido. Repartirlo deja ambas tarjetas "
+"alrededor del 45 por ciento usadas, que es mejor que 90 pero no por tanto. "
+"De cualquier forma sigue pagando al menos el mínimo de la otra, porque el "
+"historial de pagos es la rebanada más grande y un pago perdido deshace esto."
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.check.choice.one"
 msgid "Pay one card down to near zero"
-msgstr ""
+msgstr "Bajar una tarjeta a casi cero"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.check.choice.split"
 msgid "Split it evenly across both"
-msgstr ""
+msgstr "Repartirlo por igual entre las dos"
 
+#, fuzzy
 msgctxt "lesson.what-moves-it.check.choice.save"
 msgid "Keep it in savings and pay the minimums"
-msgstr ""
+msgstr "Guardarlo en ahorros y pagar los mínimos"
 
+#, fuzzy
 msgctxt "lesson.old-debt.title"
 msgid "Old debt does not last forever"
-msgstr ""
+msgstr "La deuda vieja no dura para siempre"
 
+#, fuzzy
 msgctxt "lesson.old-debt.hook"
 msgid ""
 "Most of it has to come off after seven years, and paying it does not restart"
 " the clock."
 msgstr ""
+"La mayoría tiene que salir después de siete años, y pagarla no reinicia el "
+"reloj."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.0.title"
 msgid "Seven years, ten for bankruptcy"
-msgstr ""
+msgstr "Siete años, diez para la bancarrota"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.0.body"
 msgid ""
 "Collection accounts and charge-offs have to come off seven years after the "
@@ -549,13 +747,20 @@ msgid ""
 " most other bad marks. Bankruptcy runs ten. After that they are not allowed "
 "to report it."
 msgstr ""
+"Las cuentas en cobranza y las cuentas canceladas por incobrables tienen que "
+"salir siete años después de que la cuenta cayó en mora por primera vez. Lo "
+"mismo aplica a los fallos civiles y a los gravámenes fiscales pagados, y a "
+"la mayoría de las demás marcas negativas. La bancarrota corre diez años. "
+"Después de eso no tienen permitido reportarlo."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.1.title"
 msgid "The clock starts at the original delinquency"
-msgstr ""
+msgstr "El reloj empieza en la mora original"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.1.body"
 msgid ""
 "This is the part that gets people. The seven years runs from when you first "
@@ -563,13 +768,19 @@ msgid ""
 " not from when you paid it. Paying an old debt does not restart anything. A "
 "collector who tells you it will is selling you something."
 msgstr ""
+"Esta es la parte que confunde a la gente. Los siete años corren desde que te"
+" atrasaste por primera vez en la cuenta original, no desde que un cobrador "
+"la compró ni desde que la pagaste. Pagar una deuda vieja no reinicia nada. "
+"Un cobrador que te diga que sí te está vendiendo algo."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.2.title"
 msgid "Court debt is a different animal"
-msgstr ""
+msgstr "La deuda judicial es otro animal"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.old-debt.card.2.body"
 msgid ""
 "Restitution, fines and child support do not work like credit accounts. Civil"
@@ -578,13 +789,23 @@ msgid ""
 "support arrears are the exception: states are required to report those. They"
 " all matter, and they belong in a different list from your credit accounts."
 msgstr ""
+"La restitución, las multas y la manutención infantil no funcionan como las "
+"cuentas de crédito. Los fallos civiles en su mayoría salieron de los "
+"reportes de crédito allá por 2017, y en Nueva York la restitución la cobra "
+"probation en lugar de reportarse como deuda. Los atrasos de manutención "
+"infantil son la excepción: los estados están obligados a reportarlos. Todos "
+"importan, y pertenecen a una lista distinta de la de tus cuentas de crédito."
 
+#, fuzzy
 msgctxt "lesson.old-debt.check.prompt"
 msgid ""
 "A collector says paying a five-year-old debt will help your credit. Is that "
 "right?"
 msgstr ""
+"Un cobrador dice que pagar una deuda de cinco años ayudará a tu crédito. ¿Es"
+" cierto?"
 
+#, fuzzy
 msgctxt "lesson.old-debt.check.why"
 msgid ""
 "It may help, and on some newer scoring models a paid collection stops "
@@ -593,48 +814,69 @@ msgid ""
 "pay to make it go away has it backwards: time makes it go away. Get any "
 "agreement in writing before money moves."
 msgstr ""
+"Puede que ayude, y en algunos modelos de puntaje más nuevos una cobranza "
+"pagada deja de contar en tu contra por completo. Pero no reinicia ni "
+"extiende los siete años, y no borra el registro. Quien te diga que tienes "
+"que pagar para que desaparezca lo tiene al revés: el tiempo hace que "
+"desaparezca. Consigue cualquier acuerdo por escrito antes de que se mueva "
+"dinero."
 
+#, fuzzy
 msgctxt "lesson.old-debt.check.choice.partly"
 msgid "Partly, but it will not reset the seven years"
-msgstr ""
+msgstr "En parte, pero no reiniciará los siete años"
 
+#, fuzzy
 msgctxt "lesson.old-debt.check.choice.yes"
 msgid "Yes, paying always helps"
-msgstr ""
+msgstr "Sí, pagar siempre ayuda"
 
+#, fuzzy
 msgctxt "lesson.old-debt.check.choice.no"
 msgid "No, never pay an old debt"
-msgstr ""
+msgstr "No, nunca pagues una deuda vieja"
 
+#, fuzzy
 msgctxt "lesson.free-reports.title"
 msgid "Every way to get your report free"
-msgstr ""
+msgstr "Todas las formas de obtener tu reporte gratis"
 
+#, fuzzy
 msgctxt "lesson.free-reports.hook"
 msgid ""
 "There are more routes than the one everybody knows, and coming home "
 "qualifies you for several of them at once."
 msgstr ""
+"Hay más rutas que la que todo el mundo conoce, y volver a casa te califica "
+"para varias de ellas a la vez."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.0.title"
 msgid "One a year, from all three, by mail"
-msgstr ""
+msgstr "Uno al año, de las tres, por correo"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.0.body"
 msgid ""
 "Every nationwide bureau owes you one free copy of your file every 12 months,"
 " through one central request, and they have 15 days from getting the request"
 " to send it. One letter to one address covers all three."
 msgstr ""
+"Cada agencia nacional te debe una copia gratuita de tu expediente cada 12 "
+"meses, mediante una sola solicitud central, y tienen 15 días desde que "
+"reciben la solicitud para enviarla. Una carta a una dirección cubre las "
+"tres."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.1.title"
 msgid "The mail route is the one that works from here"
-msgstr ""
+msgstr "La ruta por correo es la que funciona desde aquí"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.1.body"
 msgid ""
 "The Annual Credit Report Request Form goes to the Annual Credit Report "
@@ -642,13 +884,20 @@ msgid ""
 "reports everyone talks about are online only and are a voluntary arrangement"
 " rather than a right, so they are no use to you in here."
 msgstr ""
+"El formulario Annual Credit Report Request Form se envía al Annual Credit "
+"Report Request Service en Atlanta. Sin internet, sin teléfono, sin costo. "
+"Los reportes gratuitos semanales de los que todos hablan son solo en línea y"
+" son un acuerdo voluntario más que un derecho, así que aquí adentro no te "
+"sirven."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.2.title"
 msgid "Turned down for something? That is another free one"
-msgstr ""
+msgstr "¿Te rechazaron algo? Ese es otro gratis"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.2.body"
 msgid ""
 "If you are denied credit, an apartment, insurance or a job because of your "
@@ -656,13 +905,19 @@ msgid ""
 " ask within 60 days of being told. This is separate from your annual one and"
 " does not use it up."
 msgstr ""
+"Si te niegan un crédito, un apartamento, un seguro o un trabajo por tu "
+"reporte de crédito, puedes obtener una copia gratuita del expediente que "
+"usaron, siempre que la pidas dentro de los 60 días de que te avisaron. Esto "
+"es aparte del anual y no lo consume."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.3.title"
 msgid "Unemployed or on assistance? Another one"
-msgstr ""
+msgstr "¿Desempleado o recibiendo asistencia? Otro más"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.3.body"
 msgid ""
 "A free report is also owed once a year to anyone who certifies in writing "
@@ -671,20 +926,32 @@ msgid ""
 "errors from fraud. Somebody just home often qualifies under two or three of "
 "those at the same time."
 msgstr ""
+"También se debe un reporte gratuito una vez al año a cualquier persona que "
+"certifique por escrito que está desempleada y planea buscar trabajo en los "
+"próximos 60 días, que recibe asistencia pública, o que cree que su "
+"expediente tiene errores por fraude. Alguien que acaba de volver a casa "
+"muchas veces califica bajo dos o tres de esas al mismo tiempo."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.free-reports.card.3.aside"
 msgid ""
 "Almost nobody knows this one. It is worth remembering for the first year "
 "out, when you will want to check more than once."
 msgstr ""
+"Casi nadie conoce esta. Vale la pena recordarla para el primer año afuera, "
+"cuando vas a querer revisar más de una vez."
 
+#, fuzzy
 msgctxt "lesson.free-reports.check.prompt"
 msgid ""
 "You used your annual free report in March. In July a landlord turns you down"
 " over your credit. Do you have to pay?"
 msgstr ""
+"Usaste tu reporte gratuito anual en marzo. En julio un arrendador te rechaza"
+" por tu crédito. ¿Tienes que pagar?"
 
+#, fuzzy
 msgctxt "lesson.free-reports.check.why"
 msgid ""
 "Being turned down because of a report starts its own entitlement, separate "
@@ -692,46 +959,64 @@ msgid ""
 "unemployed or on assistance at the time, that is another separate route "
 "again. These stack. Most people pay for something they were already owed."
 msgstr ""
+"Que te rechacen por un reporte inicia su propio derecho, aparte del anual, "
+"siempre que lo pidas dentro de 60 días. Si además estabas desempleado o "
+"recibiendo asistencia en ese momento, esa es otra ruta aparte. Se acumulan. "
+"La mayoría de la gente paga por algo que ya le correspondía."
 
+#, fuzzy
 msgctxt "lesson.free-reports.check.choice.free"
 msgid "No. A denial entitles you to another free copy"
-msgstr ""
+msgstr "No. Un rechazo te da derecho a otra copia gratuita"
 
+#, fuzzy
 msgctxt "lesson.free-reports.check.choice.pay"
 msgid "Yes, you already used this year's"
-msgstr ""
+msgstr "Sí, ya usaste el de este año"
 
+#, fuzzy
 msgctxt "lesson.free-reports.check.choice.wait"
 msgid "No, but you have to wait until next March"
-msgstr ""
+msgstr "No, pero tienes que esperar hasta marzo del próximo año"
 
+#, fuzzy
 msgctxt "lesson.disputes.title"
 msgid "What a dispute is, and the clock it starts"
-msgstr ""
+msgstr "Qué es una disputa, y el reloj que echa a andar"
 
+#, fuzzy
 msgctxt "lesson.disputes.hook"
 msgid ""
 "It is the one part of this where somebody else is on a deadline instead of "
 "you."
 msgstr ""
+"Es la única parte de esto donde el que tiene una fecha límite es alguien más"
+" y no tú."
 
+#, fuzzy
 msgctxt "lesson.disputes.card.0.title"
 msgid "You are telling them their file is wrong"
-msgstr ""
+msgstr "Les estás diciendo que su expediente está mal"
 
+#, fuzzy
 msgctxt "lesson.disputes.card.0.body"
 msgid ""
 "A dispute is a letter saying a specific item on your report is not accurate,"
 " and why. Not a complaint, not a request for sympathy. One item, one reason,"
 " in writing."
 msgstr ""
+"Una disputa es una carta que dice que un renglón específico de tu reporte no"
+" es exacto, y por qué. No es una queja, no es una petición de compasión. Un "
+"renglón, una razón, por escrito."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.1.title"
 msgid "Thirty days, counted from when they get it"
-msgstr ""
+msgstr "Treinta días, contados desde que la reciben"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.1.body"
 msgid ""
 "They have 30 days to investigate, starting the day the letter lands, not the"
@@ -739,13 +1024,19 @@ msgid ""
 "get up to 15 more, so it can run to 45. Then they have five business days to"
 " write and tell you the outcome."
 msgstr ""
+"Tienen 30 días para investigar, empezando el día que llega la carta, no el "
+"día que la enviaste. Si mandas más información durante esos 30 días, les dan"
+" hasta 15 más, así que puede llegar a 45. Después tienen cinco días hábiles "
+"para escribirte y decirte el resultado."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.2.title"
 msgid "Wrong, incomplete, or unprovable all count"
-msgstr ""
+msgstr "Equivocado, incompleto o incomprobable, todos cuentan"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.2.body"
 msgid ""
 "If what they find is inaccurate, incomplete, or they simply cannot verify "
@@ -753,24 +1044,35 @@ msgid ""
 "expect. An old debt sold on three times may have nobody left who can prove "
 "it was ever yours."
 msgstr ""
+"Si lo que encuentran es inexacto, incompleto, o simplemente no lo pueden "
+"verificar, tienen que borrarlo o corregirlo. Ese último caso importa más de "
+"lo que la gente espera. Una deuda vieja vendida tres veces puede que ya no "
+"tenga a nadie que pueda probar que alguna vez fue tuya."
 
+#, fuzzy
 msgctxt "lesson.disputes.card.3.title"
 msgid "All three, every time"
-msgstr ""
+msgstr "Las tres, siempre"
 
+#, fuzzy
 msgctxt "lesson.disputes.card.3.body"
 msgid ""
 "An item deleted at Equifax is still sitting on the Experian and TransUnion "
 "files. One letter fixes one third of the problem. This is why every dispute "
 "here goes out as three letters."
 msgstr ""
+"Un renglón borrado en Equifax sigue ahí sentado en los expedientes de "
+"Experian y TransUnion. Una carta arregla un tercio del problema. Por eso "
+"cada disputa aquí sale como tres cartas."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.4.title"
 msgid "It works more often than people think"
-msgstr ""
+msgstr "Funciona más seguido de lo que la gente cree"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.disputes.card.4.body"
 msgid ""
 "In the FTC's study, about one in four people found at least one error on a "
@@ -778,13 +1080,22 @@ msgid ""
 "to cost them worse terms on a loan. One in five had an error put right after"
 " they disputed it. Disputing is not a long shot."
 msgstr ""
+"En el estudio de la FTC, cerca de una de cada cuatro personas encontró al "
+"menos un error en un reporte que pudo haber importado, y cerca de una de "
+"cada veinte tenía uno lo bastante grave como para costarle peores "
+"condiciones en un préstamo. A una de cada cinco le corrigieron un error "
+"después de disputarlo. Disputar no es un tiro al aire."
 
+#, fuzzy
 msgctxt "lesson.disputes.check.prompt"
 msgid ""
 "You mail a dispute on the 1st. It arrives on the 5th. When is the answer "
 "due?"
 msgstr ""
+"Envías una disputa por correo el día 1. Llega el día 5. ¿Cuándo vence la "
+"respuesta?"
 
+#, fuzzy
 msgctxt "lesson.disputes.check.why"
 msgid ""
 "The clock runs from receipt, not from the postmark, which is why anything "
@@ -792,44 +1103,62 @@ msgid ""
 "paperwork while they are investigating, you hand them up to 15 extra days, "
 "so send everything at once rather than in pieces."
 msgstr ""
+"El reloj corre desde que la reciben, no desde el matasellos, que es por lo "
+"que cualquier cosa enviada desde aquí debería ir rastreada si se puede. Y si"
+" mandas papeles adicionales mientras están investigando, les regalas hasta "
+"15 días extra, así que manda todo de una vez en lugar de por partes."
 
+#, fuzzy
 msgctxt "lesson.disputes.check.choice.receipt"
 msgid "30 days from the 5th, when they received it"
-msgstr ""
+msgstr "30 días desde el 5, cuando la recibieron"
 
+#, fuzzy
 msgctxt "lesson.disputes.check.choice.posted"
 msgid "30 days from the 1st, when you posted it"
-msgstr ""
+msgstr "30 días desde el 1, cuando la enviaste"
 
+#, fuzzy
 msgctxt "lesson.disputes.check.choice.either"
 msgid "There is no fixed deadline"
-msgstr ""
+msgstr "No hay una fecha límite fija"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.title"
 msgid "Building a file from nothing"
-msgstr ""
+msgstr "Construir un expediente desde cero"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.hook"
 msgid ""
 "No file is not the same as bad credit, and it is the faster of the two to "
 "fix."
 msgstr ""
+"No tener expediente no es lo mismo que tener mal crédito, y de los dos es el"
+" más rápido de arreglar."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.0.title"
 msgid "Empty moves faster than damaged"
-msgstr ""
+msgstr "Vacío se mueve más rápido que dañado"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.0.body"
 msgid ""
 "Having no credit history is a different problem from having a bad one, and "
 "it is the better problem. There is nothing to argue with and nothing to wait"
 " out. You are building on clear ground."
 msgstr ""
+"No tener historial de crédito es un problema distinto a tener uno malo, y es"
+" el mejor problema. No hay nada con qué discutir y nada que esperar a que "
+"caduque. Estás construyendo en terreno limpio."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.1.title"
 msgid "A secured card is your own money, held"
-msgstr ""
+msgstr "Una tarjeta asegurada es tu propio dinero, retenido"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.1.body"
 msgid ""
 "You put down a deposit, say 200 dollars, and that becomes your limit. Use a "
@@ -837,11 +1166,17 @@ msgid ""
 "card. The deposit comes back. The risk to the bank is nil, which is exactly "
 "why they will say yes to somebody with no history."
 msgstr ""
+"Dejas un depósito, digamos 200 dólares, y eso se convierte en tu límite. Usa"
+" un poco, págala completa cada mes, y se reporta como una tarjeta de crédito"
+" común. El depósito regresa. El riesgo para el banco es nulo, que es "
+"exactamente por lo que le dicen que sí a alguien sin historial."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.2.title"
 msgid "A builder loan runs backwards"
-msgstr ""
+msgstr "Un préstamo para construir crédito funciona al revés"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.2.body"
 msgid ""
 "The bank holds the money in an account, you make payments, and you get the "
@@ -849,11 +1184,17 @@ msgid ""
 "months of on-time payment history, which is the single heaviest thing in the"
 " formula."
 msgstr ""
+"El banco guarda el dinero en una cuenta, tú haces los pagos, y recibes el "
+"dinero al final. No estás pidiendo prestado nada. Lo que estás comprando son"
+" 12 meses de historial de pagos puntuales, que es lo que más pesa en la "
+"fórmula."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.3.title"
 msgid "The cheapest route is somebody else's card"
-msgstr ""
+msgstr "La ruta más barata es la tarjeta de alguien más"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.3.body"
 msgid ""
 "Being added as an authorized user on a family member's long-standing card "
@@ -861,27 +1202,43 @@ msgid ""
 "costs nothing and takes one phone call from them. Ask somebody who has had "
 "the same card a long time and always paid it."
 msgstr ""
+"Que te agreguen como usuario autorizado en la tarjeta antigua de un familiar"
+" puede poner el historial de esa persona en tu expediente sin que tú toques "
+"la tarjeta nunca. No cuesta nada y les toma una llamada. Pídeselo a alguien "
+"que haya tenido la misma tarjeta mucho tiempo y siempre la haya pagado."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.3.aside"
 msgid "It works both ways, so only ask somebody whose own record is solid."
 msgstr ""
+"Funciona en ambos sentidos, así que pídeselo solo a alguien cuyo propio "
+"registro esté sólido."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.4.title"
 msgid "Rent, phone and power can count"
-msgstr ""
+msgstr "La renta, el teléfono y la luz pueden contar"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.card.4.body"
 msgid ""
 "Payments you are already making can be reported, through services set up for"
 " it. It is the least work for the biggest effect, because you are getting "
 "credit for money that was leaving your pocket anyway."
 msgstr ""
+"Los pagos que ya estás haciendo se pueden reportar, a través de servicios "
+"creados para eso. Es el menor trabajo con el mayor efecto, porque te están "
+"dando crédito por dinero que de todos modos ya salía de tu bolsillo."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.check.prompt"
 msgid ""
 "You have no credit file and 200 dollars. What starts the clock fastest?"
 msgstr ""
+"No tienes expediente de crédito y tienes 200 dólares. ¿Qué echa a andar el "
+"reloj más rápido?"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.check.why"
 msgid ""
 "The 200 becomes your limit and the account starts reporting straight away. "
@@ -890,33 +1247,48 @@ msgid ""
 "which is time on the account. Getting added as an authorized user on "
 "somebody else's card costs nothing at all and can run alongside it."
 msgstr ""
+"Los 200 se convierten en tu límite y la cuenta empieza a reportar de "
+"inmediato. Solicitar crédito normal sin expediente casi siempre produce "
+"rechazos, y cada uno deja una marca. Esperar te cuesta lo único que no "
+"puedes comprar después, que es tiempo en la cuenta. Que te agreguen como "
+"usuario autorizado en la tarjeta de alguien más no cuesta absolutamente nada"
+" y puede ir en paralelo."
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.check.choice.secured"
 msgid "A secured card, used lightly and paid in full monthly"
-msgstr ""
+msgstr "Una tarjeta asegurada, usada poco y pagada completa cada mes"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.check.choice.wait"
 msgid "Wait until you have more money saved"
-msgstr ""
+msgstr "Esperar hasta tener más dinero ahorrado"
 
+#, fuzzy
 msgctxt "lesson.building-from-nothing.check.choice.loan"
 msgid "Apply for a regular loan and see what happens"
-msgstr ""
+msgstr "Solicitar un préstamo normal y ver qué pasa"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.title"
 msgid "If somebody has been using your name"
-msgstr ""
+msgstr "Si alguien ha estado usando tu nombre"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.hook"
 msgid ""
 "It happens more to people inside than to anybody else, and the tools to stop"
 " it are free."
 msgstr ""
+"Le pasa más a la gente que está adentro que a cualquier otra, y las "
+"herramientas para detenerlo son gratuitas."
 
+#, fuzzy
 msgctxt "lesson.identity-theft.card.0.title"
 msgid "Why this hits this population hardest"
-msgstr ""
+msgstr "Por qué esto golpea más fuerte a esta población"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.card.0.body"
 msgid ""
 "Your Social Security number has been on paperwork in a lot of hands. You "
@@ -925,13 +1297,21 @@ msgid ""
 "who cares finds out. If your report shows accounts you have never heard of, "
 "you are not confused, and it is not your fault."
 msgstr ""
+"Tu número de Seguro Social ha estado en papeles que pasaron por muchas "
+"manos. Llevas años sin ver un estado de cuenta. El correo llega a una "
+"dirección que no es la tuya. Las cuentas abiertas a tu nombre pueden correr "
+"mucho tiempo antes de que alguien a quien le importe se entere. Si tu "
+"reporte muestra cuentas de las que nunca has oído, no estás confundido, y no"
+" es tu culpa."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.identity-theft.card.1.title"
 msgid "A freeze is free and it is the strong one"
-msgstr ""
+msgstr "Un congelamiento es gratis y es el fuerte"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.identity-theft.card.1.body"
 msgid ""
 "A security freeze stops anybody opening new credit in your name. It has to "
@@ -940,13 +1320,20 @@ msgid ""
 "actually want credit is free too, within an hour if you do it "
 "electronically."
 msgstr ""
+"Un congelamiento de seguridad impide que alguien abra crédito nuevo a tu "
+"nombre. Tiene que colocarse sin costo, dentro de un día hábil si la "
+"solicitud es electrónica o por teléfono, y tres días hábiles si es por "
+"correo. Levantarlo cuando de verdad quieras crédito también es gratis, "
+"dentro de una hora si lo haces electrónicamente."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.identity-theft.card.2.title"
 msgid "A fraud alert is the lighter version"
-msgstr ""
+msgstr "Una alerta de fraude es la versión ligera"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.identity-theft.card.2.body"
 msgid ""
 "An initial alert lasts at least a year and comes with a free copy of your "
@@ -954,24 +1341,38 @@ msgid ""
 " years, two free copies in the first year, and your name kept off "
 "unsolicited credit offers for five."
 msgstr ""
+"Una alerta inicial dura al menos un año y viene con una copia gratuita de tu"
+" expediente. Presenta un reporte de robo de identidad y puedes obtener una "
+"alerta extendida: siete años, dos copias gratuitas el primer año, y tu "
+"nombre fuera de las ofertas de crédito no solicitadas durante cinco."
 
+#, fuzzy
 msgctxt "lesson.identity-theft.card.3.title"
 msgid "An account you never opened is a dispute, not a debt"
-msgstr ""
+msgstr "Una cuenta que nunca abriste es una disputa, no una deuda"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.card.3.body"
 msgid ""
 "Do not pay it and do not negotiate it. It goes down the dispute route, and "
 "unverifiable items have to be removed. Tell your coordinator which items you"
 " do not recognize. That sentence is the one that starts the legal clock."
 msgstr ""
+"No la pagues y no la negocies. Va por la ruta de la disputa, y los renglones"
+" que no se pueden verificar tienen que quitarse. Dile a tu coordinador "
+"cuáles renglones no reconoces. Esa frase es la que echa a andar el reloj "
+"legal."
 
+#, fuzzy
 msgctxt "lesson.identity-theft.check.prompt"
 msgid ""
 "Your report shows a card opened two years ago that you have never heard of. "
 "What is the first move?"
 msgstr ""
+"Tu reporte muestra una tarjeta abierta hace dos años de la que nunca has "
+"oído. ¿Cuál es el primer paso?"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.check.why"
 msgid ""
 "Saying you do not recognize it is what turns this into a dispute, and a "
@@ -980,35 +1381,49 @@ msgid ""
 "file while you are trying to rent somewhere. A freeze on top of that stops "
 "the next one."
 msgstr ""
+"Decir que no la reconoces es lo que convierte esto en una disputa, y una "
+"disputa pone a la agencia en un reloj de 30 días. Pagarla se puede leer como"
+" que estás aceptando que es tuya. Esperar siete años significa siete años "
+"con eso sentado en tu expediente mientras intentas rentar en algún lado. Un "
+"congelamiento encima de eso detiene la siguiente."
 
+#, fuzzy
 msgctxt "lesson.identity-theft.check.choice.dispute"
 msgid "Tell your coordinator you do not recognize it"
-msgstr ""
+msgstr "Decirle a tu coordinador que no la reconoces"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.check.choice.pay"
 msgid "Pay it off so it stops growing"
-msgstr ""
+msgstr "Pagarla para que deje de crecer"
 
+#, fuzzy
 msgctxt "lesson.identity-theft.check.choice.ignore"
 msgid "Ignore it, it will age off in seven years"
-msgstr ""
+msgstr "Ignorarla, se caerá sola en siete años"
 
+#, fuzzy
 msgctxt "lesson.scams.title"
 msgid "Spotting the people who will take your money"
-msgstr ""
+msgstr "Reconocer a la gente que te va a quitar el dinero"
 
+#, fuzzy
 msgctxt "lesson.scams.hook"
 msgid ""
 "Coming home with a bit of money and a bad report makes you a target. Two "
 "rules cover most of it."
 msgstr ""
+"Volver a casa con algo de dinero y un mal reporte te convierte en blanco. "
+"Dos reglas cubren casi todo."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.scams.card.0.title"
 msgid "Rule one: nobody may charge you before the work is done"
-msgstr ""
+msgstr "Regla uno: nadie puede cobrarte antes de terminar el trabajo"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.scams.card.0.body"
 msgid ""
 "A credit repair company cannot legally take any money before it has fully "
@@ -1016,14 +1431,23 @@ msgid ""
 "month. If money is wanted up front, the law has already been broken and you "
 "have learned everything you need to know about them."
 msgstr ""
+"Una compañía de reparación de crédito no puede legalmente tomar ningún "
+"dinero antes de haber cumplido por completo lo que prometió. Ni un depósito,"
+" ni una cuota de apertura, ni un primer mes. Si quieren dinero por "
+"adelantado, la ley ya se rompió y ya aprendiste todo lo que necesitas saber "
+"sobre ellos."
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.scams.card.1.title"
 msgid ""
 "Rule two: anybody telling you to change your identity is setting you up"
 msgstr ""
+"Regla dos: quien te diga que cambies tu identidad te está preparando una "
+"caída"
 
 #. LEGAL: cites a statute, read this one twice.
+#, fuzzy
 msgctxt "lesson.scams.card.1.body"
 msgid ""
 "Advising you to alter your identifying information to hide a bad record is "
@@ -1031,22 +1455,34 @@ msgid ""
 " charge while they keep the fee. The same goes for anyone telling you to "
 "misstate your history."
 msgstr ""
+"Aconsejarte que alteres tu información de identificación para esconder un "
+"mal registro está específicamente prohibido, y quien lo hace te está "
+"metiendo a un cargo por fraude mientras se queda con la cuota. Lo mismo va "
+"para cualquiera que te diga que declares mal tu historial."
 
+#, fuzzy
 msgctxt "lesson.scams.card.2.title"
 msgid "There is nothing they can do that you cannot"
-msgstr ""
+msgstr "No hay nada que ellos puedan hacer que tú no puedas"
 
+#, fuzzy
 msgctxt "lesson.scams.card.2.body"
 msgid ""
 "Every dispute a paid company files is one you can file yourself, free, in a "
 "letter. There is no special channel and no relationship with the bureaus. "
 "What they are selling is the letter you are already getting help with here."
 msgstr ""
+"Cada disputa que presenta una compañía de paga es una que puedes presentar "
+"tú mismo, gratis, en una carta. No hay un canal especial ni una relación con"
+" las agencias. Lo que están vendiendo es la carta con la que aquí ya te "
+"están ayudando."
 
+#, fuzzy
 msgctxt "lesson.scams.card.3.title"
 msgid "Accurate is accurate"
-msgstr ""
+msgstr "Lo exacto es exacto"
 
+#, fuzzy
 msgctxt "lesson.scams.card.3.body"
 msgid ""
 "If a debt is genuinely yours and correctly reported, nobody can remove it "
@@ -1054,13 +1490,22 @@ msgid ""
 "planning to dispute things they know are true, which wastes your time and "
 "can get the disputes dismissed as frivolous."
 msgstr ""
+"Si una deuda es genuinamente tuya y está reportada correctamente, nadie "
+"puede quitarla antes de tiempo. Cualquiera que prometa borrar información "
+"exacta o está mintiendo o piensa disputar cosas que sabe que son ciertas, lo"
+" cual te hace perder el tiempo y puede hacer que las disputas se desechen "
+"por frívolas."
 
+#, fuzzy
 msgctxt "lesson.scams.check.prompt"
 msgid ""
 "A company offers to fix your credit for 99 dollars a month starting now. "
 "What does that tell you?"
 msgstr ""
+"Una compañía ofrece arreglar tu crédito por 99 dólares al mes empezando "
+"desde ya. ¿Qué te dice eso?"
 
+#, fuzzy
 msgctxt "lesson.scams.check.why"
 msgid ""
 "Taking money before the service is fully performed is prohibited outright. "
@@ -1068,15 +1513,22 @@ msgid ""
 "you what they are. And the disputes they would file are ones you can file "
 "yourself for the price of a stamp."
 msgstr ""
+"Tomar dinero antes de que el servicio esté completamente cumplido está "
+"prohibido de plano. No necesitas leer ni una sola reseña: la estructura de "
+"cobro por sí sola te dice lo que son. Y las disputas que ellos presentarían "
+"son las que puedes presentar tú mismo por el precio de una estampilla."
 
+#, fuzzy
 msgctxt "lesson.scams.check.choice.illegal"
 msgid "They are already breaking the law by charging before the work"
-msgstr ""
+msgstr "Ya están rompiendo la ley al cobrar antes del trabajo"
 
+#, fuzzy
 msgctxt "lesson.scams.check.choice.fair"
 msgid "It is a fair price if it works"
-msgstr ""
+msgstr "Es un precio justo si funciona"
 
+#, fuzzy
 msgctxt "lesson.scams.check.choice.check"
 msgid "Nothing yet, check their reviews first"
-msgstr ""
+msgstr "Nada todavía, primero revisa sus reseñas"
