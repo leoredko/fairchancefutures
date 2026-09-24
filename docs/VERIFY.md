@@ -142,6 +142,52 @@ problem.
 - A notary is available at every facility law library.
 - All three bureaus accept POA plus ID verification.
 
+### Free counseling after release, checked 2026-09-24
+
+The Financial Empowerment Center model is municipal, free, and does credit work
+rather than general social services, which makes it the natural successor when
+a dispute clock is still running on the day somebody walks out.
+
+| Place | Eligibility as its operator words it | Source |
+| --- | --- | --- |
+| New York City | "You qualify for free counseling if you're at least age 18 and live or work in NYC." No income test, no immigration requirement. | [access.nyc.gov](https://access.nyc.gov/programs/nyc-financial-empowerment-centers/) |
+| Syracuse | "free, one-on-one professional financial counseling to all City of Syracuse residents" | [syr.gov](https://www.syr.gov/Departments/NBD/Syracuse-FEC) |
+| Rochester | 18 and over who live, work, worship or go to school in Monroe County | [cityofrochester.gov](https://www.cityofrochester.gov/departments/office-financial-empowerment/financial-empowerment-center) |
+| Mount Vernon | Not read | [fecpublic.org](https://fecpublic.org/about/) |
+| Buffalo | **Not open.** Entered the CFE Fund's FEC Academy Dec 2022, operator RFP issued 2025 | [buffalony.gov](https://www.buffalony.gov/m/newsflash/home/detail/1584) |
+
+**Two of these have not been read first hand.** Rochester's site refuses
+automated fetching, the same situation as the TransUnion address above, so its
+eligibility line came from search results rather than from the page. Mount
+Vernon is listed as an operating partner but its wording was never read, so the
+eligibility field is blank rather than guessed. Both carry
+`verified_by_hand=False` in `app/centers.py` and a test fails if either is
+treated as checked. Somebody has to open them in a browser.
+
+**Most of New York State has no municipal center.** `for_county` returns
+nothing rather than the nearest big city, because sending somebody who just
+came home on a long bus ride to a desk that will turn them away is worse than
+saying there is nothing here.
+
+### The NYC Open Data set is not a source, checked 2026-09-24
+
+[NYC Open Data `dt2z-amuf`](https://data.cityofnewyork.us/d/dt2z-amuf) responds
+and returns 23 rows. **Its rows have not changed since 2017-11-27**, which is
+over 3,200 days. One of its five providers, The Financial Clinic, now operates
+as Change Machine. The catalog's own `updatedAt` reads 2022, but that ticks
+when somebody edits the description; only `rowsUpdatedAt` says when a row moved.
+
+Meanwhile the city no longer publishes a location list on its own pages. Both
+the old and current DCWP pages route a person to 311 or the booking portal. So
+there is no current official list to reconcile the dataset against: it is not a
+live feed running behind, it is an old snapshot with a JSON endpoint.
+
+Bridge therefore reads it and never serves it.
+`scripts/check_centers.py` fetches it, diffs it against the registry and
+prints. It exits non-zero when it finds something, so a scheduled run fails
+loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
+that changes.
+
 ## How to handle an open item on stage
 
 Say it is open. The app already does: every unverified number renders with its
