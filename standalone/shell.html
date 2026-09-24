@@ -22,6 +22,30 @@ html, body { min-height: 100%; }
 </style>
 </head>
 <body>
+
+<!-- The mark, defined once and referenced with <use>. A stone arch bridge,
+     which is also a B lying on its back: the deck is the spine and the two
+     arches are the bowls. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="markgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E9B6E"/>
+      <stop offset=".55" stop-color="#2DD4A0"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <path id="markpath" fill-rule="evenodd"
+          d="M2 7h44v4.5H2V7Zm2.5 6.5h39v16.5h-39V13.5Zm5 16.5v-6a6 6 0 0 1 12 0v6h-12Zm16
+             0v-6a6 6 0 0 1 12 0v6h-12Z"/>
+  </defs>
+</svg>
+
+<div class="splash" id="splash" hidden>
+  <svg class="splash-mark" viewBox="0 0 48 34" aria-hidden="true">
+    <use href="#markpath" fill="url(#markgrad)"/>
+  </svg>
+  <span class="splash-word">Bridge</span>
+</div>
+
 <div id="app"></div>
 
 <script>
@@ -838,14 +862,19 @@ function guard(role) {
   return s;
 }
 
+const MARK = '<svg class="mark" viewBox="0 0 48 34" aria-hidden="true">' +
+  '<use href="#markpath" fill="url(#markgrad)"/></svg>';
+
 function bar(who, extra) {
-  // Always reachable. The course is the part of this product that keeps
-  // working after somebody goes home, so it is never more than one tap away.
-  return '<div class="bar"><span class="wordmark">Bridge</span>' +
-    (APP === "inside"
-      ? '<a class="pill" href="#/inside/learn">Learn</a>' : "") +
+  // The mark rather than the word, because a wordmark on every click-through
+  // stops being a brand and becomes furniture. The course stays one tap away
+  // from every screen, now grouped with the other actions on the right
+  // instead of sitting between the logo and the person's own name.
+  return '<div class="bar">' + MARK +
     '<span class="who">' + esc(who) + '</span>' +
     '<div class="right">' + (extra || "") +
+    (APP === "inside"
+      ? '<a class="pill" href="#/inside/learn">The course</a>' : "") +
     (APP === "staff" ? "" :
       '<a class="pill" href="#" onclick="signOut();return false">Sign out</a>') +
     '</div></div>';
@@ -925,7 +954,7 @@ route(/^\/inside\/teach$/, () => {
   if (!guard("inside")) return "";
   const c = subject();
   const t = RULES.teaching[c.answers.knows_how] || RULES.teaching.no;
-  return '<div class="tablet">' + bar(c.name + " \u00b7 how this works") +
+  return '<div class="tablet">' + bar(c.name + " \u00b7 How this works") +
     '<div class="pane"><h1>' + esc(t.headline) + '</h1>' +
     t.points.map((pt) =>
       '<div class="card"><span class="strong">' + esc(pt.title) + '</span>' +
@@ -1031,7 +1060,7 @@ route(/^\/inside\/learn$/, () => {
   const c = subject();
   const st = courseStanding(c);
   const nxt = nextLesson(c);
-  return '<div class="tablet">' + bar(c.name + " · the course") +
+  return '<div class="tablet">' + bar(c.name + " · The course") +
     '<div class="pane"><h1>Learn about credit.</h1>' +
     '<p class="lede">' + RULES.lessons.length + ' lessons, about ' +
       RULES.courseMinutes + ' minutes in total. It saves where you stop, so ' +
@@ -1191,7 +1220,7 @@ route(/^\/inside\/learn\/finished$/, () => {
   const c = subject();
   const st = courseStanding(c);
   if (!st.finished) return go("#/inside/learn"), "";
-  return '<div class="tablet">' + bar(c.name + " · the course") +
+  return '<div class="tablet">' + bar(c.name + " · The course") +
     '<div class="pane">' +
     '<div class="card good" style="text-align:center">' +
       '<h1 style="margin:0">You finished the whole course.</h1>' +
@@ -1223,7 +1252,7 @@ route(/^\/inside\/learn\/finished$/, () => {
 route(/^\/inside\/learn\/scores$/, () => {
   if (!guard("inside")) return "";
   const c = subject();
-  return '<div class="tablet">' + bar(c.name + " \u00b7 about scores") +
+  return '<div class="tablet">' + bar(c.name + " \u00b7 About scores") +
     '<div class="pane"><h1>Which one is my real score?</h1>' +
     '<p class="lede">The one belonging to whoever is deciding about you. That ' +
       'is not a dodge, it is how the system works.</p>' +
@@ -1279,7 +1308,7 @@ route(/^\/inside\/report$/, () => {
     : "";
 
   if (!ready.length)
-    return '<div class="tablet">' + bar(c.name + " \u00b7 your reports") +
+    return '<div class="tablet">' + bar(c.name + " \u00b7 Your reports") +
       '<div class="pane">' + waitingCard +
       '<h1>' + (waiting.length ? "Not on this screen yet."
                                : "Nothing here yet.") + '</h1>' +
@@ -1294,7 +1323,7 @@ route(/^\/inside\/report$/, () => {
       '<a class="btn ghost" href="#/inside/case">Back to my case</a>' +
       '</div></div>';
 
-  return '<div class="tablet">' + bar(c.name + " \u00b7 your reports") +
+  return '<div class="tablet">' + bar(c.name + " \u00b7 Your reports") +
     '<div class="pane"><h1>Your credit reports.</h1>' +
     '<div class="card accent"><span class="strong">Your Social Security number ' +
       'is blacked out</span><span class="small">Only the last four digits ' +
@@ -1351,7 +1380,7 @@ route(/^\/inside\/stand$/, () => {
       "It matters, and it does not sit in this list pretending to be a credit card."]);
 
   const pos = (c.state === "thin_file" || c.state === "errors_present") ? 2 : 1;
-  return '<div class="tablet">' + bar(c.name + " · where you stand") +
+  return '<div class="tablet">' + bar(c.name + " · Where you stand") +
     '<div class="pane"><h1>Here\'s where you\'re starting.</h1>' +
     '<div class="row" style="gap:8px">' +
       ["Getting started", "Building", "Strong"].map((s, i) =>
@@ -1373,7 +1402,7 @@ route(/^\/inside\/case$/, () => {
   if (!guard("inside")) return "";
   const c = subject();
   const auth = liveAuth(c);
-  return '<div class="tablet">' + bar(c.name + " · your case") +
+  return '<div class="tablet">' + bar(c.name + " · Your case") +
     '<div class="pane"><h1>People are working on this while you wait.</h1>' +
     (c.timeline.length
       ? '<div class="timeline">' + c.timeline.map((e, i) =>
@@ -1570,7 +1599,7 @@ route(/^\/family\/task$/, () => {
              url: "#/family/report", cta: "Send the reports in", skip: null };
   }
 
-  return '<div class="phone">' + bar(auth.helper + " · helping " + c.first) +
+  return '<div class="phone">' + bar(auth.helper + " · Helping " + c.first) +
     '<div class="pane">' +
     (task
       ? '<h1>One thing, this week.</h1>' +
@@ -2367,6 +2396,28 @@ route(/^\/citations$/, () => {
 
 ensureAccounts();
 render();
+</script>
+<script>
+  // The opening. Once a session, skippable by touching it, and skipped
+  // outright for anybody who has asked their device for less motion.
+  (function () {
+    var splash = document.getElementById("splash");
+    if (!splash) return;
+    var calm = window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var seen;
+    try { seen = sessionStorage.getItem("bridge.splash"); } catch (e) { seen = "1"; }
+    if (seen || calm) return;
+    try { sessionStorage.setItem("bridge.splash", "1"); } catch (e) {}
+    splash.hidden = false;
+    requestAnimationFrame(function () { splash.classList.add("on"); });
+    var done = function () {
+      splash.classList.add("gone");
+      setTimeout(function () { splash.hidden = true; }, 420);
+    };
+    splash.addEventListener("click", done);
+    setTimeout(done, 1500);
+  })();
 </script>
 </body>
 </html>
