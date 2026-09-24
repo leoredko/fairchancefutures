@@ -81,7 +81,7 @@ and that is a build, not a redesign.
 | --- | --- |
 | Push notifications and reminder texts | Reads as a scam to this population, per the Cornish interview. Contradicts the rule already enforced on the timeline. |
 | Gamification, streaks, points | `docs/DESIGN-NOTES.md`: position, never points. Score shaming is a known engagement killer, and the product deliberately shows a road rather than a number. |
-| A behavioral engagement score | `app/scores.py` refuses to show a number even for real FICO scores, with sources, because a number without its model and date is a guess that feels precise. `docs/AI.md` rules out a model judging the person for the same reason. |
+| A behavioral engagement score | `app/scores.py` refuses to show a number even for real FICO scores, with sources, because a number without its model and date is a guess that feels precise. |
 | Lender matching at release | Out of scope, never built past a sketch. It is a partnership and a referral pathway, not a feature, and calling it a feature now would be the fourth thing on this list the product refuses. |
 
 Every row is a refusal the product already makes for a stated reason. Retention

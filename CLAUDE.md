@@ -12,10 +12,10 @@ short version of what a session needs to not break things.
     app/surfaces.py        the capability table. Read this as the product spec.
     docs/SCOPE.md          what each of the three surfaces can and cannot do
     docs/VERIFY.md         every legal claim, its primary source and check date
-    docs/AI.md             where a model fits, and the places it must not go
     docs/RETENTION.md      what happens after release, and what is not answered
     docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
+    docs/TRANSLATION.md    how the course gets into Spanish, for a translator
 
 The product started from a wireframe deck. That deck has been deleted, and its
 references stripped out of the code and the docs, because it stopped describing
@@ -129,7 +129,7 @@ Editing that shell has gone wrong twice, both times the same way:
 
 ## Checks before pushing
 
-    pytest -q                       # 318 tests, all should pass
+    pytest -q                       # 336 tests, all should pass
     python3 standalone/build.py     # rebuild if anything changed
     ./run.sh                        # installs, tests, serves on :8000
 

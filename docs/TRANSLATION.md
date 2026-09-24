@@ -1,0 +1,102 @@
+# Translating the course
+
+The credit course is eleven lessons, 173 sentences. All of them are in Spanish
+now. This is how that works and how to change it.
+
+## The short version
+
+The Spanish lives in one file, `app/translations/es.po`. Somebody who speaks
+Spanish opens it, reads, fixes what is wrong, saves. That is the whole thing.
+
+Nothing about this runs while the app is running. There is no service to call,
+no model, no key, no network. The Spanish is part of the app the same way the
+English is, which is why it cannot fail during a demo.
+
+## The switch
+
+If a line turns out to be wrong at a bad moment, set this on the host:
+
+    BRIDGE_SPANISH=off
+
+The language disappears: no choice at the sign-in door, everything in English,
+including on a tablet that was already set to Spanish. It takes effect on the
+next page load. No deploy, no code change, no rollback.
+
+Set it back to anything else, or remove it, and Spanish returns.
+
+## What a person sees
+
+At the sign-in door, before anything else, three options: **English**,
+**Español**, and **Other**. Other cannot be picked and says other languages are
+coming. Somebody who reads neither should find that out on the first screen,
+from something that admits it, rather than after working through a course they
+cannot read.
+
+The choice is a cookie on the tablet, so it survives the idle timeout and the
+next person can change it in one tap.
+
+## Checking the Spanish
+
+1. Get Poedit. It is free, Mac and Windows: [poedit.net](https://poedit.net)
+2. Open `app/translations/es.po`
+3. English on the left, Spanish on the right. Read it and fix what is off.
+4. Every line is currently marked **Needs work**, because it was drafted and
+   not yet checked by a person. Clear that flag as you go, so the next person
+   can see how far you got.
+5. Save, commit.
+
+**"Needs work" does not hide anything.** The Spanish shows on the tablet
+either way. The flag is a bookmark for whoever is reading, not a gate.
+
+## What to watch
+
+57 lines carry a note saying **LEGAL**. Those sit on a card that cites a law.
+Numbers and deadlines are where a translation can actually hurt somebody:
+
+- The Social Security card application goes in **120 days before** release.
+- The release ID expires **120 days after** release.
+
+Two different clocks, opposite sides of the gate. If the Spanish gets those
+backwards, somebody loses their ID. If an English sentence is ambiguous, say
+so and we will fix the English rather than guess in the Spanish.
+
+**Left in English on purpose:**
+
+- Agency names: Equifax, Experian, TransUnion, DOCCS, DMV
+- Law references like 15 U.S.C. 1681i
+- The source line under each card
+
+Somebody may carry those to a law library, and they have to read the way they
+read on the shelf. The code never translates them.
+
+## Known gaps
+
+- Only the course is translated. Intake, the report walkthrough and the case
+  screens are still English.
+- Timeline entries are written into the case file in English at the moment
+  they happen, so a Spanish reader sees English history. Fixing that means
+  storing a key instead of a sentence.
+
+## For whoever maintains the code
+
+Run this after editing any lesson:
+
+    python3 scripts/i18n_extract.py
+
+It rebuilds the file from `app/lessons.py` and never discards anyone's work:
+
+| What happened | What the script does |
+| --- | --- |
+| New card added | New empty line, waiting |
+| Card untouched | Left alone |
+| English reworded | Spanish kept, flagged Needs work again |
+| Card deleted | Kept at the bottom, in case it comes back |
+
+`--check` fails if the file is behind the lessons, and a test runs it, so a
+card added without re-extracting cannot quietly become a screen nobody can
+translate.
+
+One safety rule is in the code and not adjustable: if a card's English has
+changed since its Spanish was written, that line falls back to English on its
+own. A fluent translation of a sentence the product no longer says is worse
+than no translation, because it reads finished.

@@ -25,6 +25,7 @@ from app.auth import (
     enroll,
     issue,
 )
+from app import i18n
 from app.deps import templates
 from app.identifiers import InvalidIdentifier, is_self_service, parse
 from app.store import STATE, find_account, mutate, put_account
@@ -56,8 +57,34 @@ def _start(account, response: RedirectResponse) -> RedirectResponse:
 @router.get("/signin", response_class=HTMLResponse)
 def signin(request: Request, error: str | None = None):
     return templates.TemplateResponse(
-        request, "access/signin.html", {"error": error},
+        request, "access/signin.html",
+        {"error": error,
+         "languages": i18n.choices(),
+         "lang": i18n.from_request(request)},
     )
+
+
+@router.post("/language")
+def set_language(request: Request, lang: str = Form("en"),
+                 back: str = Form("/signin")):
+    """Choose a language at the door, before signing in.
+
+    Here rather than behind the sign-in because somebody who reads Spanish
+    should not have to get through an English screen first to find out the app
+    speaks to them. It is a cookie on the tablet, so the choice survives the
+    idle timeout and the next person can change it in one tap.
+
+    `back` is kept to this app: an open redirect on a sign-in page is somebody
+    else's phishing page wearing our address.
+    """
+    chosen = i18n.normalize(lang)
+    target = back if back.startswith("/") and not back.startswith("//") else "/signin"
+    response = RedirectResponse(target, status_code=303)
+    response.set_cookie(
+        i18n.COOKIE, chosen, max_age=i18n.COOKIE_MAX_AGE,
+        path="/", samesite="lax",
+    )
+    return response
 
 
 @router.post("/signin", response_class=HTMLResponse)

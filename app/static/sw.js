@@ -4,11 +4,12 @@
 // a registered worker before they offer an install. It deliberately does NOT
 // cache or serve stale pages.
 //
-// The deck's offline-first promise is a real feature and this is not it. Doing
-// offline properly means queueing writes in IndexedDB and replaying them on
-// reconnect, and a worker that quietly serves a stale case timeline while a
-// deadline moves is worse than no worker at all. So this one passes everything
-// through to the network and says so.
+// This is not offline support, and the tablet does not need it to be: Bridge
+// is loaded onto a connected device and writes go to the server as they are
+// made. Doing offline properly would mean queueing writes in IndexedDB and
+// replaying them on reconnect, and a worker that quietly serves a stale case
+// timeline while a deadline moves is worse than no worker at all. So this one
+// passes everything through to the network and says so.
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));

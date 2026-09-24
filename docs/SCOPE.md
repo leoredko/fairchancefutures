@@ -16,6 +16,12 @@
 5. **Letter draft and approval (desktop).** — built
 6. **Family task screen and report upload.** — built, minus photo-to-text
 7. **Case status timeline (tablet).** — built
+8. **The course in Spanish (tablet).** All 173 strings of the eleven lessons,
+   chosen at the sign-in door. Not a running translator: a gettext catalog
+   translated once and committed, so nothing calls a model or the network at
+   request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`
+   takes the language back out without a deploy. Intake and the report
+   walkthrough are still English. — built
 
 Each one works standing alone. Stop anywhere and there is still a demo.
 
@@ -28,9 +34,6 @@ dispute regardless, so the first rung may never have existed. It was replaced
 by document readiness in `app/caseplan.py`, which is knowable, already tracked
 quarterly by the coordinator, and carries a real deadline at 120 days before
 release. See `app/authorization.py` for the full reasoning.
-
-Bridge contains no AI today. [docs/AI.md](AI.md) says where a model would
-fit if one were added, and why none of the other candidate places survive.
 
 No surface here belongs to somebody after release. [docs/RETENTION.md](RETENTION.md)
 says what that costs, what survives the gate anyway, and what would have to be
@@ -72,12 +75,11 @@ expires first, never a roster.
 
 | Thing | Why not |
 | --- | --- |
-| Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. This is the one place a model belongs, and [docs/AI.md](AI.md) specifies it: what it is given, what it returns, who confirms it, and what it is never allowed to do. |
+| Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. |
 | Referrals and outcomes | Never built past a sketch, and nothing depends on them. A post-release handoff to a community lender is a partnership rather than a feature. See [docs/RETENTION.md](RETENTION.md). |
 | Account creation | There is no self-serve signup. Accounts are seeded, which is right: a person does not enrol themselves into a caseload, a counselor adds them. |
 | Password reset by email | Nobody inside has outside email. A counselor clears the PIN and the client sets a new one on their tablet. |
 | Real offline support | The tablet reaches Bridge, so writes go to the server and save immediately. An earlier promise that "nothing is lost if you lose access for a week" was about a disconnected device, and it has been removed from the intake copy rather than left there untrue. If a facility turns out to have genuinely intermittent connectivity, IndexedDB plus replay is the real fix. |
-| Spanish | An EN / ES toggle was drawn early and removed rather than shipped as decoration over an English-only app. For this population it is a real requirement rather than a nice-to-have, and it should come back as translation rather than as a pill. |
 | Encryption, audit logging, retention policy | Assumed away with the rest of the compliance regime, for class. Named on the home page rather than hidden. |
 
 ## Assumed away, with the instructors' sign-off

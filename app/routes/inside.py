@@ -19,6 +19,7 @@ from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
 from app.deps import templates
 from app import doccs
+from app import i18n
 from app import lessons
 from app import report as report_module
 from app import walkthrough
@@ -124,12 +125,15 @@ def learn(request: Request):
     caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_LESSON)
     client = caller.client
+    lang = i18n.from_request(request)
+    up_next = lessons.next_up(client)
     return templates.TemplateResponse(
         request, "inside/learn.html",
         {"client": client,
-         "rows": lessons.index_rows(client),
+         "lang": lang,
+         "rows": i18n.translate_rows(lessons.index_rows(client), lang),
          "standing": lessons.standing(client),
-         "next_up": lessons.next_up(client),
+         "next_up": i18n.translate_lesson(up_next, lang) if up_next else None,
          # Somebody who stepped out of intake to read something gets sent back
          # to the question they were on, not to a case screen that has nothing
          # on it yet. /inside works out which that is.
@@ -173,9 +177,12 @@ def lesson_card(request: Request, slug: str, index: int):
         lessons.record_card(caller.client, slug, index)
 
     row = lessons.progress(caller.client, slug)
+    lang = i18n.from_request(request)
+    found = i18n.translate_lesson(found, lang)
     return templates.TemplateResponse(
         request, "inside/lesson.html",
         {"client": caller.client, "lesson": found, "index": index,
+         "lang": lang,
          "card": found.cards[index] if index < len(found.cards) else None,
          "is_check": index == len(found.cards),
          "answered": row["answered"],
@@ -237,14 +244,18 @@ def lesson_done(request: Request, slug: str):
     if standing["finished"]:
         return RedirectResponse("/inside/learn/finished", status_code=303)
 
+    lang = i18n.from_request(request)
+    found = i18n.translate_lesson(found, lang)
+    up_next = lessons.next_up(client)
     return templates.TemplateResponse(
         request, "inside/lesson_done.html",
         {"client": client, "lesson": found, "answered": row["answered"],
+         "lang": lang,
          "chosen": next((c for c in found.check.choices
                          if c.value == row["answered"]), None),
          "was_the_defensible_one": row["answered"] == found.check.answer,
          "standing": standing,
-         "next_up": lessons.next_up(client)},
+         "next_up": i18n.translate_lesson(up_next, lang) if up_next else None},
     )
 
 
@@ -260,10 +271,13 @@ def learn_finished(request: Request):
     client = caller.client
     if not lessons.finished_course(client):
         return RedirectResponse("/inside/learn", status_code=303)
+    lang = i18n.from_request(request)
     return templates.TemplateResponse(
         request, "inside/learn_finished.html",
         {"client": client, "standing": lessons.standing(client),
-         "curriculum": lessons.CURRICULUM,
+         "lang": lang,
+         "curriculum": tuple(i18n.translate_lesson(l, lang)
+                             for l in lessons.CURRICULUM),
          "minutes": lessons.TOTAL_MINUTES},
     )
 

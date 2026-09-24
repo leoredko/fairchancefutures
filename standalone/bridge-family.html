@@ -355,6 +355,17 @@ input[type="radio"], input[type="checkbox"] {
   body { background: #fff; }
 }
 
+/* The language choice at the door. Three across, one of them unavailable and
+   saying so, because somebody who reads neither should find that out here. */
+.langbar { display: flex; gap: 8px; }
+.langpick {
+  flex: 1; padding: 11px 8px; border-radius: 10px; text-align: center;
+  border: 1px solid var(--line); background: var(--page); color: var(--ink);
+  font: inherit; font-size: 15px; cursor: pointer;
+}
+.langpick.on { border-color: var(--teal); background: var(--teal); color: #fff; }
+.langpick.ghost { color: var(--muted); border-style: dashed; cursor: default; }
+
 
 /* This build has no server, so the shell fills the window itself. */
 html, body { min-height: 100%; }
