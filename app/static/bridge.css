@@ -1,39 +1,51 @@
 /* Bridge.
 
-   Teal for the things that move you forward, amber for the things that need a
-   person. Warm white underneath rather than the beige-grey of every
-   institutional form anybody in this situation has ever been handed.
+   Dark, with green in the blacks rather than neutral grey, so the accent
+   reads as part of the same material instead of a sticker laid on top.
+   Emerald through cyan carries anything moving forward; amber still means a
+   person has to do something, and that split is the one piece of the old
+   palette worth keeping, because it is meaning rather than decoration.
 
    No web fonts and no CDN. The tablet surface is metered by the minute, so
    the app makes zero outbound requests to render. */
 
 :root {
   /* text */
-  --ink: #12232E;
-  --ink-2: #3D5361;
-  --muted: #64808F;
-  --faint: #93A8B4;
+  --ink: #EFF6F2;
+  --ink-2: #B2CBC1;
+  --muted: #7E9990;
+  --faint: #5D766E;
 
-  /* surfaces */
-  --page: #FFFFFF;
-  --surface: #F4F9F8;
-  --surface-2: #E9F3F1;
-  --line: #DCE9E6;
-  --line-strong: #C3D8D3;
-  --track: #DFEDEA;
+  /* surfaces, canvas first and then up. --page is a raised card rather than
+     the page, which reads backwards but is what every rule below already
+     means by it, and renaming it across the file would be churn for nothing. */
+  --surface: #08120E;
+  --page: #0F1E18;
+  --surface-2: #162A22;
+  --line: #1F3830;
+  --line-strong: #2C4D40;
+  --track: #142520;
 
-  /* brand */
-  --teal: #0E7C6B;
-  --teal-deep: #0A5C50;
-  --teal-soft: #E3F3F0;
-  --amber: #E08A1E;
-  --amber-soft: #FDF3E3;
-  --sky: #1B74B8;
-  --sky-soft: #E8F2FA;
-  --green: #17855B;
-  --green-soft: #E5F4EC;
-  --rose: #C4344B;
-  --rose-soft: #FCEDEF;
+  /* brand. Still called teal, and now actually in that family: emerald
+     through cyan. Green for the things that move you forward was the one idea
+     in the old palette worth carrying across. */
+  --teal: #2DD4A0;
+  --teal-deep: #0E9B6E;
+  --teal-soft: #0E2A22;
+  --teal-ink: #6BE8C0;
+  --cyan: #22D3EE;
+
+  /* the rest, lifted for a dark ground: a hue that reads right on white is
+     muddy on black, so each one is brighter and less saturated than before */
+  --amber: #F0A93C;
+  --amber-soft: #2E1F0B;
+  --amber-ink: #F3BE6B;
+  --sky: #5BA9EE;
+  --sky-soft: #10202F;
+  --green: #3ECF97;
+  --green-soft: #0F2A1F;
+  --rose: #FF7D93;
+  --rose-soft: #2E1019;
 
   --display: "Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -43,8 +55,13 @@
   --r-lg: 18px;
   --r-pill: 999px;
 
-  --lift: 0 1px 2px rgba(18, 35, 46, .05), 0 1px 3px rgba(18, 35, 46, .04);
-  --lift-2: 0 4px 16px rgba(14, 124, 107, .10), 0 1px 3px rgba(18, 35, 46, .05);
+  /* On a dark ground a drop shadow does nothing. Depth comes from the surface
+     getting lighter as it comes forward, plus a hairline, plus a coloured
+     glow under anything that is actually the next thing to press. */
+  --lift: 0 0 0 1px rgba(255, 255, 255, .02);
+  --lift-2: 0 8px 28px rgba(0, 0, 0, .45);
+  --glow: 0 6px 22px rgba(45, 212, 160, .28);
+  --grad: linear-gradient(103deg, var(--teal-deep) 0%, var(--teal) 55%, var(--cyan) 100%);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -353,3 +370,124 @@ input[type="radio"], input[type="checkbox"] {
 }
 .langpick.on { border-color: var(--teal); background: var(--teal); color: #fff; }
 .langpick.ghost { color: var(--muted); border-style: dashed; cursor: default; }
+
+/* ======================================================================== */
+/* Dark ground: the rules above that assumed a white page.                   */
+/*                                                                          */
+/* Kept as a block at the end rather than edited in place, so the shape of   */
+/* every component above is still readable as one thing and this is the only */
+/* place to look for what the dark ground changed.                           */
+/* ======================================================================== */
+
+/* The top bar was a teal slab. A slab of colour across the top of a dark app
+   reads as a banner rather than as chrome, so it goes quiet: the surface one
+   step up, a hairline under it, and the colour saved for the thing you press. */
+.bar {
+  background: var(--page);
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+}
+.bar .wordmark { color: var(--ink); }
+.bar .who { color: var(--muted); }
+.bar a { color: var(--ink-2); }
+.bar a:hover { color: var(--ink); }
+.bar .pill {
+  background: var(--surface-2); border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.bar .pill:hover { background: var(--line); color: var(--ink); }
+.bar .tag { background: var(--surface-2); border-color: var(--line-strong);
+            color: var(--ink-2); }
+
+/* Text that sat on a pale tint has to come back up off a dark one. */
+.btn.ghost, .btn.ghost:hover { color: var(--teal-ink); }
+.queue th { color: var(--teal-ink); background: var(--surface-2);
+            border-bottom-color: var(--line); }
+.queue tbody tr:hover { background: var(--surface-2); }
+
+.tag.teal  { border-color: #1F5343; color: var(--teal-ink);  background: var(--teal-soft); }
+.tag.amber, .tag.rust { border-color: #6B4A1B; color: #FFD08A; background: #3A2810; }
+.tag.sky, .tag.blue   { border-color: #1D3B57; color: var(--sky);   background: var(--sky-soft); }
+.tag.green { border-color: #1B4634; color: var(--green); background: var(--green-soft); }
+.tag.rose  { border-color: #4E1D28; color: var(--rose);  background: var(--rose-soft); }
+
+.card.warn { border-color: #4A3315; }
+.card.good { border-color: #1B4634; }
+.denied    { border-color: #4E1D28; }
+.event.pending .dot { background: var(--page); }
+.dot { color: #06140E; }
+
+/* ---- what makes it read as one material rather than an inverted form ---- */
+
+/* Anything that is the next thing to press carries the gradient and a glow
+   the colour of itself. One per screen, which is the point: on the tablet
+   there is only ever one next thing. */
+.btn { background: var(--grad); box-shadow: var(--glow); }
+.btn:hover { filter: brightness(1.12); }
+.btn.ghost { background: var(--surface-2); border-color: var(--line-strong);
+             box-shadow: none; }
+.btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal); }
+.btn.amber { background: linear-gradient(103deg, #B9761D 0%, var(--amber) 100%);
+             color: #1B1206; box-shadow: 0 6px 22px rgba(240, 169, 60, .26); }
+
+.track > span { background: var(--grad); }
+
+/* A card that is making a point gets a gradient hairline across the top
+   instead of a coloured rule down the side. Same signal, less furniture. */
+.card.accent {
+  border-left: 1px solid var(--line);
+  position: relative; overflow: hidden;
+}
+.card.accent::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--teal) 42%,
+                              #7ED957 76%, var(--amber) 100%);
+}
+
+/* Bigger jump between a heading and its body than a light ground needs.
+   Contrast does the work that ink weight did. */
+h1 { font-size: 36px; letter-spacing: -.02em; }
+.hero h1 { font-size: 42px; }
+
+/* The hero keeps its gradient, because it is the one place a slab is the
+   point, but it is violet now and it sits on the dark rather than over it. */
+.hero {
+  background: var(--grad);
+  border-radius: 0 0 28px 28px;
+}
+.hero .lede { color: #D6F5E9; }
+
+/* Inputs and choices: a dark field with a lit border when focused, rather
+   than a white box punched out of the page. */
+.choice, .field input, .field select, label.check, .rung, .letter, .queue {
+  background: var(--surface-2);
+}
+.choice:hover, .choice.selected, label.check:hover {
+  border-color: var(--teal); background: var(--teal-soft);
+}
+.field input:focus, .field select:focus {
+  border-color: var(--teal); outline: 2px solid rgba(45, 212, 160, .22);
+  outline-offset: 0;
+}
+.rung.active { background: var(--teal-soft); }
+.rung.active .n { color: var(--teal-ink); }
+.field.bad input, .field.bad select { background: var(--rose-soft); }
+
+/* The door has two forms stacked. Only the one with the actual question in
+   it should take the leftover height, or the language choice floats away from
+   what it belongs to. */
+.pane.tight { flex-grow: 0; padding-bottom: 0; }
+
+.langpick { background: var(--surface-2); }
+.langpick.on { background: var(--grad); border-color: transparent; color: #fff; }
+
+/* Selection and scrollbar, because leaving them at browser defaults is what
+   makes a dark page look like a page somebody forgot to finish. */
+::selection { background: rgba(45, 212, 160, .28); color: var(--ink); }
+* { scrollbar-color: var(--line-strong) transparent; }
+
+/* Print is still ink on paper. A letter going to a bureau is not dark mode. */
+@media print {
+  body, .card, .letter, .queue { background: #fff !important; color: #111 !important; }
+  .card, .letter, .queue { border-color: #ccc !important; }
+}
