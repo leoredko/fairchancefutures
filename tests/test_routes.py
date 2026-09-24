@@ -9,7 +9,8 @@ from dataclasses import asdict
 from app.redaction import NEVER_RENDERED, for_surface
 from app.surfaces import Surface
 
-from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
+from tests.conftest import (PIN, clear_reports, sign_in_helper, sign_in_inside,
+                            sign_in_staff)
 
 
 def test_the_front_page_needs_no_session(client):
@@ -591,5 +592,36 @@ def test_asking_twice_does_not_stack_up_on_the_timeline(inside):
 def test_the_empty_report_screen_says_how_to_make_one_arrive(inside):
     """It used to say reports come back on paper and never say how to start
     that, which is a dead end dressed as an explanation."""
+    clear_reports()
     page = inside.get("/inside/report", follow_redirects=True).text
     assert "/inside/request" in page
+
+
+def test_the_word_helper_never_reaches_a_screen(client, inside, helper, staff):
+    """It named a person by their usefulness to somebody else.
+
+    A family member is not a "helper", they are a person who happens to be
+    outside, and a product that files them under their function to the case is
+    doing the thing this one is otherwise careful not to do. The word is out
+    of every screen; `helper_name` and the /helper route survive as
+    identifiers, which nobody reads.
+    """
+    pages = []
+    for surface, urls in (
+        (client, ["/", "/roles", "/citations"]),
+        (inside, ["/inside", "/inside/case", "/inside/authorization",
+                  "/inside/report", "/inside/request", "/inside/learn"]),
+        (helper, ["/family"]),
+        (staff, ["/staff", "/staff/marcus-w"]),
+    ):
+        for url in urls:
+            page = surface.get(url, follow_redirects=True)
+            if page.status_code == 200:
+                pages.append((url, page.text))
+
+    assert len(pages) > 8, "too few pages reached for this to prove anything"
+    for url, text in pages:
+        # The identifiers are allowed; the word a person would read is not.
+        visible = (text.replace("helper_name", "").replace("/helper", "")
+                       .replace('id="helper"', "").replace('for="helper"', ""))
+        assert "helper" not in visible.lower(), f"{url} still says it"

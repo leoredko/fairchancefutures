@@ -11,7 +11,7 @@ of the other two surfaces can.
 from app.report import mask_ssn, parse_accounts
 from app.surfaces import Capability, Surface, can
 
-from tests.conftest import sign_in_helper, sign_in_inside
+from tests.conftest import clear_reports, sign_in_helper, sign_in_inside
 
 
 def test_masking_keeps_the_last_four_and_nothing_else():
@@ -117,6 +117,7 @@ def test_the_helper_has_three_ways_in_and_the_pdf_is_offered_first(client):
 def test_a_typed_report_lands_on_the_coordinator_desk_not_the_tablet(client):
     """Accuracy check on the input side. These fields become a dispute letter,
     and a letter about the wrong account number is worse than no letter."""
+    clear_reports()
     sign_in_helper(client, code="BRIDGE-4417")
     client.post("/family/report", data={
         "how": "typed", "bureau": "Experian",
@@ -188,3 +189,84 @@ def test_no_report_route_anywhere_stores_a_whole_social_security_number(client):
     from app.store import _serialize
 
     assert "123-45" not in json.dumps(_serialize())
+
+
+# --------------------------------------------------------------------------
+# three files back, and they disagree
+# --------------------------------------------------------------------------
+
+def test_the_seeded_case_has_all_three_bureaus_on_file():
+    """Without these the product could show somebody asking for a report and
+    never show one arriving, which is a demo of a waiting room."""
+    from app.store import seed, stored_reports
+
+    seed()
+    reports = stored_reports("marcus-w", confirmed_only=True)
+    assert {r.bureau for r in reports} == {"Equifax", "Experian", "TransUnion"}
+    assert all(r.score for r in reports), "a file with no score teaches nothing"
+
+
+def test_the_three_bureaus_disagree_about_the_same_person():
+    """The disagreement is the content, not set dressing. It is why a dispute
+    goes to all three, and it is why three scores pulled the same week are
+    three different numbers."""
+    from app.store import seed, stored_reports
+
+    seed()
+    reports = stored_reports("marcus-w", confirmed_only=True)
+    by_bureau = {r.bureau: r for r in reports}
+
+    # A collection he never opened, missing from one file entirely.
+    def creditors(bureau):
+        return {a.creditor for a in by_bureau[bureau].accounts}
+
+    assert "Midland Funding LLC" in creditors("Equifax")
+    assert "Midland Funding LLC" in creditors("Experian")
+    assert "Midland Funding LLC" not in creditors("TransUnion")
+
+    # A car loan paid in full, still reported open at two of the three.
+    def auto_status(bureau):
+        return next(a.status for a in by_bureau[bureau].accounts
+                    if a.creditor == "Second Chance Auto Finance")
+
+    assert "past due" in auto_status("Equifax")
+    assert "past due" in auto_status("TransUnion")
+    assert "paid in full" in auto_status("Experian")
+
+    assert len({r.score for r in reports}) == 3, "three files, three numbers"
+
+
+def test_the_score_panel_names_the_model_bureau_and_date_on_every_number():
+    """app/scores.py exists to refuse a number with nothing attached to it. A
+    score panel that broke that rule would be the one screen contradicting the
+    lesson beside it."""
+    from app import scores
+    from app.store import seed, stored_reports
+
+    seed()
+    spread = scores.across_bureaus(stored_reports("marcus-w", confirmed_only=True))
+    assert spread["spread"] > 0
+    for row in spread["rows"]:
+        assert row["bureau"] and row["model"] and row["pulled_on"]
+
+
+def test_the_score_panel_says_nothing_when_there_is_only_one_file():
+    """One number on its own is the thing this product refuses to show. The
+    comparison has to have something to compare."""
+    from app import scores
+    from app.report import CreditReport
+
+    one = [CreditReport(bureau="Equifax", client_id="x", pulled_on="2026-09-20",
+                        scanned_on="2026-09-22", scanned_by="D. Reyes",
+                        consumer_name="Marcus W.", score=600)]
+    spread = scores.across_bureaus(one)
+    assert spread["spread"] == 0
+    assert spread["low"] is None
+
+
+def test_the_tablet_never_renders_a_full_date_of_birth(inside):
+    """Line of sight. The seeded reports carry a real date of birth so the
+    coordinator's side has something to hold; the tablet gets the year."""
+    page = inside.get("/inside/report", follow_redirects=True).text
+    assert "1988-06-14" not in page
+    assert "Born 1988" in page

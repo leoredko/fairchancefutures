@@ -227,7 +227,7 @@ FACTS: dict[str, Fact] = {
             "Correctional facilities have different rules about retaining "
             "personal information, so how a person keeps a copy of their own "
             "credit report has to be checked facility by facility. This is a "
-            "reason the report is read by the counselor and the helper rather "
+            "reason the report is read by the counselor and whoever is helping "
             "than held on the tablet."
         ),
         source="CFPB, Requesting your free credit reports by mail from a "
@@ -595,7 +595,8 @@ OPEN_QUESTIONS: tuple[str, ...] = (
     "the cheapest route usually works. The ladder is gone and the product now "
     "turns on document readiness instead, which is knowable, so this is a "
     "question worth answering rather than a hole under the design.",
-    "Whether a bureau honors a mid-dispute revocation of a helper's authority.",
+    "Whether a bureau honors a mid-dispute revocation of an outside "
+    "person's authority.",
     "Whether any New York county has designated a private collection agency, "
     "rather than its probation department, to collect restitution. That is the "
     "one route by which restitution could reach a credit report, and the "

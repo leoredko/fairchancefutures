@@ -98,7 +98,7 @@ PATH: dict[State, dict[str, str]] = {
     },
     State.ERRORS_PRESENT: {
         "plan": "Dispute flow, one letter to each of the three bureaus. Counselor "
-                "approves, helper mails.",
+                "approves, it goes out in the mail.",
         "horizon": "30 days from the day each bureau receives the letter, "
                    "extendable to 45 if the client sends more information "
                    "mid-dispute. This is the only state with a statutory clock, "

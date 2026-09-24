@@ -533,3 +533,30 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 .row.step { flex-wrap: nowrap; align-items: flex-start; }
 .row.step > .tag { flex: none; margin-top: 1px; }
 .row.step > .small { flex: 1; }
+
+/* ---- the three scores -------------------------------------------------- */
+
+/* Side by side on purpose. One number would be the lie this product spends a
+   whole lesson refusing to tell. */
+.scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 620px) { .scores { grid-template-columns: 1fr; } }
+
+.score-card {
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--surface-2); padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 3px;
+  position: relative; overflow: hidden;
+}
+.score-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: var(--bureau, var(--teal));
+}
+.score-card .bureau {
+  font-family: var(--display); font-weight: 700; font-size: 15px;
+  letter-spacing: -.01em; color: var(--ink);
+}
+.score-card .number {
+  font-family: var(--display); font-weight: 700; font-size: 40px;
+  line-height: 1.05; letter-spacing: -.03em; color: var(--ink);
+}
+.score-card .under { font-size: 12.5px; color: var(--muted); line-height: 1.45; }

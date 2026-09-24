@@ -46,6 +46,41 @@
     <a class="btn ghost" href="/inside/case">Back to my case</a>
 
     {% else %}
+
+    {% if spread.rows | length > 1 %}
+    {# Three numbers, one screen. The course spends a whole lesson on why
+       there is no such thing as your credit score; this is that lesson made
+       out of this person's own file instead of an argument about it. #}
+    <h2 style="margin-bottom:4px">Your scores</h2>
+    <p class="small" style="margin-bottom:14px">Same person. Same week. Three
+      different numbers.</p>
+    <div class="scores">
+      {% for row in spread.rows %}
+      <div class="score-card" style="--bureau: {{
+           '#C8102E' if row.bureau == 'Equifax'
+           else ('#26478D' if row.bureau == 'Experian' else '#0E9B6E') }}">
+        <span class="bureau">{{ row.bureau }}</span>
+        <span class="number">{{ row.score }}</span>
+        <span class="under">{{ row.model }}</span>
+        <span class="under">Pulled {{ row.pulled_on }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="card accent" style="margin-top:14px">
+      <span class="strong">{{ spread.spread }} points apart, and nothing is broken.</span>
+      <span class="small">Each bureau keeps its own file on you and yours do
+        not match.{% if spread.counts_differ %} {{ spread.most.bureau }} is
+        reporting {{ spread.most.accounts }} accounts and
+        {{ spread.fewest.bureau }} only {{ spread.fewest.accounts }}, so one of
+        them is carrying something the other has never heard of.{% endif %}
+        Whichever one a landlord or a lender pulls is the one that decides
+        about you, which is why the work is on the file rather than on chasing
+        a number.</span>
+      <a class="btn ghost" href="/inside/learn/scores">Why there is no single score</a>
+    </div>
+    {% endif %}
+
     {# A report that has landed and not been read is the biggest thing that has
        happened on this case. It interrupts. #}
     {% if arrival %}

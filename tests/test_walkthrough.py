@@ -10,12 +10,17 @@ import pytest
 
 from app import walkthrough
 from app.report import ARRIVAL_CREDIT, Source
-from conftest import sign_in_inside
+from conftest import clear_reports, sign_in_inside
 
 
 @pytest.fixture()
 def with_report(client, staff):
-    """A confirmed report on Marcus's record, scanned at the desk."""
+    """A confirmed report on Marcus's record, scanned at the desk.
+
+    The seeded files are cleared first so this one is index 0 and the walk is
+    over a report this test can reason about.
+    """
+    clear_reports()
     staff.post("/staff/marcus-w/report", data={
         "bureau": "Equifax",
         "consumer_name": "Marcus W.",
@@ -45,9 +50,21 @@ def test_the_person_who_carried_the_paper_in_is_credited_for_it():
     assert "You did this" in credit["headline"]
 
 
-def test_a_helper_route_credits_the_helper_and_not_the_client():
+def test_an_outside_route_credits_the_person_outside_and_not_the_client():
+    """Who got the report here is the difference between a file appearing and
+    a thing somebody accomplished, so the two must not read the same.
+
+    This used to assert on the word "helper", which has been taken out of the
+    product: it named a person by their usefulness to somebody else. The claim
+    was never about the vocabulary, so it is checked as the distinction."""
+    mine = ARRIVAL_CREDIT[Source.CLIENT_DELIVERED]["headline"]
+    assert "You did this" in mine
     for source in (Source.PDF, Source.TYPED, Source.PHOTO):
-        assert "helper" in ARRIVAL_CREDIT[source]["headline"].lower()
+        headline = ARRIVAL_CREDIT[source]["headline"]
+        assert headline != mine, source
+        assert "helper" not in headline.lower(), source
+        # Somebody else is the subject of the sentence, not the reader.
+        assert not headline.lower().startswith("you "), source
 
 
 def test_every_section_of_the_walk_teaches_something():

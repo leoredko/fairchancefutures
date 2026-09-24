@@ -71,7 +71,7 @@ def helper_code(existing: set[str] | None = None) -> str:
         code = "BRIDGE-" + "".join(random.choices(string.digits, k=4))
         if code not in existing:
             return code
-    raise IntakeProblem("code", "Could not find a free helper code. Try again.")
+    raise IntakeProblem("code", "Could not find a free sign-in code. Try again.")
 
 
 def _clean_name(raw: str) -> str:

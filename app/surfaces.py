@@ -87,7 +87,8 @@ DENIAL_REASON: dict[Capability, str] = {
         "The tablet cannot take or send a file. This is why the family surface "
         "exists at all.",
     Capability.MAIL_LETTER:
-        "Outgoing mail is handled by the helper or by the program, never from "
+        "Outgoing mail is handled by a family member, a friend, or the program, "
+        "never from "
         "this screen.",
     Capability.READ_FULL_REPORT:
         "Full report contents are staff-side. The client sees findings and "

@@ -75,3 +75,16 @@ def helper(client):
 @pytest.fixture()
 def staff(client):
     return sign_in_staff(client)
+
+
+def clear_reports(client_id="marcus-w"):
+    """Empty a client's report shelf.
+
+    The seed gives Marcus three real files so the product can show a complete
+    case rather than a waiting room. A test that constructs its own report, or
+    asserts on the empty state, should own that state instead of inheriting
+    demo data and asserting around it.
+    """
+    from app.store import STATE
+
+    STATE.reports[client_id] = []

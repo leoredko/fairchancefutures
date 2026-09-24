@@ -82,7 +82,7 @@ def accept(request: Request, helper_name: str = Form(...)):
         client.helper_name = auth.helper_name
         client.timeline.append({
             "text": f"{auth.helper_name} agreed to help",
-            "actor": "Your helper",
+            "actor": "Your person outside",
             "on": date.today().strftime("%B %-d"),
             "done": True,
         })
@@ -251,8 +251,8 @@ async def send_report(
         client.timeline.append({
             "text": {
                 Source.PDF: "The report came in as a PDF",
-                Source.TYPED: "Your helper typed the report in",
-                Source.PHOTO: "Your helper photographed the report",
+                Source.TYPED: "They typed your report in by hand",
+                Source.PHOTO: "They photographed your report and sent it in",
             }[source],
             "actor": auth.helper_name,
             "on": date.today().strftime("%B %-d"),
