@@ -46,9 +46,9 @@ class Source(str, Enum):
 
 
 SOURCE_LABEL: dict[Source, str] = {
-    Source.PDF: "PDF sent in by the helper",
-    Source.TYPED: "Typed in by the helper",
-    Source.PHOTO: "Photographed by the helper",
+    Source.PDF: "PDF sent in from outside",
+    Source.TYPED: "Typed in from outside",
+    Source.PHOTO: "Photographed and sent in from outside",
     Source.SCAN: "Scanned at the coordinator's desk",
     Source.CLIENT_DELIVERED: "Brought in by the client and scanned at the desk",
 }
@@ -65,17 +65,17 @@ ARRIVAL_CREDIT: dict[Source, dict] = {
                 "this far, inside or out.",
     },
     Source.PDF: {
-        "headline": "Your helper came through.",
+        "headline": "Somebody showed up for you.",
         "body": "They received it, sent it in, and your coordinator checked it "
                 "against the paper before it reached this screen.",
     },
     Source.TYPED: {
-        "headline": "Your helper came through.",
+        "headline": "Somebody showed up for you.",
         "body": "They sat down and typed the whole thing in by hand, line by "
                 "line. That is an evening of somebody's life spent on you.",
     },
     Source.PHOTO: {
-        "headline": "Your helper came through.",
+        "headline": "Somebody showed up for you.",
         "body": "They photographed every page and sent them in, and your "
                 "coordinator read them with you and typed the accounts up.",
     },

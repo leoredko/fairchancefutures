@@ -75,16 +75,16 @@ class Standing(str, Enum):
 STANDING_DETAIL: dict[Standing, dict[str, str]] = {
     Standing.SIGNED_FORM: {
         "label": "Signed form",
-        "asks_for": "The client signs the request. The helper receives the "
-                    "mail and posts the envelopes.",
+        "asks_for": "The client signs the request. Somebody outside "
+                    "receives the mail and posts the envelopes.",
         "cost": "One signature. No notary and no trip.",
     },
     Standing.NOTARIZED_POA: {
         "label": "Limited power of attorney",
         "asks_for": "Notarized, scoped to credit reports and disputes, twelve "
                     "months.",
-        "cost": "A notary at the law library. Only when the helper has to act "
-                "without the client in the room.",
+        "cost": "A notary at the law library. Only when somebody outside has "
+                "to act without the client in the room.",
     },
 }
 

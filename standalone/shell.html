@@ -184,7 +184,7 @@ function seedClients() {
       ],
       answers: {}, reports: [], taskDone: false,
       authorization: { helper: "Rosa", signed: iso(-21), expires: iso(344), revoked: null },
-      timeline: [{ text: "Rosa agreed to help", actor: "Your helper", on: "Sept 2", done: true }]
+      timeline: [{ text: "Rosa agreed to help", actor: "Your person outside", on: "Sept 2", done: true }]
     },
     "j-whitfield": {
       id: "j-whitfield", name: "J. Whitfield", first: "James",
@@ -211,7 +211,7 @@ function seedClients() {
       collections: 0, consent: ["report_sharing"], consentOn: iso(-90),
       lesson: "", flagged: [], answers: {}, reports: [], taskDone: true,
       authorization: { helper: "Ama", signed: iso(-90), expires: iso(275), revoked: null },
-      timeline: [{ text: "Ama mailed the request", actor: "Your helper", on: "June 25", done: true }]
+      timeline: [{ text: "Ama mailed the request", actor: "Your person outside", on: "June 25", done: true }]
     },
     "t-brennan": {
       id: "t-brennan", name: "T. Brennan", first: "Tom",
@@ -502,9 +502,9 @@ function reportSummaryLine(r) {
    typing is exact but costs an evening, and a photograph is last because
    nothing here reads data out of a picture. Somebody transcribes it later. */
 const SOURCE_LABEL = {
-  pdf: "PDF sent in by the helper",
-  typed: "Typed in by the helper",
-  photo: "Photographed by the helper",
+  pdf: "PDF sent in from outside",
+  typed: "Typed in from outside",
+  photo: "Photographed and sent in from outside",
   scan: "Scanned at the coordinator's desk"
 };
 
@@ -1583,7 +1583,7 @@ window.acceptHelp = function () {
   c.authorization = { helper: name, signed: now.toISOString().slice(0, 10),
                       expires: year.toISOString().slice(0, 10), revoked: null };
   c.helper = name;
-  c.timeline.push({ text: name + " agreed to help", actor: "Your helper",
+  c.timeline.push({ text: name + " agreed to help", actor: "Your person outside",
                     on: shortDate(), done: true });
   save(); go("#/family/task");
 };
@@ -1790,8 +1790,8 @@ window.sendReport = function (how) {
   });
   c.timeline.push({
     text: how === "pdf" ? "The report came in as a PDF"
-        : how === "typed" ? "Your helper typed the report in"
-        : "Your helper photographed the report",
+        : how === "typed" ? "They typed your report in by hand"
+        : "They photographed your report and sent it in",
     actor: auth.helper, on: shortDate(), done: true });
   save(); go("#/family/report?how=done");
 };
@@ -1870,7 +1870,7 @@ route(/^\/staff\/new$/, () => {
     '</div>' +
     '<div class="card soft" style="margin-top:20px"><h3>What this creates</h3>' +
       '<p class="small">A case file, a sign-in for each number you enter, and a ' +
-      'helper code to put on the letter that goes out to whoever is helping ' +
+      'code to put on the letter that goes out to whoever is helping ' +
       'from the outside.</p>' +
       '<p class="small">No PIN is set. Every account is PIN-less until the ' +
       'person it belongs to picks one, which is the only way a PIN means ' +

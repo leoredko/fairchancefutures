@@ -52,7 +52,7 @@ CAPABILITY: dict[str, str] = {
     "answer_intake": "Answer the intake questions",
     "view_own_status": "See where their case stands",
     "view_lesson": "Work through a lesson",
-    "revoke_authorization": "Cancel a helper's authorization",
+    "revoke_authorization": "Cancel somebody's authorization",
     "name_helper": "Name someone to help",
     "verify_identity": "Verify identity online",
     "receive_mail": "Receive mail",

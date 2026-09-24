@@ -75,7 +75,7 @@ def not_authorized(request: Request, exc: NotAuthorized):
         request, "denied.html",
         {"headline": "Nobody has authorized this",
          "reason": exc.detail,
-         "footnote": "A helper outside has no standing without a signed, scoped "
+         "footnote": "Somebody outside has no standing without a signed, scoped "
                      "form. The grant is checked on every request, so a "
                      "cancellation from the tablet takes effect immediately."},
         status_code=403,

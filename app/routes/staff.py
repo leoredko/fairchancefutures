@@ -574,7 +574,7 @@ def _plan_step(client, drafts: list[dict]) -> str:
         return (f"{approved} of {len(drafts)} letters approved. {pending} "
                 f"waiting on you.")
     if approved:
-        return (f"All {approved} letters approved. Next: the helper mails them, "
+        return (f"All {approved} letters approved. Next: they go out in the mail, "
                 f"then the clock runs 30 days from each bureau's receipt.")
     return client.plan_step
 

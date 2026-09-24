@@ -78,8 +78,8 @@ VISIBLE: dict[Surface, frozenset[str]] = {
 
 WITHHELD_NOTE = (
     "You already hold this file, so Bridge does not pretend otherwise. What it "
-    "does enforce: none of this reaches the tablet in a common area or the "
-    "helper's phone, and a scanned report stays truncated because that is how "
+    "does enforce: none of this reaches the tablet in a common area or a "
+    "phone outside, and a scanned report stays truncated because that is how "
     "it arrived."
 )
 
