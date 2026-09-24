@@ -76,6 +76,21 @@ FACTS: dict[str, Fact] = {
         url="https://www.law.cornell.edu/uscode/text/15/1681j",
         checked_on=CHECKED,
     ),
+    "notary_in_the_law_library": Fact(
+        key="notary_in_the_law_library",
+        statement=(
+            "Facilities must run a schedule that gives people in general "
+            "population reasonable access to a Notary Public within 72 hours "
+            "of asking, excluding weekends and holidays. People in SHU or "
+            "protective custody get notarial services at least twice a week. "
+            "So a document that has to be sworn can be sworn inside, without "
+            "anybody on the outside."
+        ),
+        source="DOCCS Directive 4483, Law Libraries, Incarcerated Individual "
+               "Legal Assistance and Notary Public Services, dated 2022-04-19",
+        url="https://doccs.ny.gov/system/files/documents/2024/11/4483.pdf",
+        checked_on=CHECKED,
+    ),
     "free_report_mail_route": Fact(
         key="free_report_mail_route",
         statement=(

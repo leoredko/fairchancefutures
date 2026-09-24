@@ -544,3 +544,52 @@ def test_no_bar_subtitle_starts_lowercase(inside):
                 part = part.strip()
                 if part and part[0].isalpha():
                     assert part[0].isupper(), f"{url}: {part!r} starts lowercase"
+
+
+# --------------------------------------------------------------------------
+# asking for your own report, with nobody outside
+# --------------------------------------------------------------------------
+
+def test_a_person_with_nobody_outside_can_still_ask_for_their_report(inside):
+    """The question the product could not previously answer out loud: what
+    happens to somebody with no family, no friend, nobody taking their calls.
+    The helper surface reads like the route when it is only the faster one."""
+    page = inside.get("/inside/request", follow_redirects=True)
+    assert page.status_code == 200
+    assert "You can do this on your own" in page.text
+    assert "Ask for my report" in page.text
+
+
+def test_the_request_letter_comes_back_to_the_facility_not_to_a_helper(inside):
+    """The whole point of the self-served route. A delivery address belonging
+    to somebody outside is the dependency this screen exists to remove."""
+    page = inside.get("/inside/request", follow_redirects=True).text
+    assert "Correctional Facility" in page
+
+
+def test_asking_goes_on_the_timeline_as_something_the_person_did(inside):
+    """Not a status flag. An event with nobody attached reads as a scam from
+    inside, per the Cornish interview, so this is recorded the same way
+    finishing a lesson is: a named person, on a real date."""
+    inside.post("/inside/request", follow_redirects=True)
+    case = inside.get("/inside/case", follow_redirects=True).text
+    assert "You asked for your credit report" in case
+
+    after = inside.get("/inside/request", follow_redirects=True).text
+    assert "It is on its way" in after
+
+
+def test_asking_twice_does_not_stack_up_on_the_timeline(inside):
+    """Somebody tapping a button again because nothing visibly happened should
+    not end up with the same event three times on their own case."""
+    for _ in range(3):
+        inside.post("/inside/request", follow_redirects=True)
+    case = inside.get("/inside/case", follow_redirects=True).text
+    assert case.count("You asked for your credit report") == 1
+
+
+def test_the_empty_report_screen_says_how_to_make_one_arrive(inside):
+    """It used to say reports come back on paper and never say how to start
+    that, which is a dead end dressed as an explanation."""
+    page = inside.get("/inside/report", follow_redirects=True).text
+    assert "/inside/request" in page

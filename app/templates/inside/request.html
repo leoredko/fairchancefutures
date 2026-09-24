@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Ask for your report{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ client.display_name }} &middot; Your report</span>
+    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    {% if asked %}
+    <span class="tag green">Asked for</span>
+    <h1>It is on its way.</h1>
+    <p class="lede">Your coordinator has the request. It goes out on paper, and
+      the bureaus have 15 days from getting it to send your file back here.</p>
+    {% else %}
+    <h1>You can do this on your own.</h1>
+    <p class="lede">You do not need anybody on the outside to get your credit
+      report. Not a family member, not a friend, not a lawyer. One form, one
+      address, all three bureaus.</p>
+    {% endif %}
+
+    <div class="card accent">
+      <span class="strong">There is no test to pass.</span>
+      <span class="small">Online, a bureau asks you questions about old
+        addresses and car loans before it will show you anything. That is a web
+        page, and you cannot reach it. This route is paper, so there is nothing
+        to fail.</span>
+    </div>
+
+    <h2 style="margin-top:24px">How it works</h2>
+    <div class="stack">
+      <div class="row step"><span class="tag teal">1</span>
+        <span class="small">You ask. Your coordinator prints the letter below
+          and you sign it.</span></div>
+      <div class="row step"><span class="tag teal">2</span>
+        <span class="small">If anything needs to be sworn, the law library has
+          a notary. They have to get you one within 72 hours of asking.</span></div>
+      <div class="row step"><span class="tag teal">3</span>
+        <span class="small">It goes to one address in Atlanta and covers
+          Equifax, Experian and TransUnion together.</span></div>
+      <div class="row step"><span class="tag teal">4</span>
+        <span class="small">Your file comes back here as mail, in your name.
+          You carry it to your coordinator and you read it on this screen.</span></div>
+    </div>
+
+    {% if not asked %}
+    <form method="post" action="/inside/request" style="margin-top:22px">
+      <button class="btn wide" type="submit">Ask for my report</button>
+    </form>
+    <p class="tiny" style="margin-top:8px">This tells your coordinator. Nothing
+      is sent anywhere until you have signed it yourself.</p>
+    {% else %}
+    <div class="card soft" style="margin-top:22px">
+      <span class="strong">Nothing is waiting on you right now.</span>
+      <span class="small">Your coordinator prints it and brings it to you to
+        sign. While you wait, the course is the useful thing to do: the lesson
+        on reading a report is the one that pays off the day yours arrives.</span>
+      <a class="btn ghost" href="/inside/learn">Go to the course</a>
+    </div>
+    {% endif %}
+
+    <h2 style="margin-top:26px">The letter</h2>
+    <p class="small">This is what goes out, in your name, to your address here.</p>
+    <pre class="letter">{{ draft.body }}</pre>
+    <p class="tiny">The Social Security number and date of birth lines are blank
+      on purpose. They go on the paper by hand and are never typed into this
+      app.</p>
+
+    <div class="colophon">
+      <p>{{ within_days.statement }}</p>
+      <p>{{ mail_route.source }} &middot; checked {{ mail_route.checked_on }}</p>
+      <p>{{ notary.source }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
