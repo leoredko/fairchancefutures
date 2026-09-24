@@ -206,3 +206,57 @@ def needs_a_human_read() -> tuple[Center, ...]:
     the open questions next to the checked facts for the same reason.
     """
     return tuple(c for c in CENTERS + COMING if not c.verified_by_hand)
+
+
+# Every county Bridge can answer for, with the ones it cannot named as such.
+# A picker built from this cannot offer a county the registry has no honest
+# answer for, and cannot quietly drop one either.
+NY_COUNTIES: tuple[str, ...] = (
+    "Albany", "Allegany", "Bronx", "Broome", "Cattaraugus", "Cayuga",
+    "Chautauqua", "Chemung", "Chenango", "Clinton", "Columbia", "Cortland",
+    "Delaware", "Dutchess", "Erie", "Essex", "Franklin", "Fulton", "Genesee",
+    "Greene", "Hamilton", "Herkimer", "Jefferson", "Kings", "Lewis",
+    "Livingston", "Madison", "Monroe", "Montgomery", "Nassau", "New York",
+    "Niagara", "Oneida", "Onondaga", "Ontario", "Orange", "Orleans", "Oswego",
+    "Otsego", "Putnam", "Queens", "Rensselaer", "Richmond", "Rockland",
+    "St. Lawrence", "Saratoga", "Schenectady", "Schoharie", "Schuyler",
+    "Seneca", "Steuben", "Suffolk", "Sullivan", "Tioga", "Tompkins", "Ulster",
+    "Warren", "Washington", "Wayne", "Westchester", "Wyoming", "Yates",
+)
+
+# The five boroughs under their county names, because a person going home to
+# Brooklyn does not think of it as Kings and should not have to.
+BOROUGH_NAME: dict[str, str] = {
+    "Bronx": "the Bronx",
+    "Kings": "Brooklyn",
+    "New York": "Manhattan",
+    "Queens": "Queens",
+    "Richmond": "Staten Island",
+}
+
+
+def answer_for(county: str) -> dict:
+    """What this county gets, including the honest nothing.
+
+    Only entries a person on this team has read from the source reach a
+    screen. An address arriving from a government dataset nobody opened is
+    worse than a guess, because it wears the city's authority, and a center
+    that closed sends somebody who just came home on a bus ride to a locked
+    door. `needs_a_human_read()` is the list this refuses to serve.
+    """
+    found = for_county(county)
+    if found is not None and found.verified_by_hand:
+        return {"county": county, "center": found, "state": "open"}
+
+    # Named rather than hidden: somebody who lives there should be told the
+    # work is pending, not shown an empty page that reads like a dead end.
+    if found is not None:
+        return {"county": county, "center": None, "state": "unchecked"}
+
+    coming = opening_in(county)
+    if coming is not None and coming.verified_by_hand:
+        return {"county": county, "center": coming, "state": "coming"}
+    if coming is not None:
+        return {"county": county, "center": None, "state": "unchecked"}
+
+    return {"county": county, "center": None, "state": "none"}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}When you go home{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ client.display_name }} &middot; When you go home</span>
+    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>Somebody to keep working with.</h1>
+    <p class="lede">A dispute can still be running when you walk out, and by
+      then your coordinator is no longer holding it. Some cities have a free
+      financial counselor who does credit reports, debt and disputes. Not a
+      loan, not a grant, no charge, ever.</p>
+
+    <div class="card accent">
+      <span class="strong">Nobody here can charge you to fix your credit.</span>
+      <span class="small">A company that asks for money before the work is done
+        is breaking the law. That is in the course, and it is the single most
+        useful thing to remember in your first month out.</span>
+    </div>
+
+    <form method="get" action="/inside/after" class="field" style="margin-top:22px">
+      <label for="county">Where are you going home to?</label>
+      <span class="hint">County. If you are not sure yet, you can come back to
+        this screen any time.</span>
+      <select id="county" name="county" onchange="this.form.submit()">
+        <option value="">Choose a county</option>
+        {% for c in counties %}
+        <option value="{{ c }}" {% if c == chosen %}selected{% endif %}>
+          {{ c }}{% if borough_name.get(c) %} &middot; {{ borough_name[c] }}{% endif %}
+        </option>
+        {% endfor %}
+      </select>
+      <noscript><button class="btn" type="submit">Show me</button></noscript>
+    </form>
+
+    {% if answer %}
+    <div class="stack" style="margin-top:22px">
+
+      {% if answer.state == "open" %}
+      <div class="card">
+        <span class="tag green">Open now</span>
+        <h2>{{ answer.center.name }}</h2>
+        <p class="small">{{ answer.center.eligibility }}</p>
+
+        <h3>How to get an appointment</h3>
+        {% for way in answer.center.booking %}
+        <div class="row"><span class="tag teal">{{ loop.index }}</span>
+          <span class="small">{{ way }}</span></div>
+        {% endfor %}
+
+        {% if answer.center.note %}
+        <p class="tiny" style="margin-top:10px">{{ answer.center.note }}</p>
+        {% endif %}
+        <p class="tiny">{{ answer.center.source }} &middot; checked
+          {{ answer.center.checked_on }} &middot; {{ answer.center.url }}</p>
+      </div>
+      <div class="card soft">
+        <span class="small">Write the number down before you go. You will not
+          have this tablet on the outside.</span>
+      </div>
+
+      {% elif answer.state == "coming" %}
+      <div class="card warn">
+        <span class="tag amber">Not open yet</span>
+        <h2>{{ answer.center.name }}</h2>
+        <p class="small">{{ answer.center.note }}</p>
+        <p class="tiny">{{ answer.center.source }} &middot; checked
+          {{ answer.center.checked_on }}</p>
+      </div>
+
+      {% elif answer.state == "unchecked" %}
+      <div class="card warn">
+        <span class="tag amber">We have not checked this one</span>
+        <p class="small">There may be a center serving {{ answer.county }}, but
+          nobody on this team has read the page it comes from, so we are not
+          going to put an address in front of you that we have not opened
+          ourselves. Ask your coordinator to look it up with you.</p>
+        <p class="tiny">An address that has moved sends somebody who has just
+          come home on a bus ride to a locked door. That is why this screen
+          would rather say nothing.</p>
+      </div>
+
+      {% else %}
+      <div class="card">
+        <span class="tag">No center there</span>
+        <p class="small">There is no free city-run financial counselor in
+          {{ answer.county }}. Most of New York State has none: it is a city
+          program, and it covers a handful of places. We are not going to
+          send you to the nearest one, because two hours on a bus to a desk
+          that will turn you away is worse than knowing now.</p>
+        <h3>What to do instead</h3>
+        <p class="small">Finish the course. It covers the two rules that matter
+          most out there: nobody may charge you before the work is done, and
+          you are owed a free report from all three bureaus every year, plus
+          another one every time you are turned down for something.</p>
+        <a class="btn" href="/inside/learn">Back to the course</a>
+      </div>
+      {% endif %}
+
+    </div>
+    {% endif %}
+
+    <div class="colophon">
+      <p>This list is kept by hand and checked on {{ checked_on }}. Only places
+        somebody on this team has read about are on it.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

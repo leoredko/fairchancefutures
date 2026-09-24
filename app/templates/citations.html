@@ -44,5 +44,52 @@
     </div>
     {% endfor %}
   </div>
+
+  <div class="card soft" style="margin-top:16px">
+    <h2>Free counseling after release</h2>
+    <p class="small">Only places somebody on this team has read about reach a
+      screen. An address arriving from a government dataset nobody opened is
+      worse than a guess, because it wears the city's authority.</p>
+    {% for c in centers %}
+    <div class="rung">
+      <div>
+        <div class="small strong">{{ c.name }}</div>
+        <div class="tiny">{{ c.counties|join(', ') }}</div>
+        <div class="tiny"><a href="{{ c.url }}">{{ c.source }}</a> &middot;
+          checked {{ c.checked_on }}</div>
+      </div>
+    </div>
+    {% endfor %}
+    {% if unread %}
+    <h3>Waiting on somebody to read the source</h3>
+    <p class="small">These are not shown to anybody yet, whatever date they
+      carry.</p>
+    {% for c in unread %}
+    <p class="tiny">&middot; {{ c.name }} &mdash; <a href="{{ c.url }}">{{ c.url }}</a></p>
+    {% endfor %}
+    {% endif %}
+    <p class="tiny" style="margin-top:10px">New York City publishes a
+      Financial Empowerment Centers dataset on NYC Open Data, and
+      <span class="mono">scripts/check_centers.py</span> reads it. Its rows have
+      not changed since 2017, so it is a snapshot with a JSON endpoint rather
+      than a live source. It is used to tell a person to go and look. Nothing
+      it fetches is served here.</p>
+  </div>
+
+  <div class="card {% if stale %}warn{% else %}soft{% endif %}" style="margin-top:16px">
+    <h2>What has gone out of date</h2>
+    {% if stale %}
+    <p class="small">Six months for anything with an address on it, a year for
+      a statute. An address that moved sends an envelope into a void.</p>
+    {% for s in stale %}
+    <div class="row"><span class="tag amber">{{ s.days_old - s.window_days }} days over</span>
+      <span class="small">{{ s.kind }}: {{ s.label }}</span></div>
+    {% endfor %}
+    {% else %}
+    <p class="small">Nothing is past its window. Addresses are re-checked at
+      six months, statutes at a year, and this line is rendered from the dates
+      themselves rather than from somebody's memory of having looked.</p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

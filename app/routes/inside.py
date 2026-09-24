@@ -282,6 +282,40 @@ def learn_finished(request: Request):
     )
 
 
+@router.get("/after", response_class=HTMLResponse)
+def after_release(request: Request, county: str = ""):
+    """Free counseling a person can walk into once they are out.
+
+    The one screen in Bridge that reaches past the gate, and the reason it
+    exists is a problem the product has rather than one it solves: a dispute
+    has 30 days from receipt, the coordinator loses standing the moment
+    somebody is no longer in custody, and a helper's authorization was scoped
+    and expiring on purpose. So a live clock can be running on day one outside
+    with nobody holding it. A counselor who does credit work for free is the
+    successor, and this is where somebody finds out they exist while they can
+    still write the number down.
+
+    Asked here rather than added to intake. Intake is six questions about a
+    credit file; where somebody is going home to is a different question, it
+    can change, and it is nobody's business unless they are asking this.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.VIEW_LESSON)
+    from app import centers
+
+    answer = centers.answer_for(county) if county else None
+    return templates.TemplateResponse(
+        request, "inside/after.html",
+        {"client": caller.client,
+         "lang": i18n.from_request(request),
+         "counties": centers.NY_COUNTIES,
+         "borough_name": centers.BOROUGH_NAME,
+         "chosen": county,
+         "answer": answer,
+         "checked_on": centers.CHECKED},
+    )
+
+
 @router.get("/learn/scores", response_class=HTMLResponse)
 def learn_scores(request: Request):
     """Why the number a landlord sees is not the number a free app showed."""
