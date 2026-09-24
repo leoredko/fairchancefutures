@@ -3,11 +3,27 @@
 Two things are set up here: a container that runs anywhere, and a web app
 manifest so the inside surface installs to a tablet home screen.
 
-Neither has been deployed from this repo yet. The Dockerfile has not been built
-in CI (no Docker daemon in the environment it was written in), but the exact
-file layout, start command, health check and data path were run and verified
-outside a container. Expect the first `fly deploy` to work; do not be shocked
-if it needs one nudge.
+Not deployed from this repo yet, but no longer untested. There is still no
+Docker daemon in the environment this was written in, so the image has never
+been built. What has been done instead is a faithful rehearsal of it: a clean
+directory holding only what the Dockerfile copies, a fresh virtual environment
+with only what `requirements.txt` lists, and then the Dockerfile's own start
+command against a stand-in for the mounted volume.
+
+    /healthz  /  /signin  /citations  /staff      all 200
+    /data/bridge.json                             written on first boot
+    app/translations/es.po                        inside the image, 63 KB
+    startup log                                   no errors
+
+That rules out the things a first deploy usually dies on: a missing
+dependency, a file the Dockerfile forgot to copy, a path that only resolves on
+a developer's machine, a volume that never gets written. What it cannot rule
+out is the base image itself, since the rehearsal ran on 3.11 and the
+Dockerfile pins 3.12. CI runs the full suite on both, so that gap is covered
+from the other side.
+
+Expect the first `fly deploy` to work. Do not be shocked if it needs one
+nudge.
 
 ## Before anything: this app has no authentication
 
