@@ -77,6 +77,9 @@ Bridge is one domain inside the DOCCS **Offender Case Plan** rather than a
 second system to maintain. See [docs/SCOPE.md](docs/SCOPE.md) for what that
 integration assumes and `app/caseplan.py` for the code.
 
+Bridge contains no AI. Where a model would fit, and the four places it must
+not go, are specified in [docs/AI.md](docs/AI.md).
+
 Design rationale lives in [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md).
 
 Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
