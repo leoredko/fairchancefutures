@@ -156,3 +156,78 @@ def test_a_staleness_line_says_what_to_look_at_and_where():
     line = freshness.stale(today=day)[0].line()
     assert "last checked" in line
     assert "https://" in line
+
+
+# --------------------------------------------------------------------------
+# reaching a screen
+# --------------------------------------------------------------------------
+
+def test_a_county_with_a_checked_center_gets_it(inside):
+    """Brooklyn is Kings County, and somebody going home there should find the
+    phone number while they still have a tablet to write it down from."""
+    page = inside.get("/inside/after?county=Kings", follow_redirects=True)
+    assert page.status_code == 200
+    assert "NYC Financial Empowerment Centers" in page.text
+    assert "311" in page.text
+
+
+def test_a_county_with_no_center_is_told_so_plainly(inside):
+    """Most of New York State has none. Offering the nearest one anyway sends
+    somebody who just came home on a bus ride to a desk that will turn them
+    away, which is worse than an honest empty answer."""
+    page = inside.get("/inside/after?county=Albany", follow_redirects=True)
+    assert page.status_code == 200
+    assert "no free city-run financial counselor" in page.text
+    # and never the wrong one
+    assert "NYC Financial Empowerment Centers" not in page.text
+    assert "Syracuse Financial Empowerment Center" not in page.text
+
+
+def test_a_center_nobody_has_read_never_reaches_the_tablet(inside):
+    """The house rule, on the surface where it matters. An address arriving
+    from a government dataset nobody opened is worse than a guess, because it
+    wears the city's authority. Monroe and Westchester have entries; nobody
+    has read the source page; so the screen says that rather than printing
+    them."""
+    from app import centers
+
+    unread = centers.needs_a_human_read()
+    assert unread, "nothing is pending, so this test proves nothing"
+
+    for center in unread:
+        for county in center.counties:
+            page = inside.get(f"/inside/after?county={county}",
+                              follow_redirects=True).text
+            assert center.name not in page, f"{center.name} leaked on {county}"
+            assert "have not checked" in page, county
+
+
+def test_the_screen_asks_before_it_answers(inside):
+    """No county chosen is not an error and not an empty page: it is a
+    question. Where somebody is going home to is deliberately not an intake
+    question, because it can change and it is nobody's business unless they
+    are asking this."""
+    page = inside.get("/inside/after", follow_redirects=True).text
+    assert "Where are you going home to?" in page
+    assert "Choose a county" in page
+
+
+def test_every_county_the_picker_offers_has_an_answer(inside):
+    """A picker that offers a county the registry cannot answer for would be a
+    dead end somebody walked into on purpose."""
+    from app import centers
+
+    for county in centers.NY_COUNTIES:
+        answer = centers.answer_for(county)
+        assert answer["state"] in {"open", "coming", "unchecked", "none"}, county
+        if answer["center"] is not None:
+            assert answer["center"].verified_by_hand, county
+
+
+def test_citations_shows_what_is_stale_and_what_is_unread(client):
+    """The check dates were written down and then nothing read them, which is
+    the same as having no check dates."""
+    page = client.get("/citations").text
+    assert "What has gone out of date" in page
+    assert "Free counseling after release" in page
+    assert "it fetches is served here" in page

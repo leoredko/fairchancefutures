@@ -23,9 +23,10 @@ html, body { min-height: 100%; }
 </head>
 <body>
 
-<!-- The mark, defined once and referenced with <use>. A stone arch bridge,
-     which is also a B lying on its back: the deck is the spine and the two
-     arches are the bowls. -->
+<!-- The mark and the wordmark. The mark is a stone arch bridge; turned on
+     its side it is an E, a spine with three arms. So the wordmark spells
+     BRIDG and uses the mark itself, rotated, as the final letter. The letters
+     are drawn rather than set, because this file loads nothing. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="markgrad" x1="0" y1="0" x2="1" y2="1">
@@ -36,14 +37,22 @@ html, body { min-height: 100%; }
     <path id="markpath" fill-rule="evenodd"
           d="M2 7h44v4.5H2V7Zm2.5 6.5h39v16.5h-39V13.5Zm5 16.5v-6a6 6 0 0 1 12 0v6h-12Zm16
              0v-6a6 6 0 0 1 12 0v6h-12Z"/>
+
+    <g id="wordmark" fill-rule="evenodd">
+      <path d="M0 0h6v48H0V0Zm6 0h9a11 11 0 0 1 0 22H6v-6h9a5 5 0 0 0 0-10H6V0Zm0 26h10a11 11 0 0 1 0 22H6v-6h10a5 5 0 0 0 0-10H6v-6Z"/>
+      <g transform="translate(34,0)"><path d="M0 0h6v48H0V0Zm6 0h9a11 11 0 0 1 4.6 21L31 48h-6.8l-10.6-24H6v-6h9a5 5 0 0 0 0-10H6V0Z"/></g>
+      <g transform="translate(73,0)"><path d="M0 0h6v48H0V0Z"/></g>
+      <g transform="translate(86,0)"><path d="M0 0h6v48H0V0Zm6 0h10a24 24 0 0 1 0 48H6v-6h10a18 18 0 0 0 0-36H6V0Z"/></g>
+      <g transform="translate(129,0)"><path d="M24 0a24 24 0 1 0 0 48 24 24 0 0 0 16-6V22H22v6h12v11a18 18 0 1 1 6-25h6.3A24 24 0 0 0 24 0Z"/></g>
+      <g transform="translate(172,0)"><g transform="translate(0,48) rotate(-90)"><use href="#markpath"/></g></g>
+    </g>
   </defs>
 </svg>
 
 <div class="splash" id="splash" hidden>
-  <svg class="splash-mark" viewBox="0 0 48 34" aria-hidden="true">
-    <use href="#markpath" fill="url(#markgrad)"/>
+  <svg class="splash-word" viewBox="-2 -2 210 52" role="img" aria-label="Bridge">
+    <use href="#wordmark" fill="url(#markgrad)"/>
   </svg>
-  <span class="splash-word">Bridge</span>
 </div>
 
 <div id="app"></div>

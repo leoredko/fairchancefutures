@@ -499,10 +499,9 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 .mark { width: 27px; height: 19px; flex: none; display: block; }
 .mark.big { width: 44px; height: 31px; }
 
-/* The lockup, for the door and the splash only. */
-.lockup { display: flex; align-items: center; gap: 11px; }
-.lockup .wordmark { font-family: var(--display); font-weight: 700; font-size: 20px;
-                    letter-spacing: -.015em; color: var(--ink); }
+/* The wordmark, for the door and the splash only. Drawn rather than set, so
+   it is the same on every device and its final letter really is the mark. */
+.bar .wordmark, .wordmark { width: 118px; height: 29px; flex: none; display: block; }
 
 .splash {
   position: fixed; inset: 0; z-index: 90;
@@ -515,18 +514,11 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 .splash[hidden] { display: none; }
 .splash.gone { opacity: 0; pointer-events: none; }
 
-.splash-mark {
-  width: 104px; height: 74px;
-  opacity: 0; transform: translateY(10px) scale(.94);
-  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.7,.3,1);
-}
 .splash-word {
-  font-family: var(--display); font-weight: 700; font-size: 27px;
-  letter-spacing: -.02em; color: var(--ink);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .5s ease .18s, transform .5s cubic-bezier(.2,.7,.3,1) .18s;
+  width: min(72vw, 382px); height: auto;
+  opacity: 0; transform: translateY(10px) scale(.96);
+  transition: opacity .55s ease, transform .7s cubic-bezier(.2,.7,.3,1);
 }
-.splash.on .splash-mark,
 .splash.on .splash-word { opacity: 1; transform: none; }
 
 /* Asked for less motion and got none: the script never reveals the overlay at

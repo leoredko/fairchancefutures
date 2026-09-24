@@ -120,11 +120,21 @@ def index(request: Request):
 
 @app.get("/citations", response_class=HTMLResponse)
 def citations(request: Request):
-    """What we checked, rendered from the same registry the letters cite."""
+    """What we checked, rendered from the same registry the letters cite.
+
+    Now including what has gone out of date and what is waiting on a person to
+    read it. A check date written down and never read again is the same as no
+    check date, which is the gap `app.freshness` exists to close.
+    """
+    from app import centers, freshness
+
     return templates.TemplateResponse(
         request, "citations.html",
         {"facts": list(FACTS.values()), "open_questions": OPEN_QUESTIONS,
-         "bureaus": BUREAUS},
+         "bureaus": BUREAUS,
+         "stale": freshness.stale(),
+         "unread": centers.needs_a_human_read(),
+         "centers": [c for c in centers.CENTERS if c.verified_by_hand]},
     )
 
 
