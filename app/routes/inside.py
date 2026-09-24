@@ -430,10 +430,16 @@ def read_report(request: Request):
     # A report that has landed and not been read is the most important thing on
     # this person's case. It interrupts rather than sitting in a list.
     unread = walkthrough.unread_indexes(caller.client, reports)
+    from app import scores as scores_module
+
     return templates.TemplateResponse(
         request, "inside/report.html",
         {"client": caller.client, "reports": reports, "waiting": waiting,
          "unread": unread,
+         # Three numbers rather than one. The product refuses to print "your
+         # credit score" because there is no such thing, and showing all of
+         # them at once is that same refusal made out of the person's own data.
+         "spread": scores_module.across_bureaus(reports),
          "arrival": (
              {"index": unread[0],
               "report": reports[unread[0]],

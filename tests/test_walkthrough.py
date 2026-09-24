@@ -10,12 +10,17 @@ import pytest
 
 from app import walkthrough
 from app.report import ARRIVAL_CREDIT, Source
-from conftest import sign_in_inside
+from conftest import clear_reports, sign_in_inside
 
 
 @pytest.fixture()
 def with_report(client, staff):
-    """A confirmed report on Marcus's record, scanned at the desk."""
+    """A confirmed report on Marcus's record, scanned at the desk.
+
+    The seeded files are cleared first so this one is index 0 and the walk is
+    over a report this test can reason about.
+    """
+    clear_reports()
     staff.post("/staff/marcus-w/report", data={
         "bureau": "Equifax",
         "consumer_name": "Marcus W.",

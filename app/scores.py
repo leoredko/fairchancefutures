@@ -174,3 +174,55 @@ def summary_line() -> str:
         f"scores run {BASE_RANGE[0]} to {BASE_RANGE[1]}; auto and card scores "
         f"run {INDUSTRY_RANGE[0]} to {INDUSTRY_RANGE[1]}."
     )
+
+
+# The model the seeded files were scored with. Named on screen beside every
+# number, because a score with no model, bureau and date attached is a guess
+# that looks precise, and this module exists to say so.
+SHOWN_MODEL = "FICO Score 8"
+
+
+def across_bureaus(reports) -> dict:
+    """The same person's score at each bureau, side by side.
+
+    The point of showing three numbers rather than one. This product refuses
+    to print *a* credit score, and it is right to: there is no such thing. But
+    refusing to show anything taught the lesson only in words, and a person
+    who has never seen their own file wants to see it. Three numbers on one
+    screen, each carrying the bureau and the day it was pulled, is the same
+    lesson made out of their own data instead of an argument about it.
+
+    The spread is not decoration either. It is the account-level disagreement
+    one line up: a bureau missing a collection, or reporting a paid car loan
+    as open, is why its number differs.
+    """
+    rows = []
+    for report in reports:
+        if not report.score:
+            continue
+        rows.append({
+            "bureau": report.bureau,
+            "score": report.score,
+            "model": SHOWN_MODEL,
+            "pulled_on": report.pulled_on,
+            "accounts": len(report.accounts),
+        })
+    if len(rows) < 2:
+        return {"rows": rows, "spread": 0, "low": None, "high": None}
+
+    numbers = [r["score"] for r in rows]
+    # Two different contrasts, and picking the wrong one produces a sentence
+    # that says nothing. The score spread is the headline; the account counts
+    # are the explanation, and the bureaus at each end are often not the same
+    # pair, because the highest score is not always the fullest file.
+    counts = [r["accounts"] for r in rows]
+    return {
+        "rows": rows,
+        "spread": max(numbers) - min(numbers),
+        "low": min(rows, key=lambda r: r["score"]),
+        "high": max(rows, key=lambda r: r["score"]),
+        "fewest": min(rows, key=lambda r: r["accounts"]),
+        "most": max(rows, key=lambda r: r["accounts"]),
+        # Only worth saying out loud when the files actually differ in size.
+        "counts_differ": max(counts) != min(counts),
+    }

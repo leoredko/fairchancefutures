@@ -9,7 +9,8 @@ from dataclasses import asdict
 from app.redaction import NEVER_RENDERED, for_surface
 from app.surfaces import Surface
 
-from tests.conftest import PIN, sign_in_helper, sign_in_inside, sign_in_staff
+from tests.conftest import (PIN, clear_reports, sign_in_helper, sign_in_inside,
+                            sign_in_staff)
 
 
 def test_the_front_page_needs_no_session(client):
@@ -591,5 +592,6 @@ def test_asking_twice_does_not_stack_up_on_the_timeline(inside):
 def test_the_empty_report_screen_says_how_to_make_one_arrive(inside):
     """It used to say reports come back on paper and never say how to start
     that, which is a dead end dressed as an explanation."""
+    clear_reports()
     page = inside.get("/inside/report", follow_redirects=True).text
     assert "/inside/request" in page

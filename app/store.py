@@ -431,6 +431,98 @@ report_summary="Full file, nine collections accounts",
     STATE.review_log = {"reviewed": 0, "edited": 0}
     STATE.write_log = []
     _seed_accounts()
+    _seed_reports(today)
+
+
+def _seed_reports(today: date) -> None:
+    """Three files back for one person, and they do not agree.
+
+    Without these the product could show somebody asking for a report and
+    never show one arriving, which is a demo of a waiting room. Everything
+    downstream of this point already worked and had nothing to work on.
+
+    The disagreement is the content, not set dressing. Marcus has two problems
+    and neither is on all three files: Second Chance Auto is reported open and
+    past due at Equifax and TransUnion and correctly closed at Experian, and
+    the Midland collection he never opened is missing from TransUnion
+    altogether. That is why a dispute goes to all three, and it is why the
+    three scores below are three different numbers on the same day.
+    """
+    from app.report import Account, CreditReport, Source
+
+    pulled = (today - timedelta(days=4)).isoformat()
+    scanned = (today - timedelta(days=2)).isoformat()
+
+    # Reported the same way everywhere. An old card, closed and paid, which is
+    # the one good thing on this file and the reason it is not empty.
+    def cap_one():
+        return Account(
+            creditor="Capital One Platinum", number="xxxx2210",
+            opened="2016-04", status="Closed, paid as agreed", balance="$0",
+        )
+
+    def store_card():
+        return Account(
+            creditor="Fingerhut / WebBank", number="xxxx8830",
+            opened="2018-02", status="Closed, paid as agreed", balance="$0",
+        )
+
+    # Paid in full before he went in, still being reported open and past due.
+    def auto_wrong():
+        return Account(
+            creditor="Second Chance Auto Finance", number="xxxx0912",
+            opened="2017-08", status="Open, 120+ days past due", balance="$4,180",
+        )
+
+    def auto_right():
+        return Account(
+            creditor="Second Chance Auto Finance", number="xxxx0912",
+            opened="2017-08", status="Closed, paid in full", balance="$0",
+        )
+
+    # Never his. Bought and resold debt attached to the wrong file, which is
+    # the single most common thing that happens to somebody whose Social
+    # Security number has been on paperwork in a lot of hands.
+    def midland():
+        return Account(
+            creditor="Midland Funding LLC", number="xxxx4471",
+            opened="2019-11", status="Collection, open", balance="$1,247",
+            note="Original creditor listed as Comenity Bank",
+        )
+
+    files = [
+        # bureau, score, accounts, inquiries, public records
+        ("Equifax", 583, [cap_one(), store_card(), auto_wrong(), midland()],
+         ["Second Chance Auto Finance, 2017-08"], []),
+        ("Experian", 601, [cap_one(), store_card(), auto_right(), midland()],
+         ["Second Chance Auto Finance, 2017-08"], []),
+        ("TransUnion", 594, [cap_one(), store_card(), auto_wrong()],
+         [], []),
+    ]
+
+    for bureau, score, accounts, inquiries, records in files:
+        put_report(CreditReport(
+            bureau=bureau,
+            client_id="marcus-w",
+            pulled_on=pulled,
+            scanned_on=scanned,
+            # A person, because a report that arrived from nobody is the kind
+            # of event the timeline rule exists to keep off a screen.
+            scanned_by="D. Reyes",
+            consumer_name="Marcus W.",
+            ssn_on_document="XXX-XX-4417",
+            date_of_birth="1988-06-14",
+            addresses=[
+                "Sing Sing Correctional Facility, Ossining NY",
+                "1194 E 224th St, Bronx NY 10466",
+            ],
+            accounts=accounts,
+            inquiries=inquiries,
+            public_records=records,
+            score=score,
+            source=Source.CLIENT_DELIVERED.value,
+            confirmed=True,
+        ))
 
 
 def _seed_accounts() -> None:
