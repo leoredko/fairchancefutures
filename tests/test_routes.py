@@ -498,16 +498,37 @@ def test_the_course_is_one_tap_from_every_tablet_screen(inside):
 
 def test_the_wordmark_is_at_the_door_and_the_mark_carries_the_rest(client, inside):
     """A wordmark repeated on every click-through stops being a brand and
-    becomes furniture. The word appears where somebody finds out what they are
-    looking at, and the mark carries it everywhere after that."""
+    becomes furniture. The name appears where somebody finds out what they are
+    looking at, and the mark carries it everywhere after that.
+
+    The wordmark is not text: it is drawn, because the app loads no web fonts
+    and its last letter is the mark itself turned on its side. So it is asked
+    for by shape, and the accessible name is what carries the word."""
     door = client.get("/signin").text
     assert 'class="wordmark"' in door
-    assert 'class="mark"' in door
+    assert 'href="#wordmark"' in door
+    assert 'aria-label="Bridge"' in door, "the drawn wordmark has no readable name"
 
     for url in TABLET_SCREENS:
         page = inside.get(url, follow_redirects=True).text
         assert 'class="mark"' in page, f"no mark on {url}"
         assert 'class="wordmark"' not in page, f"wordmark still on {url}"
+
+
+def test_the_last_letter_of_the_wordmark_is_the_mark_itself(client):
+    """The whole idea. The mark is a stone arch bridge and, turned on its
+    side, an E: a spine with three arms. If the wordmark ever stopped
+    referencing markpath it would be spelling the name in letters that merely
+    resemble the logo, which is a different and much weaker thing."""
+    import re
+
+    door = client.get("/signin").text
+    block = re.search(r'<g id="wordmark".*?</g>\s*</defs>', door, re.S)
+    assert block, "no wordmark definition on the page"
+    assert 'href="#markpath"' in block.group(0), \
+        "the wordmark no longer ends in the mark"
+    assert "rotate(-90)" in block.group(0), \
+        "the mark is in the wordmark but not turned on its side"
 
 
 def test_no_bar_subtitle_starts_lowercase(inside):
