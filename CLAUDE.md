@@ -88,6 +88,14 @@ next tap. Some scopes raise on construction rather than being checked later.
   is the hand-kept companion, so update it in the same change.
 - **No column name reaches a screen.** `app/labels.py` is the registry, and a
   test fails if a raw field name renders.
+- **An address nobody has read does not reach a screen.** Same rule as a legal
+  sentence, for the same reason, and it applies to a government API too: data
+  arriving from a city carries the city's authority, so an unchecked address is
+  more dangerous there than in a guess. `app/centers.py` is hand-kept and each
+  entry carries `verified_by_hand`. `scripts/check_centers.py` reads NYC Open
+  Data and only ever prints; nothing it fetches is served. `app/freshness.py`
+  is what notices a check date getting old, across the facts, the bureau
+  addresses and the centers together.
 - **Never seed a PIN.** A PIN somebody else set is not a PIN.
 
 ## The standalone build, and how it has bitten before
@@ -119,7 +127,7 @@ Editing that shell has gone wrong twice, both times the same way:
 
 ## Checks before pushing
 
-    pytest -q                       # 297 tests, all should pass
+    pytest -q                       # 318 tests, all should pass
     python3 standalone/build.py     # rebuild if anything changed
     ./run.sh                        # installs, tests, serves on :8000
 
