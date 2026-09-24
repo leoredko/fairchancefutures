@@ -1,9 +1,10 @@
 """The two constraints, tested.
 
-The deck is explicit that these are not assumed away with the rest of the red
-tape: a person inside cannot verify identity online, and a helper outside has
-no standing without a signed form. If these tests ever go green by accident,
-the product has quietly become something else.
+These two are not assumed away with the rest of the red tape, because no
+waiver makes them disappear: a person inside cannot verify identity online,
+and a helper outside has no standing without a signed form. `app/surfaces.py`
+and `app/authorization.py` enforce them. If these tests ever go green by
+accident, the product has quietly become something else.
 """
 
 from datetime import date, timedelta

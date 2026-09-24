@@ -29,9 +29,6 @@ by document readiness in `app/caseplan.py`, which is knowable, already tracked
 quarterly by the coordinator, and carries a real deadline at 120 days before
 release. See `app/authorization.py` for the full reasoning.
 
-Bridge contains no AI today. [docs/AI.md](AI.md) says where a model would
-fit if one were added, and why none of the other candidate places survive.
-
 No surface here belongs to somebody after release. [docs/RETENTION.md](RETENTION.md)
 says what that costs, what survives the gate anyway, and what would have to be
 built.
@@ -72,7 +69,7 @@ expires first, never a roster.
 
 | Thing | Why not |
 | --- | --- |
-| Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. This is the one place a model belongs, and [docs/AI.md](AI.md) specifies it: what it is given, what it returns, who confirms it, and what it is never allowed to do. |
+| Photo-to-text extraction | The genuinely hard engineering piece. The fallback is that the coordinator types it in, and that is what is built. Nothing else depends on it. |
 | Referrals and outcomes | Never built past a sketch, and nothing depends on them. A post-release handoff to a community lender is a partnership rather than a feature. See [docs/RETENTION.md](RETENTION.md). |
 | Account creation | There is no self-serve signup. Accounts are seeded, which is right: a person does not enrol themselves into a caseload, a counselor adds them. |
 | Password reset by email | Nobody inside has outside email. A counselor clears the PIN and the client sets a new one on their tablet. |
