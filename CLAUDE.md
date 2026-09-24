@@ -15,6 +15,7 @@ short version of what a session needs to not break things.
     docs/RETENTION.md      what happens after release, and what is not answered
     docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
+    docs/TRANSLATION.md    how the course gets into Spanish, for a translator
 
 The product started from a wireframe deck. That deck has been deleted, and its
 references stripped out of the code and the docs, because it stopped describing

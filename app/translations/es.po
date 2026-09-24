@@ -1,0 +1,1082 @@
+# Bridge, the credit course, Spanish.
+#
+# Every entry below is a screen a person reads on a facility tablet.
+#
+# How to work on this file:
+#   1. Open it in Poedit (poedit.net, free) or any translation tool.
+#   2. The English is on the left. Type the Spanish on the right.
+#   3. Entries marked "fuzzy" or "needs review" are drafts. Clear that flag
+#      only when you have read the line and you are happy with it.
+#   4. Save. Commit the file. That is the whole deployment.
+#
+# An entry that is empty, or still flagged fuzzy, shows in English instead.
+# That is deliberate: these lessons state law, and a confident Spanish sentence
+# about somebody's rights that no Spanish speaker has read is worse than the
+# English they would otherwise get.
+#
+# Lines marked LEGAL sit on a card that cites a statute. Slow down on those.
+# Numbers, deadlines and the phrase "120 days" carry weight: there are two
+# different 120-day clocks in this course and they are on opposite sides of
+# release.
+#
+# Do not translate: names of agencies (Equifax, Experian, TransUnion, DOCCS,
+# DMV), and statute references like 15 U.S.C. 1681i. Somebody may carry those
+# to a law library and they have to read the way they read on the shelf.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Bridge\n"
+"PO-Revision-Date: 2026-09-24\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, fuzzy
+msgctxt "lesson.three-papers.title"
+msgid "The three pieces of paper"
+msgstr "Los tres documentos"
+
+#, fuzzy
+msgctxt "lesson.three-papers.hook"
+msgid ""
+"Two documents decide whether you walk out with ID. One has a deadline near "
+"release; the other is worth starting years out."
+msgstr ""
+"Dos documentos deciden si sales con identificación. Uno tiene una fecha "
+"límite cerca de tu salida; el otro conviene empezarlo con años de "
+"anticipación."
+
+#, fuzzy
+msgctxt "lesson.three-papers.card.0.title"
+msgid "Everything runs through your ID"
+msgstr "Todo pasa por tu identificación"
+
+msgctxt "lesson.three-papers.card.0.body"
+msgid ""
+"A bank account, an apartment, a job, and every single thing you will ever do"
+" with a credit bureau needs a photo ID. And the ID itself needs two other "
+"documents first. Get this chain wrong and nothing downstream of it can "
+"start."
+msgstr ""
+
+#, fuzzy
+msgctxt "lesson.three-papers.card.0.aside"
+msgid ""
+"If your date is years away, this lesson still has one thing in it for you: "
+"the birth certificate. It has no deadline, it takes ten weeks or more, and "
+"asking for it early costs you nothing. The rest of this course does not wait"
+" for a release date at all."
+msgstr ""
+"Si tu fecha está a años de distancia, esta lección todavía tiene algo para "
+"ti: el acta de nacimiento. No tiene fecha límite, tarda diez semanas o más, "
+"y pedirla desde ya no te cuesta nada. El resto de este curso no depende de "
+"una fecha de salida."
+
+#. LEGAL: cites a statute, read this one twice.
+#, fuzzy
+msgctxt "lesson.three-papers.card.1.title"
+msgid "Birth certificate and Social Security card, in that order of worry"
+msgstr ""
+"Acta de nacimiento y tarjeta del Seguro Social, en ese orden de preocupación"
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.three-papers.card.1.body"
+msgid ""
+"Both have to be in your file before the non-driver ID application can even "
+"be sent. Your coordinator is the one who requests them, and they check where"
+" everyone's documents stand every three months. The birth certificate is the"
+" slow one. It can take ten weeks or more to come back, so it is the one to "
+"ask about first."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+#, fuzzy
+msgctxt "lesson.three-papers.card.2.title"
+msgid "120 days out, ask for the Social Security card"
+msgstr "A 120 días de salir, pide la tarjeta del Seguro Social"
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.three-papers.card.2.body"
+msgid ""
+"That is the mark. At 120 days before you go home, the Social Security card "
+"application goes in. If you are inside that window right now and nobody has "
+"raised it with you, raise it with them. If you are years out, this is the "
+"date to know about rather than the date to act on, and it will come round."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+#, fuzzy
+msgctxt "lesson.three-papers.card.2.aside"
+msgid ""
+"Write the date down. It is the one deadline in this whole course that is "
+"yours to chase rather than somebody else's."
+msgstr ""
+"Anota la fecha. Es la única fecha límite de todo este curso que te toca a ti"
+" perseguir y no a otra persona."
+
+#. LEGAL: cites a statute, read this one twice.
+#, fuzzy
+msgctxt "lesson.three-papers.card.3.title"
+msgid "The birth certificate is free, unless you were born somewhere else"
+msgstr "El acta de nacimiento es gratis, salvo que hayas nacido en otro lugar"
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.three-papers.card.3.body"
+msgid ""
+"When the department requests your birth certificate for your release, there "
+"is no fee, and your sentence and commitment paperwork counts as your "
+"permission, so you do not have to sign anything separately. That covers New "
+"York records only. Born in another state, or another country, and none of "
+"that applies to you. Say so early, because yours takes longer and costs "
+"money."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+#, fuzzy
+msgctxt "lesson.three-papers.card.4.title"
+msgid "The other 120 days, which is not the same 120 days"
+msgstr "Los otros 120 días, que no son los mismos 120 días"
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.three-papers.card.4.body"
+msgid ""
+"After you are released, the DOCCS ID you walk out with expires in 120 days. "
+"That is your window to get to a DMV office and trade it for a real non-"
+"driver photo ID. Two different 120-day clocks, one before the gate and one "
+"after, and mixing them up is how people end up with no ID at all."
+msgstr ""
+
+#, fuzzy
+msgctxt "lesson.three-papers.check.prompt"
+msgid ""
+"You are 130 days from release and have no birth certificate on file. What is"
+" the most useful thing to do?"
+msgstr ""
+"Estás a 130 días de salir y no tienes acta de nacimiento en tu expediente. "
+"¿Qué es lo más útil que puedes hacer?"
+
+msgctxt "lesson.three-papers.check.why"
+msgid ""
+"The birth certificate has no deadline attached, which is exactly why it gets"
+" left. It is also the slow one, ten weeks or more, and the ID application "
+"cannot be submitted without it. The 120-day mark is for the Social Security "
+"card. The birth certificate wants to be moving before that."
+msgstr ""
+
+#, fuzzy
+msgctxt "lesson.three-papers.check.choice.both"
+msgid "Ask your coordinator about both documents now"
+msgstr "Preguntarle a tu coordinador por ambos documentos ahora"
+
+#, fuzzy
+msgctxt "lesson.three-papers.check.choice.wait"
+msgid "Wait until 120 days, then ask about both"
+msgstr "Esperar a los 120 días y luego preguntar por ambos"
+
+#, fuzzy
+msgctxt "lesson.three-papers.check.choice.id"
+msgid "Apply for the photo ID and sort the rest later"
+msgstr "Solicitar la identificación con foto y resolver lo demás después"
+
+msgctxt "lesson.what-a-report-is.title"
+msgid "What a credit report actually is"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.hook"
+msgid ""
+"It is a file about you that you have never read, and there are rules about "
+"who gets to look at it."
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.card.0.title"
+msgid "It is a list, not a judgement"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.card.0.body"
+msgid ""
+"A credit report is a record of accounts in your name: who you borrowed from,"
+" how much, whether you paid on time, and whether anybody is chasing you for "
+"it. That is it. It is closer to a bank statement than to a grade."
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.card.1.title"
+msgid "There are three of them, and they disagree"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.card.1.body"
+msgid ""
+"Equifax, Experian and TransUnion each keep their own file on you. Not every "
+"lender reports to all three, so an account can sit on one report and be "
+"missing from another. This is why anything we do, we do three times."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-a-report-is.card.2.title"
+msgid "Not everybody can just look you up"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-a-report-is.card.2.body"
+msgid ""
+"A report can only be handed out for a reason the law lists: you applied for "
+"credit, an insurer is making a decision, a court ordered it, child support "
+"enforcement, or you told them in writing to release it. Somebody being "
+"curious about you is not on that list."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-a-report-is.card.3.title"
+msgid "An employer needs your written permission"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-a-report-is.card.3.body"
+msgid ""
+"An employer has to tell you clearly and in writing that they want to pull "
+"your credit, and get your written permission before they do. If they then "
+"decide not to hire you because of what is in it, they have to give you a "
+"copy of the report and a written statement of your rights before they act. "
+"Not after. Before."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-a-report-is.card.3.aside"
+msgid ""
+"This one matters on the outside. Most people never ask for the copy they are"
+" owed."
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.check.prompt"
+msgid ""
+"An employer turns you down and mentions your credit. What are you owed?"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.check.why"
+msgid ""
+"You get a copy of the report they used and a written statement of your "
+"rights, and you are supposed to get it before they finalize the decision, so"
+" there is a window to point out an error. Separately, a denial like this "
+"entitles you to a free copy from the bureau itself. That comes up in the "
+"lesson on free reports."
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.check.choice.copy"
+msgid "A copy of the report and a statement of your rights"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.check.choice.nothing"
+msgid "Nothing, it is their decision"
+msgstr ""
+
+msgctxt "lesson.what-a-report-is.check.choice.reason"
+msgid "A written explanation of their reasoning"
+msgstr ""
+
+msgctxt "lesson.report-and-score.title"
+msgid "The report and the score are different things"
+msgstr ""
+
+msgctxt "lesson.report-and-score.hook"
+msgid ""
+"One is a file. The other is somebody's opinion about the file, and you are "
+"owed the first one but not the second."
+msgstr ""
+
+msgctxt "lesson.report-and-score.card.0.title"
+msgid "The file is the facts. The score is an opinion about them"
+msgstr ""
+
+msgctxt "lesson.report-and-score.card.0.body"
+msgid ""
+"The report lists what happened. A score is a number a company calculates "
+"from that list, using a formula they own. Change the file and the score "
+"follows. Argue with the score and nothing happens, because there is nothing "
+"there to argue with."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.report-and-score.card.1.title"
+msgid "Your free report may come with no number on it"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.report-and-score.card.1.body"
+msgid ""
+"What you are owed by law is the file. A score is specifically not part of "
+"what they have to disclose. So when your report arrives in the mail and "
+"there is no number anywhere on it, nothing has gone wrong and nobody has "
+"cheated you. You got exactly what you were owed, and it is the more useful "
+"half."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.report-and-score.card.2.title"
+msgid "Your Social Security number can be blacked out"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.report-and-score.card.2.body"
+msgid ""
+"You can require them to leave the first five digits of your Social off your "
+"own copy. That is a right you can insist on, not a favour. It is also the "
+"reason you can read your own report on a tablet in a room full of people."
+msgstr ""
+
+msgctxt "lesson.report-and-score.check.prompt"
+msgid "Your free report arrives and there is no score on it. What happened?"
+msgstr ""
+
+msgctxt "lesson.report-and-score.check.why"
+msgid ""
+"The law says they owe you the file, and specifically says scores are not "
+"part of that. Most mailed reports arrive without one. It says nothing about "
+"whether you have a score, and the file is the part that can actually be "
+"corrected."
+msgstr ""
+
+msgctxt "lesson.report-and-score.check.choice.normal"
+msgid "Nothing. A file disclosure does not have to include one"
+msgstr ""
+
+msgctxt "lesson.report-and-score.check.choice.error"
+msgid "They made a mistake and you should write back"
+msgstr ""
+
+msgctxt "lesson.report-and-score.check.choice.nofile"
+msgid "It means you have no score at all"
+msgstr ""
+
+msgctxt "lesson.no-single-score.title"
+msgid "There is no such thing as your credit score"
+msgstr ""
+
+msgctxt "lesson.no-single-score.hook"
+msgid ""
+"Not one number. Dozens, all real at the same time, and the free app on "
+"somebody's phone is showing a different one from the bank."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.0.title"
+msgid "Three things multiply together"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.0.body"
+msgid ""
+"Which bureau's file it was run against, which company's model did the "
+"running, and what the score is for. Three bureaus, several models in active "
+"use, and separate versions tuned for car loans and credit cards. Multiply "
+"those out and one person honestly has dozens of scores on the same day."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.1.title"
+msgid "They do not even share a scale"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.1.body"
+msgid ""
+"Most scores run 300 to 850. The ones car dealers and card companies pull run"
+" 250 to 900. So a 700 in one place is not the same as a 700 in another, and "
+"comparing them straight across tells you nothing."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.2.title"
+msgid "Why the free app disagrees with the bank"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.no-single-score.card.2.body"
+msgid ""
+"Free apps usually show a VantageScore. Most lenders use a FICO. Different "
+"companies, different formulas. Neither is lying to you. They are not "
+"measuring the same thing."
+msgstr ""
+
+msgctxt "lesson.no-single-score.card.3.title"
+msgid "So which one is real?"
+msgstr ""
+
+msgctxt "lesson.no-single-score.card.3.body"
+msgid ""
+"The one belonging to whoever is deciding about you. That is the whole "
+"answer. A landlord, a car dealer and a card company will each pull a "
+"different one, and all of them are real. Which is why the work is on the "
+"file, not on chasing a number."
+msgstr ""
+
+msgctxt "lesson.no-single-score.card.3.aside"
+msgid ""
+"It is also why this app does not show you a number. A score with no model, "
+"bureau and date attached is a guess that looks precise."
+msgstr ""
+
+msgctxt "lesson.no-single-score.check.prompt"
+msgid "A free app shows 640. A car dealer says you are at 590. Who is wrong?"
+msgstr ""
+
+msgctxt "lesson.no-single-score.check.why"
+msgid ""
+"The app is almost certainly showing a VantageScore. The dealer pulled an "
+"auto-specific FICO, which runs on a 250 to 900 scale rather than 300 to 850,"
+" probably from a different bureau's file. Both numbers can be correct at "
+"once. Worth knowing before you assume somebody is running a game on you."
+msgstr ""
+
+msgctxt "lesson.no-single-score.check.choice.neither"
+msgid "Neither. Different model, different bureau, different scale"
+msgstr ""
+
+msgctxt "lesson.no-single-score.check.choice.app"
+msgid "The app, those are never accurate"
+msgstr ""
+
+msgctxt "lesson.no-single-score.check.choice.dealer"
+msgid "The dealer, they lowball to sell you a worse rate"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.title"
+msgid "What actually moves a score"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.hook"
+msgid "Five things, and two of them are most of it."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-moves-it.card.0.title"
+msgid "The five, by weight"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-moves-it.card.0.body"
+msgid ""
+"Payment history is about 35 percent. How much you owe against what is "
+"available to you is about 30 percent. How long you have had credit, about 15"
+" percent. Your mix of types of credit, about 10 percent. Recently opened "
+"accounts, about 10 percent."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-moves-it.card.1.title"
+msgid "Two of them are two thirds"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.what-moves-it.card.1.body"
+msgid ""
+"Paying on time and not using too much of what you have available are roughly"
+" 65 percent of it between them. Everything else is noise by comparison. If "
+"you only ever remember one thing from this course, remember that the boring "
+"answer is most of the answer."
+msgstr ""
+
+msgctxt "lesson.what-moves-it.card.2.title"
+msgid "The one nobody explains"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.card.2.body"
+msgid ""
+"That second one is about the ratio, not the amount. A card with a 500 dollar"
+" limit carrying a 450 balance looks worse than a card with a 5,000 dollar "
+"limit carrying the same 450. Same debt. Very different picture. Paying a "
+"card down below about a third of its limit is the fastest legitimate move "
+"there is."
+msgstr ""
+
+msgctxt "lesson.what-moves-it.card.3.title"
+msgid "Time is the one you cannot rush"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.card.3.body"
+msgid ""
+"Length of history only goes one way and only at one speed. Which is the real"
+" argument for starting inside rather than at the gate: an account opened now"
+" is already months old by the time anybody asks you for a credit check."
+msgstr ""
+
+msgctxt "lesson.what-moves-it.check.prompt"
+msgid ""
+"You have 450 dollars and two cards, each with a 500 dollar limit and a 450 "
+"balance. What helps your score most?"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.check.why"
+msgid ""
+"Clearing one card takes it from 90 percent used to nearly nothing, which is "
+"the part of the formula that moves fastest. Splitting it leaves both cards "
+"around 45 percent used, which is better than 90 but not by as much. Keep "
+"paying at least the minimum on the other one either way, because payment "
+"history is the bigger slice and a missed payment undoes this."
+msgstr ""
+
+msgctxt "lesson.what-moves-it.check.choice.one"
+msgid "Pay one card down to near zero"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.check.choice.split"
+msgid "Split it evenly across both"
+msgstr ""
+
+msgctxt "lesson.what-moves-it.check.choice.save"
+msgid "Keep it in savings and pay the minimums"
+msgstr ""
+
+msgctxt "lesson.old-debt.title"
+msgid "Old debt does not last forever"
+msgstr ""
+
+msgctxt "lesson.old-debt.hook"
+msgid ""
+"Most of it has to come off after seven years, and paying it does not restart"
+" the clock."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.0.title"
+msgid "Seven years, ten for bankruptcy"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.0.body"
+msgid ""
+"Collection accounts and charge-offs have to come off seven years after the "
+"account first went delinquent. So do civil judgments and paid tax liens, and"
+" most other bad marks. Bankruptcy runs ten. After that they are not allowed "
+"to report it."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.1.title"
+msgid "The clock starts at the original delinquency"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.1.body"
+msgid ""
+"This is the part that gets people. The seven years runs from when you first "
+"fell behind on the original account, not from when a collector bought it and"
+" not from when you paid it. Paying an old debt does not restart anything. A "
+"collector who tells you it will is selling you something."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.2.title"
+msgid "Court debt is a different animal"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.old-debt.card.2.body"
+msgid ""
+"Restitution, fines and child support do not work like credit accounts. Civil"
+" judgments largely came off credit reports back in 2017, and in New York "
+"restitution is collected by probation rather than reported as a debt. Child "
+"support arrears are the exception: states are required to report those. They"
+" all matter, and they belong in a different list from your credit accounts."
+msgstr ""
+
+msgctxt "lesson.old-debt.check.prompt"
+msgid ""
+"A collector says paying a five-year-old debt will help your credit. Is that "
+"right?"
+msgstr ""
+
+msgctxt "lesson.old-debt.check.why"
+msgid ""
+"It may help, and on some newer scoring models a paid collection stops "
+"counting against you entirely. But it does not restart or extend the seven "
+"years, and it does not erase the entry. Anyone telling you that you have to "
+"pay to make it go away has it backwards: time makes it go away. Get any "
+"agreement in writing before money moves."
+msgstr ""
+
+msgctxt "lesson.old-debt.check.choice.partly"
+msgid "Partly, but it will not reset the seven years"
+msgstr ""
+
+msgctxt "lesson.old-debt.check.choice.yes"
+msgid "Yes, paying always helps"
+msgstr ""
+
+msgctxt "lesson.old-debt.check.choice.no"
+msgid "No, never pay an old debt"
+msgstr ""
+
+msgctxt "lesson.free-reports.title"
+msgid "Every way to get your report free"
+msgstr ""
+
+msgctxt "lesson.free-reports.hook"
+msgid ""
+"There are more routes than the one everybody knows, and coming home "
+"qualifies you for several of them at once."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.0.title"
+msgid "One a year, from all three, by mail"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.0.body"
+msgid ""
+"Every nationwide bureau owes you one free copy of your file every 12 months,"
+" through one central request, and they have 15 days from getting the request"
+" to send it. One letter to one address covers all three."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.1.title"
+msgid "The mail route is the one that works from here"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.1.body"
+msgid ""
+"The Annual Credit Report Request Form goes to the Annual Credit Report "
+"Request Service in Atlanta. No internet, no phone, no fee. The weekly free "
+"reports everyone talks about are online only and are a voluntary arrangement"
+" rather than a right, so they are no use to you in here."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.2.title"
+msgid "Turned down for something? That is another free one"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.2.body"
+msgid ""
+"If you are denied credit, an apartment, insurance or a job because of your "
+"credit report, you can get a free copy of the file they used, as long as you"
+" ask within 60 days of being told. This is separate from your annual one and"
+" does not use it up."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.3.title"
+msgid "Unemployed or on assistance? Another one"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.3.body"
+msgid ""
+"A free report is also owed once a year to anyone who certifies in writing "
+"that they are unemployed and planning to look for work in the next 60 days, "
+"that they receive public assistance, or that they think their file has "
+"errors from fraud. Somebody just home often qualifies under two or three of "
+"those at the same time."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.free-reports.card.3.aside"
+msgid ""
+"Almost nobody knows this one. It is worth remembering for the first year "
+"out, when you will want to check more than once."
+msgstr ""
+
+msgctxt "lesson.free-reports.check.prompt"
+msgid ""
+"You used your annual free report in March. In July a landlord turns you down"
+" over your credit. Do you have to pay?"
+msgstr ""
+
+msgctxt "lesson.free-reports.check.why"
+msgid ""
+"Being turned down because of a report starts its own entitlement, separate "
+"from the annual one, as long as you ask within 60 days. If you were also "
+"unemployed or on assistance at the time, that is another separate route "
+"again. These stack. Most people pay for something they were already owed."
+msgstr ""
+
+msgctxt "lesson.free-reports.check.choice.free"
+msgid "No. A denial entitles you to another free copy"
+msgstr ""
+
+msgctxt "lesson.free-reports.check.choice.pay"
+msgid "Yes, you already used this year's"
+msgstr ""
+
+msgctxt "lesson.free-reports.check.choice.wait"
+msgid "No, but you have to wait until next March"
+msgstr ""
+
+msgctxt "lesson.disputes.title"
+msgid "What a dispute is, and the clock it starts"
+msgstr ""
+
+msgctxt "lesson.disputes.hook"
+msgid ""
+"It is the one part of this where somebody else is on a deadline instead of "
+"you."
+msgstr ""
+
+msgctxt "lesson.disputes.card.0.title"
+msgid "You are telling them their file is wrong"
+msgstr ""
+
+msgctxt "lesson.disputes.card.0.body"
+msgid ""
+"A dispute is a letter saying a specific item on your report is not accurate,"
+" and why. Not a complaint, not a request for sympathy. One item, one reason,"
+" in writing."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.1.title"
+msgid "Thirty days, counted from when they get it"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.1.body"
+msgid ""
+"They have 30 days to investigate, starting the day the letter lands, not the"
+" day you posted it. If you send more information during those 30 days they "
+"get up to 15 more, so it can run to 45. Then they have five business days to"
+" write and tell you the outcome."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.2.title"
+msgid "Wrong, incomplete, or unprovable all count"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.2.body"
+msgid ""
+"If what they find is inaccurate, incomplete, or they simply cannot verify "
+"it, they have to delete or fix it. That last one matters more than people "
+"expect. An old debt sold on three times may have nobody left who can prove "
+"it was ever yours."
+msgstr ""
+
+msgctxt "lesson.disputes.card.3.title"
+msgid "All three, every time"
+msgstr ""
+
+msgctxt "lesson.disputes.card.3.body"
+msgid ""
+"An item deleted at Equifax is still sitting on the Experian and TransUnion "
+"files. One letter fixes one third of the problem. This is why every dispute "
+"here goes out as three letters."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.4.title"
+msgid "It works more often than people think"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.disputes.card.4.body"
+msgid ""
+"In the FTC's study, about one in four people found at least one error on a "
+"report that could have mattered, and about one in twenty had one bad enough "
+"to cost them worse terms on a loan. One in five had an error put right after"
+" they disputed it. Disputing is not a long shot."
+msgstr ""
+
+msgctxt "lesson.disputes.check.prompt"
+msgid ""
+"You mail a dispute on the 1st. It arrives on the 5th. When is the answer "
+"due?"
+msgstr ""
+
+msgctxt "lesson.disputes.check.why"
+msgid ""
+"The clock runs from receipt, not from the postmark, which is why anything "
+"sent from here should be tracked if possible. And if you send extra "
+"paperwork while they are investigating, you hand them up to 15 extra days, "
+"so send everything at once rather than in pieces."
+msgstr ""
+
+msgctxt "lesson.disputes.check.choice.receipt"
+msgid "30 days from the 5th, when they received it"
+msgstr ""
+
+msgctxt "lesson.disputes.check.choice.posted"
+msgid "30 days from the 1st, when you posted it"
+msgstr ""
+
+msgctxt "lesson.disputes.check.choice.either"
+msgid "There is no fixed deadline"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.title"
+msgid "Building a file from nothing"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.hook"
+msgid ""
+"No file is not the same as bad credit, and it is the faster of the two to "
+"fix."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.0.title"
+msgid "Empty moves faster than damaged"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.0.body"
+msgid ""
+"Having no credit history is a different problem from having a bad one, and "
+"it is the better problem. There is nothing to argue with and nothing to wait"
+" out. You are building on clear ground."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.1.title"
+msgid "A secured card is your own money, held"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.1.body"
+msgid ""
+"You put down a deposit, say 200 dollars, and that becomes your limit. Use a "
+"little of it, pay it off every month, and it reports as an ordinary credit "
+"card. The deposit comes back. The risk to the bank is nil, which is exactly "
+"why they will say yes to somebody with no history."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.2.title"
+msgid "A builder loan runs backwards"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.2.body"
+msgid ""
+"The bank holds the money in an account, you make payments, and you get the "
+"money at the end. You are not borrowing anything. What you are buying is 12 "
+"months of on-time payment history, which is the single heaviest thing in the"
+" formula."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.3.title"
+msgid "The cheapest route is somebody else's card"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.3.body"
+msgid ""
+"Being added as an authorized user on a family member's long-standing card "
+"can put their history on your file without you ever touching the card. It "
+"costs nothing and takes one phone call from them. Ask somebody who has had "
+"the same card a long time and always paid it."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.3.aside"
+msgid "It works both ways, so only ask somebody whose own record is solid."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.4.title"
+msgid "Rent, phone and power can count"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.card.4.body"
+msgid ""
+"Payments you are already making can be reported, through services set up for"
+" it. It is the least work for the biggest effect, because you are getting "
+"credit for money that was leaving your pocket anyway."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.check.prompt"
+msgid ""
+"You have no credit file and 200 dollars. What starts the clock fastest?"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.check.why"
+msgid ""
+"The 200 becomes your limit and the account starts reporting straight away. "
+"Applying for regular credit with no file mostly produces refusals, and each "
+"one leaves a mark. Waiting costs you the one thing you cannot buy later, "
+"which is time on the account. Getting added as an authorized user on "
+"somebody else's card costs nothing at all and can run alongside it."
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.check.choice.secured"
+msgid "A secured card, used lightly and paid in full monthly"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.check.choice.wait"
+msgid "Wait until you have more money saved"
+msgstr ""
+
+msgctxt "lesson.building-from-nothing.check.choice.loan"
+msgid "Apply for a regular loan and see what happens"
+msgstr ""
+
+msgctxt "lesson.identity-theft.title"
+msgid "If somebody has been using your name"
+msgstr ""
+
+msgctxt "lesson.identity-theft.hook"
+msgid ""
+"It happens more to people inside than to anybody else, and the tools to stop"
+" it are free."
+msgstr ""
+
+msgctxt "lesson.identity-theft.card.0.title"
+msgid "Why this hits this population hardest"
+msgstr ""
+
+msgctxt "lesson.identity-theft.card.0.body"
+msgid ""
+"Your Social Security number has been on paperwork in a lot of hands. You "
+"have not seen a statement in years. Mail goes to an address that is not "
+"yours. Accounts opened in your name can run for a long time before anybody "
+"who cares finds out. If your report shows accounts you have never heard of, "
+"you are not confused, and it is not your fault."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.identity-theft.card.1.title"
+msgid "A freeze is free and it is the strong one"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.identity-theft.card.1.body"
+msgid ""
+"A security freeze stops anybody opening new credit in your name. It has to "
+"be placed free of charge, within one business day of an electronic or phone "
+"request and three business days of a mailed one. Lifting it when you "
+"actually want credit is free too, within an hour if you do it "
+"electronically."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.identity-theft.card.2.title"
+msgid "A fraud alert is the lighter version"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.identity-theft.card.2.body"
+msgid ""
+"An initial alert lasts at least a year and comes with a free copy of your "
+"file. File an identity theft report and you can get an extended alert: seven"
+" years, two free copies in the first year, and your name kept off "
+"unsolicited credit offers for five."
+msgstr ""
+
+msgctxt "lesson.identity-theft.card.3.title"
+msgid "An account you never opened is a dispute, not a debt"
+msgstr ""
+
+msgctxt "lesson.identity-theft.card.3.body"
+msgid ""
+"Do not pay it and do not negotiate it. It goes down the dispute route, and "
+"unverifiable items have to be removed. Tell your coordinator which items you"
+" do not recognize. That sentence is the one that starts the legal clock."
+msgstr ""
+
+msgctxt "lesson.identity-theft.check.prompt"
+msgid ""
+"Your report shows a card opened two years ago that you have never heard of. "
+"What is the first move?"
+msgstr ""
+
+msgctxt "lesson.identity-theft.check.why"
+msgid ""
+"Saying you do not recognize it is what turns this into a dispute, and a "
+"dispute puts the bureau on a 30-day clock. Paying it can be read as agreeing"
+" it is yours. Waiting seven years means seven years of it sitting on your "
+"file while you are trying to rent somewhere. A freeze on top of that stops "
+"the next one."
+msgstr ""
+
+msgctxt "lesson.identity-theft.check.choice.dispute"
+msgid "Tell your coordinator you do not recognize it"
+msgstr ""
+
+msgctxt "lesson.identity-theft.check.choice.pay"
+msgid "Pay it off so it stops growing"
+msgstr ""
+
+msgctxt "lesson.identity-theft.check.choice.ignore"
+msgid "Ignore it, it will age off in seven years"
+msgstr ""
+
+msgctxt "lesson.scams.title"
+msgid "Spotting the people who will take your money"
+msgstr ""
+
+msgctxt "lesson.scams.hook"
+msgid ""
+"Coming home with a bit of money and a bad report makes you a target. Two "
+"rules cover most of it."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.scams.card.0.title"
+msgid "Rule one: nobody may charge you before the work is done"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.scams.card.0.body"
+msgid ""
+"A credit repair company cannot legally take any money before it has fully "
+"performed what it promised. Not a deposit, not a setup fee, not a first "
+"month. If money is wanted up front, the law has already been broken and you "
+"have learned everything you need to know about them."
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.scams.card.1.title"
+msgid ""
+"Rule two: anybody telling you to change your identity is setting you up"
+msgstr ""
+
+#. LEGAL: cites a statute, read this one twice.
+msgctxt "lesson.scams.card.1.body"
+msgid ""
+"Advising you to alter your identifying information to hide a bad record is "
+"specifically prohibited, and the person doing it is walking you into a fraud"
+" charge while they keep the fee. The same goes for anyone telling you to "
+"misstate your history."
+msgstr ""
+
+msgctxt "lesson.scams.card.2.title"
+msgid "There is nothing they can do that you cannot"
+msgstr ""
+
+msgctxt "lesson.scams.card.2.body"
+msgid ""
+"Every dispute a paid company files is one you can file yourself, free, in a "
+"letter. There is no special channel and no relationship with the bureaus. "
+"What they are selling is the letter you are already getting help with here."
+msgstr ""
+
+msgctxt "lesson.scams.card.3.title"
+msgid "Accurate is accurate"
+msgstr ""
+
+msgctxt "lesson.scams.card.3.body"
+msgid ""
+"If a debt is genuinely yours and correctly reported, nobody can remove it "
+"early. Anybody promising to delete accurate information is either lying or "
+"planning to dispute things they know are true, which wastes your time and "
+"can get the disputes dismissed as frivolous."
+msgstr ""
+
+msgctxt "lesson.scams.check.prompt"
+msgid ""
+"A company offers to fix your credit for 99 dollars a month starting now. "
+"What does that tell you?"
+msgstr ""
+
+msgctxt "lesson.scams.check.why"
+msgid ""
+"Taking money before the service is fully performed is prohibited outright. "
+"You do not need to read a single review: the payment structure alone tells "
+"you what they are. And the disputes they would file are ones you can file "
+"yourself for the price of a stamp."
+msgstr ""
+
+msgctxt "lesson.scams.check.choice.illegal"
+msgid "They are already breaking the law by charging before the work"
+msgstr ""
+
+msgctxt "lesson.scams.check.choice.fair"
+msgid "It is a fair price if it works"
+msgstr ""
+
+msgctxt "lesson.scams.check.choice.check"
+msgid "Nothing yet, check their reviews first"
+msgstr ""
