@@ -388,3 +388,55 @@ def test_no_column_name_from_the_lookup_reaches_the_tablet(client):
                 "housing_facility", "post_release_supervision_max_expiration_date",
                 "date_received_original", "maximum_expiration_date"):
         assert raw not in page, raw
+
+
+def test_the_demo_dins_still_land_where_docs_demo_says_they_do():
+    """docs/DEMO.md names four numbers to type on stage, one per branch of the
+    course ordering. Retuning the spread in app/doccs.py without re-reading
+    that table would leave somebody demonstrating a difference that no longer
+    happens, in front of people."""
+    from datetime import date
+
+    from app import lessons
+    from app.doccs import simulated_lookup
+
+    expected = {
+        # din: (roughly this many days out, the lesson it should open on)
+        "28B1111": (68, "three-papers"),
+        "28B1000": (257, "three-papers"),
+        "28K1000": (892, "what-a-report-is"),
+        "28A1111": (1539, "what-a-report-is"),
+    }
+
+    class Case:
+        case_state = "not_yet_triaged"
+        lesson_progress: dict = {}
+
+    for din, (days, opens_on) in expected.items():
+        record = simulated_lookup(din)
+        actual = (date.fromisoformat(record.planning_date) - date.today()).days
+        assert actual == days, f"{din}: DEMO.md says {days} days, got {actual}"
+
+        case = Case()
+        case.release_date = record.planning_date
+        assert lessons.next_up(case).slug == opens_on, din
+
+
+def test_typing_a_din_at_random_usually_lands_near_the_gate():
+    """The demo this defends: a flat spread put seven numbers in eight more
+    than a year out, so the documents lesson almost never led and the course
+    reordering was real but effectively unreachable. Bridge is built around
+    the six months before release, so most of a caseload sits there."""
+    from datetime import date
+
+    from app.doccs import simulated_lookup
+
+    near = 0
+    total = 0
+    for number in range(1000, 3000):
+        for letter in "ABKQZ":
+            record = simulated_lookup(f"28{letter}{number}")
+            out = (date.fromisoformat(record.planning_date) - date.today()).days
+            near += out < 365
+            total += 1
+    assert 0.35 < near / total < 0.55, f"{near}/{total} land inside a year"

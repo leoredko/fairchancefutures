@@ -25,6 +25,33 @@ opens on the spot, with a PIN you choose.
 Anything outside that range is never auto-created, because it could be somebody
 real. Those are added by a coordinator from **New intake**.
 
+## Showing that the course reorders itself
+
+A DIN carries a release date, and the course reads it. Somebody near the gate
+opens on the documents lesson, because the Social Security card deadline at 120
+days before release is the one thing they can act on today. Somebody years out
+opens on what a credit report is, because leading a person with five years left
+on a deadline that is not theirs yet says this product is not for them. Nothing
+is hidden either way: the full list is open from the first screen.
+
+Four numbers that land in different places, so the difference can be shown on
+purpose rather than hoped for:
+
+| Type this | Releases in | Opens on | Shows |
+| --- | --- | --- | --- |
+| `28-B-1111` | about 68 days | The three pieces of paper | Inside the 120-day window. The Social Security card deadline has already passed and the screen says so. |
+| `28-B-1000` | about 257 days | The three pieces of paper | Near the gate, deadline still ahead |
+| `28-K-1000` | about 2.4 years | What a credit report actually is | The documents lesson steps aside |
+| `28-A-1111` | about 4.2 years | What a credit report actually is | Longest runway, and the course is the whole point |
+
+The day count is stable because the dates are derived from the DIN, so these
+stay true whenever you run the demo. `tests/test_access.py` checks it, so the
+table cannot quietly stop being true.
+
+`app/doccs.py` invents these dates. It is one function, marked as the one a
+real integration replaces, and DOCCS publishes no API, so a real version is a
+data agreement or a scraper rather than a coding job.
+
 ## The seeded caseload
 
 | Who | Signs in with | Where |
