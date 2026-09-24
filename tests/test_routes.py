@@ -470,3 +470,56 @@ def test_no_enum_value_reaches_the_roles_page(client):
     for raw in ("upload_file", "verify_identity", "manage_caseload",
                 "open_account", "view_ssn", "full_account_number"):
         assert raw not in html, raw
+
+
+# --------------------------------------------------------------------------
+# the bar
+# --------------------------------------------------------------------------
+
+TABLET_SCREENS = [
+    "/inside", "/inside/learn", "/inside/case", "/inside/how-this-works",
+    "/inside/authorization", "/inside/where-you-stand", "/inside/learn/scores",
+    "/inside/report", "/inside/learn/lesson/three-papers/0",
+]
+
+
+def test_the_course_is_one_tap_from_every_tablet_screen(inside):
+    """The house rule, defended on the nav rather than written about. The
+    course is the part of this product that keeps working after somebody goes
+    home, so no screen is allowed to be a dead end for it. This test exists
+    because the link moved: it used to sit between the logo and the person's
+    own name, and rearranging a bar is exactly how a link quietly goes missing
+    from one screen."""
+    for url in TABLET_SCREENS:
+        page = inside.get(url, follow_redirects=True)
+        assert page.status_code == 200, url
+        assert "/inside/learn" in page.text, f"no way to the course from {url}"
+
+
+def test_the_wordmark_is_at_the_door_and_the_mark_carries_the_rest(client, inside):
+    """A wordmark repeated on every click-through stops being a brand and
+    becomes furniture. The word appears where somebody finds out what they are
+    looking at, and the mark carries it everywhere after that."""
+    door = client.get("/signin").text
+    assert 'class="wordmark"' in door
+    assert 'class="mark"' in door
+
+    for url in TABLET_SCREENS:
+        page = inside.get(url, follow_redirects=True).text
+        assert 'class="mark"' in page, f"no mark on {url}"
+        assert 'class="wordmark"' not in page, f"wordmark still on {url}"
+
+
+def test_no_bar_subtitle_starts_lowercase(inside):
+    """Sentence case everywhere. These read as one strip beside a person's own
+    name, and half of them were lowercase."""
+    import re
+
+    for url in TABLET_SCREENS:
+        page = inside.get(url, follow_redirects=True).text
+        for found in re.findall(r'<span class="who">([^<]*)</span>', page):
+            text = found.replace("&middot;", "·").strip()
+            for part in text.split("·"):
+                part = part.strip()
+                if part and part[0].isalpha():
+                    assert part[0].isupper(), f"{url}: {part!r} starts lowercase"

@@ -3,8 +3,8 @@
 {% block body %}
 <div class="tablet">
   <div class="bar">
-    <span class="wordmark">Bridge</span>
-    <span class="who">{{ client.display_name }} &middot; the course</span>
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ client.display_name }} &middot; The course</span>
     <div class="right">
       {% if intake_done %}
       <a class="pill" href="/inside/case">My case</a>

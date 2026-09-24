@@ -16,8 +16,62 @@
 {% block head %}{% endblock %}
 </head>
 <body class="{% if show_notes %}show-notes{% endif %}">
+
+{# The mark, defined once and referenced with <use> wherever it appears. A
+   stone arch bridge, which is also a B lying on its back: the deck is the
+   spine and the two arches are the bowls. It carries the brand on every inner
+   screen so the word does not have to. #}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="markgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E9B6E"/>
+      <stop offset=".55" stop-color="#2DD4A0"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <path id="markpath" fill-rule="evenodd"
+          d="M2 7h44v4.5H2V7Zm2.5 6.5h39v16.5h-39V13.5Zm5 16.5v-6a6 6 0 0 1 12 0v6h-12Zm16
+             0v-6a6 6 0 0 1 12 0v6h-12Z"/>
+  </defs>
+</svg>
+
+{# Shown once a session, and only when scripts run: the overlay starts hidden
+   and JavaScript reveals it, so a tablet that never runs it never sees a
+   frozen splash screen over the app. #}
+<div class="splash" id="splash" hidden>
+  <svg class="splash-mark" viewBox="0 0 48 34" aria-hidden="true">
+    <use href="#markpath" fill="url(#markgrad)"/>
+  </svg>
+  <span class="splash-word">Bridge</span>
+</div>
+
 {% block body %}{% endblock %}
 <script src="/static/exclusive.js" defer></script>
+<script>
+  // The opening. Once a session, skippable by touching it, and skipped
+  // outright for anybody who has asked their device for less motion. A person
+  // signing in between counts should never be waiting on an animation, so it
+  // clears itself after well under two seconds whatever happens.
+  (function () {
+    var splash = document.getElementById("splash");
+    if (!splash) return;
+    var calm = window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var seen;
+    try { seen = sessionStorage.getItem("bridge.splash"); } catch (e) { seen = "1"; }
+    if (seen || calm) return;
+    try { sessionStorage.setItem("bridge.splash", "1"); } catch (e) {}
+
+    splash.hidden = false;
+    // Next frame, so the transition has a start state to run from.
+    requestAnimationFrame(function () { splash.classList.add("on"); });
+    var done = function () {
+      splash.classList.add("gone");
+      setTimeout(function () { splash.hidden = true; }, 420);
+    };
+    splash.addEventListener("click", done);
+    setTimeout(done, 1500);
+  })();
+</script>
 <script>
   // Registered so the tablet can install Bridge to the home screen. The worker
   // is network-only; see app/static/sw.js for why it does not cache.

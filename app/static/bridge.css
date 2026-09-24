@@ -491,3 +491,46 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
   body, .card, .letter, .queue { background: #fff !important; color: #111 !important; }
   .card, .letter, .queue { border-color: #ccc !important; }
 }
+
+/* ---- the mark, and the one moment the app performs ---------------------- */
+
+/* Carried on every inner screen so the word does not have to be. A wordmark
+   repeated on every click-through stops being a brand and becomes furniture. */
+.mark { width: 27px; height: 19px; flex: none; display: block; }
+.mark.big { width: 44px; height: 31px; }
+
+/* The lockup, for the door and the splash only. */
+.lockup { display: flex; align-items: center; gap: 11px; }
+.lockup .wordmark { font-family: var(--display); font-weight: 700; font-size: 20px;
+                    letter-spacing: -.015em; color: var(--ink); }
+
+.splash {
+  position: fixed; inset: 0; z-index: 90;
+  background: var(--surface);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px;
+  opacity: 1;
+  transition: opacity .4s ease;
+}
+.splash[hidden] { display: none; }
+.splash.gone { opacity: 0; pointer-events: none; }
+
+.splash-mark {
+  width: 104px; height: 74px;
+  opacity: 0; transform: translateY(10px) scale(.94);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.7,.3,1);
+}
+.splash-word {
+  font-family: var(--display); font-weight: 700; font-size: 27px;
+  letter-spacing: -.02em; color: var(--ink);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .5s ease .18s, transform .5s cubic-bezier(.2,.7,.3,1) .18s;
+}
+.splash.on .splash-mark,
+.splash.on .splash-word { opacity: 1; transform: none; }
+
+/* Asked for less motion and got none: the script never reveals the overlay at
+   all, and this is the belt to that braces. */
+@media (prefers-reduced-motion: reduce) {
+  .splash { display: none !important; }
+}
