@@ -243,6 +243,29 @@ def _unpad(value: str) -> bytes:
     return base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
 
 
+def sign_blob(payload: bytes) -> str:
+    """Sign something that is not a session, with the same key.
+
+    app/challenge.py uses this so a captcha token needs nothing kept
+    server-side and survives a restart mid-demo.
+    """
+    return _sign(payload)
+
+
+def read_blob(token: str | None) -> bytes | None:
+    """The other half. None for anything we did not sign."""
+    if not token or "." not in token:
+        return None
+    body_b64, mac_b64 = token.rsplit(".", 1)
+    try:
+        body = _unpad(body_b64)
+        mac = _unpad(mac_b64)
+    except Exception:
+        return None
+    expected = hmac.new(_secret(), body, hashlib.sha256).digest()
+    return body if hmac.compare_digest(mac, expected) else None
+
+
 def issue(session: Session) -> str:
     body = json.dumps({
         "account_id": session.account_id,

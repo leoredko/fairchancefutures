@@ -113,5 +113,22 @@ server app.
 
 ## Starting over
 
-Clear the site data for the page, or run `localStorage.clear()` in the browser
-console. The seeded caseload comes back on the next load.
+**The served app, including the deployed one:** open `/demo/restart`, linked
+from the bottom of the home page. Pick a person and they go back to the day
+the seed describes: the PIN they set is cleared so the next sign-in enrolls a
+new one, and the intake answers, course progress, report notes and drafted
+letters go with it. Their seeded reports come back, so Marcus has his three
+files and their disagreement again.
+
+One person at a time, on purpose. Two people are usually on the URL at once
+and rewinding the one who wandered off should not take the other one with
+them. It is reachable signed out, because a forgotten PIN is the usual reason
+to be there and the PIN is the thing being cleared.
+
+It is a demo control and it is labelled as one on the screen. A real case file
+holds a coordinator's work and a person cannot erase it from their tablet,
+which is why this is not in the capability table in `app/surfaces.py`.
+
+**The single-file build:** clear the site data for the page, or run
+`localStorage.clear()` in the browser console. The seeded caseload comes back
+on the next load.

@@ -40,3 +40,10 @@ services:
       # would be signed out on every restart rather than only losing the data.
       - key: BRIDGE_SECRET
         generateValue: true
+      # This URL is public, so the two sign-in doors ask an arithmetic
+      # question before they take a number. It keeps crawlers out and it is
+      # nothing like authentication: anybody with the link can still read a
+      # DIN off the walkthrough and be that person. Unset it and the doors go
+      # back to asking nothing, which is what a facility tablet wants.
+      - key: BRIDGE_CAPTCHA
+        value: "1"

@@ -15,6 +15,7 @@ from fastapi.responses import (
     FileResponse,
     HTMLResponse,
     JSONResponse,
+    PlainTextResponse,
     RedirectResponse,
 )
 from fastapi.staticfiles import StaticFiles
@@ -24,7 +25,7 @@ from app.bureaus import BUREAUS
 from app.sources import FACTS, OPEN_QUESTIONS
 from app import labels
 from app.deps import templates
-from app.routes import access, family, inside, staff
+from app.routes import access, demo, family, inside, staff
 from app.store import STATE, boot, review_log
 from app.session import NotSignedIn, current, redirect_to_signin
 from app.surfaces import CAPABILITIES, DENIAL_REASON, Surface, SurfaceDenied
@@ -39,9 +40,30 @@ app = FastAPI(title="Bridge", lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(access.router)
+app.include_router(demo.router)
 app.include_router(inside.router)
 app.include_router(family.router)
 app.include_router(staff.router)
+
+
+@app.middleware("http")
+async def keep_it_out_of_search(request: Request, call_next):
+    """Nothing here is meant to be found by a stranger.
+
+    The app has no authentication: whoever loads /inside/marcus-w is Marcus.
+    That is survivable for a demo of invented people and it is not survivable
+    if a search engine indexes it, so the header goes on the response rather
+    than in one host's config, where only that host gets it.
+    """
+    response = await call_next(request)
+    response.headers["X-Robots-Tag"] = "noindex, nofollow"
+    return response
+
+
+@app.get("/robots.txt", include_in_schema=False)
+def robots() -> PlainTextResponse:
+    """The crawlers that read this one never see the header."""
+    return PlainTextResponse("User-agent: *\nDisallow: /\n")
 
 
 @app.exception_handler(NotSignedIn)

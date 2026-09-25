@@ -20,6 +20,9 @@ RUN mkdir -p /data
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
-  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz').status==200 else 1)"
+  CMD python -c "import os,urllib.request,sys; port=os.environ.get('PORT','8000'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{port}/healthz').status==200 else 1)"
 
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Shell form on purpose: Render assigns the port through PORT, and the app has
+# to bind the one it was given. 8000 stays the default so `docker run -p 8000`
+# and ./run.sh still behave the same.
+CMD python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}

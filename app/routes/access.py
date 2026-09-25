@@ -25,7 +25,7 @@ from app.auth import (
     enroll,
     issue,
 )
-from app import i18n
+from app import challenge, i18n
 from app.deps import templates
 from app.identifiers import InvalidIdentifier, is_self_service, parse
 from app.store import STATE, find_account, mutate, put_account
@@ -33,6 +33,19 @@ from app.store import STATE, find_account, mutate, put_account
 router = APIRouter()
 
 HOME = {"inside": "/inside", "family": "/family", "staff": "/staff"}
+
+
+def _ask() -> dict | None:
+    """A fresh human check, or None when the deployment has not asked for one.
+
+    A new question every render rather than one reused: a token that comes
+    back a second time is the shape of the thing this is for.
+    """
+    return challenge.issue() if challenge.enabled() else None
+
+
+def _passed(token: str, answer: str) -> bool:
+    return not challenge.enabled() or challenge.verify(token, answer)
 
 
 def _start(account, response: RedirectResponse) -> RedirectResponse:
@@ -60,7 +73,8 @@ def signin(request: Request, error: str | None = None):
         request, "access/signin.html",
         {"error": error,
          "languages": i18n.choices(),
-         "lang": i18n.from_request(request)},
+         "lang": i18n.from_request(request),
+         "challenge": _ask()},
     )
 
 
@@ -88,18 +102,35 @@ def set_language(request: Request, lang: str = Form("en"),
 
 
 @router.post("/signin", response_class=HTMLResponse)
-def signin_identify(request: Request, identifier: str = Form("")):
+def signin_identify(request: Request, identifier: str = Form(""),
+                    challenge_token: str = Form(""),
+                    challenge_answer: str = Form("")):
     """Step one: which number. Step two happens on the next screen.
 
     Two screens instead of one because a six-digit PIN typed on the same screen
     as the number you just read off a printed sheet is how people mistype both.
     """
+    if not _passed(challenge_token, challenge_answer):
+        return templates.TemplateResponse(
+            request, "access/signin.html",
+            {"error": "That was not the right answer. Here is another one.",
+             "identifier": identifier,
+             "languages": i18n.choices(),
+             "lang": i18n.from_request(request),
+             "challenge": _ask()},
+            status_code=400,
+        )
+
     try:
         parsed = parse(identifier)
     except InvalidIdentifier as exc:
         return templates.TemplateResponse(
             request, "access/signin.html",
-            {"error": str(exc), "identifier": identifier}, status_code=400,
+            {"error": str(exc), "identifier": identifier,
+             "languages": i18n.choices(),
+             "lang": i18n.from_request(request),
+             "challenge": _ask()},
+            status_code=400,
         )
 
     account = find_account("inside", parsed.normalized)
@@ -111,7 +142,10 @@ def signin_identify(request: Request, identifier: str = Form("")):
                 request, "access/signin.html",
                 {"error": f"No record here for {parsed.display}. Check the "
                           f"number, or ask your counselor to add you.",
-                 "identifier": identifier},
+                 "identifier": identifier,
+                 "languages": i18n.choices(),
+                 "lang": i18n.from_request(request),
+                 "challenge": _ask()},
                 status_code=404,
             )
 
@@ -244,17 +278,31 @@ def _open_a_case(parsed):
 
 @router.get("/helper", response_class=HTMLResponse)
 def helper_signin(request: Request, error: str | None = None):
-    return templates.TemplateResponse(request, "access/helper.html", {"error": error})
+    return templates.TemplateResponse(
+        request, "access/helper.html",
+        {"error": error, "challenge": _ask()},
+    )
 
 
 @router.post("/helper", response_class=HTMLResponse)
-def helper_identify(request: Request, code: str = Form("")):
+def helper_identify(request: Request, code: str = Form(""),
+                    challenge_token: str = Form(""),
+                    challenge_answer: str = Form("")):
+    if not _passed(challenge_token, challenge_answer):
+        return templates.TemplateResponse(
+            request, "access/helper.html",
+            {"error": "That was not the right answer. Here is another one.",
+             "code": code, "challenge": _ask()},
+            status_code=400,
+        )
+
     account = find_account("family", (code or "").strip().upper())
     if account is None:
         return templates.TemplateResponse(
             request, "access/helper.html",
             {"error": "That code is not one of ours. It is printed on the "
-                      "letter that came in the mail.", "code": code},
+                      "letter that came in the mail.", "code": code,
+             "challenge": _ask()},
             status_code=404,
         )
     page = "access/enroll.html" if not account.enrolled else "access/pin.html"

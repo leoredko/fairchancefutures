@@ -31,8 +31,15 @@ Anyone with the URL is whoever the URL says they are. `/inside/marcus-w` is a
 guessable address and loading it makes you Marcus. That is fine for a demo with
 seeded fake clients and disqualifying for anything else.
 
-The Fly config sets `X-Robots-Tag: noindex, nofollow` so it at least stays out
-of search results. Do not put a real person's data behind this URL.
+Every response carries `X-Robots-Tag: noindex, nofollow` and `/robots.txt`
+disallows everything, so it at least stays out of search results. With
+`BRIDGE_CAPTCHA` set, the sign-in doors also ask a written-out arithmetic
+question, which stops crawlers and scripted sign-ins. Neither is
+authentication: somebody with the link can read Marcus's DIN off the
+walkthrough and be Marcus. That lives in
+`app/main.py` rather than in one host's config, because a header only Fly sets
+does nothing for the Render URL. Do not put a real person's data behind this
+URL.
 
 ## Fly.io, which is faster to wake and costs a couple of dollars
 
@@ -101,8 +108,17 @@ docker build -t bridge .
 docker run -p 8000:8000 -v bridge_data:/data bridge
 ```
 
-Environment: `BRIDGE_DATA` is the only variable, and it is the path to the JSON
-store. Default is `data/bridge.json` relative to the working directory.
+Environment:
+
+- `BRIDGE_DATA` — path to the JSON store. Default `data/bridge.json`, relative
+  to the working directory. The parent directory is created on first write.
+- `BRIDGE_SECRET` — session signing key. Generated at boot if unset, which
+  means it changes on every restart and signs everybody out.
+- `PORT` — the port to bind. Default 8000. Render assigns this, so the
+  container reads it rather than hardcoding a port Render is not expecting.
+- `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask an
+  arithmetic question first. On in `render.yaml`, off everywhere else. See
+  below.
 
 ## Getting onto the tablet
 

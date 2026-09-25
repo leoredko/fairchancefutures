@@ -1,0 +1,112 @@
+"""Starting one person over.
+
+A demo gets walked more than once. These defend the two halves of that: the
+person who was rewound is genuinely back to the start, and nobody standing
+next to them moved.
+"""
+
+from conftest import PIN, sign_in_inside, sign_in_helper
+
+
+def _has_pin(subject_id: str) -> bool:
+    from app.store import STATE
+
+    return any(raw.get("subject_id") == subject_id and raw.get("pin_hash")
+               for raw in STATE.accounts.values())
+
+
+def test_restarting_clears_the_pin_so_the_next_sign_in_enrolls_again(client):
+    sign_in_inside(client)
+    assert _has_pin("marcus-w")
+
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    assert not _has_pin("marcus-w")
+
+
+def test_restarting_puts_the_intake_answers_back_to_the_seeded_ones(client):
+    """Back to the start, not blank. An empty intake is a different demo."""
+    from app.store import STATE
+
+    sign_in_inside(client)
+    client.post("/inside/intake/4", data={"has_bank_account": "yes"})
+    assert STATE.clients["marcus-w"].intake_answers["has_bank_account"] == "yes"
+
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    assert STATE.clients["marcus-w"].intake_answers["has_bank_account"] == "no"
+
+
+def test_a_restart_leaves_everybody_else_where_they_were(client):
+    """Two people are usually on this URL at once. Rewinding one of them is
+    not permission to take the other one with them."""
+    from app.store import STATE
+
+    sign_in_helper(client, code="BRIDGE-8802")          # Rosa, for Alvarez
+    assert _has_pin("m-alvarez")
+    before = dict(STATE.clients["m-alvarez"].intake_answers)
+
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    assert _has_pin("m-alvarez")
+    assert STATE.clients["m-alvarez"].intake_answers == before
+
+
+def test_the_seeded_reports_come_back_rather_than_vanishing(client):
+    """A restart that left Marcus with no reports would hand back a stage with
+    nothing on it, which is not the start of the demo."""
+    from app.store import STATE
+
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    assert len(STATE.reports["marcus-w"]) == 3
+
+
+def test_restarting_the_person_you_are_signed_in_as_signs_you_out(client):
+    """Their account no longer has a PIN, so the cookie names a case that has
+    forgotten them."""
+    sign_in_inside(client)
+    landed = client.get("/inside", follow_redirects=False)
+    assert "/signin" not in landed.headers["location"]
+
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    after = client.get("/inside", follow_redirects=False)
+    assert after.headers["location"].startswith("/signin")
+
+
+def test_a_restart_survives_a_restart_of_the_process(client):
+    """It writes. A reset that only lived in memory would come back on the
+    next request that loaded the file."""
+    import json
+
+    import app.store as store
+
+    sign_in_inside(client)
+    client.post("/demo/restart", data={"client_id": "marcus-w"})
+
+    raw = json.loads(store.DATA_PATH.read_text())
+    marcus = [a for a in raw["accounts"].values()
+              if a.get("subject_id") == "marcus-w"]
+    assert marcus and not any(a.get("pin_hash") for a in marcus)
+
+
+def test_an_unknown_id_is_a_404_rather_than_a_silent_nothing(client):
+    assert client.post("/demo/restart",
+                       data={"client_id": "nobody"}).status_code == 404
+
+
+def test_the_page_says_what_a_restart_throws_away(client):
+    """A destructive button with no sentence under it is a trap."""
+    page = client.get("/demo/restart").text
+    assert "cannot be undone" in page
+    assert "Marcus W." in page
+
+
+def test_restart_is_not_a_product_capability(client):
+    """It is a demo control. Putting it in the capability table would claim a
+    person can erase a case file that holds a coordinator's work."""
+    from app.surfaces import CAPABILITIES
+
+    every = {c.value for caps in CAPABILITIES.values() for c in caps}
+    assert not any("restart" in name or "reset" in name for name in every)

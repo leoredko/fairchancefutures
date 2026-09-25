@@ -138,10 +138,13 @@ def save() -> None:
     tmp.replace(DATA_PATH)
 
 
-def load() -> bool:
-    if not DATA_PATH.exists():
-        return False
-    raw = json.loads(DATA_PATH.read_text())
+def _apply(raw: dict) -> None:
+    """Put a serialized state back into STATE, in place.
+
+    In place because every other module did `from app.store import STATE` and
+    holds that object. Rebinding the name here would leave them all reading a
+    state nothing writes to.
+    """
     STATE.clients = {k: Client(**v) for k, v in raw.get("clients", {}).items()}
     STATE.accounts = raw.get("accounts", {})
     STATE.reports = raw.get("reports", {})
@@ -150,6 +153,12 @@ def load() -> bool:
     STATE.drafts = raw.get("drafts", {})
     STATE.review_log = raw.get("review_log", {"reviewed": 0, "edited": 0})
     STATE.write_log = raw.get("write_log", raw.get("sync_queue", []))
+
+
+def load() -> bool:
+    if not DATA_PATH.exists():
+        return False
+    _apply(json.loads(DATA_PATH.read_text()))
     return True
 
 
@@ -574,6 +583,55 @@ def _seed_accounts() -> None:
         login_key="REYES",
         display_name="D. Reyes",
     ))
+
+
+def restart_person(client_id: str) -> bool:
+    """Put one person back to the day the seed describes. Nobody else moves.
+
+    A demo gets walked more than once, and the second walk needs the first
+    one gone: the PIN somebody set, the intake they answered, the lessons they
+    finished, the letters drafted about them. Without this the only way back
+    is restarting the container, which resets everybody and takes a cold start
+    with a room watching.
+
+    One person rather than the whole caseload, because two people are usually
+    on this URL at once and rewinding the one who wandered off should not take
+    the other one with them.
+
+    The signing key is deliberately untouched, so everybody else stays signed
+    in. This person does not: their account is seeded back to having no PIN,
+    which is the point, and their old cookie names an account that no longer
+    has one.
+    """
+    if client_id not in STATE.clients:
+        return False
+
+    live = _serialize()
+    seed()
+    fresh = _serialize()
+    _apply(live)
+
+    STATE.clients[client_id] = Client(**fresh["clients"][client_id])
+    STATE.reports[client_id] = fresh["reports"].get(client_id, [])
+    STATE.drafts[client_id] = fresh["drafts"].get(client_id, [])
+    if client_id in fresh["authorizations"]:
+        STATE.authorizations[client_id] = fresh["authorizations"][client_id]
+    else:
+        STATE.authorizations.pop(client_id, None)
+
+    # Accounts are keyed by account id, not by person, so this is a swap of
+    # every row pointing at them: the seeded rows carry no pin_hash, and any
+    # row the seed does not know about goes.
+    seeded = {k: v for k, v in fresh["accounts"].items()
+              if v.get("subject_id") == client_id}
+    for key in [k for k, v in STATE.accounts.items()
+                if v.get("subject_id") == client_id and k not in seeded]:
+        del STATE.accounts[key]
+    STATE.accounts.update(seeded)
+
+    STATE.write_log = [w for w in STATE.write_log
+                       if w.get("client_id") != client_id]
+    return True
 
 
 def boot() -> None:
