@@ -15,6 +15,7 @@ from fastapi.responses import (
     FileResponse,
     HTMLResponse,
     JSONResponse,
+    PlainTextResponse,
     RedirectResponse,
 )
 from fastapi.staticfiles import StaticFiles
@@ -42,6 +43,26 @@ app.include_router(access.router)
 app.include_router(inside.router)
 app.include_router(family.router)
 app.include_router(staff.router)
+
+
+@app.middleware("http")
+async def keep_it_out_of_search(request: Request, call_next):
+    """Nothing here is meant to be found by a stranger.
+
+    The app has no authentication: whoever loads /inside/marcus-w is Marcus.
+    That is survivable for a demo of invented people and it is not survivable
+    if a search engine indexes it, so the header goes on the response rather
+    than in one host's config, where only that host gets it.
+    """
+    response = await call_next(request)
+    response.headers["X-Robots-Tag"] = "noindex, nofollow"
+    return response
+
+
+@app.get("/robots.txt", include_in_schema=False)
+def robots() -> PlainTextResponse:
+    """The crawlers that read this one never see the header."""
+    return PlainTextResponse("User-agent: *\nDisallow: /\n")
 
 
 @app.exception_handler(NotSignedIn)

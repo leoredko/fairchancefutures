@@ -368,6 +368,20 @@ def test_health_check_answers(client):
     assert client.get("/healthz").json()["ok"] is True
 
 
+def test_nothing_here_invites_a_search_engine(client):
+    """There is no authentication: the URL is the identity. A crawler that
+    indexes /inside/marcus-w hands that address to anybody searching."""
+    for path in ("/", "/signin", "/citations", "/staff"):
+        assert client.get(path).headers["x-robots-tag"] == "noindex, nofollow"
+
+
+def test_robots_file_disallows_everything(client):
+    """The crawlers that read robots.txt never see the header."""
+    robots = client.get("/robots.txt")
+    assert robots.status_code == 200
+    assert "Disallow: /" in robots.text
+
+
 def test_plan_progress_reflects_the_drafts_actually_on_screen(staff):
     """A seeded 'not drafted yet' while three drafts sit there is a small lie
     that costs trust in the rest of the page."""
