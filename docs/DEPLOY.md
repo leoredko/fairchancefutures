@@ -32,7 +32,11 @@ guessable address and loading it makes you Marcus. That is fine for a demo with
 seeded fake clients and disqualifying for anything else.
 
 Every response carries `X-Robots-Tag: noindex, nofollow` and `/robots.txt`
-disallows everything, so it at least stays out of search results. That lives in
+disallows everything, so it at least stays out of search results. With
+`BRIDGE_CAPTCHA` set, the sign-in doors also ask a written-out arithmetic
+question, which stops crawlers and scripted sign-ins. Neither is
+authentication: somebody with the link can read Marcus's DIN off the
+walkthrough and be Marcus. That lives in
 `app/main.py` rather than in one host's config, because a header only Fly sets
 does nothing for the Render URL. Do not put a real person's data behind this
 URL.
@@ -112,6 +116,9 @@ Environment:
   means it changes on every restart and signs everybody out.
 - `PORT` — the port to bind. Default 8000. Render assigns this, so the
   container reads it rather than hardcoding a port Render is not expecting.
+- `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask an
+  arithmetic question first. On in `render.yaml`, off everywhere else. See
+  below.
 
 ## Getting onto the tablet
 

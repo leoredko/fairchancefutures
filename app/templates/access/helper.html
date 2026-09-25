@@ -15,6 +15,21 @@
            value="{{ code or '' }}"
            style="font-family: ui-monospace, monospace; letter-spacing: .06em">
 
+    {% if challenge %}
+    {# A question the server asks and the server marks, because the deployed
+       demo sits on a public URL. Words rather than a picture so a screen
+       reader can read it, and no third-party script. Off on a tablet. #}
+    <div class="card dashed">
+      <label class="small strong" for="challenge_answer">{{ challenge.question }}</label>
+      <input class="choice" id="challenge_answer" name="challenge_answer"
+             inputmode="numeric" autocomplete="off" spellcheck="false"
+             placeholder="A number, or the word">
+      <input type="hidden" name="challenge_token" value="{{ challenge.token }}">
+      <p class="tiny">Asked because this is a public demonstration link. It
+        keeps crawlers out and nothing else.</p>
+    </div>
+    {% endif %}
+
     <button class="btn wide" type="submit">Next</button>
 
     <div class="card warn">
