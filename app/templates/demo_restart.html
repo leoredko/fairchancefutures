@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Start somebody over{% endblock %}
+{% block body %}
+<div class="desk" style="padding-top:48px; max-width:720px">
+
+  <span class="tag amber">Demo control</span>
+  <h1>Start somebody over</h1>
+  <p class="lede">This puts one person back to the day the seed describes.
+    Everybody else on this URL carries on untouched.</p>
+
+  {% if done %}
+  <div class="card good" style="margin-bottom:24px">
+    <span class="strong">Done. That person is back to the start.</span>
+    <p class="small">Their PIN is cleared, so the next sign-in with their DIN
+      enrolls a new one. Their intake answers, course progress, drafted
+      letters and timeline are back to the seeded version.</p>
+    <div class="row">
+      <a class="btn" href="/signin">Sign in as them</a>
+      <a class="btn ghost" href="/">Home</a>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="card" style="margin-bottom:24px"><span class="strong">{{ error }}</span></div>
+  {% endif %}
+
+  <div class="card">
+    <h2>What a restart throws away</h2>
+    <p class="small">The PIN they set, the intake answers they gave, where
+      they got to in the course, what they said about their own reports, and
+      any letters drafted about them. It cannot be undone, and if somebody
+      else is mid-walkthrough as that person, it happens under them.</p>
+    <p class="tiny">Reports and the timeline come back as the seed has them,
+      which for Marcus means his three files and their disagreement.</p>
+  </div>
+
+  {% for person in people %}
+  <form method="post" action="/demo/restart" class="card" style="margin-top:16px">
+    <div class="row" style="justify-content:space-between; align-items:center">
+      <div>
+        <span class="strong">{{ person.name }}</span>
+        <p class="tiny">{{ person.din }} ·
+          {% if person.has_pin %}PIN set{% else %}no PIN yet{% endif %} ·
+          {{ person.answers }} intake answer{{ '' if person.answers == 1 else 's' }} ·
+          {{ person.lessons }} lesson{{ '' if person.lessons == 1 else 's' }} started</p>
+      </div>
+      <input type="hidden" name="client_id" value="{{ person.id }}">
+      <button class="btn ghost" type="submit">Start over</button>
+    </div>
+  </form>
+  {% endfor %}
+
+  <p class="tiny" style="margin-top:24px">This screen exists because Bridge is
+    demonstrated, not because a person can erase their own case file. A real
+    file holds a coordinator's work and this button is not in the product.</p>
+</div>
+{% endblock %}
