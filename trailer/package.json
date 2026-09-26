@@ -1,0 +1,29 @@
+{
+  "name": "bridge-trailer",
+  "version": "1.0.0",
+  "description": "The sixty second Bridge trailer, in Remotion.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Trailer out/bridge-trailer.mp4",
+    "still": "remotion still",
+    "upgrade": "remotion upgrade",
+    "typecheck": "tsc",
+    "voiceover": "node scripts/voiceover.mjs"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "^4.0.529",
+    "@remotion/fonts": "^4.0.529",
+    "@remotion/renderer": "^4.0.529",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

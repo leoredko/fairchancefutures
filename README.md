@@ -266,7 +266,21 @@ Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
 scripts/check_centers.py  diffs NYC Open Data against app/centers.py
 scripts/i18n_extract.py   rebuilds es.po from the lessons, never losing work
+trailer/                  the sixty second trailer, in Remotion
 ```
+
+## The trailer
+
+`trailer/` is a sixty second film about the product, built in Remotion, which
+means it is React components rendered frame by frame and a change to it is a
+diff like any other. It states the problem and the two constraints and shows
+the three surfaces once; it is deliberately not a walkthrough, because a minute
+spent trying to be one never gets round to saying what the product is for.
+
+Every claim on screen is a fact in `app/sources.py` and carries its citation
+with it. The voiceover is written and timed in `trailer/VOICEOVER.md` and not
+yet recorded; with no recording the captions carry the whole script. See
+[trailer/README.md](trailer/README.md).
 
 ## The team
 
