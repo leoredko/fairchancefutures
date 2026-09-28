@@ -189,3 +189,85 @@ def test_the_mail_correction_is_a_sourced_fact_like_any_other():
     assert "Directive 4422" in fact.source
     assert fact.url.startswith("https://doccs.ny.gov/")
     assert "opened and inspected" in fact.statement
+
+
+def test_no_surface_claims_a_person_inside_cannot_send_mail():
+    """They can, to any person or business.
+
+    The same error as the incoming-mail one, one line down in the same table:
+    Bridge said outgoing mail "is handled by a family member, a friend, or the
+    program". Directive 4422 IV-B-1 says an incarcerated individual may submit
+    correspondence to be sent to any person or business, and they print their
+    own return address on it.
+
+    What they need from somebody else is paper and postage, which is a cost and
+    not a prohibition. Free postage runs to five one-ounce letters a week, at
+    reception only, for four weeks.
+    """
+    from app.surfaces import Capability, DENIAL_REASON
+
+    reason = DENIAL_REASON[Capability.MAIL_LETTER]
+    assert "handled by a family member" not in reason
+    assert "they send their own mail" in reason
+    assert "postage" in reason
+
+
+def test_the_capability_table_states_what_bridge_cannot_do_not_what_people_cannot():
+    """The failure mode this table kept falling into.
+
+    Twice it described a limit of the application as a limit on the person.
+    Both mail capabilities now name the screen, not the human, and both say
+    what the person can in fact do.
+    """
+    from app.surfaces import Capability, DENIAL_REASON
+
+    for capability in (Capability.RECEIVE_MAIL, Capability.MAIL_LETTER,
+                       Capability.UPLOAD_FILE):
+        reason = DENIAL_REASON[capability]
+        assert "screen" in reason, capability
+
+
+def test_the_tablet_is_not_described_as_continuously_connected():
+    """A DOCCS tablet meets a kiosk for 15 minutes a day and nothing else.
+
+    "The tablet is connected and a write lands immediately" was the reason
+    given for removing the sync queue and for a service worker that caches
+    nothing. Removing the pretend queue was right; the reason was not, and it
+    is the premise most of this app's storage behaviour was argued from.
+    """
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    for rel in ("app/surfaces.py", "app/store.py", "app/main.py",
+                "app/static/sw.js"):
+        text = (root / rel).read_text()
+        assert "the tablet is connected and writes land immediately" not in text.lower(), rel
+        assert "loaded onto a connected device and writes go to the server" not in text.lower(), rel
+
+
+def test_the_device_facts_are_sourced_to_the_tablet_directive():
+    from app.sources import FACTS
+
+    for key in ("the_tablet_reaches_a_kiosk_not_a_network",
+                "the_tablet_has_no_internet",
+                "no_tablet_in_shu_or_rru",
+                "secure_messaging_carries_attachments_and_nothing_is_printed"):
+        fact = FACTS[key]
+        assert "Directive 4425" in fact.source, key
+        assert fact.url.startswith("https://doccs.ny.gov/"), key
+
+
+def test_the_things_this_build_cannot_answer_are_written_down_as_open():
+    """Coverage stated honestly, the way app.centers does it.
+
+    A tablet-only product does not reach somebody in SHU, somebody whose
+    tablet privilege was suspended, or somebody who opted out. This build has
+    no answer for them, and saying so survives a hostile question better than
+    discovering it on stage.
+    """
+    from app.sources import OPEN_QUESTIONS
+
+    joined = " ".join(OPEN_QUESTIONS)
+    assert "Special Housing Units" in joined
+    assert "media review" in joined
+    assert "birth certificate" in joined.lower()

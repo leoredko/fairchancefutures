@@ -25,7 +25,12 @@ states the design principles on their own authority. Do not reintroduce a
 screen-by-screen spec.
 
 Where this is going: a progressive web app provisioned onto a facility tablet,
-not a website somebody finds and installs. The browser build is how it is
+not a website somebody finds and installs. **How it would actually get there is
+an open question, not a plan.** The tablets are the kiosk vendor's, they carry
+content the Department approves under its media review process, and they are
+not issued in SHU or RRU, so provisioning is a contract and an approval rather
+than a deployment, and a tablet-only product does not reach everybody. Both are
+in `OPEN_QUESTIONS`. Say so rather than implying the route exists. The browser build is how it is
 developed and demonstrated. `standalone/` is a demo artifact so the whole
 journey can be walked in three windows; it is not the product, and nothing in
 the app should tell a person to install anything.
@@ -47,11 +52,24 @@ delivery of a document, because it has no camera and no scanner. That is a
 fact about the device, not about the mail, and the two were conflated here
 until somebody who would know said so.
 
-The tablet is not offline. Bridge is loaded onto it and reaches the person's
-own record, which is why intake saves as it goes and the course keeps a place.
-What it cannot reach is the open web, and every route a bureau offers a free
-citizen runs through a web page. Do not write copy promising that anything
-survives a week without connectivity: writes go to the server.
+**The tablet is not continuously connected, and this file used to say it was.**
+A DOCCS tablet is loaned by the kiosk vendor, connects to a kiosk and to
+nothing else, gets one 15-minute session a day, and stops working if it has not
+met a kiosk in 30 days. The vendor network does not reach the internet.
+Directive 4425, in `app/sources.py` as
+`the_tablet_reaches_a_kiosk_not_a_network`.
+
+That premise is load-bearing and it was wrong in the comfortable direction. It
+is the stated reason the sync queue was removed and the reason `sw.js` caches
+nothing. Removing the queue was right, because it marked every entry synced as
+it was created and demonstrated a reconnect that never happened. The reason
+given was not right. Offline-first is now a **known gap**, not a settled
+decision: the browser build is honest, a real tablet would need the app shell
+cached and writes queued for the next kiosk session, and none of that is
+built. Do not re-argue it from "the tablet is connected".
+
+What holds: no route a bureau offers a free citizen is reachable from the
+device, because every one runs through a web page.
 
 **A helper outside has no standing until they sign a scoped form.**
 `app/authorization.py` holds scoped, expiring, revocable grants, checked on

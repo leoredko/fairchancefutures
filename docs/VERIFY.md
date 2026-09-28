@@ -189,6 +189,40 @@ prints. It exits non-zero when it finds something, so a scheduled run fails
 loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
 that changes.
 
+## What the tablet actually is, checked 2026-09-28
+
+Read after the mail correction, looking for the same mistake elsewhere. It was
+there. These are the claims Bridge was making about the device, and they are
+the premises most of its storage and capability decisions were argued from.
+
+Source for all of it: [DOCCS Directive 4425, Incarcerated Individual Tablet
+Program, 11/01/2022](https://doccs.ny.gov/Directives/4425.pdf).
+
+| Claim | Verdict |
+| --- | --- |
+| "The tablet is connected and a write lands immediately" | **False.** It connects to a kiosk and "shall not be connected to any other device or computer". One 15-minute kiosk session a day, at times the facility posts. A tablet that has not met a kiosk in 30 days becomes inoperable until it does. IV-A-3, IV-A-5, IV-E-4 |
+| "Outgoing mail is handled by a family member, a friend, or the program" | **False**, and sourced to 4422 IV-B-1 instead: they may send correspondence to any person or business, with their own return address on it |
+| "The tablet cannot take or send a file" | **Misleading.** The kiosk carries secure messages and attachments, paid with stamps. Attachments may be held for Lieutenant review within five business days, and the Department **will not print** incoming email or attachments. IV-J-4, IV-J-5, IV-K-2 |
+| "There is no open web" | **True.** Connections run on a vendor network that "will not allow access to the internet", and content is limited to what passes Department media review. II, IV-D-2 |
+| Everybody on the caseload has a tablet | **Not established.** Not issued in Special Housing Units or Residential Rehabilitation Units; use is a privilege that can be suspended; a person may opt out and wait six months to return. IV-E-5, IV-E-11, IV-I |
+
+Two more worth having in your pocket, neither of which Bridge currently says:
+
+- **Everything on the kiosk is monitored, recorded and retained**, and may be
+  given to law enforcement. Legal correspondence sent through secure messaging
+  is explicitly **not** protected as privileged. IV-C-2, IV-C-4. This is a
+  stronger argument for the redaction rules than "it is read in common areas".
+- **Tablets are issued at a Reception Center during processing**, and returned
+  on release. IV-E-12, IV-E-1.
+
+What changed as a result: the two mail capabilities and the file capability now
+describe what *Bridge* cannot do rather than what the person cannot, the
+identity claim is sourced instead of asserted, and offline-first is recorded as
+a known gap rather than a settled decision. Three things this build cannot
+answer went into `OPEN_QUESTIONS`: how Bridge gets onto a vendor tablet at all,
+what it does for somebody with no tablet, and how long a birth certificate
+really takes.
+
 ## Mail into a facility, checked 2026-09-28
 
 Added as a correction. Bridge told an audience that a person inside "does not

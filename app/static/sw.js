@@ -4,12 +4,20 @@
 // a registered worker before they offer an install. It deliberately does NOT
 // cache or serve stale pages.
 //
-// This is not offline support, and the tablet does not need it to be: Bridge
-// is loaded onto a connected device and writes go to the server as they are
-// made. Doing offline properly would mean queueing writes in IndexedDB and
-// replaying them on reconnect, and a worker that quietly serves a stale case
-// timeline while a deadline moves is worse than no worker at all. So this one
-// passes everything through to the network and says so.
+// This is not offline support, and it is a gap rather than a decision. The
+// justification used to be that the tablet is a connected device and writes go
+// to the server as they are made. That is not what a DOCCS tablet is: it
+// connects to a kiosk and to nothing else, gets one 15-minute session a day,
+// and stops working if it has not met a kiosk in 30 days. See
+// `the_tablet_reaches_a_kiosk_not_a_network` in app/sources.py.
+//
+// Doing this properly means caching the app shell, queueing writes in
+// IndexedDB and replaying them on the next kiosk session. That is real work
+// and none of it is done. What has not changed is why this worker does not
+// cache in the meantime: a worker that quietly serves a stale case timeline
+// while a statutory deadline moves is worse than no worker at all. So it
+// passes everything through to the network and says so, and the browser build
+// is what this is honest about serving.
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));

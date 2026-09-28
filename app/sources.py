@@ -244,6 +244,91 @@ FACTS: dict[str, Fact] = {
         url="https://doccs.ny.gov/Directives/4422.pdf",
         checked_on=date(2026, 9, 28),
     ),
+    # The outgoing half of the mail correction. Bridge said a person inside
+    # has outgoing mail handled for them by a family member, a friend or the
+    # program. They send their own.
+    "outgoing_mail_is_theirs_to_send": Fact(
+        key="outgoing_mail_is_theirs_to_send",
+        statement=(
+            "An incarcerated individual may submit correspondence to be sent to "
+            "any person or business. They address and send their own mail, "
+            "printing their own return address on the envelope. Free postage is "
+            "thin rather than absent: the allotment is five one-ounce domestic "
+            "first class letters a week, at reception or classification "
+            "facilities only, for no more than four weeks, and it cannot be "
+            "accumulated week to week. Funds may be advanced for legal mail. So "
+            "the obstacle to mailing a dispute is postage and paper, not "
+            "permission."
+        ),
+        source="DOCCS Directive 4422, Incarcerated Individual Correspondence Program, dated 07/28/2021",
+        url="https://doccs.ny.gov/Directives/4422.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    # The premise the whole product rests on, and it was wrong. Read this
+    # before changing anything about how the tablet stores or sends.
+    "the_tablet_reaches_a_kiosk_not_a_network": Fact(
+        key="the_tablet_reaches_a_kiosk_not_a_network",
+        statement=(
+            "A DOCCS tablet is loaned by the kiosk vendor and connects only to "
+            "a kiosk: it shall not be connected to any other device or "
+            "computer, and the vendor network does not allow access to the "
+            "internet. Kiosk access is one 15-minute session per day at times "
+            "the facility posts, and a tablet that has not been connected to a "
+            "kiosk within 30 days becomes inoperable until it is. So the device "
+            "is not continuously online. It is an intermittently synced device "
+            "with a metered daily window."
+        ),
+        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
+        url="https://doccs.ny.gov/Directives/4425.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    # Confirms the one capability claim that turned out to be right.
+    "the_tablet_has_no_internet": Fact(
+        key="the_tablet_has_no_internet",
+        statement=(
+            "Tablet and kiosk connections are granted through an independent "
+            "vendor-provided secure network and will not allow access to the "
+            "internet. Content is limited to what the Department approves under "
+            "its media review process. A bureau's web page cannot be reached "
+            "from the device."
+        ),
+        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
+        url="https://doccs.ny.gov/Directives/4425.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    "no_tablet_in_shu_or_rru": Fact(
+        key="no_tablet_in_shu_or_rru",
+        statement=(
+            "Tablets are issued to people in general confinement, which "
+            "includes Regional Medical Units, infirmaries, Residential Crisis "
+            "Treatment, Therapeutic Transitional Supervision and Intermediate "
+            "Care or Mental Health units. They are not allowed in Special "
+            "Housing Units or Residential Rehabilitation Units. Tablet use is "
+            "also a privilege that may be suspended, and a person may opt out "
+            "and wait six months to opt back in. A tablet-only product "
+            "therefore does not reach everybody."
+        ),
+        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
+        url="https://doccs.ny.gov/Directives/4425.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    "secure_messaging_carries_attachments_and_nothing_is_printed": Fact(
+        key="secure_messaging_carries_attachments_and_nothing_is_printed",
+        statement=(
+            "The kiosk secure messaging system carries messages and "
+            "attachments between an incarcerated individual and community "
+            "members registered to their account, paid for with stamps bought "
+            "from a Kiosk Media account. A message carrying an attachment may "
+            "be flagged and held for review by staff at the rank of Lieutenant "
+            "or above, within five business days. The Department will not print "
+            "incoming email or attachments. All of it is screened, monitored, "
+            "recorded and retained, and may be given to law enforcement; "
+            "legal correspondence sent this way is not protected as privileged."
+        ),
+        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
+        url="https://doccs.ny.gov/Directives/4425.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
     "facility_record_rules": Fact(
         key="facility_record_rules",
         statement=(
@@ -611,6 +696,20 @@ INTERVIEWS: tuple[dict, str] = (
 
 
 OPEN_QUESTIONS: tuple[str, ...] = (
+    "How Bridge actually gets onto a DOCCS tablet. The tablets are loaned by "
+    "the kiosk vendor, connect only to a kiosk, and carry content the "
+    "Department approves under its media review process. So provisioning is a "
+    "contract and an approval rather than a deployment, and nothing here "
+    "establishes that route exists. Directive 4425.",
+    "What Bridge does for somebody with no tablet. They are not issued in "
+    "Special Housing Units or Residential Rehabilitation Units, use is a "
+    "privilege that can be suspended, and a person may opt out. A tablet-only "
+    "product does not reach those people and this build has no answer for "
+    "them. Directive 4425.",
+    "How long a birth certificate actually takes to come back. "
+    "`app.caseplan` gates document readiness on ten weeks and no source here "
+    "establishes it. It is the slowest step in the chain the ID application "
+    "waits on, so the number matters more than most.",
     "What actually makes a bureau escalate past a plain signed request. No "
     "public source says how often a plain request clears, and Experian asks "
     "for an ID copy with every mailed dispute regardless. This used to be "

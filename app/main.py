@@ -208,15 +208,18 @@ def metrics(request: Request):
 def saves() -> JSONResponse:
     """Every answer this build has written, and when.
 
-    This used to be called a sync queue and it described an offline-first
-    tablet flushing a local queue on reconnect. That is not what happens: the
-    tablet is connected and a write lands immediately. Pretending otherwise
-    made the endpoint a demo of a thing that never occurred, since every entry
-    was marked synced in the same breath as it was created.
+    This used to be called a sync queue, and the queue was removed because
+    every entry was marked synced in the same breath as it was created: it
+    demonstrated a reconnect that never happened. Removing the pretence was
+    right. The reason given for removing it was not, because it said the tablet
+    is connected and a write always lands, and a DOCCS tablet reaches a kiosk
+    for 15 minutes a day and nothing else in between.
 
-    What it is now is the receipt for the promise intake makes on question one,
-    that every answer saves as it is given. That promise is true, and this is
-    how you check it.
+    So on the browser build this is the receipt for the promise intake makes on
+    question one, that every answer saves as it is given, and that promise is
+    true here. On a real tablet a queue would have to come back, this time
+    doing something. See `the_tablet_reaches_a_kiosk_not_a_network` in
+    app/sources.py.
     """
     return JSONResponse({
         "saved": len(STATE.write_log),

@@ -15,11 +15,19 @@ reaches a person's hands and stops there, because there is no camera and no
 scanner on this surface, which is a fact about the device and not about the
 mail.
 
-The tablet is not offline. Bridge is loaded onto it and reaches the person's
-own record, which is why intake saves as it goes and why the course keeps a
-person's place. What it cannot do is reach out to the open web, which is the
-part that matters here: every route a bureau offers a free citizen runs through
-a web page, and none of those pages are reachable from this device.
+Connectivity, stated carefully, because this module had it wrong in the
+comfortable direction. A DOCCS tablet is loaned by the kiosk vendor. It
+connects to a kiosk and, in the directive's words, "shall not be connected to
+any other device or computer". Kiosk access is one 15-minute session a day at
+times the facility posts, and a tablet that has not met a kiosk in 30 days
+stops working until it does. The vendor network does not reach the internet.
+
+So the device is neither offline nor continuously online. It is intermittently
+synced, through a metered daily window, and this app was written as though a
+write always lands. See `the_tablet_reaches_a_kiosk_not_a_network` in
+`app.sources` before changing anything about how the tablet stores or sends.
+What holds unchanged: no route a bureau offers a free citizen is reachable
+here, because every one of them runs through a web page.
 
 So capability lives here, in one table, and the router asks this module before
 it does anything. Hiding a button in a template is decoration. This is the
@@ -85,12 +93,14 @@ CAPABILITIES: dict[Surface, frozenset[Capability]] = {
 # Why a capability is missing from INSIDE, in words a demo audience understands.
 # Every one of these is physics or law, not a preference we could toggle.
 DENIAL_REASON: dict[Capability, str] = {
+    # The one claim in this table that was right. Now sourced, so it stops
+    # being an assertion: the vendor network "will not allow access to the
+    # internet". See `the_tablet_has_no_internet` in app.sources.
     Capability.VERIFY_IDENTITY:
-        "No identity verification happens on a facility tablet. The tablet is "
-        "connected, but only to the applications loaded onto it: there is no "
-        "open web, so a bureau's knowledge-based authentication page cannot be "
-        "reached, and there is no camera roll and no document scanner to "
-        "answer it with.",
+        "No identity verification happens on a facility tablet. The vendor "
+        "network the tablet runs on does not reach the internet, so a bureau's "
+        "knowledge-based authentication page cannot be opened, and there is no "
+        "camera roll and no document scanner to answer it with.",
     Capability.RECEIVE_MAIL:
         "A credit report arrives on paper. The person receives their own mail "
         "at the facility and can hold that paper, but this screen cannot take "
@@ -98,12 +108,17 @@ DENIAL_REASON: dict[Capability, str] = {
         "tablet, so paper in a person's hands does not become a record in "
         "their case file from here.",
     Capability.UPLOAD_FILE:
-        "The tablet cannot take or send a file. This is why the family surface "
-        "exists at all.",
+        "Bridge cannot take a file from this screen. The device itself is not "
+        "fileless: the kiosk messaging system carries attachments, for a stamp, "
+        "held for staff review, and the Department prints none of it. What it "
+        "will not do is hand a document to this application, because the tablet "
+        "connects to a kiosk and to nothing else.",
     Capability.MAIL_LETTER:
-        "Outgoing mail is handled by a family member, a friend, or the program, "
-        "never from "
-        "this screen.",
+        "Bridge cannot print or post a letter from this screen. The person can: "
+        "they send their own mail, to any person or business, with their own "
+        "return address on it. What they need from somebody else is the paper "
+        "and the postage, because free postage runs to five letters a week at "
+        "reception and nothing after that.",
     Capability.READ_FULL_REPORT:
         "Full report contents are staff-side. The client sees findings and "
         "approves what is said about them, which is a different thing.",
