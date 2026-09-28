@@ -99,6 +99,30 @@ tablet with any DIN starting 28 and open **Learn**.
 
 Close every tab and reopen them. Everything is still there.
 
+## Showing the tablet on its own
+
+Some rooms only get the tablet. Set `BRIDGE_TABLET_ONLY=on` and the helper and
+coordinator doors come off the landing page and off the sign-in screen, so
+there is nothing on a projector to click into by accident.
+
+    BRIDGE_TABLET_ONLY=on ./run.sh
+
+It hides doors, not people. The coordinator is still named on the case screen
+and the helper is still named where the tablet explains who sends what, because
+an event with nobody attached reads as an automated nudge and that reads as a
+scam inside.
+
+Both routes stay reachable by URL. Open `/staff` in a window the room does not
+see, run triage, draft the letters, and the tablet in front of them shows the
+result, which is the point: the walkthrough above still works with one screen
+facing the audience. It is a presentation setting and not a permission, so it
+is not in `app/surfaces.py`: what a surface can do is enforced there, and a
+second copy of that in an environment variable would be a weaker one.
+
+The single-file build needs no switch. `standalone/build.py` already emits one
+application per surface, so opening `bridge-inside.html` on its own is the same
+thing: it has only the tablet door and no way to reach the other two.
+
 ## Three files, one caseload
 
 `standalone/bridge-inside.html`, `bridge-family.html` and `bridge-staff.html`

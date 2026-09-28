@@ -22,7 +22,10 @@
   </div>
   {% endif %}
 
-  <div class="grid three">
+  {# The other two doors come off the wall when the room is only being shown
+     the tablet. They stay reachable by URL, so the demo can still be driven
+     from a coordinator window nobody is looking at. #}
+  <div class="grid {% if tablet_only() %}one{% else %}three{% endif %}">
     <div class="card accent">
       <span class="tag teal">On the tablet</span>
       <h2>If you are inside</h2>
@@ -31,6 +34,7 @@
       <a class="btn" href="/signin">DIN number or NYS ID</a>
     </div>
 
+    {% if not tablet_only() %}
     <div class="card accent">
       <span class="tag amber">On your phone</span>
       <h2>If you are helping</h2>
@@ -49,6 +53,7 @@
         in to. No second password.</p>
       <a class="btn ghost" href="/staff">Open the caseload</a>
     </div>
+    {% endif %}
   </div>
 
   <div class="grid two" style="margin-top:28px; align-items:start">

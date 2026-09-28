@@ -60,10 +60,12 @@
         A NYSID is eight numbers, sometimes with a letter on the end.</span>
     </div>
 
+    {% if not tablet_only() %}
     <div class="notes-always">
       <p class="tiny">Helping someone on the outside?
         <a href="/helper">Use the code from the letter</a>.</p>
     </div>
+    {% endif %}
   </form>
 </div>
 {% endblock %}
