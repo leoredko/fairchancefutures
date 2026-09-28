@@ -32,11 +32,20 @@ the app should tell a person to install anything.
 
 ## Two constraints everything follows from
 
-**A person inside cannot verify identity, receive mail, upload a file, or
-browse out to a bureau.** Not a policy, not a setting: it is where the tablet
-physically sits. This lives in `app/surfaces.py` and the router asks that
+**A person inside cannot verify identity, take delivery of a document, upload a
+file, or browse out to a bureau.** Not a policy, not a setting: it is where the
+tablet physically sits. This lives in `app/surfaces.py` and the router asks that
 module before it does anything. Hiding a button in a template is decoration;
 the capability table is the enforcement.
+
+Do not overstate that constraint, and never as "cannot receive mail". People
+inside receive their own mail, addressed to them at the facility under their
+commitment name and DIN. It is opened and inspected, not generally read, and
+not held more than 48 hours: DOCCS Directive 4422, in `app/sources.py` as
+`incoming_mail_is_inspected_not_absent`. What the tablet cannot do is take
+delivery of a document, because it has no camera and no scanner. That is a
+fact about the device, not about the mail, and the two were conflated here
+until somebody who would know said so.
 
 The tablet is not offline. Bridge is loaded onto it and reaches the person's
 own record, which is why intake saves as it goes and the course keeps a place.

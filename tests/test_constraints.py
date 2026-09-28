@@ -156,3 +156,36 @@ def test_the_ladder_is_gone():
 
     for name in ("Rung", "RUNG_DETAIL", "next_rung"):
         assert not hasattr(authorization, name), name
+
+
+def test_no_surface_claims_a_person_inside_cannot_receive_mail():
+    """They can. It is opened and inspected, not absent.
+
+    Bridge told an audience that a person inside "does not have a street
+    address that receives mail on their behalf". That is false: mail is
+    addressed to them at the facility under their commitment name and DIN, and
+    DOCCS Directive 4422 governs how it is opened, inspected and delivered. The
+    claim was wrong in front of exactly the people who would know.
+
+    What the tablet cannot do is take delivery of a document, which is a fact
+    about the device rather than about the mail.
+    """
+    from app.surfaces import Capability, DENIAL_REASON
+
+    reason = DENIAL_REASON[Capability.RECEIVE_MAIL]
+    assert "on their behalf" not in reason
+    assert "does not have" not in reason
+    assert "receives their own mail" in reason
+    # The true reason is named, so deleting the false one did not leave a hole.
+    assert "no camera and no scanner" in reason
+
+
+def test_the_mail_correction_is_a_sourced_fact_like_any_other():
+    """A sentence about how mail works inside is a claim about a rule, so it
+    carries its primary source like every other one."""
+    from app.sources import FACTS
+
+    fact = FACTS["incoming_mail_is_inspected_not_absent"]
+    assert "Directive 4422" in fact.source
+    assert fact.url.startswith("https://doccs.ny.gov/")
+    assert "opened and inspected" in fact.statement

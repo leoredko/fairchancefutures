@@ -95,8 +95,12 @@
     <div class="card">
       <span class="strong">Who is helping you</span>
       {% if auth %}
-      <span class="small">{{ auth.helper_name }} can receive your mail and add
-        the report. The authorization expires {{ auth.expires_on }}.</span>
+      {# Not "can receive your mail": your mail comes to you, at the facility,
+         in your name. What they can receive is a report the request routed to
+         their address. #}
+      <span class="small">{{ auth.helper_name }} can receive your report at
+        their address and add it. Your own mail still comes to you. The
+        authorization expires {{ auth.expires_on }}.</span>
       <span class="small">They cannot open an account in your name, take out
         credit, move money, or change your address.</span>
       <a class="btn ghost" href="/inside/authorization">Review or cancel this</a>

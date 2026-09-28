@@ -189,6 +189,31 @@ prints. It exits non-zero when it finds something, so a scheduled run fails
 loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
 that changes.
 
+## Mail into a facility, checked 2026-09-28
+
+Added as a correction. Bridge told an audience that a person inside "does not
+have a street address that receives mail on their behalf." That is false, and
+it is the kind of false that a room of counselors, or anybody who has visited
+somebody, catches in a second.
+
+| Claim | Source |
+| --- | --- |
+| A person inside **receives their own mail**, addressed to them at the facility under their commitment name and Department Identification Number | [DOCCS Directive 4422, Incarcerated Individual Correspondence Program, 07/28/2021](https://doccs.ny.gov/Directives/4422.pdf), IV-G-1 |
+| All incoming general correspondence **is opened and inspected** for cash, checks, money orders, printed or photocopied material and contraband. The person's presence is not required for that inspection | same, IV-G-1-b |
+| It is **not read** unless the superintendent authorizes it in writing on specific grounds, for a renewable 60-day period | same, IV-G-5 and IV-G-6 |
+| Excluding weekends and holidays, letters **should not be held more than 48 hours** | same, III note |
+| Mail with **no return address** is treated as contraband and is not delivered | same, IV-G-1-a |
+
+What replaced the false claim: the tablet cannot **take delivery of a
+document**. Paper reaches a person's hands and stops there, because the surface
+has no camera and no scanner. That is a fact about the device, not about the
+mail, and conflating the two is what produced the original sentence.
+
+Worth knowing on stage, since it cuts the other way: a credit report mailed to
+a facility is printed material in general correspondence, so it is opened and
+inspected before it reaches the person. That is an argument for the masking
+rules rather than against the mail route.
+
 ## The DOCCS facility list, checked 2026-09-28
 
 The facility is the return address on a dispute letter, so it is an address
