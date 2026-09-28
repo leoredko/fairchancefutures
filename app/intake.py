@@ -23,21 +23,15 @@ import string
 from dataclasses import dataclass
 from datetime import date
 
+from app import facilities
 from app.identifiers import IdKind, InvalidIdentifier, parse
 
-# New York State reception centers and the facilities this build knows about.
-# Not exhaustive, and not verified against a DOCCS list: it is a picker for a
-# demo, and the field accepts anything typed into it.
-FACILITIES: tuple[str, ...] = (
-    "Sing Sing Correctional Facility",
-    "Bedford Hills Correctional Facility",
-    "Fishkill Correctional Facility",
-    "Woodbourne Correctional Facility",
-    "Green Haven Correctional Facility",
-    "Albion Correctional Facility",
-    "Clinton Correctional Facility",
-    "Downstate Correctional Facility",
-)
+# The facility picker is the checked DOCCS list and nothing else. It used to be
+# eight hand-typed names beside a free-text box, which accepted anything: one of
+# the eight had closed in 2022, and the box turned a typo into the return
+# address on a dispute letter. See app/facilities.py for why the list is the
+# enforcement rather than the decoration.
+FACILITIES: tuple[str, ...] = facilities.NAMES
 
 
 class IntakeProblem(ValueError):
@@ -167,11 +161,20 @@ def validate(
         if nysid_key in known_nysids:
             raise IntakeProblem("nysid", f"{nysid_key} is already on the caseload.")
 
-    if not (facility or "").strip():
+    # Exact match against the checked list, not a near one. A name that is
+    # nearly right is a name somebody typed, and it goes on an envelope.
+    facility_name = (facility or "").strip()
+    if not facility_name:
         raise IntakeProblem(
             "facility",
-            "Name the facility. It goes on the envelope as the return address, "
+            "Pick the facility. It goes on the envelope as the return address, "
             "and the bureaus ask for it on mail from a prison.")
+    if not facilities.is_known(facility_name):
+        raise IntakeProblem(
+            "facility",
+            f"{facility_name} is not on the DOCCS list of facilities. Pick one "
+            "from the list, so the return address is one an envelope can "
+            "reach.")
 
     try:
         release = date.fromisoformat(release_date)
@@ -187,7 +190,7 @@ def validate(
         first_name=name.split()[0],
         din=din_key,
         nysid=nysid_key,
-        facility=facility.strip(),
+        facility=facility_name,
         release_date=release.isoformat(),
     )
 

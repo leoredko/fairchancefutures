@@ -26,6 +26,7 @@ def rules() -> dict:
     import sys
 
     sys.path.insert(0, str(ROOT))
+    from app import facilities as facilities_module
     from app.bureaus import ANNUAL_REPORT_REQUEST, BUREAUS
     from app.letters import DISPUTE_TEMPLATE, REPORT_REQUEST_TEMPLATE
     from app.questions import INSIDE_QUESTIONS, STAFF_QUESTIONS, teaching_for
@@ -115,6 +116,15 @@ def rules() -> dict:
         ],
         "courseMinutes": TOTAL_MINUTES,
         "scan": {"lineFormat": LINE_FORMAT, "note": SCANNER_NOTE},
+        # The DOCCS facility list, generated rather than retyped, so the
+        # single file cannot offer a facility the tested build rejects. Each
+        # entry carries the population it holds, because the picker groups by
+        # it: that grouping is what stops a man being recorded at a facility
+        # for women, which is the bug this list was written for.
+        "facilities": [
+            {"name": f.name, "serves": f.serves, "level": f.level}
+            for f in facilities_module.FACILITIES
+        ],
     }
 
 

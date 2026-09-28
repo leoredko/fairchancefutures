@@ -256,13 +256,14 @@ app/intake.py          adding somebody to the caseload
 standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
 app/centers.py         free counseling after release, hand-kept and sourced
-app/freshness.py       which check dates have gone stale, across all three
+app/facilities.py      the 41 DOCCS facilities, checked, with addresses
+app/freshness.py       which check dates have gone stale, across all four
 app/store.py           JSON persistence and the seed caseload
 app/routes/            one router per surface
 docs/                  scope and the verify-before-demo list
-tests/                 336 tests
+tests/                 396 tests
 .github/workflows/     pytest on 3.11 and 3.12
-Dockerfile, fly.toml   deploy; see docs/DEPLOY.md
+Dockerfile, render.yaml  deploy; see docs/DEPLOY.md
 scripts/make_icons.py  regenerates the app icons
 scripts/check_centers.py  diffs NYC Open Data against app/centers.py
 scripts/i18n_extract.py   rebuilds es.po from the lessons, never losing work

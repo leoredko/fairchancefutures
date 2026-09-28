@@ -308,18 +308,18 @@ def test_a_self_opened_case_works_all_the_way_through(client):
 def test_signing_in_with_a_din_fills_in_what_is_attached_to_it(client):
     """The number is the only thing typed.
 
-    This used to invent a release date of today plus 180 days and leave the
-    facility blank, and both then drove real things: the queue ordering, the
-    quarterly review count and the 120-day document deadline. Asking somebody
-    to retype their own release date from memory on a metered tablet is asking
-    them to do a computer's job.
+    This used to invent a release date of today plus 180 days, which then drove
+    real things: the queue ordering, the quarterly review count and the 120-day
+    document deadline. Asking somebody to retype their own release date from
+    memory on a metered tablet is asking them to do a computer's job.
+
+    The dates come back. The facility deliberately does not: see the next test.
     """
     from app.store import STATE
 
     sign_in_inside(client, identifier="28-Z-4410")
     made = STATE.clients["din-28z4410"]
 
-    assert made.facility, "the envelope return address has to come from somewhere"
     assert made.release_date
     assert made.release_date_source in (
         "Conditional release date", "Earliest release date")
@@ -327,6 +327,45 @@ def test_signing_in_with_a_din_fills_in_what_is_attached_to_it(client):
     assert made.doccs_record["parole_eligibility_date"]
     assert made.doccs_record["maximum_expiration_date"]
 
+
+
+def test_a_din_typed_at_the_tablet_is_never_given_a_facility(client):
+    """A facility is the return address on a dispute letter, so it is not
+    guessed.
+
+    This function used to pick one by hashing the DIN. That put Marcus, a man,
+    in Bedford Hills, which is a facility for women: a hash is right one time in
+    forty-one, and wrong in a way that announces on the envelope that the sender
+    does not know who they are writing about. Nothing in the lookup knows who
+    this person is, so nothing in the lookup names where they are held.
+    """
+    from app.store import STATE
+
+    sign_in_inside(client, identifier="28-Z-4410")
+    made = STATE.clients["din-28z4410"]
+
+    assert made.facility == ""
+    assert made.doccs_record["housing_facility"] == ""
+
+
+def test_no_seeded_person_is_held_in_a_facility_that_does_not_hold_them(client):
+    """The bug this list was built to make unrepresentable.
+
+    Every seeded facility is on the checked DOCCS list, and none of the men are
+    recorded at one of the three facilities DOCCS operates for women.
+    """
+    from app import facilities
+    from app.store import STATE
+
+    for made in STATE.clients.values():
+        if not made.facility:
+            continue
+        assert facilities.is_known(made.facility), (
+            f"{made.display_name} is at {made.facility}, which DOCCS does not "
+            f"list")
+
+    marcus = STATE.clients["marcus-w"]
+    assert not facilities.contradicts(marcus.facility, "males")
 
 def test_the_lookup_never_supplies_a_date_of_birth(client):
     """The public lookup does not return one: you can search by year of birth,

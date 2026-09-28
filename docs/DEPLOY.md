@@ -22,8 +22,7 @@ out is the base image itself, since the rehearsal ran on 3.11 and the
 Dockerfile pins 3.12. CI runs the full suite on both, so that gap is covered
 from the other side.
 
-Expect the first `fly deploy` to work. Do not be shocked if it needs one
-nudge.
+Expect the first deploy to work. Do not be shocked if it needs one nudge.
 
 ## Before anything: this app has no authentication
 
@@ -37,44 +36,19 @@ disallows everything, so it at least stays out of search results. With
 question, which stops crawlers and scripted sign-ins. Neither is
 authentication: somebody with the link can read Marcus's DIN off the
 walkthrough and be Marcus. That lives in
-`app/main.py` rather than in one host's config, because a header only Fly sets
-does nothing for the Render URL. Do not put a real person's data behind this
-URL.
+`app/main.py` rather than in a host's config, so it holds wherever this runs
+rather than only where somebody remembered to set it. Do not put a real
+person's data behind this URL.
 
-## Fly.io, which is faster to wake and costs a couple of dollars
+## Render, which is where this deploys
 
-Worth it if a spin-down mid-demo would be fatal, or if you want the data to
-survive. Needs the CLI, so it needs a terminal and a local clone of the repo.
+The one hosted path. No CLI to install, no local clone, no account beyond
+GitHub.
 
-**Install flyctl** ([docs](https://fly.io/docs/flyctl/install/)). On Windows,
-in PowerShell:
-
-```powershell
-iwr https://fly.io/install.ps1 -useb | iex
-```
-
-Close and reopen PowerShell afterwards so the new command is found. Then:
-
-```bash
-fly auth signup      # or: fly auth login, if you already have an account
-fly launch --copy-config --no-deploy      # pick a name nobody has taken
-fly volumes create bridge_data --size 1 --region ewr
-fly deploy
-fly open
-```
-
-The volume matters. The store is a JSON file at `/data/bridge.json`, so without
-a mounted volume every deploy resets the caseload to the seed. Which, for a
-demo, is occasionally what you want: `fly ssh console -C "rm /data/bridge.json"`
-then restart, and you are back to a clean stage.
-
-Keep it to one machine. A second machine gets its own volume and would serve a
-different caseload depending on which one answered.
-
-## Render, which needs no terminal
-
-The shortest path to a URL, and the one to take first. No CLI to install, no
-local clone, no account beyond GitHub.
+There used to be a `fly.toml` beside `render.yaml` and a section here for it.
+Both are gone. Two deploy configs meant two places to change a port or an
+environment variable and one of them silently going stale, and only one of
+them was ever deployed from.
 
 1. Sign in at [render.com](https://render.com) with GitHub.
 2. **New**, then **Blueprint**.

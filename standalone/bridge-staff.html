@@ -106,6 +106,94 @@ a:hover { color: var(--teal-deep); }
 .phone  { width: min(440px, 100%); min-height: 100vh; margin: 0 auto;
           background: var(--page); display: flex; flex-direction: column;
           box-shadow: var(--lift-2); }
+/* The tablet is a 16:10 screen, and only on something big enough to show one.
+
+   Every /inside screen renders inside `.tablet`, so this one rule shapes the
+   whole surface rather than eighteen templates. A facility tablet is a 16:10
+   landscape device; rendering it as a tall phone column on a projector showed
+   the room a device that does not exist, and the sign-in is the screen a
+   demonstration actually opens on.
+
+   The breakpoint is a laptop or a projector. Below it the app fills the
+   screen, because there the browser IS the device, and a drawn bezel around a
+   real tablet is a picture of a tablet inside a tablet.
+
+   Width is whichever of three limits bites first: a cap, the viewport, or the
+   height the 16:10 box would need. That last one is why the frame shrinks on a
+   short window instead of running off the bottom of it. */
+@media (min-width: 1000px) and (min-height: 600px) {
+  /* The device sits on the centre of the screen rather than hanging off the
+     top of it. `:has` is doing the work, so a browser without it lands on the
+     old top-anchored layout instead of a broken one. */
+  body:has(> .tablet) {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tablet {
+    width: min(1180px, calc(100vw - 64px), calc((100vh - 64px) * 1.6));
+    aspect-ratio: 16 / 10;
+    height: auto;
+    min-height: 0;
+    margin: 32px auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    /* The frame is the scroller. A screen longer than the glass scrolls inside
+       the device, the way it would on the real one, instead of making the page
+       taller than the frame it is supposed to be inside. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* The bar belongs to the device, not to the page inside it, so it stays put
+     while the content moves under it. */
+  .tablet > .bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--page);
+  }
+
+  /* A landscape screen is wider than anything worth reading across. Without
+     this the sign-in input and its button ran the full 1180px, which is the
+     shape of a form nobody designed rather than one built for this device.
+     The column is the same measure the portrait build already used; the frame
+     around it is what changed. */
+  .tablet > .pane,
+  .tablet > form.pane {
+    width: min(620px, 100%);
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+
+  /* Anything else sitting directly on the glass keeps a margin off the bezel,
+     so no line of type runs into the edge of the device. */
+  .tablet > .colophon { padding-inline: 32px; }
+
+  /* The sign-in is the one screen with little enough on it to sit on the
+     centre line, and it is the screen a demonstration opens on. Everything
+     longer keeps its top edge, because centring a screen that scrolls just
+     moves its first line off the glass. */
+  .tablet > form.pane:last-child { justify-content: center; }
+
+  /* The opening lands on the glass rather than over the whole projector, so
+     the sequence reads as the tablet waking up and not as a title card. */
+  .splash {
+    position: fixed;
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(1180px, calc(100vw - 64px), calc((100vh - 64px) * 1.6));
+    aspect-ratio: 16 / 10;
+    height: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+  }
+}
+
 .desk   { max-width: 1160px; margin: 0 auto; padding: 0 24px 80px; }
 .sheet  { max-width: 1160px; margin: 0 auto; padding: 0 20px 72px; }
 
@@ -636,7 +724,7 @@ html, body { min-height: 100%; }
    ===================================================================== */
 
 const RULES = {
- "built": "2026-09-25",
+ "built": "2026-09-28",
  "states": [
   {
    "key": "credit_invisible",
@@ -2114,7 +2202,214 @@ const RULES = {
  "scan": {
   "lineFormat": "creditor | account number | opened | status | balance | dispute reason",
   "note": "The scanner reads the document and fills this form in. Nothing is saved until you confirm it, because an account number read wrong here becomes a dispute letter about the wrong account."
- }
+ },
+ "facilities": [
+  {
+   "name": "Adirondack Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Albion Correctional Facility",
+   "serves": "females",
+   "level": "medium"
+  },
+  {
+   "name": "Altona Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Attica Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Auburn Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Bedford Hills Correctional Facility",
+   "serves": "females",
+   "level": "maximum"
+  },
+  {
+   "name": "Cape Vincent Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Cayuga Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Clinton Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Collins Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Coxsackie Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Eastern NY Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Edgecombe Residential Treatment Facility",
+   "serves": "males",
+   "level": "minimum"
+  },
+  {
+   "name": "Elmira Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Fishkill Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Five Points Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Franklin Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Gouverneur Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Green Haven Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Greene Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Groveland Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Hale Creek ASACTC",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Hudson Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Lakeview Shock Incarceration Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Marcy Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Mid-State Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Mohawk Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Orleans Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Otisville Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Queensboro Correctional Facility",
+   "serves": "males",
+   "level": "minimum"
+  },
+  {
+   "name": "Riverview Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Shawangunk Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Sing Sing Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Taconic Correctional Facility",
+   "serves": "females",
+   "level": "medium"
+  },
+  {
+   "name": "Ulster Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Upstate Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Wallkill Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Washington Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Wende Correctional Facility",
+   "serves": "males",
+   "level": "maximum"
+  },
+  {
+   "name": "Woodbourne Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  },
+  {
+   "name": "Wyoming Correctional Facility",
+   "serves": "males",
+   "level": "medium"
+  }
+ ]
 };
 
 /* Which application this file is. The build emits one file per surface, so a
@@ -3902,9 +4197,10 @@ route(/^\/staff\/new$/, () => {
     '</div>' +
     '<p class="tiny" style="margin-top:-4px">Either one is enough. If you have ' +
       'both, the person can sign in with whichever they remember.</p>' +
-    field("facility", "Facility", f.facility, "Sing Sing Correctional Facility",
-          "Goes on the envelope as the return address. The bureaus ask for it " +
-          "on mail from a prison.", bad("facility")) +
+    picker("facility", "Facility", f.facility,
+           "Goes on the envelope as the return address. The bureaus ask for " +
+           "it on mail from a prison, so it is the DOCCS list rather than a " +
+           "box to type in.", bad("facility")) +
     field("release", "Release date", f.release, "", 
           "The queue sorts by what expires soonest.", bad("release"), false, "date") +
     '<button class="btn wide" onclick="createClient()" style="margin-top:4px">' +
@@ -3928,6 +4224,35 @@ function field(id, label, value, placeholder, hint, bad, mono, type) {
       (mono ? ' class="mono" autocapitalize="characters"' : "") +
       ' value="' + esc(value || "") + '" placeholder="' + esc(placeholder) + '">' +
     '<span class="hint">' + esc(hint) + '</span></div>';
+}
+
+// A list, not a box. The box accepted anything typed into it, and what is
+// typed here becomes the return address on a dispute letter. The options are
+// the DOCCS list injected by standalone/build.py, grouped by the population
+// each facility holds: a coordinator scanning a flat alphabetical list of
+// forty-one has nothing telling them which three are the women's facilities.
+function picker(id, label, value, hint, bad) {
+  const groups = [["Facilities for men", "males"],
+                  ["Facilities for women", "females"]];
+  let opts = '<option value=""' + (value ? "" : " selected") + '>Pick a facility</option>';
+  groups.forEach(function (g) {
+    const rows = (RULES.facilities || []).filter(function (f) { return f.serves === g[1]; });
+    if (!rows.length) return;
+    opts += '<optgroup label="' + esc(g[0]) + '">';
+    rows.forEach(function (f) {
+      opts += '<option value="' + esc(f.name) + '"' +
+        (f.name === value ? " selected" : "") + '>' + esc(f.name) + '</option>';
+    });
+    opts += '</optgroup>';
+  });
+  return '<div class="field' + (bad || "") + '">' +
+    '<label for="' + id + '">' + esc(label) + '</label>' +
+    '<select id="' + id + '">' + opts + '</select>' +
+    '<span class="hint">' + esc(hint) + '</span></div>';
+}
+
+function knownFacility(name) {
+  return (RULES.facilities || []).some(function (f) { return f.name === name; });
 }
 
 function tidyName(raw) {
@@ -3978,8 +4303,11 @@ window.createClient = function () {
       return fail("nysid", nysid + " is already on the caseload.");
   }
   if (!f.facility) return fail("facility",
-    "Name the facility. It goes on the envelope as the return address, and the " +
+    "Pick the facility. It goes on the envelope as the return address, and the " +
     "bureaus ask for it on mail from a prison.");
+  if (!knownFacility(f.facility)) return fail("facility",
+    f.facility + " is not on the DOCCS list of facilities. Pick one from the " +
+    "list, so the return address is one an envelope can reach.");
   if (!f.release || isNaN(new Date(f.release)))
     return fail("release", "Enter the release date.");
 

@@ -1,9 +1,9 @@
 """When something last got checked, and when that stops being good enough.
 
-Three registries in this app carry a date somebody looked: the legal facts in
-`app.sources`, the bureau dispute addresses in `app.bureaus`, and the
-counseling centers in `app.centers`. Until now that date was written down and
-then nothing read it. `docs/VERIFY.md` said "re-check anything older than six
+Four registries in this app carry a date somebody looked: the legal facts in
+`app.sources`, the bureau dispute addresses in `app.bureaus`, the counseling
+centers in `app.centers`, and the DOCCS facilities in `app.facilities`. Until
+now that date was written down and then nothing read it. `docs/VERIFY.md` said "re-check anything older than six
 months" in prose, which is a rule nobody is enforcing.
 
 This module enforces it. It does not go and look, because looking is a person's
@@ -23,7 +23,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, timedelta
 
-from app import bureaus, centers, sources
+from app import bureaus, centers, facilities, sources
 
 # Six months for anything with an address on it, which is the window
 # docs/VERIFY.md already asked for out loud. A year for a statute, which is
@@ -93,6 +93,17 @@ def stale(today: date | None = None) -> tuple[Staleness, ...]:
                 kind="counseling center", key=center.key, label=center.name,
                 checked_on=center.checked_on, days_old=age,
                 window_days=ADDRESS_WINDOW.days, url=center.url))
+
+    # One check date for the whole facility file, the same way the bureaus
+    # carry one, because they were read in a single sitting off the DOCCS
+    # pages. DOCCS has closed facilities steadily since 2021, so the list
+    # going stale means names on envelopes that no longer exist.
+    age = _age(facilities.CHECKED, today)
+    if age > ADDRESS_WINDOW.days:
+        out.append(Staleness(
+            kind="facility list", key="doccs", label=facilities.SOURCE,
+            checked_on=facilities.CHECKED, days_old=age,
+            window_days=ADDRESS_WINDOW.days, url=facilities.SOURCE_URL))
 
     out.sort(key=lambda s: s.days_over, reverse=True)
     return tuple(out)

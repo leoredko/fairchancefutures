@@ -1860,9 +1860,10 @@ route(/^\/staff\/new$/, () => {
     '</div>' +
     '<p class="tiny" style="margin-top:-4px">Either one is enough. If you have ' +
       'both, the person can sign in with whichever they remember.</p>' +
-    field("facility", "Facility", f.facility, "Sing Sing Correctional Facility",
-          "Goes on the envelope as the return address. The bureaus ask for it " +
-          "on mail from a prison.", bad("facility")) +
+    picker("facility", "Facility", f.facility,
+           "Goes on the envelope as the return address. The bureaus ask for " +
+           "it on mail from a prison, so it is the DOCCS list rather than a " +
+           "box to type in.", bad("facility")) +
     field("release", "Release date", f.release, "", 
           "The queue sorts by what expires soonest.", bad("release"), false, "date") +
     '<button class="btn wide" onclick="createClient()" style="margin-top:4px">' +
@@ -1886,6 +1887,35 @@ function field(id, label, value, placeholder, hint, bad, mono, type) {
       (mono ? ' class="mono" autocapitalize="characters"' : "") +
       ' value="' + esc(value || "") + '" placeholder="' + esc(placeholder) + '">' +
     '<span class="hint">' + esc(hint) + '</span></div>';
+}
+
+// A list, not a box. The box accepted anything typed into it, and what is
+// typed here becomes the return address on a dispute letter. The options are
+// the DOCCS list injected by standalone/build.py, grouped by the population
+// each facility holds: a coordinator scanning a flat alphabetical list of
+// forty-one has nothing telling them which three are the women's facilities.
+function picker(id, label, value, hint, bad) {
+  const groups = [["Facilities for men", "males"],
+                  ["Facilities for women", "females"]];
+  let opts = '<option value=""' + (value ? "" : " selected") + '>Pick a facility</option>';
+  groups.forEach(function (g) {
+    const rows = (RULES.facilities || []).filter(function (f) { return f.serves === g[1]; });
+    if (!rows.length) return;
+    opts += '<optgroup label="' + esc(g[0]) + '">';
+    rows.forEach(function (f) {
+      opts += '<option value="' + esc(f.name) + '"' +
+        (f.name === value ? " selected" : "") + '>' + esc(f.name) + '</option>';
+    });
+    opts += '</optgroup>';
+  });
+  return '<div class="field' + (bad || "") + '">' +
+    '<label for="' + id + '">' + esc(label) + '</label>' +
+    '<select id="' + id + '">' + opts + '</select>' +
+    '<span class="hint">' + esc(hint) + '</span></div>';
+}
+
+function knownFacility(name) {
+  return (RULES.facilities || []).some(function (f) { return f.name === name; });
 }
 
 function tidyName(raw) {
@@ -1936,8 +1966,11 @@ window.createClient = function () {
       return fail("nysid", nysid + " is already on the caseload.");
   }
   if (!f.facility) return fail("facility",
-    "Name the facility. It goes on the envelope as the return address, and the " +
+    "Pick the facility. It goes on the envelope as the return address, and the " +
     "bureaus ask for it on mail from a prison.");
+  if (!knownFacility(f.facility)) return fail("facility",
+    f.facility + " is not on the DOCCS list of facilities. Pick one from the " +
+    "list, so the return address is one an envelope can reach.");
   if (!f.release || isNaN(new Date(f.release)))
     return fail("release", "Enter the release date.");
 
