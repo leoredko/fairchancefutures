@@ -221,6 +221,29 @@ FACTS: dict[str, Fact] = {
             "cfpb_request-free-credit-report_handout_2021-08.pdf",
         checked_on=CHECKED,
     ),
+    # Added because the app had this backwards. It told an audience that a
+    # person inside "does not have a street address that receives mail on
+    # their behalf", which is not true: they receive their own mail, at the
+    # facility, under their own name and DIN.
+    "incoming_mail_is_inspected_not_absent": Fact(
+        key="incoming_mail_is_inspected_not_absent",
+        statement=(
+            "A person inside receives their own mail, addressed to them at the "
+            "facility under their commitment name and Department Identification "
+            "Number. All incoming general correspondence is opened and "
+            "inspected for cash, checks, money orders, printed or photocopied "
+            "material and contraband, and the person's presence is not required "
+            "for that inspection. It is not read unless the superintendent "
+            "authorizes it in writing on specific grounds. Excluding weekends "
+            "and holidays, letters should not be held more than 48 hours. Mail "
+            "with no return address is treated as contraband and is not "
+            "delivered."
+        ),
+        source="DOCCS Directive 4422, Incarcerated Individual Correspondence "
+               "Program, dated 07/28/2021",
+        url="https://doccs.ny.gov/Directives/4422.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
     "facility_record_rules": Fact(
         key="facility_record_rules",
         statement=(

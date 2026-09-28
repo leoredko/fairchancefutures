@@ -1,8 +1,19 @@
 """Surface capabilities.
 
-Constraint one: a person inside cannot verify identity online, receive mail,
-upload a file, or browse out to a bureau. That is not a policy we chose and it
-is not a setting. It is where the tablet physically sits.
+Constraint one: a person inside cannot verify identity online, take delivery of
+a document, upload a file, or browse out to a bureau. That is not a policy we
+chose and it is not a setting. It is where the tablet physically sits.
+
+Say what the constraint is, and do not overstate it. This module used to claim
+a person inside has no address that receives mail on their behalf. That is
+false, and it is the kind of false a room full of counselors catches: people
+inside receive their own mail, addressed to them at the facility under their
+commitment name and DIN, opened and inspected but not generally read, and not
+held more than 48 hours. See `incoming_mail_is_inspected_not_absent` in
+`app.sources`. What the tablet cannot do is take delivery of a document. Paper
+reaches a person's hands and stops there, because there is no camera and no
+scanner on this surface, which is a fact about the device and not about the
+mail.
 
 The tablet is not offline. Bridge is loaded onto it and reaches the person's
 own record, which is why intake saves as it goes and why the course keeps a
@@ -81,8 +92,11 @@ DENIAL_REASON: dict[Capability, str] = {
         "reached, and there is no camera roll and no document scanner to "
         "answer it with.",
     Capability.RECEIVE_MAIL:
-        "Credit reports arrive on paper, to a street address. A person inside "
-        "does not have one that receives mail on their behalf.",
+        "A credit report arrives on paper. The person receives their own mail "
+        "at the facility and can hold that paper, but this screen cannot take "
+        "delivery of a document: there is no camera and no scanner on the "
+        "tablet, so paper in a person's hands does not become a record in "
+        "their case file from here.",
     Capability.UPLOAD_FILE:
         "The tablet cannot take or send a file. This is why the family surface "
         "exists at all.",

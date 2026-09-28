@@ -47,8 +47,16 @@ it before doing anything.
 
 **Inside, facility tablet.** Can answer intake, work through the credit course,
 read their own report and say what they do not recognize, see status, cancel a
-helper. Cannot verify identity, receive mail, upload files, open accounts, or
-browse the open web.
+helper. Cannot verify identity, take delivery of a document, upload files, open
+accounts, or browse the open web.
+
+**Not** "cannot receive mail." A person inside receives their own mail at the
+facility, under their commitment name and DIN; it is opened and inspected, not
+generally read, and not held beyond 48 hours. What the tablet cannot do is take
+delivery of a document: no camera, no scanner, so paper in a person's hands
+does not become a record in their case file from that screen. The distinction
+matters because the first version is simply wrong, and wrong in front of an
+audience who have visited somebody.
 
 The tablet is **not offline**. Bridge is loaded onto it and reaches the
 person's own record, which is why intake saves as it goes and the course keeps

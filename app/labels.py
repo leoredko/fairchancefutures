@@ -55,7 +55,7 @@ CAPABILITY: dict[str, str] = {
     "revoke_authorization": "Cancel somebody's authorization",
     "name_helper": "Name someone to help",
     "verify_identity": "Verify identity online",
-    "receive_mail": "Receive mail",
+    "receive_mail": "Take delivery of a document",
     "upload_file": "Upload a file",
     "mail_letter": "Mail a letter",
     "triage_client": "Run a triage session",
@@ -66,7 +66,7 @@ CAPABILITY: dict[str, str] = {
 
 # What a helper is granted, and what nobody is ever granted.
 SCOPE: dict[str, str] = {
-    "receive_mail": "Receive the mail",
+    "receive_mail": "Receive the report at their own address",
     "submit_report_images": "Add photos of the reports",
     "mail_dispute_letter": "Mail a letter we print",
     "be_contacted_by_staff": "Be contacted by the counselor",
