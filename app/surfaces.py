@@ -15,11 +15,16 @@ reaches a person's hands and stops there, because there is no camera and no
 scanner on this surface, which is a fact about the device and not about the
 mail.
 
-The tablet is not offline. Bridge is loaded onto it and reaches the person's
-own record, which is why intake saves as it goes and why the course keeps a
-person's place. What it cannot do is reach out to the open web, which is the
-part that matters here: every route a bureau offers a free citizen runs through
-a web page, and none of those pages are reachable from this device.
+Connectivity, and what this build assumes about it. Bridge treats the tablet as
+online: a write lands when it is made, intake saves as it goes, the course
+keeps a person's place. Real access is more limited than that and everything on
+it is monitored, so a deployment would need the app shell cached and writes
+replayed later. That is a stated assumption rather than a discovery, it is in
+`SIMPLIFICATIONS` in `app.sources`, and it is not worth re-arguing here.
+
+What is not an assumption: the device does not reach the open web, so no route
+a bureau offers a free citizen is reachable from it. Every one of them runs
+through a web page. See `the_tablet_has_no_internet`.
 
 So capability lives here, in one table, and the router asks this module before
 it does anything. Hiding a button in a template is decoration. This is the
@@ -85,12 +90,14 @@ CAPABILITIES: dict[Surface, frozenset[Capability]] = {
 # Why a capability is missing from INSIDE, in words a demo audience understands.
 # Every one of these is physics or law, not a preference we could toggle.
 DENIAL_REASON: dict[Capability, str] = {
+    # The one claim in this table that was right. Now sourced, so it stops
+    # being an assertion: the vendor network "will not allow access to the
+    # internet". See `the_tablet_has_no_internet` in app.sources.
     Capability.VERIFY_IDENTITY:
-        "No identity verification happens on a facility tablet. The tablet is "
-        "connected, but only to the applications loaded onto it: there is no "
-        "open web, so a bureau's knowledge-based authentication page cannot be "
-        "reached, and there is no camera roll and no document scanner to "
-        "answer it with.",
+        "No identity verification happens on a facility tablet. The vendor "
+        "network the tablet runs on does not reach the internet, so a bureau's "
+        "knowledge-based authentication page cannot be opened, and there is no "
+        "camera roll and no document scanner to answer it with.",
     Capability.RECEIVE_MAIL:
         "A credit report arrives on paper. The person receives their own mail "
         "at the facility and can hold that paper, but this screen cannot take "
@@ -98,12 +105,15 @@ DENIAL_REASON: dict[Capability, str] = {
         "tablet, so paper in a person's hands does not become a record in "
         "their case file from here.",
     Capability.UPLOAD_FILE:
-        "The tablet cannot take or send a file. This is why the family surface "
-        "exists at all.",
+        "Bridge does not take a file from this screen, and does not put a "
+        "camera on it. A report reaches the case file through the coordinator, "
+        "who scans it at their desk, or through the person helping outside. "
+        "The person inside reads; they never send.",
     Capability.MAIL_LETTER:
-        "Outgoing mail is handled by a family member, a friend, or the program, "
-        "never from "
-        "this screen.",
+        "Bridge cannot print or post a letter from this screen. The person "
+        "can: they send their own mail, to any person or business, with their "
+        "own return address on it. What they need from somebody else is the "
+        "paper and the postage.",
     Capability.READ_FULL_REPORT:
         "Full report contents are staff-side. The client sees findings and "
         "approves what is said about them, which is a different thing.",

@@ -4,12 +4,16 @@
 // a registered worker before they offer an install. It deliberately does NOT
 // cache or serve stale pages.
 //
-// This is not offline support, and the tablet does not need it to be: Bridge
-// is loaded onto a connected device and writes go to the server as they are
-// made. Doing offline properly would mean queueing writes in IndexedDB and
-// replaying them on reconnect, and a worker that quietly serves a stale case
-// timeline while a deadline moves is worse than no worker at all. So this one
-// passes everything through to the network and says so.
+// This is not offline support. Bridge assumes the tablet is online, which is a
+// stated assumption of this build rather than a finding: see SIMPLIFICATIONS
+// in app/sources.py. Doing offline properly means caching the app shell,
+// queueing writes in IndexedDB and replaying them later, and none of that is
+// built.
+//
+// Why it does not cache in the meantime, which has not changed: a worker that
+// quietly serves a stale case timeline while a statutory deadline moves is
+// worse than no worker at all. So it passes everything through to the network
+// and says so.
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));

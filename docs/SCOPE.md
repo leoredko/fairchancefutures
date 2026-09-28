@@ -58,12 +58,13 @@ does not become a record in their case file from that screen. The distinction
 matters because the first version is simply wrong, and wrong in front of an
 audience who have visited somebody.
 
-The tablet is **not offline**. Bridge is loaded onto it and reaches the
-person's own record, which is why intake saves as it goes and the course keeps
-a place. What it cannot reach is the open web, which is the part that matters:
-every route a bureau offers a free citizen runs through a web page, and none of
-them are reachable from this device. One question per screen, because a
-session ends without warning.
+Bridge **assumes the tablet is online**: a write lands when it is made and the
+course keeps a place. Real access is more limited and everything on it is
+monitored, which this build does not model and says so in `SIMPLIFICATIONS`.
+What it does not reach either way is the open web, which is still the part that
+matters: every route a bureau offers a free citizen runs through a web page.
+
+One question per screen, because a session ends without warning.
 
 **Family or friend, phone.** Can receive mail, send the report in (a PDF, typed
 by hand, or photographed, offered in that order), print and mail letters, take a

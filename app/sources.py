@@ -244,6 +244,66 @@ FACTS: dict[str, Fact] = {
         url="https://doccs.ny.gov/Directives/4422.pdf",
         checked_on=date(2026, 9, 28),
     ),
+    # The outgoing half of the mail correction. Bridge said a person inside
+    # has outgoing mail handled for them by a family member, a friend or the
+    # program. They send their own.
+    "outgoing_mail_is_theirs_to_send": Fact(
+        key="outgoing_mail_is_theirs_to_send",
+        statement=(
+            "An incarcerated individual may submit correspondence to be sent to "
+            "any person or business. They address and send their own mail, "
+            "printing their own return address on the envelope. Free postage is "
+            "thin rather than absent: the allotment is five one-ounce domestic "
+            "first class letters a week, at reception or classification "
+            "facilities only, for no more than four weeks, and it cannot be "
+            "accumulated week to week. Funds may be advanced for legal mail. So "
+            "the obstacle to mailing a dispute is postage and paper, not "
+            "permission."
+        ),
+        source="DOCCS Directive 4422, Incarcerated Individual Correspondence Program, dated 07/28/2021",
+        url="https://doccs.ny.gov/Directives/4422.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    # Why the identity route is closed, which is a real constraint the demo
+    # shows rather than a simplification.
+    "the_tablet_has_no_internet": Fact(
+        key="the_tablet_has_no_internet",
+        statement=(
+            "A tablet inside runs on a private network that does not allow "
+            "access to the internet. A bureau's web page cannot be opened from "
+            "it, which closes every route a bureau offers a free citizen."
+        ),
+        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
+        url="https://doccs.ny.gov/Directives/4425.pdf",
+        checked_on=date(2026, 9, 28),
+    ),
+    "fico_ranges_are_not_one_scale": Fact(
+        key="fico_ranges_are_not_one_scale",
+        statement=(
+            "Base FICO scores run 300 to 850. The industry-specific scores a "
+            "car lender or a card issuer pulls run 250 to 900. A number on one "
+            "scale does not mean the same thing on the other, which is why a "
+            "person can be told two different scores and neither is wrong."
+        ),
+        source="myFICO, FICO Score versions",
+        url="https://www.myfico.com/credit-education/credit-scores/"
+            "fico-score-versions",
+        checked_on=date(2026, 9, 28),
+    ),
+    "birth_certificate_takes_ten_to_twelve_weeks": Fact(
+        key="birth_certificate_takes_ten_to_twelve_weeks",
+        statement=(
+            "New York State Vital Records processes a regular-handling mail "
+            "request for a certified birth certificate within ten to twelve "
+            "weeks of receiving it. Bridge plans against the ten, which is the "
+            "fast end of the state's own range rather than a safe estimate. A "
+            "birth registered in New York City goes to a different office with "
+            "its own times."
+        ),
+        source="NYS Department of Health, Ordering records by mail",
+        url="https://www.health.ny.gov/vital_records/mailrequests.htm",
+        checked_on=date(2026, 9, 28),
+    ),
     "facility_record_rules": Fact(
         key="facility_record_rules",
         statement=(
@@ -609,6 +669,33 @@ INTERVIEWS: tuple[dict, str] = (
     },
 )
 
+
+# What this build assumes rather than establishes.
+#
+# Different from an open question. An open question is something nobody has
+# answered and somebody should. A simplification is something we looked at,
+# decided not to model, and chose to carry anyway, because this is a capstone
+# on a deadline and not a deployment.
+#
+# Written down for one reason: so the next person does not spend an afternoon
+# discovering the gap and thinking they found a bug, and so nobody on stage is
+# caught claiming more than the build does. Each one names what is assumed and
+# what is actually the case.
+SIMPLIFICATIONS: tuple[str, ...] = (
+    "Bridge assumes the tablet is online, so a write lands when it is made "
+    "and the course keeps a place without a queue. The real device is more "
+    "limited than that and everything on it is monitored. Modelling the "
+    "difference means caching the app shell and replaying writes later, which "
+    "is real work and is not built. The browser build behaves exactly as "
+    "written; a deployment would not.",
+
+    "Bridge assumes a person on the caseload has a tablet and can reach it. "
+    "Access is not universal in practice. This build has no separate path for "
+    "somebody without one.",
+
+    "How Bridge would be provisioned onto a facility tablet is not "
+    "established. The browser build is how it is developed and shown.",
+)
 
 OPEN_QUESTIONS: tuple[str, ...] = (
     "What actually makes a bureau escalate past a plain signed request. No "

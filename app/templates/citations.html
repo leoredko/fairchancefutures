@@ -29,6 +29,19 @@
     {% for q in open_questions %}<p class="tiny">&middot; {{ q }}</p>{% endfor %}
   </div>
 
+  {# Separate from the open questions above, and the difference is the point.
+     An open question is unanswered. One of these was looked at and set aside
+     on purpose, because this is a capstone on a deadline. Saying so here is
+     cheaper than being asked it from the floor. #}
+  {% if simplifications %}
+  <div class="card soft" style="margin-top:16px">
+    <h2>What this build assumes</h2>
+    <p class="small">Decisions rather than findings. Each one is something the
+      team looked at and chose not to model.</p>
+    {% for a in simplifications %}<p class="tiny">&middot; {{ a }}</p>{% endfor %}
+  </div>
+  {% endif %}
+
   <div class="card soft" style="margin-top:16px">
     <h2>Bureau addresses</h2>
     <p class="small">A dispute goes to all three. These move without

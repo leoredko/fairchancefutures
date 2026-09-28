@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
-from app.sources import FACTS, OPEN_QUESTIONS
+from app.sources import FACTS, OPEN_QUESTIONS, SIMPLIFICATIONS
 from app import labels
 from app.deps import templates
 from app.routes import access, demo, family, inside, staff
@@ -153,6 +153,7 @@ def citations(request: Request):
     return templates.TemplateResponse(
         request, "citations.html",
         {"facts": list(FACTS.values()), "open_questions": OPEN_QUESTIONS,
+         "simplifications": SIMPLIFICATIONS,
          "bureaus": BUREAUS,
          "stale": freshness.stale(),
          "unread": centers.needs_a_human_read(),
@@ -208,15 +209,14 @@ def metrics(request: Request):
 def saves() -> JSONResponse:
     """Every answer this build has written, and when.
 
-    This used to be called a sync queue and it described an offline-first
-    tablet flushing a local queue on reconnect. That is not what happens: the
-    tablet is connected and a write lands immediately. Pretending otherwise
-    made the endpoint a demo of a thing that never occurred, since every entry
-    was marked synced in the same breath as it was created.
+    This used to be called a sync queue, and the queue was removed because
+    every entry was marked synced in the same breath as it was created: it
+    demonstrated a reconnect that never happened.
 
-    What it is now is the receipt for the promise intake makes on question one,
-    that every answer saves as it is given. That promise is true, and this is
-    how you check it.
+    What is left is the receipt for the promise intake makes on question one,
+    that every answer saves as it is given. Bridge assumes the tablet is
+    online, which is how that promise stays true; see SIMPLIFICATIONS in
+    app/sources.py.
     """
     return JSONResponse({
         "saved": len(STATE.write_log),

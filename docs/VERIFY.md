@@ -189,6 +189,46 @@ prints. It exits non-zero when it finds something, so a scheduled run fails
 loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
 that changes.
 
+## The tablet, and what this build assumes about it, 2026-09-28
+
+Checked, then deliberately simplified. Two claims Bridge was making about the
+device were wrong, and the team's decision was to correct the ones that touch a
+person's rights and to stop modelling the operational detail, which is not what
+this project is about.
+
+| Claim | Verdict |
+| --- | --- |
+| "Outgoing mail is handled by a family member, a friend, or the program" | **False, corrected.** An incarcerated individual may submit correspondence to be sent to any person or business, with their own return address on it. [Directive 4422](https://doccs.ny.gov/Directives/4422.pdf), IV-B-1 |
+| "The tablet cannot take or send a file" | **Rewritten.** It now says what *Bridge* does: no file from that screen, no camera on it, and a report reaches the case file through the coordinator's desk scan or the person helping outside |
+| "There is no open web" | **True, now sourced.** Connections run on a network that does not reach the internet. [Directive 4425](https://doccs.ny.gov/Directives/4425.pdf), II |
+| "The tablet is connected and a write lands immediately" | **Assumed, on purpose.** More limited in practice, and monitored. Recorded in `SIMPLIFICATIONS` rather than modelled |
+
+The operational detail behind the last row is not reproduced here. It is real,
+it is public, and it is somebody else's system: carrying it in this repository
+invited every conversation about credit repair to become a conversation about
+device policy. What the build assumes is written down once, in
+`SIMPLIFICATIONS` in `app/sources.py`, and rendered on `/citations` under
+**What this build assumes**.
+
+### Two numbers that gate real behaviour, now sourced
+
+| Claim | Source |
+| --- | --- |
+| Base FICO scores run **300 to 850**; the industry-specific scores a car lender or card issuer pulls run **250 to 900**. A person told two different numbers has been told the truth twice | [myFICO, FICO Score versions](https://www.myfico.com/credit-education/credit-scores/fico-score-versions) |
+| A regular-handling mail request for a New York birth certificate is processed **within ten to twelve weeks** of receipt. `app/caseplan.py` plans against the ten, the fast end, and a birth registered in New York City goes to a different office | [NYS DOH, Ordering records by mail](https://www.health.ny.gov/vital_records/mailrequests.htm) |
+
+### What needs a source here, and what does not
+
+Credit reporting and the law: a statute, a bureau's instructions, a deadline, a
+score range, a right somebody has. Those carry a citation or they are written
+as an open question.
+
+How we built this does not. A surface's capabilities, the layout, the redaction
+rules, how long a grant lasts, what a PIN looks like: those are the team's to
+decide, and asking for a primary source on a design choice would drag every
+review into defending somebody else's operational detail instead of the credit
+work.
+
 ## Mail into a facility, checked 2026-09-28
 
 Added as a correction. Bridge told an audience that a person inside "does not
