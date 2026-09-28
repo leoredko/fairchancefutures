@@ -39,8 +39,13 @@ cannot disagree.
 
 ${total} words across ${DURATION / FPS} seconds. The silences are deliberate.
 Read it flat and unhurried, the way somebody explains a thing they have seen up
-close, not the way a movie trailer sells one. Nothing here is a pitch, and the
-one number in it has a citation on screen underneath it.
+close, not the way a movie trailer sells one. Nothing here is a pitch, and
+nothing is played for the joke either: the first fifteen seconds are funny
+because of what is on screen, and a read that leans on them flattens it.
+
+The first line lands over an empty frame and the second lands over a pile of
+mail. Leave the gap between them alone. It is the longest silence in the video
+and it is doing the most work.
 
 ## The beats
 

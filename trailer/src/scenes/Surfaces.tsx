@@ -43,7 +43,7 @@ export const Surfaces: React.FC = () => {
 
   /* A slow pull back once all three are in, so the shot keeps moving through
      four seconds of held frame without anything actually changing. */
-  const pull = interpolate(frame, [330, 540], [1.05, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const pull = interpolate(frame, [300, 510], [1.05, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill>

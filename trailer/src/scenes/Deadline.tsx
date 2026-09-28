@@ -1,4 +1,4 @@
-/* 0:49. Why any of this has to be on a schedule.
+/* 0:48. Why any of this has to be on a schedule.
 
    Two things are load-bearing here and both are easy to get wrong. The thirty
    days run from receipt, not from the postmark, which is the difference
@@ -14,14 +14,14 @@ import { Backdrop, Display, Rise, SourceChip } from "../components/atoms";
 
 const BUREAUS = ["Equifax", "Experian", "TransUnion"];
 
-export const Clock: React.FC = () => {
+export const Deadline: React.FC = () => {
   const frame = useCurrentFrame();
   const sweep = interpolate(frame, [10, 100], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill>
       <Backdrop hue={c.amber} drift={0.5} />
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 180, gap: 26 }}>
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 128, gap: 26 }}>
         <Rise delay={4} style={{ display: "flex", alignItems: "baseline", gap: 22 }}>
           <div style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontWeight: 700, fontSize: 168, lineHeight: 1, letterSpacing: "-.04em", ...gradText }}>
             30 days
