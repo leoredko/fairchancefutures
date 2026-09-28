@@ -93,6 +93,94 @@ a:hover { color: var(--teal-deep); }
 .phone  { width: min(440px, 100%); min-height: 100vh; margin: 0 auto;
           background: var(--page); display: flex; flex-direction: column;
           box-shadow: var(--lift-2); }
+/* The tablet is a 16:10 screen, and only on something big enough to show one.
+
+   Every /inside screen renders inside `.tablet`, so this one rule shapes the
+   whole surface rather than eighteen templates. A facility tablet is a 16:10
+   landscape device; rendering it as a tall phone column on a projector showed
+   the room a device that does not exist, and the sign-in is the screen a
+   demonstration actually opens on.
+
+   The breakpoint is a laptop or a projector. Below it the app fills the
+   screen, because there the browser IS the device, and a drawn bezel around a
+   real tablet is a picture of a tablet inside a tablet.
+
+   Width is whichever of three limits bites first: a cap, the viewport, or the
+   height the 16:10 box would need. That last one is why the frame shrinks on a
+   short window instead of running off the bottom of it. */
+@media (min-width: 1000px) and (min-height: 600px) {
+  /* The device sits on the centre of the screen rather than hanging off the
+     top of it. `:has` is doing the work, so a browser without it lands on the
+     old top-anchored layout instead of a broken one. */
+  body:has(> .tablet) {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tablet {
+    width: min(1180px, calc(100vw - 64px), calc((100vh - 64px) * 1.6));
+    aspect-ratio: 16 / 10;
+    height: auto;
+    min-height: 0;
+    margin: 32px auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    /* The frame is the scroller. A screen longer than the glass scrolls inside
+       the device, the way it would on the real one, instead of making the page
+       taller than the frame it is supposed to be inside. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* The bar belongs to the device, not to the page inside it, so it stays put
+     while the content moves under it. */
+  .tablet > .bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--page);
+  }
+
+  /* A landscape screen is wider than anything worth reading across. Without
+     this the sign-in input and its button ran the full 1180px, which is the
+     shape of a form nobody designed rather than one built for this device.
+     The column is the same measure the portrait build already used; the frame
+     around it is what changed. */
+  .tablet > .pane,
+  .tablet > form.pane {
+    width: min(620px, 100%);
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+
+  /* Anything else sitting directly on the glass keeps a margin off the bezel,
+     so no line of type runs into the edge of the device. */
+  .tablet > .colophon { padding-inline: 32px; }
+
+  /* The sign-in is the one screen with little enough on it to sit on the
+     centre line, and it is the screen a demonstration opens on. Everything
+     longer keeps its top edge, because centring a screen that scrolls just
+     moves its first line off the glass. */
+  .tablet > form.pane:last-child { justify-content: center; }
+
+  /* The opening lands on the glass rather than over the whole projector, so
+     the sequence reads as the tablet waking up and not as a title card. */
+  .splash {
+    position: fixed;
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(1180px, calc(100vw - 64px), calc((100vh - 64px) * 1.6));
+    aspect-ratio: 16 / 10;
+    height: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+  }
+}
+
 .desk   { max-width: 1160px; margin: 0 auto; padding: 0 24px 80px; }
 .sheet  { max-width: 1160px; margin: 0 auto; padding: 0 20px 72px; }
 

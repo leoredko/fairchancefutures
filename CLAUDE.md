@@ -9,6 +9,7 @@ short version of what a session needs to not break things.
 ## Where to look first
 
     app/lessons.py         the credit course. Education is priority one.
+    app/facilities.py      the 41 DOCCS facilities, checked, with addresses
     app/surfaces.py        the capability table. Read this as the product spec.
     docs/SCOPE.md          what each of the three surfaces can and cannot do
     docs/VERIFY.md         every legal claim, its primary source and check date
@@ -94,7 +95,13 @@ next tap. Some scopes raise on construction rather than being checked later.
   sentence, for the same reason, and it applies to a government API too: data
   arriving from a city carries the city's authority, so an unchecked address is
   more dangerous there than in a guess. `app/centers.py` is hand-kept and each
-  entry carries `verified_by_hand`. `scripts/check_centers.py` reads NYC Open
+  entry carries `verified_by_hand`. `app/facilities.py` is the same rule for
+  the 41 DOCCS facilities, which are return addresses on dispute letters: it
+  is a list to pick from, never a box to type in, and every entry carries the
+  population DOCCS says it holds so a record that contradicts the person can
+  be caught. Nothing guesses a facility. `app/doccs.py` used to pick one by
+  hashing the DIN, which put a man in a facility for women; it now returns
+  none, and the screen names the gap. `scripts/check_centers.py` reads NYC Open
   Data and only ever prints; nothing it fetches is served. `app/freshness.py`
   is what notices a check date getting old, across the facts, the bureau
   addresses and the centers together.
@@ -129,7 +136,7 @@ Editing that shell has gone wrong twice, both times the same way:
 
 ## Checks before pushing
 
-    pytest -q                       # 336 tests, all should pass
+    pytest -q                       # 396 tests, all should pass
     python3 standalone/build.py     # rebuild if anything changed
     ./run.sh                        # installs, tests, serves on :8000
 

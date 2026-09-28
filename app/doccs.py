@@ -145,6 +145,17 @@ def simulated_lookup(din: str, today: date | None = None) -> LookupRecord:
     of today plus 180 days and no facility at all. Both were fabrications that
     then drove the work queue's ordering, the quarterly review count and the
     120-day document deadline.
+
+    The facility comes back empty, and that is the fix rather than the gap.
+    This function used to pick one by hashing the DIN, which put a man in
+    Bedford Hills on a demo nobody could explain away: the real lookup returns
+    the facility it holds, and a hash returns a facility that is right one time
+    in forty-one. Nothing here knows who this person is, so nothing here names
+    where they are held. A coordinator sets it from `app.facilities`, which is
+    the checked list, and until they do the screen says it is not known yet.
+    The dates are a different case and stay invented: they vary by DIN on
+    purpose, because the course reorders itself around the release date and
+    that behaviour is the thing a demo needs to show.
     """
     today = today or date.today()
     key = (din or "").upper().replace("-", "")
@@ -171,7 +182,7 @@ def simulated_lookup(din: str, today: date | None = None) -> LookupRecord:
 
     return LookupRecord(
         din=key,
-        housing_facility=_FACILITIES[_stable_offset(key, len(_FACILITIES))],
+        housing_facility="",
         date_received_original=(today - timedelta(
             days=_stable_offset(key, 2500, floor=400))).isoformat(),
         date_received_current=(today - timedelta(
@@ -185,13 +196,3 @@ def simulated_lookup(din: str, today: date | None = None) -> LookupRecord:
     )
 
 
-# Real facility names, because the facility is the envelope return address on
-# mail to a bureau and a made-up one would produce a letter that cannot arrive.
-_FACILITIES: tuple[str, ...] = (
-    "Sing Sing Correctional Facility",
-    "Bedford Hills Correctional Facility",
-    "Fishkill Correctional Facility",
-    "Green Haven Correctional Facility",
-    "Woodbourne Correctional Facility",
-    "Otisville Correctional Facility",
-)

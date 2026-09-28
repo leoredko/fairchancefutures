@@ -275,3 +275,32 @@ def test_the_standalone_keeps_lesson_progress_per_card(pages):
     shell = pages["inside"]
     assert "function markCard" in shell
     assert "Math.max(row.card || 0, n)" in shell
+
+
+def test_the_facility_list_is_the_python_one(payload):
+    """The single file cannot offer a facility the tested build would reject.
+
+    Same reason the facts and the bureau addresses are generated: a picker that
+    has drifted is a picker that produces a return address the server refuses.
+    """
+    from app import facilities
+
+    assert [f["name"] for f in payload["facilities"]] == list(facilities.NAMES)
+    assert {f["serves"] for f in payload["facilities"]} == {"males", "females"}
+
+
+def test_the_facility_is_picked_from_a_list_and_never_typed(pages: dict):
+    """The box accepted anything typed into it, and what is typed there becomes
+    the return address on a dispute letter."""
+    staff = pages["staff"]
+    assert 'function picker(' in staff
+    assert 'picker("facility", "Facility"' in staff
+    assert 'field("facility"' not in staff
+    assert "not on the DOCCS list of facilities" in staff
+
+
+def test_no_closed_facility_is_offered_anywhere(pages: dict):
+    """Downstate closed in 2022 and sat in the picker until the list replaced
+    the eight hand-typed names."""
+    for name, page in pages.items():
+        assert "Downstate Correctional Facility" not in page, name

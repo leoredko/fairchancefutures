@@ -47,14 +47,24 @@
 
     <div class="field {% if field == 'facility' %}bad{% endif %}">
       <label for="facility">Facility</label>
-      <input id="facility" name="facility" list="facility-list"
-             value="{{ form.facility or '' }}"
-             placeholder="Sing Sing Correctional Facility">
-      <datalist id="facility-list">
-        {% for f in facilities %}<option value="{{ f }}">{% endfor %}
-      </datalist>
+      {# A list, not a box. The box accepted anything typed into it, and what
+         is typed here becomes the return address on a dispute letter. The
+         options are the DOCCS list in app/facilities.py, grouped by the
+         population each one holds so a record that contradicts the person is
+         hard to enter rather than merely wrong once it is saved. #}
+      <select id="facility" name="facility">
+        <option value="" {% if not form.facility %}selected{% endif %}>Pick a facility</option>
+        {% for group, entries in facility_groups %}
+        <optgroup label="{{ group }}">
+          {% for f in entries %}
+          <option value="{{ f.name }}" {% if form.facility == f.name %}selected{% endif %}>{{ f.name }}</option>
+          {% endfor %}
+        </optgroup>
+        {% endfor %}
+      </select>
       <span class="hint">Goes on the envelope as the return address. The
-        bureaus ask for it on mail from a prison.</span>
+        bureaus ask for it on mail from a prison, so it is the DOCCS list
+        rather than a box to type in.</span>
     </div>
 
     <div class="field {% if field == 'release_date' %}bad{% endif %}">

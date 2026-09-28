@@ -189,6 +189,34 @@ prints. It exits non-zero when it finds something, so a scheduled run fails
 loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
 that changes.
 
+## The DOCCS facility list, checked 2026-09-28
+
+The facility is the return address on a dispute letter, so it is an address
+under the same rule as the bureaus and the counseling centers rather than a
+label on a record.
+
+Read from the DOCCS facility pages, one page per facility, off
+[Find a facility](https://doccs.ny.gov/find-facility). Forty-one facilities.
+Each entry in `app/facilities.py` carries the DOCCS name, the security level,
+the population it holds in DOCCS' own wording, and the mailing address.
+`app/freshness.py` watches the check date on the six-month address window.
+
+| Claim | Source |
+| --- | --- |
+| DOCCS currently operates **41** correctional facilities | [DOCCS, Find a facility](https://doccs.ny.gov/find-facility) |
+| **Three of them hold women**: Albion, Bedford Hills and Taconic. Every other facility on the list is for men | each facility's own DOCCS page, which states "a *level* security level facility for males/females" |
+| **Downstate Correctional Facility is not among them.** It closed in 2022 and is not on the DOCCS list | same; its absence from the list is the claim, and nothing here asserts a closure date beyond that |
+
+What this replaced: eight facility names typed by hand next to a free-text
+box that accepted anything. One of the eight had closed, the list mixed
+facilities for men and for women with nothing marking which was which, and
+`app/doccs.py` picked one by hashing the DIN. That put Marcus, who is a man,
+in Bedford Hills. A hash is right one time in forty-one.
+
+The lookup now returns no facility at all. Nothing in it knows who the person
+is, so nothing in it names where they are held; a coordinator sets it from the
+list, and until they do the tablet says so rather than showing a guess.
+
 ## How to handle an open item on stage
 
 Say it is open. The app already does: every unverified number renders with its

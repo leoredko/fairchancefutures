@@ -17,6 +17,7 @@ from datetime import date
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+from app import facilities
 from app.bureaus import BUREAUS
 from app.caseplan import (
     DOCUMENT_LABEL,
@@ -81,6 +82,19 @@ def queue(request: Request):
     )
 
 
+
+def _facility_groups() -> list[tuple[str, tuple]]:
+    """The picker, grouped by the population each facility holds.
+
+    Grouped rather than one flat list of forty-one, because the failure this
+    replaced was a man recorded at Bedford Hills. A coordinator scanning a flat
+    alphabetical list has nothing telling them which three of the forty-one are
+    the women's facilities; a group heading does.
+    """
+    return [("Facilities for men", facilities.serving("males")),
+            ("Facilities for women", facilities.serving("females"))]
+
+
 @router.get("/new", response_class=HTMLResponse)
 def new_intake(request: Request):
     """Add somebody to the caseload by hand."""
@@ -88,7 +102,8 @@ def new_intake(request: Request):
     require(Surface.STAFF, Capability.MANAGE_CASELOAD)
     return templates.TemplateResponse(
         request, "staff/new.html",
-        {"facilities": FACILITIES, "form": {}, "error": None, "field": None,
+        {"facilities": FACILITIES, "facility_groups": _facility_groups(),
+         "form": {}, "error": None, "field": None,
          "coordinator": coordinator},
     )
 
@@ -122,7 +137,8 @@ def create_client(
     except IntakeProblem as exc:
         return templates.TemplateResponse(
             request, "staff/new.html",
-            {"facilities": FACILITIES, "form": form, "error": str(exc),
+            {"facilities": FACILITIES, "facility_groups": _facility_groups(),
+             "form": form, "error": str(exc),
              "field": exc.field, "coordinator": coordinator},
             status_code=400,
         )

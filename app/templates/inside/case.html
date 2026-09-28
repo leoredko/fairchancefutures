@@ -80,6 +80,15 @@
         {{ release_source|lower }}. That is the date a reentry plan is built
         around, and it is not the same as your parole eligibility date.</span>
       {% endif %}
+      {# Named rather than left blank. A facility is the return address on a
+         dispute letter, so Bridge will not guess one: if nobody has recorded
+         it, the screen says who records it instead of showing a gap that
+         reads as a bug. #}
+      {% if not client.facility %}
+      <span class="tiny">Your facility is not on your record yet. Your
+        coordinator adds it, and it has to be there before a letter can be
+        mailed, because it is the return address.</span>
+      {% endif %}
     </div>
     {% endif %}
 
