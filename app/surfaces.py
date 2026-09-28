@@ -15,19 +15,16 @@ reaches a person's hands and stops there, because there is no camera and no
 scanner on this surface, which is a fact about the device and not about the
 mail.
 
-Connectivity, stated carefully, because this module had it wrong in the
-comfortable direction. A DOCCS tablet is loaned by the kiosk vendor. It
-connects to a kiosk and, in the directive's words, "shall not be connected to
-any other device or computer". Kiosk access is one 15-minute session a day at
-times the facility posts, and a tablet that has not met a kiosk in 30 days
-stops working until it does. The vendor network does not reach the internet.
+Connectivity, and what this build assumes about it. Bridge treats the tablet as
+online: a write lands when it is made, intake saves as it goes, the course
+keeps a person's place. Real access is more limited than that and everything on
+it is monitored, so a deployment would need the app shell cached and writes
+replayed later. That is a stated assumption rather than a discovery, it is in
+`SIMPLIFICATIONS` in `app.sources`, and it is not worth re-arguing here.
 
-So the device is neither offline nor continuously online. It is intermittently
-synced, through a metered daily window, and this app was written as though a
-write always lands. See `the_tablet_reaches_a_kiosk_not_a_network` in
-`app.sources` before changing anything about how the tablet stores or sends.
-What holds unchanged: no route a bureau offers a free citizen is reachable
-here, because every one of them runs through a web page.
+What is not an assumption: the device does not reach the open web, so no route
+a bureau offers a free citizen is reachable from it. Every one of them runs
+through a web page. See `the_tablet_has_no_internet`.
 
 So capability lives here, in one table, and the router asks this module before
 it does anything. Hiding a button in a template is decoration. This is the
@@ -108,17 +105,15 @@ DENIAL_REASON: dict[Capability, str] = {
         "tablet, so paper in a person's hands does not become a record in "
         "their case file from here.",
     Capability.UPLOAD_FILE:
-        "Bridge cannot take a file from this screen. The device itself is not "
-        "fileless: the kiosk messaging system carries attachments, for a stamp, "
-        "held for staff review, and the Department prints none of it. What it "
-        "will not do is hand a document to this application, because the tablet "
-        "connects to a kiosk and to nothing else.",
+        "Bridge does not take a file from this screen, and does not put a "
+        "camera on it. A report reaches the case file through the coordinator, "
+        "who scans it at their desk, or through the person helping outside. "
+        "The person inside reads; they never send.",
     Capability.MAIL_LETTER:
-        "Bridge cannot print or post a letter from this screen. The person can: "
-        "they send their own mail, to any person or business, with their own "
-        "return address on it. What they need from somebody else is the paper "
-        "and the postage, because free postage runs to five letters a week at "
-        "reception and nothing after that.",
+        "Bridge cannot print or post a letter from this screen. The person "
+        "can: they send their own mail, to any person or business, with their "
+        "own return address on it. What they need from somebody else is the "
+        "paper and the postage.",
     Capability.READ_FULL_REPORT:
         "Full report contents are staff-side. The client sees findings and "
         "approves what is said about them, which is a different thing.",

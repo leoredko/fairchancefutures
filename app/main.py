@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
-from app.sources import FACTS, OPEN_QUESTIONS
+from app.sources import FACTS, OPEN_QUESTIONS, SIMPLIFICATIONS
 from app import labels
 from app.deps import templates
 from app.routes import access, demo, family, inside, staff
@@ -153,6 +153,7 @@ def citations(request: Request):
     return templates.TemplateResponse(
         request, "citations.html",
         {"facts": list(FACTS.values()), "open_questions": OPEN_QUESTIONS,
+         "simplifications": SIMPLIFICATIONS,
          "bureaus": BUREAUS,
          "stale": freshness.stale(),
          "unread": centers.needs_a_human_read(),
@@ -210,15 +211,11 @@ def saves() -> JSONResponse:
 
     This used to be called a sync queue, and the queue was removed because
     every entry was marked synced in the same breath as it was created: it
-    demonstrated a reconnect that never happened. Removing the pretence was
-    right. The reason given for removing it was not, because it said the tablet
-    is connected and a write always lands, and a DOCCS tablet reaches a kiosk
-    for 15 minutes a day and nothing else in between.
+    demonstrated a reconnect that never happened.
 
-    So on the browser build this is the receipt for the promise intake makes on
-    question one, that every answer saves as it is given, and that promise is
-    true here. On a real tablet a queue would have to come back, this time
-    doing something. See `the_tablet_reaches_a_kiosk_not_a_network` in
+    What is left is the receipt for the promise intake makes on question one,
+    that every answer saves as it is given. Bridge assumes the tablet is
+    online, which is how that promise stays true; see SIMPLIFICATIONS in
     app/sources.py.
     """
     return JSONResponse({

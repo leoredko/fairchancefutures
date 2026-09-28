@@ -25,12 +25,9 @@ states the design principles on their own authority. Do not reintroduce a
 screen-by-screen spec.
 
 Where this is going: a progressive web app provisioned onto a facility tablet,
-not a website somebody finds and installs. **How it would actually get there is
-an open question, not a plan.** The tablets are the kiosk vendor's, they carry
-content the Department approves under its media review process, and they are
-not issued in SHU or RRU, so provisioning is a contract and an approval rather
-than a deployment, and a tablet-only product does not reach everybody. Both are
-in `OPEN_QUESTIONS`. Say so rather than implying the route exists. The browser build is how it is
+not a website somebody finds and installs. How it would actually get
+there is not established, and that is in `SIMPLIFICATIONS` rather than dressed
+up as a plan. The browser build is how it is
 developed and demonstrated. `standalone/` is a demo artifact so the whole
 journey can be walked in three windows; it is not the product, and nothing in
 the app should tell a person to install anything.
@@ -52,24 +49,18 @@ delivery of a document, because it has no camera and no scanner. That is a
 fact about the device, not about the mail, and the two were conflated here
 until somebody who would know said so.
 
-**The tablet is not continuously connected, and this file used to say it was.**
-A DOCCS tablet is loaned by the kiosk vendor, connects to a kiosk and to
-nothing else, gets one 15-minute session a day, and stops working if it has not
-met a kiosk in 30 days. The vendor network does not reach the internet.
-Directive 4425, in `app/sources.py` as
-`the_tablet_reaches_a_kiosk_not_a_network`.
+**Bridge assumes the tablet is online**, so a write lands when it is made,
+intake saves as it goes and the course keeps a place without a queue. Real
+access is more limited than that and everything on it is monitored. That
+difference is a **stated assumption of this build**, recorded once in
+`SIMPLIFICATIONS` in `app/sources.py`, and it is settled: do not reopen it, and
+do not add offline machinery nobody asked for. It is also why `sw.js` caches
+nothing, which stays true for its own reason, that a worker serving a stale
+timeline while a deadline moves is worse than no worker.
 
-That premise is load-bearing and it was wrong in the comfortable direction. It
-is the stated reason the sync queue was removed and the reason `sw.js` caches
-nothing. Removing the queue was right, because it marked every entry synced as
-it was created and demonstrated a reconnect that never happened. The reason
-given was not right. Offline-first is now a **known gap**, not a settled
-decision: the browser build is honest, a real tablet would need the app shell
-cached and writes queued for the next kiosk session, and none of that is
-built. Do not re-argue it from "the tablet is connected".
-
-What holds: no route a bureau offers a free citizen is reachable from the
-device, because every one runs through a web page.
+What is not an assumption: the device does not reach the open web, so no route
+a bureau offers a free citizen is reachable from it. Every one runs through a
+web page.
 
 **A helper outside has no standing until they sign a scoped form.**
 `app/authorization.py` holds scoped, expiring, revocable grants, checked on
@@ -112,10 +103,23 @@ next tap. Some scopes raise on construction rather than being checked later.
   ID.
 - **A dispute goes to all three bureaus.** An item deleted at Equifax is still
   sitting on the other two files.
-- **No legal sentence without a primary source.** Add the fact to
-  `app/sources.py` with its URL and check date, or write it as an open question
-  instead. The `/citations` page renders that registry live; `docs/VERIFY.md`
-  is the hand-kept companion, so update it in the same change.
+- **No legal sentence without a primary source, and that means credit
+  reporting and the law.** A statute, a bureau's own instructions, a deadline,
+  a score range, a right somebody has: those go in `app/sources.py` with a URL
+  and a check date, or they are written as an open question. The `/citations`
+  page renders that registry live; `docs/VERIFY.md` is the hand-kept
+  companion, so update it in the same change.
+
+  **It does not mean how we built this.** Product decisions are ours to
+  assert and need no citation: what a surface can do, how a screen is laid
+  out, what the redaction rules are, how long a grant lasts, what a PIN looks
+  like. A rule that demanded a primary source for a design choice would be a
+  rule nobody could follow, and it would drag the team into defending
+  somebody else's operational detail instead of the credit work, which is the
+  part this project is actually about.
+
+  Where the build assumes something rather than establishing it, say so once
+  in `SIMPLIFICATIONS` in `app/sources.py` and move on.
 - **No column name reaches a screen.** `app/labels.py` is the registry, and a
   test fails if a raw field name renders.
 - **An address nobody has read does not reach a screen.** Same rule as a legal

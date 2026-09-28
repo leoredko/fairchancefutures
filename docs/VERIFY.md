@@ -189,39 +189,45 @@ prints. It exits non-zero when it finds something, so a scheduled run fails
 loudly. `app/centers.py` imports no HTTP library at all, and a test fails if
 that changes.
 
-## What the tablet actually is, checked 2026-09-28
+## The tablet, and what this build assumes about it, 2026-09-28
 
-Read after the mail correction, looking for the same mistake elsewhere. It was
-there. These are the claims Bridge was making about the device, and they are
-the premises most of its storage and capability decisions were argued from.
-
-Source for all of it: [DOCCS Directive 4425, Incarcerated Individual Tablet
-Program, 11/01/2022](https://doccs.ny.gov/Directives/4425.pdf).
+Checked, then deliberately simplified. Two claims Bridge was making about the
+device were wrong, and the team's decision was to correct the ones that touch a
+person's rights and to stop modelling the operational detail, which is not what
+this project is about.
 
 | Claim | Verdict |
 | --- | --- |
-| "The tablet is connected and a write lands immediately" | **False.** It connects to a kiosk and "shall not be connected to any other device or computer". One 15-minute kiosk session a day, at times the facility posts. A tablet that has not met a kiosk in 30 days becomes inoperable until it does. IV-A-3, IV-A-5, IV-E-4 |
-| "Outgoing mail is handled by a family member, a friend, or the program" | **False**, and sourced to 4422 IV-B-1 instead: they may send correspondence to any person or business, with their own return address on it |
-| "The tablet cannot take or send a file" | **Misleading.** The kiosk carries secure messages and attachments, paid with stamps. Attachments may be held for Lieutenant review within five business days, and the Department **will not print** incoming email or attachments. IV-J-4, IV-J-5, IV-K-2 |
-| "There is no open web" | **True.** Connections run on a vendor network that "will not allow access to the internet", and content is limited to what passes Department media review. II, IV-D-2 |
-| Everybody on the caseload has a tablet | **Not established.** Not issued in Special Housing Units or Residential Rehabilitation Units; use is a privilege that can be suspended; a person may opt out and wait six months to return. IV-E-5, IV-E-11, IV-I |
+| "Outgoing mail is handled by a family member, a friend, or the program" | **False, corrected.** An incarcerated individual may submit correspondence to be sent to any person or business, with their own return address on it. [Directive 4422](https://doccs.ny.gov/Directives/4422.pdf), IV-B-1 |
+| "The tablet cannot take or send a file" | **Rewritten.** It now says what *Bridge* does: no file from that screen, no camera on it, and a report reaches the case file through the coordinator's desk scan or the person helping outside |
+| "There is no open web" | **True, now sourced.** Connections run on a network that does not reach the internet. [Directive 4425](https://doccs.ny.gov/Directives/4425.pdf), II |
+| "The tablet is connected and a write lands immediately" | **Assumed, on purpose.** More limited in practice, and monitored. Recorded in `SIMPLIFICATIONS` rather than modelled |
 
-Two more worth having in your pocket, neither of which Bridge currently says:
+The operational detail behind the last row is not reproduced here. It is real,
+it is public, and it is somebody else's system: carrying it in this repository
+invited every conversation about credit repair to become a conversation about
+device policy. What the build assumes is written down once, in
+`SIMPLIFICATIONS` in `app/sources.py`, and rendered on `/citations` under
+**What this build assumes**.
 
-- **Everything on the kiosk is monitored, recorded and retained**, and may be
-  given to law enforcement. Legal correspondence sent through secure messaging
-  is explicitly **not** protected as privileged. IV-C-2, IV-C-4. This is a
-  stronger argument for the redaction rules than "it is read in common areas".
-- **Tablets are issued at a Reception Center during processing**, and returned
-  on release. IV-E-12, IV-E-1.
+### Two numbers that gate real behaviour, now sourced
 
-What changed as a result: the two mail capabilities and the file capability now
-describe what *Bridge* cannot do rather than what the person cannot, the
-identity claim is sourced instead of asserted, and offline-first is recorded as
-a known gap rather than a settled decision. Three things this build cannot
-answer went into `OPEN_QUESTIONS`: how Bridge gets onto a vendor tablet at all,
-what it does for somebody with no tablet, and how long a birth certificate
-really takes.
+| Claim | Source |
+| --- | --- |
+| Base FICO scores run **300 to 850**; the industry-specific scores a car lender or card issuer pulls run **250 to 900**. A person told two different numbers has been told the truth twice | [myFICO, FICO Score versions](https://www.myfico.com/credit-education/credit-scores/fico-score-versions) |
+| A regular-handling mail request for a New York birth certificate is processed **within ten to twelve weeks** of receipt. `app/caseplan.py` plans against the ten, the fast end, and a birth registered in New York City goes to a different office | [NYS DOH, Ordering records by mail](https://www.health.ny.gov/vital_records/mailrequests.htm) |
+
+### What needs a source here, and what does not
+
+Credit reporting and the law: a statute, a bureau's instructions, a deadline, a
+score range, a right somebody has. Those carry a citation or they are written
+as an open question.
+
+How we built this does not. A surface's capabilities, the layout, the redaction
+rules, how long a grant lasts, what a PIN looks like: those are the team's to
+decide, and asking for a primary source on a design choice would drag every
+review into defending somebody else's operational detail instead of the credit
+work.
 
 ## Mail into a facility, checked 2026-09-28
 

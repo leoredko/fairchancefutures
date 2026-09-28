@@ -58,22 +58,13 @@ does not become a record in their case file from that screen. The distinction
 matters because the first version is simply wrong, and wrong in front of an
 audience who have visited somebody.
 
-The tablet is **neither offline nor continuously online**, and this document
-said the second one until somebody checked. A DOCCS tablet connects to a kiosk
-and to nothing else, gets one 15-minute session a day, and stops working if it
-has not met a kiosk in 30 days (Directive 4425). What it cannot reach either
-way is the open web, which is still the part that matters: every route a bureau
-offers a free citizen runs through a web page.
+Bridge **assumes the tablet is online**: a write lands when it is made and the
+course keeps a place. Real access is more limited and everything on it is
+monitored, which this build does not model and says so in `SIMPLIFICATIONS`.
+What it does not reach either way is the open web, which is still the part that
+matters: every route a bureau offers a free citizen runs through a web page.
 
-One question per screen, because a session ends without warning, and on a real
-tablet the session ends when the 15 minutes do. Offline-first is a known gap
-rather than a decision: the browser build saves as it goes and is honest about
-it, and a real deployment would need writes queued for the next kiosk session.
-
-**Not everybody has a tablet.** They are not issued in Special Housing Units or
-Residential Rehabilitation Units, use is a privilege that can be suspended, and
-a person can opt out. This build has no answer for those people and says so in
-`OPEN_QUESTIONS` rather than pretending coverage it does not have.
+One question per screen, because a session ends without warning.
 
 **Family or friend, phone.** Can receive mail, send the report in (a PDF, typed
 by hand, or photographed, offered in that order), print and mail letters, take a

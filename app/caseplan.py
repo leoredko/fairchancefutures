@@ -205,6 +205,12 @@ def simulated_plan(
 SSN_CARD_TRIGGER_DAYS = 120
 
 # The birth certificate is the slow one, and it gates the ID application.
+# Ten is the fast end of the state's own range: NYS Vital Records processes a
+# regular-handling mail request in ten to twelve weeks, and a birth registered
+# in New York City goes to a different office with its own times. So a plan
+# built on this number is optimistic by up to a fortnight, on purpose, and the
+# screen should not promise a date off it. See
+# `birth_certificate_takes_ten_to_twelve_weeks` in app.sources.
 BIRTH_CERTIFICATE_WEEKS = 10
 
 

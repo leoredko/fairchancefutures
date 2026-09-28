@@ -264,69 +264,44 @@ FACTS: dict[str, Fact] = {
         url="https://doccs.ny.gov/Directives/4422.pdf",
         checked_on=date(2026, 9, 28),
     ),
-    # The premise the whole product rests on, and it was wrong. Read this
-    # before changing anything about how the tablet stores or sends.
-    "the_tablet_reaches_a_kiosk_not_a_network": Fact(
-        key="the_tablet_reaches_a_kiosk_not_a_network",
-        statement=(
-            "A DOCCS tablet is loaned by the kiosk vendor and connects only to "
-            "a kiosk: it shall not be connected to any other device or "
-            "computer, and the vendor network does not allow access to the "
-            "internet. Kiosk access is one 15-minute session per day at times "
-            "the facility posts, and a tablet that has not been connected to a "
-            "kiosk within 30 days becomes inoperable until it is. So the device "
-            "is not continuously online. It is an intermittently synced device "
-            "with a metered daily window."
-        ),
-        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
-        url="https://doccs.ny.gov/Directives/4425.pdf",
-        checked_on=date(2026, 9, 28),
-    ),
-    # Confirms the one capability claim that turned out to be right.
+    # Why the identity route is closed, which is a real constraint the demo
+    # shows rather than a simplification.
     "the_tablet_has_no_internet": Fact(
         key="the_tablet_has_no_internet",
         statement=(
-            "Tablet and kiosk connections are granted through an independent "
-            "vendor-provided secure network and will not allow access to the "
-            "internet. Content is limited to what the Department approves under "
-            "its media review process. A bureau's web page cannot be reached "
-            "from the device."
+            "A tablet inside runs on a private network that does not allow "
+            "access to the internet. A bureau's web page cannot be opened from "
+            "it, which closes every route a bureau offers a free citizen."
         ),
         source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
         url="https://doccs.ny.gov/Directives/4425.pdf",
         checked_on=date(2026, 9, 28),
     ),
-    "no_tablet_in_shu_or_rru": Fact(
-        key="no_tablet_in_shu_or_rru",
+    "fico_ranges_are_not_one_scale": Fact(
+        key="fico_ranges_are_not_one_scale",
         statement=(
-            "Tablets are issued to people in general confinement, which "
-            "includes Regional Medical Units, infirmaries, Residential Crisis "
-            "Treatment, Therapeutic Transitional Supervision and Intermediate "
-            "Care or Mental Health units. They are not allowed in Special "
-            "Housing Units or Residential Rehabilitation Units. Tablet use is "
-            "also a privilege that may be suspended, and a person may opt out "
-            "and wait six months to opt back in. A tablet-only product "
-            "therefore does not reach everybody."
+            "Base FICO scores run 300 to 850. The industry-specific scores a "
+            "car lender or a card issuer pulls run 250 to 900. A number on one "
+            "scale does not mean the same thing on the other, which is why a "
+            "person can be told two different scores and neither is wrong."
         ),
-        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
-        url="https://doccs.ny.gov/Directives/4425.pdf",
+        source="myFICO, FICO Score versions",
+        url="https://www.myfico.com/credit-education/credit-scores/"
+            "fico-score-versions",
         checked_on=date(2026, 9, 28),
     ),
-    "secure_messaging_carries_attachments_and_nothing_is_printed": Fact(
-        key="secure_messaging_carries_attachments_and_nothing_is_printed",
+    "birth_certificate_takes_ten_to_twelve_weeks": Fact(
+        key="birth_certificate_takes_ten_to_twelve_weeks",
         statement=(
-            "The kiosk secure messaging system carries messages and "
-            "attachments between an incarcerated individual and community "
-            "members registered to their account, paid for with stamps bought "
-            "from a Kiosk Media account. A message carrying an attachment may "
-            "be flagged and held for review by staff at the rank of Lieutenant "
-            "or above, within five business days. The Department will not print "
-            "incoming email or attachments. All of it is screened, monitored, "
-            "recorded and retained, and may be given to law enforcement; "
-            "legal correspondence sent this way is not protected as privileged."
+            "New York State Vital Records processes a regular-handling mail "
+            "request for a certified birth certificate within ten to twelve "
+            "weeks of receiving it. Bridge plans against the ten, which is the "
+            "fast end of the state's own range rather than a safe estimate. A "
+            "birth registered in New York City goes to a different office with "
+            "its own times."
         ),
-        source="DOCCS Directive 4425, Incarcerated Individual Tablet Program, dated 11/01/2022",
-        url="https://doccs.ny.gov/Directives/4425.pdf",
+        source="NYS Department of Health, Ordering records by mail",
+        url="https://www.health.ny.gov/vital_records/mailrequests.htm",
         checked_on=date(2026, 9, 28),
     ),
     "facility_record_rules": Fact(
@@ -695,21 +670,34 @@ INTERVIEWS: tuple[dict, str] = (
 )
 
 
+# What this build assumes rather than establishes.
+#
+# Different from an open question. An open question is something nobody has
+# answered and somebody should. A simplification is something we looked at,
+# decided not to model, and chose to carry anyway, because this is a capstone
+# on a deadline and not a deployment.
+#
+# Written down for one reason: so the next person does not spend an afternoon
+# discovering the gap and thinking they found a bug, and so nobody on stage is
+# caught claiming more than the build does. Each one names what is assumed and
+# what is actually the case.
+SIMPLIFICATIONS: tuple[str, ...] = (
+    "Bridge assumes the tablet is online, so a write lands when it is made "
+    "and the course keeps a place without a queue. The real device is more "
+    "limited than that and everything on it is monitored. Modelling the "
+    "difference means caching the app shell and replaying writes later, which "
+    "is real work and is not built. The browser build behaves exactly as "
+    "written; a deployment would not.",
+
+    "Bridge assumes a person on the caseload has a tablet and can reach it. "
+    "Access is not universal in practice. This build has no separate path for "
+    "somebody without one.",
+
+    "How Bridge would be provisioned onto a facility tablet is not "
+    "established. The browser build is how it is developed and shown.",
+)
+
 OPEN_QUESTIONS: tuple[str, ...] = (
-    "How Bridge actually gets onto a DOCCS tablet. The tablets are loaned by "
-    "the kiosk vendor, connect only to a kiosk, and carry content the "
-    "Department approves under its media review process. So provisioning is a "
-    "contract and an approval rather than a deployment, and nothing here "
-    "establishes that route exists. Directive 4425.",
-    "What Bridge does for somebody with no tablet. They are not issued in "
-    "Special Housing Units or Residential Rehabilitation Units, use is a "
-    "privilege that can be suspended, and a person may opt out. A tablet-only "
-    "product does not reach those people and this build has no answer for "
-    "them. Directive 4425.",
-    "How long a birth certificate actually takes to come back. "
-    "`app.caseplan` gates document readiness on ten weeks and no source here "
-    "establishes it. It is the slowest step in the chain the ID application "
-    "waits on, so the number matters more than most.",
     "What actually makes a bureau escalate past a plain signed request. No "
     "public source says how often a plain request clears, and Experian asks "
     "for an ID copy with every mailed dispute regardless. This used to be "

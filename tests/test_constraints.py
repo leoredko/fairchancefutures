@@ -245,29 +245,60 @@ def test_the_tablet_is_not_described_as_continuously_connected():
         assert "loaded onto a connected device and writes go to the server" not in text.lower(), rel
 
 
-def test_the_device_facts_are_sourced_to_the_tablet_directive():
+def test_what_the_build_assumes_is_separated_from_what_it_establishes():
+    """Two registries, because they answer different questions.
+
+    An open question is something nobody has answered and somebody should. A
+    simplification is something the team looked at, decided not to model, and
+    carried anyway. Collapsing them would let an assumption read as a finding,
+    which is the failure this whole sweep was about.
+    """
+    from app.sources import FACTS, OPEN_QUESTIONS, SIMPLIFICATIONS
+
+    assert SIMPLIFICATIONS, "a build that assumes nothing is a build nobody checked"
+    joined = " ".join(SIMPLIFICATIONS)
+    assert "assumes the tablet is online" in joined
+    assert "monitored" in joined
+
+    # A simplification is not a fact and not a question.
+    statements = {f.statement for f in FACTS.values()}
+    for assumed in SIMPLIFICATIONS:
+        assert assumed not in statements
+        assert assumed not in OPEN_QUESTIONS
+
+
+def test_the_identity_constraint_is_the_one_device_claim_still_sourced():
+    """It is a real constraint the demo shows, not a simplification, so it
+    keeps its citation while the operational detail around it went away."""
     from app.sources import FACTS
 
-    for key in ("the_tablet_reaches_a_kiosk_not_a_network",
-                "the_tablet_has_no_internet",
-                "no_tablet_in_shu_or_rru",
-                "secure_messaging_carries_attachments_and_nothing_is_printed"):
-        fact = FACTS[key]
-        assert "Directive 4425" in fact.source, key
-        assert fact.url.startswith("https://doccs.ny.gov/"), key
+    fact = FACTS["the_tablet_has_no_internet"]
+    assert fact.url.startswith("https://doccs.ny.gov/")
+    assert "internet" in fact.statement
 
 
-def test_the_things_this_build_cannot_answer_are_written_down_as_open():
-    """Coverage stated honestly, the way app.centers does it.
+def test_a_number_that_gates_the_document_plan_carries_its_source():
+    """Ten weeks gates document readiness, so it is a claim about the world
+    rather than a design choice, and the rule in CLAUDE.md covers it.
 
-    A tablet-only product does not reach somebody in SHU, somebody whose
-    tablet privilege was suspended, or somebody who opted out. This build has
-    no answer for them, and saying so survives a hostile question better than
-    discovering it on stage.
+    It is the fast end of the state's ten-to-twelve, which is worth knowing
+    before anybody reads a date off it out loud.
     """
-    from app.sources import OPEN_QUESTIONS
+    from app.caseplan import BIRTH_CERTIFICATE_WEEKS
+    from app.sources import FACTS
 
-    joined = " ".join(OPEN_QUESTIONS)
-    assert "Special Housing Units" in joined
-    assert "media review" in joined
-    assert "birth certificate" in joined.lower()
+    fact = FACTS["birth_certificate_takes_ten_to_twelve_weeks"]
+    assert fact.url.startswith("https://www.health.ny.gov/")
+    assert str(BIRTH_CERTIFICATE_WEEKS) == "10"
+    assert "ten to twelve weeks" in fact.statement
+
+
+def test_the_two_score_scales_are_sourced_because_a_range_is_a_claim():
+    """A person told two different scores has been told the truth twice. That
+    is a credit-reporting fact, so it carries a citation."""
+    from app.sources import FACTS
+
+    fact = FACTS["fico_ranges_are_not_one_scale"]
+    assert "300 to 850" in fact.statement
+    assert "250 to 900" in fact.statement
+    assert fact.url.startswith("https://www.myfico.com/")

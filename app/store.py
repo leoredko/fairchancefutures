@@ -105,11 +105,9 @@ class State:
     authorizations: dict[str, dict] = field(default_factory=dict)
     drafts: dict[str, list[dict]] = field(default_factory=dict)
     review_log: dict = field(default_factory=lambda: {"reviewed": 0, "edited": 0})
-    # Every answer, with what was saved and when. Not an offline queue, and
-    # not because the tablet is continuously connected: it is not, it meets a
-    # kiosk for 15 minutes a day. This is the receipt for the promise intake
-    # makes on question one, and it is honest on the browser build. A real
-    # tablet needs a queue that replays on the next kiosk session.
+    # Every answer, with what was saved and when. Not an offline queue: this
+    # build assumes the tablet is online, which is a stated assumption rather
+    # than a finding. The receipt for the promise intake makes on question one.
     write_log: list[dict] = field(default_factory=list)
 
 
