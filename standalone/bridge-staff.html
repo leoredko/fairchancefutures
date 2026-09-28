@@ -316,7 +316,10 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 .grid { display: grid; gap: 18px; }
 .grid.two { grid-template-columns: 1fr 1fr; }
 .grid.three { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 900px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+/* One door on its own. Left at full width it reads as a banner rather
+   than the same card the other two were. */
+.grid.one { grid-template-columns: minmax(0, 420px); }
+@media (max-width: 900px) { .grid.two, .grid.three, .grid.one { grid-template-columns: 1fr; } }
 
 .stack { display: flex; flex-direction: column; gap: 15px; }
 .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
