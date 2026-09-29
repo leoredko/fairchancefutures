@@ -42,6 +42,45 @@
   </div>
   {% endif %}
 
+  {# Field evidence, kept apart from the statutes above and labelled by kind.
+     An interview is one practitioner. A survey is a count from people who
+     have the problem. Neither is a primary source for a legal sentence, and
+     nothing in the app states a rule on the strength of either. #}
+  {% if interviews or surveys %}
+  <div class="card soft" style="margin-top:16px">
+    <h2>What people told us</h2>
+    <p class="small">Evidence, and not the same kind of evidence as a statute.
+      Labelled wherever it is used, because the difference matters more than
+      the finding.</p>
+
+    {% for i in interviews %}
+    <div class="rung">
+      <div>
+        <div class="small strong">Practitioner interview &middot; {{ i.who }},
+          {{ i.when }}</div>
+        {% for c in i.claims %}<div class="tiny">&middot; {{ c }}</div>{% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    {% for s in surveys %}
+    <div class="rung">
+      <div>
+        <div class="small strong">Survey of people inside &middot;
+          {{ s.responses }} responses, {{ s.fielded }}</div>
+        <div class="tiny">{{ s.who_ran_it }}. {{ s.where }}. {{ s.method }}</div>
+        {% for f in s.findings %}
+        <div class="tiny">&middot; {{ f.statement }}
+          <span class="mono">{{ f.count }} of {{ f.of }}</span></div>
+        {% endfor %}
+        <div class="tiny strong" style="margin-top:8px">What it cannot carry</div>
+        {% for l in s.limitations %}<div class="tiny">&middot; {{ l }}</div>{% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <div class="card soft" style="margin-top:16px">
     <h2>Bureau addresses</h2>
     <p class="small">A dispute goes to all three. These move without

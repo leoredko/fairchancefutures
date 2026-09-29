@@ -34,7 +34,7 @@ def rules() -> dict:
     from app.report import LINE_FORMAT, SCANNER_NOTE
     from app.lessons import CURRICULUM, TOTAL_MINUTES
     from app.scores import EXPLAINERS, MODELS, USE_LABEL, summary_line
-    from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS
+    from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS, SURVEYS
     from app.triage import PATH, STATE_LABEL, State
 
     def question(q):
@@ -71,6 +71,14 @@ def rules() -> dict:
         ],
         "open": list(OPEN_QUESTIONS),
         "interviews": [dict(i) for i in INTERVIEWS if isinstance(i, dict)],
+        "surveys": [
+            {"title": s.title, "who": s.who_ran_it, "where": s.where,
+             "fielded": s.fielded, "responses": s.responses,
+             "method": s.method,
+             "findings": [f.cite() for f in s.findings],
+             "limitations": list(s.limitations)}
+            for s in SURVEYS
+        ],
         "bureaus": [
             {"name": b.name, "address": list(b.dispute_address),
              "note": b.note, "url": b.source_url}

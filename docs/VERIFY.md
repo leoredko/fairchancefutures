@@ -127,6 +127,55 @@ The app asserts none of these. Where one would be needed, the screen says so.
       release once the birth certificate and Social Security card are on file.
       The claim has been removed rather than left standing.
 
+## The survey, and what it is allowed to carry
+
+Thirteen people inside a correctional facility in Maine answered the same nine
+questions between Sep 25 and Sep 27, 2026. It was run by a fellow of this
+cohort among people incarcerated alongside him, which is the only reason it
+exists: nobody else on this team could have collected it. It lives in
+`app/sources.py` as `SURVEYS`, apart from `FACTS`, because it is not a primary
+source for anything legal and must never be read as one. It renders on
+`/citations` under its own heading with its limits attached.
+
+| Finding | Count |
+| --- | --- |
+| Named **money and credit** a priority before release, more than chose any other option, ahead of work, family relationships and housing | 9 of 13 |
+| **Would not know what to do next** after finding a mistake on a credit report, answering no or only somewhat | 8 of 13 |
+| Want to **see their credit report before release** (one person skipped it) | 9 of 12 |
+| Have seen their own credit report **while inside** | 2 of 13 |
+| Already **knew a free annual copy** can be requested from each of the three bureaus | 11 of 13 |
+| Would rather **work through an application on their own** than take any offered help | 5 of 13 |
+| Chose **asking family or a friend** as the help they would most want | 1 of 13 |
+
+Two of these corrected the team rather than confirming it.
+
+**Awareness of the entitlement is not the gap.** Eleven of thirteen already
+knew about the free annual copy. What they cannot do is act on it, which is
+constraint one and not an education problem. The course still earns its place
+on the other number: eight of thirteen would not know what to do with an error
+once they were looking at one.
+
+**One person in thirteen chose family as the help they would most want**, and
+the Cornish interview says a family proxy is the model she would run today.
+Both can hold. The question asked who they would want *help with credit* from;
+the family surface does not counsel anybody, it does the mail, which is the one
+task no person inside can do for themselves whatever they would prefer. Worth
+having that answer ready rather than discovering it from the floor.
+
+What it cannot carry:
+
+- Thirteen responses from one facility in **Maine**. Bridge is built for New
+  York State. Nothing here establishes anything about a DOCCS population.
+- A convenience sample: people one fellow could reach, who chose to answer.
+- **Both free-text questions came back empty on all thirteen responses**, the
+  one on blockers and the one on release date. It produced counts and not one
+  quotation.
+- Knowledge is self-reported. Nobody was asked to name the route, and the mail
+  route is the only one that works from inside.
+- [ ] **The name of the fellow who ran it, and how consent was taken.** Neither
+      is on the record yet. Both belong there before this is cited outside the
+      team.
+
 ## Corroborated since, and worth saying out loud
 
 The Cornish interview's strongest claim, that **engagement is the unsolved
