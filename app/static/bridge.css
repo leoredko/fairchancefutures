@@ -134,6 +134,13 @@ a:hover { color: var(--teal-deep); }
     overscroll-behavior: contain;
   }
 
+  /* The frame's height is fixed by the aspect ratio above, and a flex column
+     with a fixed height shrinks its children to fit. A pane shrunk below its
+     own content does not clip, it paints over the pane beneath it, which is
+     what put the language note underneath the sign-in heading on any screen
+     short enough. The frame scrolls, so nothing in it needs to shrink. */
+  .tablet > * { flex-shrink: 0; }
+
   /* The bar belongs to the device, not to the page inside it, so it stays put
      while the content moves under it. */
   .tablet > .bar {
