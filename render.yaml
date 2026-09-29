@@ -47,3 +47,12 @@ services:
       # back to asking nothing, which is what a facility tablet wants.
       - key: BRIDGE_CAPTCHA
         value: "1"
+      # This URL is the presentation. The room is being shown the tablet, and
+      # a landing page offering a coordinator queue and a helper door is an
+      # invitation to click into the wrong one on a projector. Both routes
+      # stay reachable by URL, so the walkthrough is still driven from a
+      # coordinator window nobody is looking at. Set it to `off` here, or
+      # delete the variable in the Render dashboard, and all three doors come
+      # back. See app/presentation.py.
+      - key: BRIDGE_TABLET_ONLY
+        value: "on"
