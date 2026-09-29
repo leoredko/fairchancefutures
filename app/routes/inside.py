@@ -366,8 +366,8 @@ def after_release(request: Request, county: str = ""):
     successor, and this is where somebody finds out they exist while they can
     still write the number down.
 
-    Asked here rather than added to intake. Intake is six questions about a
-    credit file; where somebody is going home to is a different question, it
+    Asked here rather than added to intake. Intake asks about a credit
+    file; where somebody is going home to is a different question, it
     can change, and it is nobody's business unless they are asking this.
     """
     caller = require_role(request, "inside")
@@ -399,7 +399,7 @@ def learn_scores(request: Request):
         for use in scores.Use
         if scores.models_for(use)
     ]
-    done_intake = len(caller.client.intake_answers) >= 6
+    done_intake = len(caller.client.intake_answers) >= len(INSIDE_QUESTIONS)
     return templates.TemplateResponse(
         request, "inside/scores.html",
         {"client": caller.client,

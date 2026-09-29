@@ -1,4 +1,5 @@
-"""The classifier. Six answers in, one of four states out, with a path attached.
+"""The classifier. The intake answers in, one of four states out, with a path
+attached.
 
 This is the only part of the app that does something a person could not do on
 paper, and the only one whose output can be scored for accuracy. Everything
@@ -47,7 +48,7 @@ class BankAccount(str, Enum):
 
 
 class Recognition(str, Enum):
-    """Question six. The one that opens a legal clock."""
+    """The one that opens a legal clock."""
 
     ALL_MINE = "all_mine"
     SOME_NOT_MINE = "some_not_mine"
@@ -118,7 +119,7 @@ PATH: dict[State, dict[str, str]] = {
 
 @dataclass(frozen=True)
 class Answers:
-    """The six questions, exactly as the triage screen asks them."""
+    """The questions, exactly as the triage screen asks them."""
 
     ever_had_account: AccountHistory
     report_result: ReportResult

@@ -76,9 +76,9 @@ tablet with any DIN starting 28 and open **Learn**.
    queue, because they are already signed in to the vendor case plan system.
    Use **New intake** to add somebody, and note the helper code it issues.
 2. **That person** opens the tablet app, signs in with the DIN just entered,
-   picks a PIN, and answers the six intake questions.
-3. **Coordinator** opens them from the queue and runs triage. Six answers, one
-   of four states, with the path attached. Errors jump the queue.
+   picks a PIN, and answers the intake questions.
+3. **Coordinator** opens them from the queue and runs triage. The intake
+   answers, one of four states, with the path attached. Errors jump the queue.
 4. **Coordinator** drafts the dispute letters. One flagged item produces three
    letters, one per bureau. Edit one before approving and watch the edit rate
    on `/metrics` move.

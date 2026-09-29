@@ -195,7 +195,7 @@ def teaching_for(knows_how: str | None) -> dict:
     }
 
 
-# The staff form. Same six fields, plus the one the tablet cannot know.
+# The staff form. The same fields, plus the one the tablet cannot know.
 @dataclass(frozen=True)
 class StaffQuestion:
     field: str

@@ -157,7 +157,7 @@ Three things the app says that a person would otherwise find out too late:
 | --- | --- | --- |
 | Inside, tablet | `/inside/learn` | **The credit course.** Eleven lessons, about fifty minutes, reachable from every screen, saved per card. Every rule cites a primary source. |
 | Inside, tablet | `/inside/report` | The report arriving, credited to whoever got it here, then walked section by section with the teaching attached. Ends on the one question that opens a legal clock. |
-| Inside, tablet | `/inside` | Six intake questions, one per screen. Position not score. Case timeline with named people. Cancel a helper's authorization. |
+| Inside, tablet | `/inside` | Intake, one question per screen. Position not score. Case timeline with named people. Cancel a helper's authorization. |
 | Family, phone | `/family` | The invitation that rules out everything a scam would ask for. Exactly one task on screen. Print the request packet. Send the report in three ways. |
 | Caseworker, desktop | `/staff` | Work queue sorted by what expires first. Triage session. Letter draft and approval. What is blocking the ID. What the client flagged on their own report. |
 | Inside, tablet | `/signin` | **English or Español**, chosen at the door before anything else, with the languages the app does not have named rather than hidden. |
@@ -166,8 +166,8 @@ Three things the app says that a person would otherwise find out too late:
 
 ## The measurable part
 
-`app/triage.py` is the classifier: six answers in, one of four states out, with
-a path attached. It is the only screen where the app does something a person
+`app/triage.py` is the classifier: the intake answers in, one of four states
+out, with a path attached. It is the only screen where the app does something a person
 could not do on paper, and the only one whose output can be scored.
 
 Two rules in it are load-bearing. Errors jump the queue, because a dispute has a

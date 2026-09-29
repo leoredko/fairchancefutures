@@ -158,8 +158,8 @@ def test_the_course_is_reachable_from_every_tablet_screen(inside):
     This test used to leave out the intake flow, and so did the template, on
     the theory that a second exit next to a question loses somebody's place.
     That was wrong twice over: every answer is saved as it is given, so
-    stepping out costs nothing, and a person part way through six questions
-    about credit has more reason to reach an explanation than less.
+    stepping out costs nothing, and a person part way through a set of
+    questions about credit has more reason to reach an explanation than less.
     """
     for url in ("/inside/intake/1", "/inside/intake/4", "/inside/how-this-works",
                 "/inside/case", "/inside/report", "/inside/where-you-stand",

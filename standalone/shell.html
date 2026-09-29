@@ -632,8 +632,8 @@ function colophon() {
 
 const PITCH = {
   inside: { head: "Your credit, started early.",
-            sub: "Six questions, then you can see where you stand and who is " +
-                 "working your case." },
+            sub: "Answer a few questions, then you can see where you stand " +
+                 "and who is working your case." },
   family: { head: "One task at a time.",
             sub: "Open the mail, photograph the reports, drop two letters in " +
                  "a mailbox. About twenty minutes over three months." },
@@ -2008,7 +2008,7 @@ route(/^\/staff\/([\w-]+)\/triage$/, (id) => {
   const result = c.classification || null;
 
   return '<div>' + bar("Triage, " + c.name) + '<div class="sheet" style="padding-top:22px">' +
-    '<p class="lede">Six questions, one classification, one path. Built for a 30 ' +
+    '<p class="lede">One classification, one path. Built for a 30 ' +
       'to 45 minute session.</p>' +
     '<div class="grid two" style="margin-top:18px;align-items:start">' +
     '<div class="card compact"><h2>What we asked</h2>' +
