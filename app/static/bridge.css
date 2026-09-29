@@ -605,27 +605,6 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 .splash[hidden] { display: none; }
 .splash.gone { opacity: 0; pointer-events: none; }
 
-/* After the base rule above, not inside the frame block near the top: this has
-   the same specificity as `.splash { inset: 0 }`, so where it sat the base won,
-   the centring was cancelled, and the translate threw the box off the top-left
-   corner for the length of the opening. */
-@media (min-width: 1000px) and (min-height: 600px) {
-  /* The opening lands on the glass rather than over the whole projector, so
-     the sequence reads as the tablet waking up and not as a title card. */
-  .splash {
-    position: fixed;
-    inset: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(1180px, calc(100vw - 64px), calc((100vh - 64px) * 1.6));
-    aspect-ratio: 16 / 10;
-    height: auto;
-    border: 1px solid var(--line-strong);
-    border-radius: 16px;
-  }
-}
-
 .splash-word {
   width: min(72vw, 382px); height: auto;
   opacity: 0; transform: translateY(10px) scale(.96);
