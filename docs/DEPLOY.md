@@ -93,6 +93,19 @@ Environment:
 - `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask an
   arithmetic question first. On in `render.yaml`, off everywhere else. See
   below.
+- `BRIDGE_TABLET_ONLY` — `on` takes the helper and coordinator doors off the
+  landing page and the sign-in screen, so a room being shown the tablet cannot
+  click into the wrong one. Both routes stay reachable by URL, which is how a
+  walkthrough is driven from a window the room does not see. On in
+  `render.yaml`, because that URL is the presentation; off everywhere else.
+  It is read per request, so changing it takes effect on the next page rather
+  than the next deploy. See `app/presentation.py`.
+
+**Changing a variable restarts the service, and on the free plan a restart
+reseeds the caseload.** Anything done in a live session goes with it: a PIN
+somebody set, lessons they finished, the path they chose. So set these before
+a rehearsal, not between the rehearsal and the room. Read the other way, a
+restart is also the fastest way to put the whole caseload back.
 
 ## Getting onto the tablet
 
