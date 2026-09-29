@@ -24,7 +24,10 @@
     {% for c in clients %}
       <tr class="{% if c.clock_sort < 0 %}overdue{% endif %}">
         <td><div class="strong">{{ c.display_name }}</div>
-            <span class="tag {{ 'rust' if c.case_state == 'errors_present' else '' }}">{{ c.state_label }}</span></td>
+            <span class="tag {{ 'rust' if c.case_state == 'errors_present' else '' }}">{{ c.state_label }}</span>
+            {# What they chose to do, so a quiet row reads as somebody taking
+               their time rather than an intake nobody has chased. #}
+            <div class="tiny">{{ queue_label_for(c.path) }}</div></td>
         <td>{{ c.needs }}</td>
         <td class="small">{{ c.clock }}</td>
         <td>{% if c.case_state == 'not_yet_triaged' %}

@@ -24,6 +24,7 @@ from app.sources import FACTS
 from app import lessons
 from app import report as report_module
 from app import walkthrough
+from app import paths
 from app.questions import INSIDE_QUESTIONS, inside_question, teaching_for
 from app.session import require_role
 from app.store import (
@@ -49,15 +50,63 @@ POSITION = {
 
 @router.get("", response_class=HTMLResponse)
 def home(request: Request):
-    """Straight to the case if intake is done, otherwise pick up where they left off."""
+    """Wherever this person said they wanted to be.
+
+    Nobody is dropped into intake any more. A person who has not chosen is
+    asked once, in two sentences, and a person who has chosen lands on their
+    own path: the course, or the case they are part way through.
+    """
     caller = require_role(request, "inside")
-    answered = caller.client.intake_answers
+    client = caller.client
+    if paths.get(client.path) is None:
+        return RedirectResponse("/inside/start", status_code=303)
+    if client.path == paths.LEARN.key:
+        return RedirectResponse("/inside/learn", status_code=303)
+    return RedirectResponse(_credit_next(client), status_code=303)
+
+
+def _credit_next(client) -> str:
+    """The case if intake is done, otherwise the question they stopped on."""
+    answered = client.intake_answers
     if len(answered) >= len(INSIDE_QUESTIONS):
-        return RedirectResponse("/inside/case", status_code=303)
+        return "/inside/case"
     for question in INSIDE_QUESTIONS:
         if question.field not in answered:
-            return RedirectResponse(f"/inside/intake/{question.index}", status_code=303)
-    return RedirectResponse("/inside/case", status_code=303)
+            return f"/inside/intake/{question.index}"
+    return "/inside/case"
+
+
+@router.get("/start", response_class=HTMLResponse)
+def start(request: Request):
+    """The one question asked before any other, and the way back to it.
+
+    Also the switch. The same screen serves both, because "what am I doing
+    here" and "I want to do the other thing" are the same question, and a
+    second screen that answered it differently is a second thing to maintain
+    and a second place for the wording to go wrong.
+    """
+    caller = require_role(request, "inside")
+    chosen = paths.get(caller.client.path)
+    return templates.TemplateResponse(
+        request, "inside/start.html",
+        {"client": caller.client, "paths": paths.PATHS, "chosen": chosen},
+    )
+
+
+@router.post("/start")
+async def choose(request: Request):
+    """Take the choice and send them where it points.
+
+    An unknown value is not an error a person should read about. It leaves the
+    choice unmade and /inside asks again, which is the screen they were
+    already looking at.
+    """
+    caller = require_role(request, "inside")
+    form = await request.form()
+    picked = paths.get(str(form.get("path", "")))
+    with mutate():
+        caller.client.path = picked.key if picked else ""
+    return RedirectResponse("/inside", status_code=303)
 
 
 @router.get("/intake/{index}", response_class=HTMLResponse)
@@ -139,6 +188,10 @@ def learn(request: Request):
          # to the question they were on, not to a case screen that has nothing
          # on it yet. /inside works out which that is.
          "intake_done": len(client.intake_answers) >= len(INSIDE_QUESTIONS),
+         # Somebody on the course path never opted into intake, so the bar does
+         # not point them at questions they did not ask for. The guiding hand
+         # stays invisible by not nagging.
+         "on_credit": client.path == paths.CREDIT.key,
          "total_minutes": lessons.TOTAL_MINUTES},
     )
 

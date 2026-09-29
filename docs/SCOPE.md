@@ -11,7 +11,8 @@
    The only screen where the app does something a person could not do on paper,
    and the only one whose output can be scored for accuracy. — built
 3. **Intake (tablet).** One question per screen, the set defined by
-   `INSIDE_QUESTIONS` in `app/questions.py`. — built
+   `INSIDE_QUESTIONS` in `app/questions.py`. Reached by choosing the credit
+   path, never by being dropped into it. — built
 4. **The report arriving, and reading it (tablet).** The report announces
    itself, names who got it here, and is walked section by section with the
    teaching attached, ending on the question that opens the legal clock. — built

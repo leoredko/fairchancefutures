@@ -58,7 +58,7 @@ data agreement or a scraper rather than a coding job.
 | --- | --- | --- |
 | Marcus W. | DIN `28-A-1187` or NYSID `00000011L` | tablet |
 | M. Alvarez | DIN `28-B-0042` | tablet |
-| J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet |
+| J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet, and the one seeded person who has not chosen a path, so he is who to sign in as to show the first screen |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
 | D. Reyes, coordinator | nothing, the vendor system already signed them in | desktop |
@@ -76,7 +76,12 @@ tablet with any DIN starting 28 and open **Learn**.
    queue, because they are already signed in to the vendor case plan system.
    Use **New intake** to add somebody, and note the helper code it issues.
 2. **That person** opens the tablet app, signs in with the DIN just entered,
-   picks a PIN, and answers the intake questions.
+   picks a PIN, and is asked what they want to do first. Both answers are
+   worth showing: **Learn how credit works** opens the course and never
+   mentions the questions again, and **Work on my credit** starts intake.
+   The switch is in the header of every screen, so a room can watch
+   somebody change their mind. Pick the credit path and answer the intake
+   questions to carry on with this walkthrough.
 3. **Coordinator** opens them from the queue and runs triage. The intake
    answers, one of four states, with the path attached. Errors jump the queue.
 4. **Coordinator** drafts the dispute letters. One flagged item produces three

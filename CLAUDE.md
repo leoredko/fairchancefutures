@@ -9,6 +9,7 @@ short version of what a session needs to not break things.
 ## Where to look first
 
     app/lessons.py         the credit course. Education is priority one.
+    app/paths.py           the two things a person can be doing, and the choice
     app/facilities.py      the 41 DOCCS facilities, checked, with addresses
     app/surfaces.py        the capability table. Read this as the product spec.
     docs/SCOPE.md          what each of the three surfaces can and cannot do
@@ -88,6 +89,12 @@ next tap. Some scopes raise on construction rather than being checked later.
   paperwork and request the birth certificate, and hiding a number somebody is
   already holding protects nobody. `app/redaction.py` is per surface for this
   reason; do not make it global again.
+- **The person says what they are doing, and can change it.** `app/paths.py`
+  holds two paths, learn and credit. The first screen after a PIN asks which,
+  in two sentences. It steers where they land and what the screens push
+  toward; it never takes anything away, and the switch is in the header of
+  every tablet screen. A path is not a rung: if a change would make one path
+  hide the other, read `app/authorization.py` first.
 - **Education is the first priority.** Every lesson card that states a rule
   cites a key in `app/sources.py`, and a test fails if it cites one that is not
   there. The course is reachable from every tablet screen and is never gated

@@ -770,6 +770,22 @@ const RULES = {
    "first_step": "Mail the Annual Credit Report Request Form."
   }
  ],
+ "paths": [
+  {
+   "key": "learn",
+   "label": "Learn how credit works",
+   "blurb": "Short lessons, one at a time. Nothing to fill in and no forms. It saves where you stop, so you can put the tablet down and come back to it.",
+   "cta": "Start learning",
+   "queueLabel": "On the course"
+  },
+  {
+   "key": "credit",
+   "label": "Work on my credit",
+   "blurb": "Answer some questions about your money, then a counselor picks it up and works your case with you. You can read the lessons any time while you wait.",
+   "cta": "Start on my credit",
+   "queueLabel": "Working the case"
+  }
+ ],
  "insideQuestions": [
   {
    "index": 1,
@@ -2516,7 +2532,7 @@ function seedClients() {
   const iso = (d) => new Date(now + d * day).toISOString().slice(0, 10);
   return {
     "marcus-w": {
-      id: "marcus-w", name: "Marcus W.", first: "Marcus",
+      id: "marcus-w", path: "credit", name: "Marcus W.", first: "Marcus",
       din: "28A1187", nysid: "00000011L",
       facility: "Sing Sing Correctional Facility",
       release: iso(118), clock: 118, state: "errors_present",
@@ -2539,7 +2555,7 @@ function seedClients() {
       ]
     },
     "m-alvarez": {
-      id: "m-alvarez", name: "M. Alvarez", first: "Maria",
+      id: "m-alvarez", path: "credit", name: "M. Alvarez", first: "Maria",
       din: "28B0042", nysid: "00000022K",
       facility: "Bedford Hills Correctional Facility",
       release: iso(9), clock: 9, state: "errors_present",
@@ -2570,7 +2586,7 @@ function seedClients() {
       authorization: null, timeline: []
     },
     "r-osei": {
-      id: "r-osei", name: "R. Osei", first: "Rashid",
+      id: "r-osei", path: "credit", name: "R. Osei", first: "Rashid",
       din: "28C2204", nysid: "00000044J",
       facility: "Fishkill Correctional Facility",
       release: iso(64), clock: -4, state: "credit_invisible",
@@ -2584,7 +2600,7 @@ function seedClients() {
       timeline: [{ text: "Ama mailed the request", actor: "Your person outside", on: "June 25", done: true }]
     },
     "t-brennan": {
-      id: "t-brennan", name: "T. Brennan", first: "Tom",
+      id: "t-brennan", path: "credit", name: "T. Brennan", first: "Tom",
       din: "28D0775", nysid: "00000055H",
       facility: "Woodbourne Correctional Facility",
       release: iso(-42), clock: 200, state: "damaged_file",
@@ -3253,7 +3269,8 @@ function bar(who, extra) {
     '<span class="who">' + esc(who) + '</span>' +
     '<div class="right">' + (extra || "") +
     (APP === "inside"
-      ? '<a class="pill" href="#/inside/learn">The course</a>' : "") +
+      ? '<a class="pill" href="#/inside/start">Change what I am doing</a>' +
+        '<a class="pill" href="#/inside/learn">The course</a>' : "") +
     (APP === "staff" ? "" :
       '<a class="pill" href="#" onclick="signOut();return false">Sign out</a>') +
     '</div></div>';
@@ -3262,9 +3279,56 @@ function bar(who, extra) {
 route(/^\/inside$/, () => {
   if (!guard("inside")) return "";
   const c = subject();
+  // Nobody is dropped into intake any more. Which of the two things they are
+  // doing here is theirs to say, and it is asked once. See app/paths.py.
+  if (!pathFor(c)) return go("#/inside/start"), "";
+  if (c.path === "learn") return go("#/inside/learn"), "";
   const next = RULES.insideQuestions.find((q) => !(q.field in c.answers));
   return go(next ? "#/inside/intake/" + next.index : "#/inside/case"), "";
 });
+
+function pathFor(c) {
+  // A stored value that is no longer a path reads as no choice made, so the
+  // person gets asked a question they know how to answer instead of an error.
+  return RULES.paths.find((p) => p.key === (c && c.path)) || null;
+}
+
+function pathQueueLabel(c) {
+  const p = pathFor(c);
+  return p ? p.queueLabel : "Has not chosen yet";
+}
+
+route(/^\/inside\/start$/, () => {
+  if (!guard("inside")) return "";
+  const c = subject();
+  const chosen = pathFor(c);
+  return '<div>' + bar(c.name) +
+    '<div class="pane">' +
+    '<h1>What do you want to do first?</h1>' +
+    '<p class="lede">Either one is fine, and you can change your mind whenever ' +
+      'you want. Nothing you pick here closes anything off.</p>' +
+    '<div class="stack" style="margin-top:20px">' +
+    RULES.paths.map((p) =>
+      '<div class="card accent' + (chosen && chosen.key === p.key ? ' good' : '') + '">' +
+      (chosen && chosen.key === p.key
+        ? '<span class="tag green">What you are doing now</span>' : '') +
+      '<h2>' + esc(p.label) + '</h2>' +
+      '<p class="small">' + esc(p.blurb) + '</p>' +
+      '<button class="btn wide" onclick="choosePath(\'' + p.key + '\')">' +
+      esc(p.cta) + '</button></div>').join("") +
+    '</div>' +
+    '<p class="tiny" style="margin-top:20px">The lessons are open to you either ' +
+      'way. Working on your credit does not mean waiting to learn about it.</p>' +
+    '</div></div>';
+});
+
+function choosePath(key) {
+  const c = subject();
+  const picked = RULES.paths.find((p) => p.key === key);
+  c.path = picked ? picked.key : "";
+  save();
+  go("#/inside");
+}
 
 route(/^\/inside\/intake\/(\d+)$/, (n) => {
   if (!guard("inside")) return "";
@@ -4186,7 +4250,8 @@ route(/^\/staff$/, () => {
         '<span class="tag' + (c.state === "errors_present" ? " rust" : "") + '">' +
         esc(c.stateLabel) + '</span>' +
         '<div class="tiny" style="margin-top:4px;font-family:ui-monospace,monospace">' +
-        esc(c.din) + '</div></td>' +
+        esc(c.din) + '</div>' +
+        '<div class="tiny">' + esc(pathQueueLabel(c)) + '</div></td>' +
       '<td>' + esc(c.needs) + '</td>' +
       '<td class="small">' + esc(clockText(c)) + '</td>' +
       '<td>' + (c.state === "not_yet_triaged"

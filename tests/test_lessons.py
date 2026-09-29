@@ -171,6 +171,7 @@ def test_the_course_is_reachable_from_every_tablet_screen(inside):
 def test_stepping_out_of_intake_comes_back_to_the_question(client):
     """Not to a case screen with nothing on it yet."""
     signed_in = sign_in_inside(client, identifier="28A0931")   # no intake yet
+    signed_in.post("/inside/start", data={"path": "credit"})   # working the case
     course = signed_in.get("/inside/learn").text
     assert 'href="/inside"' in course
     assert "Back to my questions" in course
