@@ -617,9 +617,17 @@ def restart_person(client_id: str) -> bool:
     fresh = _serialize()
     _apply(live)
 
-    STATE.clients[client_id] = Client(**fresh["clients"][client_id])
-    STATE.reports[client_id] = fresh["reports"].get(client_id, [])
-    STATE.drafts[client_id] = fresh["drafts"].get(client_id, [])
+    if client_id in fresh["clients"]:
+        STATE.clients[client_id] = Client(**fresh["clients"][client_id])
+        STATE.reports[client_id] = fresh["reports"].get(client_id, [])
+        STATE.drafts[client_id] = fresh["drafts"].get(client_id, [])
+    else:
+        # Somebody who typed their own 28 DIN was never in the seed, so the day
+        # the seed describes is the day before they existed. Remove the case and
+        # the next sign-in opens a fresh one, the same as the first time.
+        STATE.clients.pop(client_id, None)
+        STATE.reports.pop(client_id, None)
+        STATE.drafts.pop(client_id, None)
     if client_id in fresh["authorizations"]:
         STATE.authorizations[client_id] = fresh["authorizations"][client_id]
     else:
