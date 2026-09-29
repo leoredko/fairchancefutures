@@ -41,7 +41,13 @@ tablet physically sits. This lives in `app/surfaces.py` and the router asks that
 module before it does anything. Hiding a button in a template is decoration;
 the capability table is the enforcement.
 
-Do not overstate that constraint, and never as "cannot receive mail". People
+Do not overstate that constraint, and never as "cannot receive mail". That
+includes what things are **named**: a capability in `app/surfaces.py` is named
+for what a surface does, never for what a person does, because a name is what
+gets lifted into a diagram or a slide while the paragraph under it does not.
+`RECEIVE_MAIL` and `MAIL_LETTER` were renamed to `TAKE_DELIVERY` and
+`PRINT_AND_POST` for exactly this: the prose had been corrected and the names
+still said the false thing. People
 inside receive their own mail, addressed to them at the facility under their
 commitment name and DIN. It is opened and inspected, not generally read, and
 not held more than 48 hours: DOCCS Directive 4422, in `app/sources.py` as

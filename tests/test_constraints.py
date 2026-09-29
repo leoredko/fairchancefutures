@@ -28,9 +28,9 @@ from app.surfaces import CAPABILITIES, Capability, Surface, SurfaceDenied, can, 
 
 IMPOSSIBLE_FROM_INSIDE = [
     Capability.VERIFY_IDENTITY,
-    Capability.RECEIVE_MAIL,
+    Capability.TAKE_DELIVERY,
     Capability.UPLOAD_FILE,
-    Capability.MAIL_LETTER,
+    Capability.PRINT_AND_POST,
 ]
 
 
@@ -172,7 +172,7 @@ def test_no_surface_claims_a_person_inside_cannot_receive_mail():
     """
     from app.surfaces import Capability, DENIAL_REASON
 
-    reason = DENIAL_REASON[Capability.RECEIVE_MAIL]
+    reason = DENIAL_REASON[Capability.TAKE_DELIVERY]
     assert "on their behalf" not in reason
     assert "does not have" not in reason
     assert "receives their own mail" in reason
@@ -206,7 +206,7 @@ def test_no_surface_claims_a_person_inside_cannot_send_mail():
     """
     from app.surfaces import Capability, DENIAL_REASON
 
-    reason = DENIAL_REASON[Capability.MAIL_LETTER]
+    reason = DENIAL_REASON[Capability.PRINT_AND_POST]
     assert "handled by a family member" not in reason
     assert "they send their own mail" in reason
     assert "postage" in reason
@@ -221,7 +221,7 @@ def test_the_capability_table_states_what_bridge_cannot_do_not_what_people_canno
     """
     from app.surfaces import Capability, DENIAL_REASON
 
-    for capability in (Capability.RECEIVE_MAIL, Capability.MAIL_LETTER,
+    for capability in (Capability.TAKE_DELIVERY, Capability.PRINT_AND_POST,
                        Capability.UPLOAD_FILE):
         reason = DENIAL_REASON[capability]
         assert "screen" in reason, capability
@@ -302,3 +302,40 @@ def test_the_two_score_scales_are_sourced_because_a_range_is_a_claim():
     assert "300 to 850" in fact.statement
     assert "250 to 900" in fact.statement
     assert fact.url.startswith("https://www.myfico.com/")
+
+
+def test_no_capability_name_claims_something_about_the_person():
+    """A name is what gets lifted into a diagram. It has to be true on its own.
+
+    This module was already wrong once in the prose, and the correction left
+    the names behind: the table denied `receive_mail` and `mail_letter` to the
+    tablet while the reasons underneath said, in so many words, that the person
+    receives their own mail and sends their own letters. Somebody building a
+    flowchart reads the table, not the paragraph, and gets the false claim back.
+
+    So the vocabulary is the surface's, not the person's. `take_delivery` is
+    something an app with no camera cannot do. `receive_mail` is something a
+    person does, and it is not ours to deny.
+    """
+    from app.surfaces import Capability
+
+    # Verbs that describe a person's life rather than a screen's behaviour.
+    theirs_not_ours = {"receive_mail", "mail_letter", "get_mail", "send_mail",
+                       "have_an_address", "receive_a_letter"}
+    named = {c.value for c in Capability}
+    assert named & theirs_not_ours == set()
+
+
+def test_the_capability_names_and_their_reasons_do_not_contradict_each_other():
+    """Every reason for denying the tablet something says what the app cannot
+    do. None of them has to spend its first clause taking back its own name."""
+    from app.surfaces import CAPABILITIES, DENIAL_REASON, Capability, Surface
+
+    for capability in Capability:
+        if capability in CAPABILITIES[Surface.INSIDE]:
+            continue
+        reason = DENIAL_REASON.get(capability, "")
+        assert reason, capability.value
+        # "The person can" appearing at all is fine and often the point. A name
+        # that forces the reason to open by denying itself is not.
+        assert not reason.startswith("Not "), capability.value

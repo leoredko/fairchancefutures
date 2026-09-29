@@ -43,6 +43,20 @@ class Surface(str, Enum):
 
 
 class Capability(str, Enum):
+    """What a SURFACE can do, never what a PERSON can do.
+
+    The distinction is the whole reason this module was wrong once already.
+    `RECEIVE_MAIL` used to sit here, denied to the tablet, and it read to every
+    person and every tool that ever looked at the table as "somebody inside
+    cannot receive mail". They can. The prose underneath said so and the name
+    on top said the opposite, which is worse than either alone, because a name
+    is what gets lifted into a diagram or a slide.
+
+    So a capability is named for the thing Bridge does on that screen. Taking
+    delivery of a document is something the app cannot do without a camera.
+    Receiving mail is something a person does, and it is not ours to deny.
+    """
+
     ANSWER_INTAKE = "answer_intake"
     VIEW_OWN_STATUS = "view_own_status"
     VIEW_LESSON = "view_lesson"
@@ -50,9 +64,9 @@ class Capability(str, Enum):
     NAME_HELPER = "name_helper"
 
     VERIFY_IDENTITY = "verify_identity"
-    RECEIVE_MAIL = "receive_mail"
+    TAKE_DELIVERY = "take_delivery"
     UPLOAD_FILE = "upload_file"
-    MAIL_LETTER = "mail_letter"
+    PRINT_AND_POST = "print_and_post"
 
     TRIAGE_CLIENT = "triage_client"
     READ_FULL_REPORT = "read_full_report"
@@ -71,9 +85,9 @@ CAPABILITIES: dict[Surface, frozenset[Capability]] = {
     }),
     Surface.FAMILY: frozenset({
         Capability.VERIFY_IDENTITY,
-        Capability.RECEIVE_MAIL,
+        Capability.TAKE_DELIVERY,
         Capability.UPLOAD_FILE,
-        Capability.MAIL_LETTER,
+        Capability.PRINT_AND_POST,
     }),
     Surface.STAFF: frozenset({
         Capability.TRIAGE_CLIENT,
@@ -81,9 +95,9 @@ CAPABILITIES: dict[Surface, frozenset[Capability]] = {
         Capability.APPROVE_LETTER,
         Capability.MANAGE_CASELOAD,
         Capability.VERIFY_IDENTITY,
-        Capability.RECEIVE_MAIL,
+        Capability.TAKE_DELIVERY,
         Capability.UPLOAD_FILE,
-        Capability.MAIL_LETTER,
+        Capability.PRINT_AND_POST,
     }),
 }
 
@@ -98,7 +112,7 @@ DENIAL_REASON: dict[Capability, str] = {
         "network the tablet runs on does not reach the internet, so a bureau's "
         "knowledge-based authentication page cannot be opened, and there is no "
         "camera roll and no document scanner to answer it with.",
-    Capability.RECEIVE_MAIL:
+    Capability.TAKE_DELIVERY:
         "A credit report arrives on paper. The person receives their own mail "
         "at the facility and can hold that paper, but this screen cannot take "
         "delivery of a document: there is no camera and no scanner on the "
@@ -109,7 +123,7 @@ DENIAL_REASON: dict[Capability, str] = {
         "camera on it. A report reaches the case file through the coordinator, "
         "who scans it at their desk, or through the person helping outside. "
         "The person inside reads; they never send.",
-    Capability.MAIL_LETTER:
+    Capability.PRINT_AND_POST:
         "Bridge cannot print or post a letter from this screen. The person "
         "can: they send their own mail, to any person or business, with their "
         "own return address on it. What they need from somebody else is the "
