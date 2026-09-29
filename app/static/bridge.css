@@ -261,8 +261,12 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 
 .btn {
   display: inline-block;
-  background: linear-gradient(180deg, #13907D 0%, var(--teal) 100%);
-  color: #FFFFFF;
+  /* Solid, not a gradient. White on the bright end of the old teal-to-cyan
+     ramp measured 1.81, so the label was failing contrast across most of the
+     button it sat on. A flat brand teal with a near-black label is 9.91, and
+     it is what .btn.amber was already doing. */
+  background: var(--teal);
+  color: #06140E;
   border: 0; border-radius: var(--r);
   padding: 14px 22px; font: inherit; font-weight: 600; font-size: 15.5px;
   cursor: pointer; text-decoration: none; text-align: center;
@@ -279,7 +283,7 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 .btn.quiet { background: none; color: var(--muted); border: 0; box-shadow: none;
              padding: 8px 0; text-decoration: underline; font-weight: 500; }
 .btn.quiet:hover { color: var(--ink); filter: none; }
-.btn.amber { background: linear-gradient(180deg, #EE9A2C 0%, var(--amber) 100%);
+.btn.amber { background: var(--amber);
              box-shadow: 0 1px 2px rgba(180, 108, 18, .28); }
 
 /* ---- cards ------------------------------------------------------------- */
@@ -459,7 +463,8 @@ input[type="radio"], input[type="checkbox"] {
   border: 1px solid var(--line); background: var(--page); color: var(--ink);
   font: inherit; font-size: 15px; cursor: pointer;
 }
-.langpick.on { border-color: var(--teal); background: var(--teal); color: #fff; }
+/* Same reason as .btn: white on this teal is 1.90. */
+.langpick.on { border-color: var(--teal); background: var(--teal); color: #06140E; }
 .langpick.ghost { color: var(--muted); border-style: dashed; cursor: default; }
 
 /* ======================================================================== */
@@ -510,15 +515,16 @@ input[type="radio"], input[type="checkbox"] {
 
 /* ---- what makes it read as one material rather than an inverted form ---- */
 
-/* Anything that is the next thing to press carries the gradient and a glow
-   the colour of itself. One per screen, which is the point: on the tablet
-   there is only ever one next thing. */
-.btn { background: var(--grad); box-shadow: var(--glow); }
+/* Anything that is the next thing to press carries a flat brand colour and a
+   glow the colour of itself. One per screen, which is the point: on the tablet
+   there is only ever one next thing. The glow does the lifting a gradient used
+   to, without putting a light stop under a white label. */
+.btn { background: var(--teal); color: #06140E; box-shadow: var(--glow); }
 .btn:hover { filter: brightness(1.12); }
 .btn.ghost { background: var(--surface-2); border-color: var(--line-strong);
              box-shadow: none; }
 .btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal); }
-.btn.amber { background: linear-gradient(103deg, #B9761D 0%, var(--amber) 100%);
+.btn.amber { background: var(--amber);
              color: #1B1206; box-shadow: 0 6px 22px rgba(240, 169, 60, .26); }
 
 .track > span { background: var(--grad); }
@@ -570,7 +576,8 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 .pane.tight { flex-grow: 0; padding-bottom: 0; }
 
 .langpick { background: var(--surface-2); }
-.langpick.on { background: var(--grad); border-color: transparent; color: #fff; }
+.langpick.on { background: var(--teal); border-color: transparent;
+               color: #06140E; }
 
 /* Selection and scrollbar, because leaving them at browser defaults is what
    makes a dark page look like a page somebody forgot to finish. */
