@@ -104,6 +104,55 @@ tablet with any DIN starting 28 and open **Learn**.
 
 Close every tab and reopen them. Everything is still there.
 
+## The five-minute presentation
+
+The deck (five content slides, a trailer before it and a demo slide after) ends
+on a live walkthrough of J. Whitfield, DIN `28-A-0931`, on the deployed
+`bridge-fcf` service. This is that walkthrough, in the deck's order, so the
+slide and the app say the same thing.
+
+| Deck slide | What the room sees | Where it lives |
+| --- | --- | --- |
+| 1 of 5, start before release | The survey figure is 9 of 12 who wanted to see their report before release. One person skipped it, so the denominator is 12, not the 13 who answered. | `maine_peer_survey` in `app/sources.py`, with its limits |
+| 2 of 5, three routes, one case | Tablet, helper phone, coordinator desk. Only the tablet is toured live. | `app/surfaces.py` |
+| 3 of 5, team decisions, AI assistance | Spanish is the eleven lessons, 173 strings, all marked Needs work, stored in the app and never translated live. Intake and the report walkthrough are English. | `docs/TRANSLATION.md`, `docs/SCOPE.md` item 8 |
+| 4 of 5, deployment choices and limits | Render free plan, container-local data that resets on restart. Demo data only. | `render.yaml`, `docs/DEPLOY.md` |
+| 5 of 5, live walkthrough | Choose a path, learn about credit, see the case status. | below |
+
+**Before the room arrives**
+
+1. Open `/demo/restart`, pick J. Whitfield and restart him. He is the one seeded
+   person who has not chosen a path, and the first screen is the point. Do it
+   beforehand, not in front of people: the restart clears his PIN and course
+   progress.
+2. Sign in once yourself to check it works. Nobody's PIN is seeded, so the
+   first sign-in asks you to choose one. A free instance that has slept
+   reseeds, which clears the PIN again, so check within the hour.
+3. The deployed sign-in asks an arithmetic question first (`BRIDGE_CAPTCHA` is
+   on in `render.yaml`). It is not part of the product and it is worth knowing
+   before it appears on a projector.
+4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
+   is on). The other two surfaces are reachable by URL and are not toured.
+
+**The walkthrough**
+
+1. **Choose a path.** After the PIN he is asked what he wants to do first, in
+   two sentences. Pick **Learn how credit works**. The switch to change it is
+   in the header of every tablet screen.
+2. **Learn about credit.** The course opens on *The three pieces of paper*,
+   because he releases in 21 days and is inside the 120 day window. The Social
+   Security card deadline has already passed and the screen says so. Say that
+   out loud rather than being surprised by it. Open one lesson and let it save
+   where you stop.
+3. **See the case status.** **Your case** in the header. It reads "People are
+   working on this while you wait", offers the course again, says his reports
+   have not arrived, and names Ms. Reyes as handling it through the program
+   because nobody outside is authorized yet. "Not yet triaged" is where a
+   coordinator has to do human review. It is not a failed automated step.
+
+If he is already past the first choice, follow the live state. If the app
+stalls, play the recording and keep talking.
+
 ## Showing the tablet on its own
 
 Some rooms only get the tablet. Set `BRIDGE_TABLET_ONLY=on` and the helper and
