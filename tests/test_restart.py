@@ -91,6 +91,25 @@ def test_a_restart_survives_a_restart_of_the_process(client):
     assert marcus and not any(a.get("pin_hash") for a in marcus)
 
 
+def test_restarting_somebody_who_opened_their_own_case_removes_it_rather_than_crashing(client):
+    """A DIN typed on the tablet is never in the seed, so there is no seeded
+    day to return them to. The restart page listed them and 500ed on click."""
+    from app.identifiers import parse
+    from app.routes.access import _open_a_case
+    from app.store import STATE
+
+    _open_a_case(parse("28-Q-7788"))
+    cid = "din-28q7788"
+    assert cid in STATE.clients
+
+    response = client.post("/demo/restart", data={"client_id": cid})
+
+    assert response.status_code == 200
+    assert cid not in STATE.clients
+    assert not any(a.get("subject_id") == cid for a in STATE.accounts.values())
+    assert _open_a_case(parse("28-Q-7788")) is not None
+
+
 def test_an_unknown_id_is_a_404_rather_than_a_silent_nothing(client):
     assert client.post("/demo/restart",
                        data={"client_id": "nobody"}).status_code == 404
