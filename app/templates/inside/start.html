@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}What do you want to do?{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ client.display_name }}</span>
+    {# The course is one tap from every tablet screen, and this is one. A
+       person who has not answered the question yet has lost nothing. #}
+    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>What do you want to do first?</h1>
+    <p class="lede">Either one is fine, and you can change your mind whenever
+      you want. Nothing you pick here closes anything off.</p>
+
+    {# Two choices, one screen, no third option dressed up as help. A person
+       who picked in ten seconds and picked wrong is two taps from the other
+       one, which is why this asks rather than explains. #}
+    <div class="stack" style="margin-top:20px">
+      {% for path in paths %}
+      <form method="post" action="/inside/start">
+        <input type="hidden" name="path" value="{{ path.key }}">
+        <div class="card accent{{ ' good' if chosen and chosen.key == path.key }}">
+          {% if chosen and chosen.key == path.key %}
+          <span class="tag green">What you are doing now</span>
+          {% endif %}
+          <h2>{{ path.label }}</h2>
+          <p class="small">{{ path.blurb }}</p>
+          <button class="btn wide" type="submit">{{ path.cta }}</button>
+        </div>
+      </form>
+      {% endfor %}
+    </div>
+
+    <p class="tiny" style="margin-top:20px">The lessons are open to you either
+      way. Working on your credit does not mean waiting to learn about it.</p>
+  </div>
+</div>
+{% endblock %}

@@ -83,6 +83,10 @@ class Client:
     # Where this person has got to reading each of their own reports, and what
     # they said about it. Keyed by the report's position. See app/walkthrough.py.
     report_review: dict = field(default_factory=dict)
+    # Which of the two paths they chose on the way in, or "" for not yet
+    # asked. It steers where /inside lands them and what the screens push
+    # toward; it never decides what they are allowed to reach. See app/paths.py.
+    path: str = ""
     # Where this person has got to in the credit course, per lesson.
     # A plain dict so it survives the JSON round trip and crosses to the
     # standalone build without a schema. See app/lessons.py.
@@ -311,6 +315,8 @@ def seed() -> None:
         facility="Sing Sing Correctional Facility",
         display_name="Marcus W.",
         first_name="Marcus",
+        # A person mid-dispute chose to work their credit a long time ago.
+        path="credit",
         release_date=(today + timedelta(days=118)).isoformat(),
         case_state="errors_present",
         state_label="Errors on the report",
@@ -357,7 +363,7 @@ report_summary="Thin file, two disputed items",
 
     others = [
         Client(
-            id="m-alvarez", din="28B0042", nysid="00000022K",
+            id="m-alvarez", din="28B0042", nysid="00000022K", path="credit",
             facility="Bedford Hills Correctional Facility", display_name="M. Alvarez", first_name="Maria",
             release_date=(today + timedelta(days=9)).isoformat(),
             case_state="errors_present", state_label="Errors present",
@@ -391,7 +397,7 @@ report_summary="Thin file, two disputed items",
 plan_step="Triage session not yet held",
         ),
         Client(
-            id="r-osei", din="28C2204", nysid="00000044J",
+            id="r-osei", din="28C2204", nysid="00000044J", path="credit",
             facility="Fishkill Correctional Facility", display_name="R. Osei", first_name="Rashid",
             release_date=(today + timedelta(days=64)).isoformat(),
             case_state="credit_invisible", state_label="Credit invisible",
@@ -408,7 +414,7 @@ report_summary="No file found on two of three bureaus",
             },
         ),
         Client(
-            id="t-brennan", din="28D0775", nysid="00000055H",
+            id="t-brennan", din="28D0775", nysid="00000055H", path="credit",
             facility="Woodbourne Correctional Facility", display_name="T. Brennan", first_name="Tom",
             release_date=(today - timedelta(days=42)).isoformat(),
             case_state="damaged_file", state_label="Damaged file",

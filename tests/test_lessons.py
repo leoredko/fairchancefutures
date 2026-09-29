@@ -158,8 +158,8 @@ def test_the_course_is_reachable_from_every_tablet_screen(inside):
     This test used to leave out the intake flow, and so did the template, on
     the theory that a second exit next to a question loses somebody's place.
     That was wrong twice over: every answer is saved as it is given, so
-    stepping out costs nothing, and a person part way through six questions
-    about credit has more reason to reach an explanation than less.
+    stepping out costs nothing, and a person part way through a set of
+    questions about credit has more reason to reach an explanation than less.
     """
     for url in ("/inside/intake/1", "/inside/intake/4", "/inside/how-this-works",
                 "/inside/case", "/inside/report", "/inside/where-you-stand",
@@ -171,6 +171,7 @@ def test_the_course_is_reachable_from_every_tablet_screen(inside):
 def test_stepping_out_of_intake_comes_back_to_the_question(client):
     """Not to a case screen with nothing on it yet."""
     signed_in = sign_in_inside(client, identifier="28A0931")   # no intake yet
+    signed_in.post("/inside/start", data={"path": "credit"})   # working the case
     course = signed_in.get("/inside/learn").text
     assert 'href="/inside"' in course
     assert "Back to my questions" in course

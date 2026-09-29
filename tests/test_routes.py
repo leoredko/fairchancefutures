@@ -425,11 +425,15 @@ def test_a_seeded_client_with_a_live_case_lands_on_it_not_on_question_one(client
     assert landed.headers["location"] == "/inside/case"
 
 
-def test_the_one_client_who_has_not_started_still_lands_on_intake(client):
-    """J. Whitfield is the fresh case on purpose, so he keeps question one."""
+def test_somebody_who_has_not_chosen_a_path_is_asked_before_anything_else(client):
+    """J. Whitfield is the fresh case on purpose, so he is the one who gets asked.
+
+    Nobody is dropped into intake any more. Intake is one of two things a
+    person can be doing here, and which one is theirs to say.
+    """
     signed_in = sign_in_inside(client, identifier="28A0931")
     landed = signed_in.get("/inside", follow_redirects=False)
-    assert "/inside/intake/" in landed.headers["location"]
+    assert landed.headers["location"] == "/inside/start"
 
 
 def test_seeded_intake_answers_prefill_the_triage_form(staff):

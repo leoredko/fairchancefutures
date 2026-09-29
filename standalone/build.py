@@ -29,6 +29,7 @@ def rules() -> dict:
     from app import facilities as facilities_module
     from app.bureaus import ANNUAL_REPORT_REQUEST, BUREAUS
     from app.letters import DISPUTE_TEMPLATE, REPORT_REQUEST_TEMPLATE
+    from app.paths import PATHS
     from app.questions import INSIDE_QUESTIONS, STAFF_QUESTIONS, teaching_for
     from app.report import LINE_FORMAT, SCANNER_NOTE
     from app.lessons import CURRICULUM, TOTAL_MINUTES
@@ -56,6 +57,10 @@ def rules() -> dict:
         "built": date.today().isoformat(),
         "states": [
             {"key": s.value, "label": STATE_LABEL[s], **PATH[s]} for s in State
+        ],
+        "paths": [
+            {"key": p.key, "label": p.label, "blurb": p.blurb,
+             "cta": p.cta, "queueLabel": p.queue_label} for p in PATHS
         ],
         "insideQuestions": [question(q) for q in INSIDE_QUESTIONS],
         "staffQuestions": [question(q) for q in STAFF_QUESTIONS],
