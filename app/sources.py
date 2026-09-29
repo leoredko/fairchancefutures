@@ -648,6 +648,132 @@ def cite(key: str) -> str:
 # Practitioner testimony rather than law. Kept separate from FACTS on purpose:
 # one interview is evidence, and it is not the same kind of evidence as a
 # statute. The UI labels these as an interview wherever it shows them.
+@dataclass(frozen=True)
+class SurveyFinding:
+    """One thing a survey supports, carrying the count it rests on.
+
+    The count sits on the record rather than inside the sentence so a reader
+    can do the division themselves, and so a test can refuse a finding that
+    claims more responses than the survey collected. Thirteen people is a
+    number you say out loud, not a percentage you hide behind.
+    """
+
+    statement: str
+    count: int
+    of: int
+
+    def cite(self) -> str:
+        return f"{self.statement} ({self.count} of {self.of})"
+
+
+@dataclass(frozen=True)
+class Survey:
+    """Field evidence, and a third kind of it.
+
+    A statute is a statute. The Cornish interview is one practitioner. This is
+    a small number of people who have the problem, answering the same questions
+    as each other, which is the only one of the three that produces counts.
+    None of them substitutes for another, so each is labelled by kind wherever
+    it is cited.
+    """
+
+    key: str
+    title: str
+    who_ran_it: str
+    where: str
+    fielded: str
+    responses: int
+    method: str
+    findings: tuple[SurveyFinding, ...]
+    limitations: tuple[str, ...]
+
+
+# Run by a fellow of this cohort among people inside his own facility, which is
+# why it exists at all: nobody on this team could have collected it. It is the
+# only evidence Bridge has from people who actually have the problem, and the
+# first thing it did was correct us. We had assumed people inside would not
+# know a free report existed. Eleven of thirteen did. The gap is not that the
+# entitlement is unknown, it is that knowing about it changes nothing from a
+# tablet with no route out, and that almost nobody knows what to do with an
+# error once they are looking at one.
+SURVEYS: tuple[Survey, ...] = (
+    Survey(
+        key="maine_peer_survey",
+        title="Bridge: Credit and Reentry Interest Survey",
+        who_ran_it=(
+            "A fellow of the 2026 Fair Chance Futures AI Lab cohort, among "
+            "people incarcerated alongside him"
+        ),
+        where="A correctional facility in Maine, not named on this record",
+        fielded="2026-09-25 to 2026-09-27",
+        responses=13,
+        method=(
+            "A Google Form, answered directly by people inside. Peer "
+            "administered rather than run by this team."
+        ),
+        findings=(
+            SurveyFinding(
+                "Named money and credit a priority before release, more than "
+                "chose any other option, ahead of work, family relationships "
+                "and housing.",
+                9, 13,
+            ),
+            SurveyFinding(
+                "Would not know what to do next after finding a mistake on a "
+                "credit report, answering no or only somewhat.",
+                8, 13,
+            ),
+            SurveyFinding(
+                "Want to see their credit report before release. One person "
+                "skipped the question, so this one is out of twelve.",
+                9, 12,
+            ),
+            SurveyFinding(
+                "Have seen their own credit report at any point while they "
+                "have been inside.",
+                2, 13,
+            ),
+            SurveyFinding(
+                "Already knew a free annual copy can be requested from each of "
+                "the three nationwide bureaus.",
+                11, 13,
+            ),
+            SurveyFinding(
+                "Would rather work through an application on their own than "
+                "take any of the offered kinds of help, the most common answer.",
+                5, 13,
+            ),
+            SurveyFinding(
+                "Chose asking family or a friend as the help they would most "
+                "want, the least common answer but one.",
+                1, 13,
+            ),
+        ),
+        limitations=(
+            "Thirteen responses from one facility in Maine. Bridge is built "
+            "for New York State, and nothing here establishes anything about "
+            "a DOCCS population or about people coming home generally.",
+
+            "A convenience sample. These are people one fellow could reach, "
+            "who chose to answer. Nobody was sampled at random.",
+
+            "Both free-text questions came back empty on all thirteen "
+            "responses: the one asking what would make the tool hard to use, "
+            "and the one asking for an estimated release date. The survey "
+            "produced counts and not one quotation.",
+
+            "Knowledge is self-reported. Eleven said they knew about the free "
+            "annual copy; nobody was asked to name the route, and the mail "
+            "route is the only one that works from inside.",
+
+            "The name of the fellow who ran it is not on this record yet, and "
+            "neither is how consent was taken. Both belong here before this "
+            "is cited outside the team.",
+        ),
+    ),
+)
+
+
 INTERVIEWS: tuple[dict, str] = (
     {
         "who": "Brianne Cornish, founder, FinEquity",

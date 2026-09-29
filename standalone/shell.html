@@ -2471,6 +2471,15 @@ route(/^\/citations$/, () => {
         ', ' + esc(i.when) + '</p>' +
         i.claims.map((c) => '<p class="tiny">&middot; ' + esc(c) + '</p>').join("")
       ).join("") + '</div>' : "") +
+    ((RULES.surveys && RULES.surveys.length) ? RULES.surveys.map((s) =>
+      '<div class="card soft" style="margin-top:16px">' +
+      '<h2>Survey of people inside</h2>' +
+      '<p class="small">' + esc(s.responses) + ' responses, ' + esc(s.fielded) +
+      '. ' + esc(s.who) + '. ' + esc(s.where) + '</p>' +
+      s.findings.map((f) => '<p class="tiny">&middot; ' + esc(f) + '</p>').join("") +
+      '<p class="small strong" style="margin-top:10px">What it cannot carry</p>' +
+      s.limitations.map((l) => '<p class="tiny">&middot; ' + esc(l) + '</p>').join("") +
+      '</div>').join("") : "") +
     '<div class="card soft" style="margin-top:16px"><h2>Bureau addresses</h2>' +
       '<p class="small">A dispute goes to all three. These move without ' +
       'announcement, so each carries where it came from.</p>' +

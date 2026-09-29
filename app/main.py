@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
-from app.sources import FACTS, OPEN_QUESTIONS, SIMPLIFICATIONS
+from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS, SIMPLIFICATIONS, SURVEYS
 from app import labels
 from app.deps import templates
 from app.routes import access, demo, family, inside, staff
@@ -154,6 +154,8 @@ def citations(request: Request):
         request, "citations.html",
         {"facts": list(FACTS.values()), "open_questions": OPEN_QUESTIONS,
          "simplifications": SIMPLIFICATIONS,
+         "interviews": [i for i in INTERVIEWS if isinstance(i, dict)],
+         "surveys": SURVEYS,
          "bureaus": BUREAUS,
          "stale": freshness.stale(),
          "unread": centers.needs_a_human_read(),

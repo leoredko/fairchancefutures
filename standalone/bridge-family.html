@@ -1413,6 +1413,32 @@ const RULES = {
    ]
   }
  ],
+ "surveys": [
+  {
+   "title": "Bridge: Credit and Reentry Interest Survey",
+   "who": "A fellow of the 2026 Fair Chance Futures AI Lab cohort, among people incarcerated alongside him",
+   "where": "A correctional facility in Maine, not named on this record",
+   "fielded": "2026-09-25 to 2026-09-27",
+   "responses": 13,
+   "method": "A Google Form, answered directly by people inside. Peer administered rather than run by this team.",
+   "findings": [
+    "Named money and credit a priority before release, more than chose any other option, ahead of work, family relationships and housing. (9 of 13)",
+    "Would not know what to do next after finding a mistake on a credit report, answering no or only somewhat. (8 of 13)",
+    "Want to see their credit report before release. One person skipped the question, so this one is out of twelve. (9 of 12)",
+    "Have seen their own credit report at any point while they have been inside. (2 of 13)",
+    "Already knew a free annual copy can be requested from each of the three nationwide bureaus. (11 of 13)",
+    "Would rather work through an application on their own than take any of the offered kinds of help, the most common answer. (5 of 13)",
+    "Chose asking family or a friend as the help they would most want, the least common answer but one. (1 of 13)"
+   ],
+   "limitations": [
+    "Thirteen responses from one facility in Maine. Bridge is built for New York State, and nothing here establishes anything about a DOCCS population or about people coming home generally.",
+    "A convenience sample. These are people one fellow could reach, who chose to answer. Nobody was sampled at random.",
+    "Both free-text questions came back empty on all thirteen responses: the one asking what would make the tool hard to use, and the one asking for an estimated release date. The survey produced counts and not one quotation.",
+    "Knowledge is self-reported. Eleven said they knew about the free annual copy; nobody was asked to name the route, and the mail route is the only one that works from inside.",
+    "The name of the fellow who ran it is not on this record yet, and neither is how consent was taken. Both belong here before this is cited outside the team."
+   ]
+  }
+ ],
  "bureaus": [
   {
    "name": "Equifax",
@@ -4857,6 +4883,15 @@ route(/^\/citations$/, () => {
         ', ' + esc(i.when) + '</p>' +
         i.claims.map((c) => '<p class="tiny">&middot; ' + esc(c) + '</p>').join("")
       ).join("") + '</div>' : "") +
+    ((RULES.surveys && RULES.surveys.length) ? RULES.surveys.map((s) =>
+      '<div class="card soft" style="margin-top:16px">' +
+      '<h2>Survey of people inside</h2>' +
+      '<p class="small">' + esc(s.responses) + ' responses, ' + esc(s.fielded) +
+      '. ' + esc(s.who) + '. ' + esc(s.where) + '</p>' +
+      s.findings.map((f) => '<p class="tiny">&middot; ' + esc(f) + '</p>').join("") +
+      '<p class="small strong" style="margin-top:10px">What it cannot carry</p>' +
+      s.limitations.map((l) => '<p class="tiny">&middot; ' + esc(l) + '</p>').join("") +
+      '</div>').join("") : "") +
     '<div class="card soft" style="margin-top:16px"><h2>Bureau addresses</h2>' +
       '<p class="small">A dispute goes to all three. These move without ' +
       'announcement, so each carries where it came from.</p>' +

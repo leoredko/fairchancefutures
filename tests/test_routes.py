@@ -342,6 +342,23 @@ def test_citations_page_lists_every_fact_with_its_source(client):
         assert fact.url in html
 
 
+def test_citations_page_shows_field_evidence_with_what_it_cannot_carry(client):
+    """The survey and the interview render on the same page as the statutes,
+    kept apart from them and labelled by kind. A finding shown without its
+    limits invites somebody to read thirteen people as a population."""
+    from app.sources import SURVEYS
+
+    html = client.get("/citations").text
+    assert "Practitioner interview" in html
+    for survey in SURVEYS:
+        assert "Survey of people inside" in html
+        assert "What it cannot carry" in html
+        for finding in survey.findings:
+            assert f"{finding.count} of {finding.of}" in html
+        for limit in survey.limitations:
+            assert limit in html
+
+
 def test_the_app_installs_as_a_tablet_app(client):
     manifest = client.get("/manifest.webmanifest")
     assert manifest.status_code == 200
