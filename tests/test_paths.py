@@ -125,3 +125,31 @@ def test_the_queue_never_shows_the_stored_key(client):
     page = sign_in_staff(client).get("/staff").text
     assert ">credit<" not in page
     assert ">learn<" not in page
+
+
+def test_the_tablet_nav_is_only_ever_in_the_bar(inside):
+    """A pill outside the bar is an unstyled link, and it showed.
+
+    `.pill` exists in the stylesheet only as `.bar .pill`, so a pill group left
+    in the body of a screen renders as bare text: "The courseSign out" ran
+    together at the foot of Where you stand and of the authorization screen.
+    Caught by photographing the screens, which no assertion on markup would
+    have found.
+    """
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1] / "app" / "templates" / "inside"
+    stray = []
+    for template in sorted(root.glob("*.html")):
+        depth = 0
+        for number, line in enumerate(template.read_text().splitlines(), 1):
+            opened = line.count("<div")
+            closed = line.count("</div>")
+            inside_bar = depth > 0 or '<div class="bar">' in line
+            if 'class="pill"' in line and not inside_bar:
+                stray.append(f"{template.name}:{number}")
+            if '<div class="bar">' in line:
+                depth = opened - closed
+            elif depth:
+                depth = max(0, depth + opened - closed)
+    assert stray == []
