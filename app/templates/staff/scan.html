@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Scan a report{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <a class="pill btn ghost" href="/staff/{{ client.id }}" style="padding:6px 12px;font-size:13px">&larr; {{ client.display_name }}</a>
   <span class="wordmark">Scan a report</span>
   <div class="right">{{ coordinator.display_name }}</div>
 </div>
 
-<div class="desk" style="padding-top:28px; max-width:760px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px; max-width:760px">
   <h1>Read the paper into the record.</h1>
   <p class="lede" style="margin:10px 0 22px">{{ client.display_name }} brought
     the report they received. Scan it here and it appears on their tablet, with

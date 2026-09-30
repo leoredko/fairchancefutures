@@ -2092,6 +2092,251 @@ msgid "Back to my case"
 msgstr "Volver a mi caso"
 
 #, fuzzy
+msgctxt "display.dock"
+msgid "Display"
+msgstr "Pantalla"
+
+#, fuzzy
+msgctxt "display.skip"
+msgid "Skip to the page"
+msgstr "Ir a la página"
+
+#, fuzzy
+msgctxt "display.title"
+msgid "Display"
+msgstr "Pantalla"
+
+#, fuzzy
+msgctxt "display.heading"
+msgid "How this looks"
+msgstr "Cómo se ve esto"
+
+#, fuzzy
+msgctxt "display.lede"
+msgid "These stay on this tablet until somebody changes them."
+msgstr "Esto se queda en esta tableta hasta que alguien lo cambie."
+
+#, fuzzy
+msgctxt "display.done"
+msgid "Done"
+msgstr "Listo"
+
+#, fuzzy
+msgctxt "display.selected"
+msgid "Selected"
+msgstr "Elegido"
+
+#, fuzzy
+msgctxt "display.theme"
+msgid "Color"
+msgstr "Colores"
+
+#, fuzzy
+msgctxt "display.theme.dark"
+msgid "Dark"
+msgstr "Oscuro"
+
+#, fuzzy
+msgctxt "display.theme.dark.note"
+msgid "The usual look."
+msgstr "El aspecto de siempre."
+
+#, fuzzy
+msgctxt "display.theme.light"
+msgid "Light"
+msgstr "Claro"
+
+#, fuzzy
+msgctxt "display.theme.light.note"
+msgid "Dark writing on a white page."
+msgstr "Letras oscuras sobre una página blanca."
+
+#, fuzzy
+msgctxt "display.theme.contrast"
+msgid "High contrast"
+msgstr "Alto contraste"
+
+#, fuzzy
+msgctxt "display.theme.contrast.note"
+msgid "Black and white with yellow. No tints."
+msgstr "Blanco y negro con amarillo. Sin tonos suaves."
+
+#, fuzzy
+msgctxt "display.size"
+msgid "Text size"
+msgstr "Tamaño del texto"
+
+#, fuzzy
+msgctxt "display.size.normal"
+msgid "Normal"
+msgstr "Tamaño normal"
+
+#, fuzzy
+msgctxt "display.size.normal.note"
+msgid "The usual size."
+msgstr "El tamaño de siempre."
+
+#, fuzzy
+msgctxt "display.size.large"
+msgid "Large"
+msgstr "Grande"
+
+#, fuzzy
+msgctxt "display.size.large.note"
+msgid "A bit bigger."
+msgstr "Un poco más grande."
+
+#, fuzzy
+msgctxt "display.size.xlarge"
+msgid "Largest"
+msgstr "Muy grande"
+
+#, fuzzy
+msgctxt "display.size.xlarge.note"
+msgid "As big as it goes."
+msgstr "Lo más grande que se puede."
+
+#, fuzzy
+msgctxt "display.motion"
+msgid "Motion"
+msgstr "Movimiento"
+
+#, fuzzy
+msgctxt "display.motion.full"
+msgid "Normal"
+msgstr "Movimiento normal"
+
+#, fuzzy
+msgctxt "display.motion.full.note"
+msgid "Screens fade and slide a little."
+msgstr "Las pantallas aparecen y se deslizan un poco."
+
+#, fuzzy
+msgctxt "display.motion.reduced"
+msgid "Less motion"
+msgstr "Menos movimiento"
+
+#, fuzzy
+msgctxt "display.motion.reduced.note"
+msgid "Nothing moves on its own."
+msgstr "Nada se mueve solo."
+
+#, fuzzy
+msgctxt "display.read"
+msgid "Read aloud"
+msgstr "Lectura en voz alta"
+
+#, fuzzy
+msgctxt "display.read.off"
+msgid "Off"
+msgstr "Apagada"
+
+#, fuzzy
+msgctxt "display.read.off.note"
+msgid "Nothing is read to you."
+msgstr "No se te lee nada."
+
+#, fuzzy
+msgctxt "display.read.on"
+msgid "On"
+msgstr "Encendida"
+
+#, fuzzy
+msgctxt "display.read.on.note"
+msgid ""
+"A Listen button on each screen reads it to you. Use headphones in shared "
+"spaces."
+msgstr ""
+"Un botón Escuchar en cada pantalla te la lee. Usa audífonos en los espacios "
+"compartidos."
+
+#, fuzzy
+msgctxt "display.dictate"
+msgid "Voice typing"
+msgstr "Escribir con la voz"
+
+#, fuzzy
+msgctxt "display.dictate.off"
+msgid "Off"
+msgstr "Apagado"
+
+#, fuzzy
+msgctxt "display.dictate.off.note"
+msgid "Nothing listens."
+msgstr "Nada escucha."
+
+#, fuzzy
+msgctxt "display.dictate.on"
+msgid "On"
+msgstr "Encendido"
+
+#, fuzzy
+msgctxt "display.dictate.on.note"
+msgid ""
+"Adds a Dictate button to the dispute letter on the coordinator's desk. Never"
+" on the tablet, and never on account numbers."
+msgstr ""
+"Agrega un botón Dictar a la carta de disputa en el escritorio del "
+"coordinador. Nunca en la tableta, y nunca en números de cuenta."
+
+#, fuzzy
+msgctxt "dictate.start"
+msgid "Dictate"
+msgstr "Dictar"
+
+#, fuzzy
+msgctxt "dictate.stop"
+msgid "Stop dictating"
+msgstr "Dejar de dictar"
+
+#, fuzzy
+msgctxt "dictate.listening"
+msgid "Listening. The audio stays on this computer."
+msgstr "Escuchando. El audio se queda en esta computadora."
+
+#, fuzzy
+msgctxt "dictate.unavailable"
+msgid ""
+"Voice typing is off. This browser cannot recognize speech on this device "
+"without sending the audio out."
+msgstr ""
+"Escribir con la voz está apagado. Este navegador no puede reconocer la voz "
+"en este dispositivo sin enviar el audio a otro lado."
+
+#, fuzzy
+msgctxt "dictate.ready"
+msgid "Voice typing is ready. It works on this device only."
+msgstr "Escribir con la voz está listo. Funciona solo en este dispositivo."
+
+#, fuzzy
+msgctxt "read.listen"
+msgid "Listen"
+msgstr "Escuchar"
+
+#, fuzzy
+msgctxt "read.stop"
+msgid "Stop"
+msgstr "Parar"
+
+#, fuzzy
+msgctxt "read.headphones"
+msgid "Use headphones in shared spaces."
+msgstr "Usa audífonos en los espacios compartidos."
+
+#, fuzzy
+msgctxt "read.unavailable"
+msgid ""
+"This tablet has no voice that works without a network, so read aloud is off."
+msgstr ""
+"Esta tableta no tiene una voz que funcione sin conexión a internet, así que "
+"la lectura en voz alta está desactivada."
+
+#, fuzzy
+msgctxt "read.ready"
+msgid "Read aloud is ready. The voice stays on this tablet."
+msgstr "La lectura en voz alta está lista. La voz se queda en esta tableta."
+
+#, fuzzy
 msgctxt "error.wrong_answer"
 msgid "That was not the right answer. Here is another one."
 msgstr "Esa no era la respuesta correcta. Aquí tienes otra pregunta."

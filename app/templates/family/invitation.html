@@ -2,12 +2,12 @@
 {% block title %}Family, the invitation{% endblock %}
 {% block body %}
 <div class="phone">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">Invitation</span>
       </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     <h1>{{ client.first_name }} asked you to help.</h1>
     <p class="lede">{{ homecoming }}. There are things he can't do from
       inside, and you can.</p>
@@ -52,6 +52,7 @@
         <label class="check"><input type="checkbox" name="contactable" required>
           <span class="small">Ms. Reyes, his counselor, can contact me</span></label>
         <input class="choice" name="helper_name" placeholder="Your first name"
+               aria-label="Your first name"
                style="font-size:18px" value="{{ suggested_name or '' }}" required>
         <button class="btn wide" type="submit">Yes, I'll help</button>
       </div>

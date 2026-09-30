@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Triage, the four states{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <a class="pill" href="/staff">&larr; Queue</a>
   <span class="wordmark">Triage, {{ client.display_name }}</span>
   <div class="right"></div>
 </div>
 
-<div class="desk" style="padding-top:28px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px">
+  <h1 class="sr">Triage</h1>
   <p class="lede">One classification, one path. Built for a 30 to
     45 minute session.</p>
 

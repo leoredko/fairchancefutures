@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ lang_code() }}">
+<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}" data-read="{{ display().read }}" data-voice="{{ display().dictate }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Bridge{% endblock %}</title>
-<meta name="theme-color" content="#08120E">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{ theme_color[display().theme] }}">
+<meta name="color-scheme" content="{{ color_scheme(display().theme) }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bridge">
@@ -16,6 +16,7 @@
 {% block head %}{% endblock %}
 </head>
 <body class="{% if show_notes %}show-notes{% endif %}">
+<a class="skip" href="#content">{{ t('display.skip') }}</a>
 
 {# The mark and the wordmark, defined once and referenced with <use>.
 
@@ -59,6 +60,25 @@
 </div>
 
 {% block body %}{% endblock %}
+{% block dock %}<nav aria-label="{{ t('display.dock') }}"><a class="dock" href="/display?back={{ request.url.path|urlencode }}">{{ t('display.dock') }}</a></nav>{% endblock %}
+{# Loaded only for somebody who turned read aloud on, so a tablet that has not
+   asked for it never touches the speaker. The words are handed over here
+   because the script has no other way to know the language of the page. #}
+{% if display().read == 'on' %}
+<div id="listen-config" hidden data-listen="{{ t('read.listen') }}" data-stop="{{ t('read.stop') }}"
+     data-headphones="{{ t('read.headphones') }}" data-unavailable="{{ t('read.unavailable') }}"
+     data-ready="{{ t('read.ready') }}"></div>
+<script src="/static/listen.js" defer></script>
+{% endif %}
+{# Same reasoning as read aloud: not loaded unless asked for. And it only does
+   anything to a field that carries `data-dictate`, which is on the coordinator's
+   letter and nowhere on the tablet. #}
+{% if display().dictate == 'on' %}
+<div id="dictate-config" hidden data-start="{{ t('dictate.start') }}" data-stop="{{ t('dictate.stop') }}"
+     data-listening="{{ t('dictate.listening') }}" data-unavailable="{{ t('dictate.unavailable') }}"
+     data-ready="{{ t('dictate.ready') }}"></div>
+<script src="/static/dictate.js" defer></script>
+{% endif %}
 <script src="/static/exclusive.js" defer></script>
 <script>
   // The opening. Once a session, skippable by touching it, and skipped
@@ -68,8 +88,9 @@
   (function () {
     var splash = document.getElementById("splash");
     if (!splash) return;
-    var calm = window.matchMedia
-      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var calm = (window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      || document.documentElement.dataset.motion === "reduced";
     var seen;
     try { seen = sessionStorage.getItem("bridge.splash"); } catch (e) { seen = "1"; }
     if (seen || calm) return;

@@ -25,7 +25,7 @@ from app.bureaus import BUREAUS
 from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS, SIMPLIFICATIONS, SURVEYS
 from app import labels
 from app.deps import templates
-from app.routes import access, demo, family, inside, staff
+from app.routes import access, demo, display, family, inside, staff
 from app.store import STATE, boot, review_log
 from app.session import NotSignedIn, current, redirect_to_signin
 from app.surfaces import CAPABILITIES, DENIAL_REASON, Surface, SurfaceDenied
@@ -40,6 +40,7 @@ app = FastAPI(title="Bridge", lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(access.router)
+app.include_router(display.router)
 app.include_router(demo.router)
 app.include_router(inside.router)
 app.include_router(family.router)

@@ -2,7 +2,7 @@
 {% block title %}When you go home{% endblock %}
 {% block body %}
 <div class="tablet">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ client.display_name }} &middot; When you go home</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
@@ -11,7 +11,7 @@
     <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
   </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     <h1>Somebody to keep working with.</h1>
     <p class="lede">A dispute can still be running when you walk out, and by
       then your coordinator is no longer holding it. Some cities have a free

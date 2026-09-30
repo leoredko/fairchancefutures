@@ -162,6 +162,60 @@ UI: dict[str, str] = {
                      "somebody else has to start for you.",
     "end.back_case": "Back to my case",
 
+    # -- how the tablet looks, reachable from every page --------------------
+    "display.dock": "Display",
+    "display.skip": "Skip to the page",
+    "display.title": "Display",
+    "display.heading": "How this looks",
+    "display.lede": "These stay on this tablet until somebody changes them.",
+    "display.done": "Done",
+    "display.selected": "Selected",
+    "display.theme": "Color",
+    "display.theme.dark": "Dark",
+    "display.theme.dark.note": "The usual look.",
+    "display.theme.light": "Light",
+    "display.theme.light.note": "Dark writing on a white page.",
+    "display.theme.contrast": "High contrast",
+    "display.theme.contrast.note": "Black and white with yellow. No tints.",
+    "display.size": "Text size",
+    "display.size.normal": "Normal",
+    "display.size.normal.note": "The usual size.",
+    "display.size.large": "Large",
+    "display.size.large.note": "A bit bigger.",
+    "display.size.xlarge": "Largest",
+    "display.size.xlarge.note": "As big as it goes.",
+    "display.motion": "Motion",
+    "display.motion.full": "Normal",
+    "display.motion.full.note": "Screens fade and slide a little.",
+    "display.motion.reduced": "Less motion",
+    "display.motion.reduced.note": "Nothing moves on its own.",
+
+    "display.read": "Read aloud",
+    "display.read.off": "Off",
+    "display.read.off.note": "Nothing is read to you.",
+    "display.read.on": "On",
+    "display.read.on.note": "A Listen button on each screen reads it to you. Use "
+                            "headphones in shared spaces.",
+    "display.dictate": "Voice typing",
+    "display.dictate.off": "Off",
+    "display.dictate.off.note": "Nothing listens.",
+    "display.dictate.on": "On",
+    "display.dictate.on.note": "Adds a Dictate button to the dispute letter on the "
+                               "coordinator's desk. Never on the tablet, and never "
+                               "on account numbers.",
+    "dictate.start": "Dictate",
+    "dictate.stop": "Stop dictating",
+    "dictate.listening": "Listening. The audio stays on this computer.",
+    "dictate.unavailable": "Voice typing is off. This browser cannot recognize "
+                           "speech on this device without sending the audio out.",
+    "dictate.ready": "Voice typing is ready. It works on this device only.",
+    "read.listen": "Listen",
+    "read.stop": "Stop",
+    "read.headphones": "Use headphones in shared spaces.",
+    "read.unavailable": "This tablet has no voice that works without a network, "
+                        "so read aloud is off.",
+    "read.ready": "Read aloud is ready. The voice stays on this tablet.",
+
     # -- what goes wrong, as the person reads it ----------------------------
     "error.wrong_answer": "That was not the right answer. Here is another one.",
     "error.no_record": "No record here for {display}. Check the number, or ask "

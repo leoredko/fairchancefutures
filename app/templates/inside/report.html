@@ -2,7 +2,7 @@
 {% block title %}Your credit report{% endblock %}
 {% block body %}
 <div class="tablet">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ client.display_name }} &middot; Your reports</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
@@ -11,7 +11,7 @@
     <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
   </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     {% if not reports %}
     {% if waiting %}
     <div class="card good">
@@ -41,7 +41,7 @@
     </div>
     {% endif %}
     <div class="card soft">
-      <h3>You do not photograph anything</h3>
+      <h3 aria-level="2">You do not photograph anything</h3>
       <p class="small">There is no camera in this app and there does not need
         to be. The paper goes to your coordinator, the coordinator scans it,
         and it shows up here.</p>
@@ -99,7 +99,7 @@
 
     <h1>Your credit reports.</h1>
     <div class="card good">
-      <h3>Your Social Security number is blacked out</h3>
+      <h3 aria-level="2">Your Social Security number is blacked out</h3>
       <p class="small">Only the last four digits appear, on every page. The
         request asked them to leave the first five out, which the law lets you
         require, and this screen covers them again regardless.</p>
@@ -108,7 +108,7 @@
 
     {% if waiting %}
     <div class="card good">
-      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
+      <h3 aria-level="2">{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
         {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
         checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
       {% for r in waiting %}

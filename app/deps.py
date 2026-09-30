@@ -12,6 +12,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 from jinja2 import pass_context  # noqa: E402
 
+from app import display as _display  # noqa: E402
 from app import i18n as _i18n  # noqa: E402
 from app import labels as _labels  # noqa: E402
 from app import paths as _paths  # noqa: E402
@@ -44,6 +45,15 @@ def _lang(context) -> str:
     return _i18n.from_request(context["request"])
 
 
+@pass_context
+def _display_settings(context) -> dict:
+    """Colour, text size and motion for this tablet, for the <html> element."""
+    return _display.from_request(context["request"])
+
+
+templates.env.globals["display"] = _display_settings
+templates.env.globals["color_scheme"] = _display.color_scheme
+templates.env.globals["theme_color"] = _display.THEME_COLOR
 templates.env.globals["t"] = _t
 templates.env.globals["tr"] = _tr
 templates.env.globals["lang_code"] = _lang

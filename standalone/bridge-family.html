@@ -27,7 +27,7 @@
   --ink: #EFF6F2;
   --ink-2: #B2CBC1;
   --muted: #7E9990;
-  --faint: #5D766E;
+  --faint: #7A958B;
 
   /* surfaces, canvas first and then up. --page is a raised card rather than
      the page, which reads backwards but is what every rule below already
@@ -72,6 +72,30 @@
      getting lighter as it comes forward, plus a hairline, plus a coloured
      glow under anything that is actually the next thing to press. */
   --lift: 0 0 0 1px rgba(255, 255, 255, .02);
+
+  /* What a link and the focus ring are made of. Teal is the brand and is used
+     as a fill all over, but as text on a light page it measures 1.9, so text
+     and rings have their own tokens and the light and high contrast themes
+     move them. `--on-accent` is the label on anything filled with the brand
+     colour, dark in every theme because the fill is bright in every theme. */
+  --link: var(--teal);
+  --link-hover: var(--teal-ink);
+  --focus: var(--teal);
+  --on-accent: #06140E;
+  --btn-hover-ink: #06140E;
+  --on-green: var(--on-accent);
+
+  /* The tag and notice colours that used to be typed into the rules. */
+  --tag-teal-bd: #1F5343;   --tag-teal-fg: var(--teal-ink);  --tag-teal-bg: var(--teal-soft);
+  --tag-amber-bd: #6B4A1B;  --tag-amber-fg: #FFD08A;         --tag-amber-bg: #3A2810;
+  --tag-sky-bd: #1D3B57;    --tag-sky-fg: var(--sky);        --tag-sky-bg: var(--sky-soft);
+  --tag-green-bd: #1B4634;  --tag-green-fg: var(--green);    --tag-green-bg: var(--green-soft);
+  --tag-rose-bd: #4E1D28;   --tag-rose-fg: var(--rose);      --tag-rose-bg: var(--rose-soft);
+  --warn-bd: #4A3315;
+  --good-bd: #1B4634;
+  --denied-bd: #4E1D28;
+  --on-hero: var(--on-accent);
+  --field-bd: #5A8574;
   --lift-2: 0 8px 28px rgba(0, 0, 0, .45);
   --glow: 0 6px 22px rgba(45, 212, 160, .28);
   --grad: linear-gradient(103deg, var(--teal-deep) 0%, var(--teal) 55%, var(--cyan) 100%);
@@ -84,16 +108,16 @@ body {
   background: var(--surface);
   color: var(--ink);
   font-family: var(--body);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--teal); text-underline-offset: 2px; }
-a:hover { color: var(--teal-deep); }
+a { color: var(--link); text-underline-offset: 2px; }
+a:hover { color: var(--link-hover); }
 
 :focus-visible {
-  outline: 2.5px solid var(--teal);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -198,15 +222,15 @@ a:hover { color: var(--teal-deep); }
   position: sticky; top: 0; z-index: 20;
 }
 .bar .wordmark {
-  font-family: var(--display); font-weight: 700; font-size: 19px;
+  font-family: var(--display); font-weight: 700; font-size: 1.1875rem;
   letter-spacing: -.015em; color: #FFFFFF;
 }
-.bar .who { font-size: 14px; color: #BEDFD9; }
+.bar .who { font-size: 0.875rem; color: #BEDFD9; }
 .bar .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 .bar a { color: #EAF6F4; }
 .bar a:hover { color: #FFFFFF; }
 .bar .pill {
-  font-size: 13px; border: 1px solid rgba(255,255,255,.34);
+  font-size: 0.8125rem; border: 1px solid rgba(255,255,255,.34);
   border-radius: var(--r-pill); padding: 5px 13px; text-decoration: none;
   white-space: nowrap; color: #EAF6F4;
 }
@@ -220,17 +244,17 @@ a:hover { color: var(--teal-deep); }
 
 /* ---- type -------------------------------------------------------------- */
 
-h1 { font-family: var(--display); font-weight: 700; font-size: 33px;
+h1 { font-family: var(--display); font-weight: 700; font-size: 2.0625rem;
      line-height: 1.16; letter-spacing: -.02em; }
-.phone h1 { font-size: 26px; }
-h2 { font-family: var(--display); font-weight: 700; font-size: 20px;
+.phone h1 { font-size: 1.625rem; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 1.25rem;
      line-height: 1.25; letter-spacing: -.012em; }
-h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
+h3 { font-family: var(--display); font-weight: 600; font-size: 0.9375rem;
      letter-spacing: -.005em; color: var(--ink); }
 
-.lede  { font-size: 17.5px; line-height: 1.5; color: var(--ink-2); }
-.small { font-size: 14.5px; color: var(--ink-2); }
-.tiny  { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.lede  { font-size: 1.0938rem; line-height: 1.5; color: var(--ink-2); }
+.small { font-size: 0.9062rem; color: var(--ink-2); }
+.tiny  { font-size: 0.8125rem; line-height: 1.5; color: var(--muted); }
 .strong { font-weight: 600; color: var(--ink); }
 
 /* ---- progress ---------------------------------------------------------- */
@@ -251,16 +275,16 @@ h3 { font-family: var(--display); font-weight: 600; font-size: 15px;
 .choice {
   display: block; width: 100%; text-align: left;
   background: var(--page);
-  border: 2px solid var(--line-strong);
+  border: 2px solid var(--field-bd);
   border-radius: var(--r-lg);
-  padding: 20px; font: inherit; font-size: 19px; font-weight: 600;
+  padding: 20px; font: inherit; font-size: 1.1875rem; font-weight: 600;
   color: inherit; text-decoration: none; cursor: pointer;
   transition: border-color .14s ease, background .14s ease, transform .1s ease;
 }
 .choice:hover { border-color: var(--teal); background: var(--teal-soft); }
 .choice:active { transform: scale(.995); }
 .choice.selected { border-color: var(--teal); background: var(--teal-soft); }
-.choice .note { display: block; font-size: 14.5px; font-weight: 400;
+.choice .note { display: block; font-size: 0.9062rem; font-weight: 400;
                 color: var(--muted); margin-top: 6px; line-height: 1.45; }
 input.choice { font-weight: 500; }
 input.choice::placeholder { color: var(--faint); font-weight: 400; }
@@ -274,16 +298,16 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
   background: var(--teal);
   color: #06140E;
   border: 0; border-radius: var(--r);
-  padding: 14px 22px; font: inherit; font-weight: 600; font-size: 15.5px;
+  padding: 14px 22px; font: inherit; font-weight: 600; font-size: 0.9688rem;
   cursor: pointer; text-decoration: none; text-align: center;
   box-shadow: 0 1px 2px rgba(10, 92, 80, .28);
   transition: filter .14s ease, transform .1s ease;
 }
 .btn:hover { filter: brightness(1.07); color: #FFFFFF; }
 .btn:active { transform: translateY(1px); }
-.btn.wide { width: 100%; padding: 17px 22px; font-size: 17px; }
+.btn.wide { width: 100%; padding: 17px 22px; font-size: 1.0625rem; }
 .btn.ghost { background: var(--page); color: var(--teal-deep);
-             border: 1.5px solid var(--line-strong); box-shadow: none; }
+             border: 1.5px solid var(--field-bd); box-shadow: none; }
 .btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal);
                    color: var(--teal-deep); filter: none; }
 .btn.quiet { background: none; color: var(--muted); border: 0; box-shadow: none;
@@ -328,8 +352,8 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
   color: #FFFFFF; padding: 46px 32px 40px; border-radius: 0 0 28px 28px;
   margin-bottom: 28px;
 }
-.hero h1 { color: #FFFFFF; font-size: 38px; }
-.hero .lede { color: #CDE9E4; margin-top: 10px; font-size: 18px; }
+.hero h1 { color: var(--on-accent); font-size: 2.375rem; }
+.hero .lede { color: #CDE9E4; margin-top: 10px; font-size: 1.125rem; }
 .phone .hero, .tablet .hero { border-radius: 0; margin-bottom: 0; }
 
 /* ---- timeline ---------------------------------------------------------- */
@@ -341,7 +365,7 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 .dot {
   flex: 0 0 26px; height: 26px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; margin-top: 2px;
+  font-size: 0.75rem; font-weight: 700; margin-top: 2px;
   background: var(--green); color: #FFFFFF;
 }
 .event.pending .dot { background: var(--page); color: var(--amber);
@@ -355,7 +379,7 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
   border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--lift);
 }
 .queue th {
-  text-align: left; font-size: 11.5px; text-transform: uppercase;
+  text-align: left; font-size: 0.7188rem; text-transform: uppercase;
   letter-spacing: .07em; color: var(--teal-deep); padding: 12px 18px;
   border-bottom: 1px solid var(--line); background: var(--teal-soft);
   font-weight: 700;
@@ -369,7 +393,7 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 /* ---- tags -------------------------------------------------------------- */
 
 .tag {
-  display: inline-block; font-size: 12.5px; font-weight: 600;
+  display: inline-block; font-size: 0.7812rem; font-weight: 600;
   border: 1px solid var(--line-strong); border-radius: var(--r-pill);
   padding: 3px 12px; color: var(--muted); white-space: nowrap;
   background: var(--page);
@@ -391,19 +415,20 @@ input.choice::placeholder { color: var(--faint); font-weight: 400; }
 .rung.active { border-color: var(--teal); border-width: 2px;
                background: var(--teal-soft); }
 .rung .n { font-family: var(--display); font-weight: 700; color: var(--faint);
-           flex: 0 0 20px; font-size: 15px; }
+           flex: 0 0 20px; font-size: 0.9375rem; }
 .rung.active .n { color: var(--teal); }
 
 /* ---- letter ------------------------------------------------------------ */
 
 .letter {
-  font-family: var(--mono); font-size: 12.5px; line-height: 1.68;
+  font-family: var(--mono); font-size: 0.7812rem; line-height: 1.68;
   white-space: pre-wrap; background: var(--page);
   border: 1px solid var(--line); border-radius: var(--r);
   padding: 24px; color: var(--ink-2);
 }
-textarea.letter { width: 100%; min-height: 420px; resize: vertical; }
-@media (max-width: 560px) { .letter { font-size: 10.5px; line-height: 1.5; } }
+textarea.letter { width: 100%; min-height: 420px; resize: vertical;
+                  border-color: var(--field-bd); }
+@media (max-width: 560px) { .letter { font-size: 0.6562rem; line-height: 1.5; } }
 
 /* ---- denial ------------------------------------------------------------ */
 
@@ -420,7 +445,7 @@ fieldset { border: 0; display: flex; flex-direction: column; gap: 12px; }
 legend { padding: 0; }
 label.check {
   display: flex; gap: 12px; align-items: flex-start;
-  border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  border: 1.5px solid var(--field-bd); border-radius: var(--r);
   padding: 13px 15px; cursor: pointer; background: var(--page);
   transition: border-color .14s ease, background .14s ease;
 }
@@ -431,11 +456,11 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .field { display: flex; flex-direction: column; gap: 7px; }
-.field > label { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
-.field .hint { font-size: 12.5px; color: var(--muted); }
+.field > label { font-size: 0.8438rem; font-weight: 600; color: var(--ink-2); }
+.field .hint { font-size: 0.7812rem; color: var(--muted); }
 .field input, .field select {
-  font: inherit; font-size: 16px; padding: 13px 15px;
-  border: 1.5px solid var(--line-strong); border-radius: var(--r);
+  font: inherit; font-size: 1rem; padding: 13px 15px;
+  border: 1.5px solid var(--field-bd); border-radius: var(--r);
   background: var(--page); color: var(--ink); width: 100%;
 }
 .field input:focus, .field select:focus { border-color: var(--teal); }
@@ -453,7 +478,7 @@ input[type="radio"], input[type="checkbox"] {
 /* ---- the small print --------------------------------------------------- */
 
 .colophon { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
-.colophon p { font-size: 12px; color: var(--faint); line-height: 1.5; }
+.colophon p { font-size: 0.75rem; color: var(--faint); line-height: 1.5; }
 
 @media print {
   .bar, .btn, .hero, .colophon { display: none !important; }
@@ -466,8 +491,8 @@ input[type="radio"], input[type="checkbox"] {
 .langbar { display: flex; gap: 8px; }
 .langpick {
   flex: 1; padding: 11px 8px; border-radius: 10px; text-align: center;
-  border: 1px solid var(--line); background: var(--page); color: var(--ink);
-  font: inherit; font-size: 15px; cursor: pointer;
+  border: 1px solid var(--field-bd); background: var(--page); color: var(--ink);
+  font: inherit; font-size: 0.9375rem; cursor: pointer;
 }
 /* Same reason as .btn: white on this teal is 1.90. */
 .langpick.on { border-color: var(--teal); background: var(--teal); color: #06140E; }
@@ -507,17 +532,17 @@ input[type="radio"], input[type="checkbox"] {
             border-bottom-color: var(--line); }
 .queue tbody tr:hover { background: var(--surface-2); }
 
-.tag.teal  { border-color: #1F5343; color: var(--teal-ink);  background: var(--teal-soft); }
-.tag.amber, .tag.rust { border-color: #6B4A1B; color: #FFD08A; background: #3A2810; }
-.tag.sky, .tag.blue   { border-color: #1D3B57; color: var(--sky);   background: var(--sky-soft); }
-.tag.green { border-color: #1B4634; color: var(--green); background: var(--green-soft); }
-.tag.rose  { border-color: #4E1D28; color: var(--rose);  background: var(--rose-soft); }
+.tag.teal  { border-color: var(--tag-teal-bd);  color: var(--tag-teal-fg);  background: var(--tag-teal-bg); }
+.tag.amber, .tag.rust { border-color: var(--tag-amber-bd); color: var(--tag-amber-fg); background: var(--tag-amber-bg); }
+.tag.sky, .tag.blue   { border-color: var(--tag-sky-bd);   color: var(--tag-sky-fg);   background: var(--tag-sky-bg); }
+.tag.green { border-color: var(--tag-green-bd); color: var(--tag-green-fg); background: var(--tag-green-bg); }
+.tag.rose  { border-color: var(--tag-rose-bd);  color: var(--tag-rose-fg);  background: var(--tag-rose-bg); }
 
-.card.warn { border-color: #4A3315; }
-.card.good { border-color: #1B4634; }
-.denied    { border-color: #4E1D28; }
+.card.warn { border-color: var(--warn-bd); }
+.card.good { border-color: var(--good-bd); }
+.denied    { border-color: var(--denied-bd); }
 .event.pending .dot { background: var(--page); }
-.dot { color: #06140E; }
+.dot { color: var(--on-green); }
 
 /* ---- what makes it read as one material rather than an inverted form ---- */
 
@@ -525,9 +550,11 @@ input[type="radio"], input[type="checkbox"] {
    glow the colour of itself. One per screen, which is the point: on the tablet
    there is only ever one next thing. The glow does the lifting a gradient used
    to, without putting a light stop under a white label. */
-.btn { background: var(--teal); color: #06140E; box-shadow: var(--glow); }
-.btn:hover { filter: brightness(1.12); }
-.btn.ghost { background: var(--surface-2); border-color: var(--line-strong);
+.btn { background: var(--teal); color: var(--on-accent); box-shadow: var(--glow); }
+/* The base rule turned the label white on hover, which on this fill measures
+   1.9. The label stays put and the brightness does the hover. */
+.btn:hover { filter: brightness(1.12); color: var(--btn-hover-ink); }
+.btn.ghost { background: var(--surface-2); border-color: var(--field-bd);
              box-shadow: none; }
 .btn.ghost:hover { background: var(--teal-soft); border-color: var(--teal); }
 .btn.amber { background: var(--amber);
@@ -549,8 +576,8 @@ input[type="radio"], input[type="checkbox"] {
 
 /* Bigger jump between a heading and its body than a light ground needs.
    Contrast does the work that ink weight did. */
-h1 { font-size: 36px; letter-spacing: -.02em; }
-.hero h1 { font-size: 42px; }
+h1 { font-size: 2.25rem; letter-spacing: -.02em; }
+.hero h1 { font-size: 2.625rem; }
 
 /* The hero keeps its gradient, because it is the one place a slab is the
    point, but it is violet now and it sits on the dark rather than over it. */
@@ -558,7 +585,7 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
   background: var(--grad);
   border-radius: 0 0 28px 28px;
 }
-.hero .lede { color: #D6F5E9; }
+.hero .lede { color: var(--on-hero); }
 
 /* Inputs and choices: a dark field with a lit border when focused, rather
    than a white box punched out of the page. */
@@ -583,7 +610,7 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
 
 .langpick { background: var(--surface-2); }
 .langpick.on { background: var(--teal); border-color: transparent;
-               color: #06140E; }
+               color: var(--on-accent); }
 
 /* Selection and scrollbar, because leaving them at browser defaults is what
    makes a dark page look like a page somebody forgot to finish. */
@@ -656,14 +683,192 @@ h1 { font-size: 36px; letter-spacing: -.02em; }
   background: var(--bureau, var(--teal));
 }
 .score-card .bureau {
-  font-family: var(--display); font-weight: 700; font-size: 15px;
+  font-family: var(--display); font-weight: 700; font-size: 0.9375rem;
   letter-spacing: -.01em; color: var(--ink);
 }
 .score-card .number {
-  font-family: var(--display); font-weight: 700; font-size: 40px;
+  font-family: var(--display); font-weight: 700; font-size: 2.5rem;
   line-height: 1.05; letter-spacing: -.03em; color: var(--ink);
 }
-.score-card .under { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.score-card .under { font-size: 0.7812rem; color: var(--muted); line-height: 1.45; }
+
+
+/* ======================================================================== */
+/* What a person can change about how the tablet looks.                     */
+/*                                                                          */
+/* Three themes, three text sizes and a motion switch, all set from /display  */
+/* and remembered on the tablet as cookies, the same way the language is.     */
+/* The server writes them onto <html>, so the page arrives the way it was     */
+/* asked for and nothing flashes, and it works with scripts off.              */
+/*                                                                          */
+/* Dark is the default and is the :root block at the top. Nothing below      */
+/* applies until somebody chooses, so a tablet nobody has touched looks       */
+/* exactly as it did.                                                        */
+/*                                                                          */
+/* Every colour pair a person has to read is checked against WCAG 2.2 AA in   */
+/* tests/test_accessibility.py, per theme, straight from these values. Change */
+/* a colour here and that test says whether it still reads.                  */
+/* ======================================================================== */
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --ink: #14231D;   --ink-2: #34463F;  --muted: #4A5D55;  --faint: #566A61;
+  --surface: #E9F0EC;  --page: #FFFFFF;  --surface-2: #F3F7F5;
+  --line: #D2DED8;  --line-strong: #A9BBB2;  --track: #D5E1DB;
+  --field-bd: #62796E;
+
+  --teal: #2DD4A0;  --teal-deep: #0B6E53;  --teal-soft: #DCF4EA;  --teal-ink: #0A5C44;
+  --cyan: #22D3EE;
+  --amber: #F0A93C;  --amber-soft: #FCEFD5;  --amber-ink: #7A4A00;
+  --sky: #17558F;    --sky-soft: #E0EDFA;
+  --green: #146B42;  --green-soft: #DCF3E6;
+  --rose: #B01F3D;   --rose-soft: #FBE3E8;
+
+  --link: #0A5C44;  --link-hover: #06402F;  --focus: #0A5C44;
+  --on-green: #FFFFFF;
+  --lift: 0 0 0 1px rgba(20, 35, 29, .04);
+  --lift-2: 0 8px 28px rgba(20, 35, 29, .14);
+  --glow: 0 4px 14px rgba(11, 110, 83, .22);
+
+  --tag-teal-bd: #7CC3AA;   --tag-teal-fg: #0A5C44;  --tag-teal-bg: #DCF4EA;
+  --tag-amber-bd: #E2B872;  --tag-amber-fg: #7A4A00; --tag-amber-bg: #FCEFD5;
+  --tag-sky-bd: #8DB8E0;    --tag-sky-fg: #17558F;   --tag-sky-bg: #E0EDFA;
+  --tag-green-bd: #86C6A3;  --tag-green-fg: #146B42; --tag-green-bg: #DCF3E6;
+  --tag-rose-bd: #E39AA8;   --tag-rose-fg: #B01F3D;  --tag-rose-bg: #FBE3E8;
+  --warn-bd: #E2B872;  --good-bd: #86C6A3;  --denied-bd: #E39AA8;
+}
+html[data-theme="light"] ::selection { background: rgba(11, 110, 83, .22); }
+
+/* High contrast is not the dark theme turned up. It drops every tint and every
+   gradient, draws each edge in full white, and uses one bright accent for
+   anything that is a next step. Yellow on black is the pairing that stays
+   legible through most low vision and most colour blindness. Meaning is never
+   carried by colour alone in this app, so nothing is lost by flattening it. */
+html[data-theme="contrast"] {
+  color-scheme: dark;
+  --ink: #FFFFFF;   --ink-2: #FFFFFF;  --muted: #F0F0F0;  --faint: #E0E0E0;
+  --surface: #000000;  --page: #000000;  --surface-2: #0D0D0D;
+  --line: #FFFFFF;  --line-strong: #FFFFFF;  --track: #3A3A3A;
+  --field-bd: #FFFFFF;
+
+  --teal: #FFE600;  --teal-deep: #FFE600;  --teal-soft: #222200;  --teal-ink: #FFE600;
+  --cyan: #FFE600;
+  --amber: #FFB000;  --amber-soft: #000000;  --amber-ink: #FFB000;
+  --sky: #7FDBFF;    --sky-soft: #000000;
+  --green: #7CFFB0;  --green-soft: #000000;
+  --rose: #FF9BB0;   --rose-soft: #000000;
+
+  --link: #FFE600;  --link-hover: #FFFFFF;  --focus: #FFFFFF;
+  --lift: none;  --lift-2: none;  --glow: none;
+  --grad: #FFE600;
+
+  --tag-teal-bd: #FFE600;   --tag-teal-fg: #FFE600;  --tag-teal-bg: #000000;
+  --tag-amber-bd: #FFB000;  --tag-amber-fg: #FFB000; --tag-amber-bg: #000000;
+  --tag-sky-bd: #7FDBFF;    --tag-sky-fg: #7FDBFF;   --tag-sky-bg: #000000;
+  --tag-green-bd: #7CFFB0;  --tag-green-fg: #7CFFB0; --tag-green-bg: #000000;
+  --tag-rose-bd: #FF9BB0;   --tag-rose-fg: #FF9BB0;  --tag-rose-bg: #000000;
+  --warn-bd: #FFB000;  --good-bd: #7CFFB0;  --denied-bd: #FF9BB0;
+}
+html[data-theme="contrast"] :focus-visible { outline-width: 4px; outline-offset: 3px; }
+html[data-theme="contrast"] a { text-decoration: underline; }
+html[data-theme="contrast"] .btn,
+html[data-theme="contrast"] .pill { text-decoration: none; }
+html[data-theme="contrast"] .card,
+html[data-theme="contrast"] .denied,
+html[data-theme="contrast"] .queue,
+html[data-theme="contrast"] .letter,
+html[data-theme="contrast"] .rung { border-width: 2px; }
+html[data-theme="contrast"] .card.accent::before { background: #FFE600; height: 3px; }
+html[data-theme="contrast"] .track { border: 1px solid #FFFFFF; }
+html[data-theme="contrast"] .bar { border-bottom: 2px solid #FFFFFF; }
+html[data-theme="contrast"] .tablet { border-color: #FFFFFF; }
+
+/* Text size. Every size in this file is in rem, so moving the root moves all
+   of it together, and a device that already enlarges text keeps doing so on
+   top of this rather than being overruled by it. */
+html[data-size="large"]  { font-size: 118%; }
+html[data-size="xlarge"] { font-size: 140%; }
+
+/* At the larger sizes the frame that draws a 16:10 device would clip a screen
+   that no longer fits, so it lets the screen be as tall as it needs to be. */
+html[data-size="large"] .tablet,
+html[data-size="xlarge"] .tablet { aspect-ratio: auto; min-height: 0; }
+
+/* Motion. Asked for at the device or asked for here, the result is the same:
+   nothing slides, fades or pops, and the opening never shows. */
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-motion="reduced"] .splash { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- the way to the display settings, on every page --------------------- */
+
+.skip {
+  position: absolute; left: 12px; top: -80px; z-index: 100;
+  background: var(--teal); color: var(--on-accent);
+  padding: 12px 18px; border-radius: var(--r); font-weight: 700;
+  text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* Fixed, small and in the corner nothing else uses, and the page keeps room
+   for it at the bottom so it never sits on the last button. */
+.dock {
+  position: fixed; left: 14px; bottom: 14px; z-index: 30;
+  background: var(--surface-2); color: var(--ink);
+  border: 2px solid var(--field-bd); border-radius: var(--r-pill);
+  padding: 9px 16px; font-size: 0.875rem; font-weight: 600;
+  text-decoration: none; box-shadow: var(--lift-2);
+}
+.dock:hover { border-color: var(--link); color: var(--link-hover); }
+body { padding-bottom: 68px; }
+@media print { .dock, .skip { display: none !important; } body { padding-bottom: 0; } }
+
+/* ---- the display settings page ------------------------------------------ */
+
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.option {
+  display: flex; flex-direction: column; gap: 4px; align-items: flex-start;
+  border: 2px solid var(--field-bd); border-radius: var(--r-lg);
+  background: var(--surface-2); color: var(--ink);
+  padding: 14px 16px; font: inherit; font-weight: 600; cursor: pointer;
+  text-align: left;
+}
+.option:hover { border-color: var(--link); }
+.option[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-soft); }
+.option .note { font-weight: 400; font-size: 0.875rem; color: var(--ink-2); }
+.option .picked { font-size: 0.8125rem; font-weight: 700; color: var(--teal-ink); }
+.swatch { display: flex; gap: 4px; margin-bottom: 4px; }
+.swatch i { width: 22px; height: 22px; border-radius: 6px; border: 1px solid #888; display: block; }
+
+/* Somewhere the skip link and a script can move focus to, which is not
+   something a person reaches by tabbing, so it needs no ring of its own. */
+[tabindex="-1"]:focus { outline: none; }
+
+/* Said to a screen reader and not drawn. For a heading or a column name that
+   the layout already makes obvious to somebody who can see it. */
+.sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+.options { margin-top: 10px; }
+
+/* The Listen button, added by the script only when read aloud is on and the
+   tablet has a voice that stays on the tablet. */
+.listen-row { align-self: flex-start; gap: 12px; }
+.listen-row .btn { padding: 10px 20px; }
 
 
 /* This build has no server, so the shell fills the window itself. */
