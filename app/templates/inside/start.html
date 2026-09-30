@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}What do you want to do?{% endblock %}
+{% block title %}{{ t('start.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar">
@@ -7,13 +7,12 @@
     <span class="who">{{ client.display_name }}</span>
     {# The course is one tap from every tablet screen, and this is one. A
        person who has not answered the question yet has lost nothing. #}
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <div class="pane">
-    <h1>What do you want to do first?</h1>
-    <p class="lede">Either one is fine, and you can change your mind whenever
-      you want. Nothing you pick here closes anything off.</p>
+    <h1>{{ t('start.heading') }}</h1>
+    <p class="lede">{{ t('start.lede') }}</p>
 
     {# Two choices, one screen, no third option dressed up as help. A person
        who picked in ten seconds and picked wrong is two taps from the other
@@ -24,18 +23,17 @@
         <input type="hidden" name="path" value="{{ path.key }}">
         <div class="card accent{{ ' good' if chosen and chosen.key == path.key }}">
           {% if chosen and chosen.key == path.key %}
-          <span class="tag green">What you are doing now</span>
+          <span class="tag green">{{ t('start.now') }}</span>
           {% endif %}
-          <h2>{{ path.label }}</h2>
-          <p class="small">{{ path.blurb }}</p>
-          <button class="btn wide" type="submit">{{ path.cta }}</button>
+          <h2>{{ t('path.' ~ path.key ~ '.label') }}</h2>
+          <p class="small">{{ t('path.' ~ path.key ~ '.blurb') }}</p>
+          <button class="btn wide" type="submit">{{ t('path.' ~ path.key ~ '.cta') }}</button>
         </div>
       </form>
       {% endfor %}
     </div>
 
-    <p class="tiny" style="margin-top:20px">The lessons are open to you either
-      way. Working on your credit does not mean waiting to learn about it.</p>
+    <p class="tiny" style="margin-top:20px">{{ t('start.foot') }}</p>
   </div>
 </div>
 {% endblock %}

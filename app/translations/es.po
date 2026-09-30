@@ -26,7 +26,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bridge\n"
-"PO-Revision-Date: 2026-09-24\n"
+"PO-Revision-Date: 2026-09-30\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1532,3 +1532,672 @@ msgstr "Es un precio justo si funciona"
 msgctxt "lesson.scams.check.choice.check"
 msgid "Nothing yet, check their reviews first"
 msgstr "Nada todavía, primero revisa sus reseñas"
+
+#, fuzzy
+msgctxt "door.title"
+msgid "Bridge, sign in"
+msgstr "Bridge, iniciar sesión"
+
+#, fuzzy
+msgctxt "door.region"
+msgid "New York State"
+msgstr "Estado de Nueva York"
+
+#, fuzzy
+msgctxt "door.heading"
+msgid "DIN number or NYS ID"
+msgstr "Número DIN o NYS ID"
+
+#, fuzzy
+msgctxt "door.either"
+msgid "Either one works."
+msgstr "Cualquiera de los dos sirve."
+
+#, fuzzy
+msgctxt "door.next"
+msgid "Next"
+msgstr "Siguiente"
+
+#, fuzzy
+msgctxt "door.dashes"
+msgid "Dashes and spaces don't matter."
+msgstr "Los guiones y los espacios no importan."
+
+#, fuzzy
+msgctxt "door.format"
+msgid ""
+"A DIN is two numbers, a letter, then four numbers. A NYSID is eight numbers,"
+" sometimes with a letter on the end."
+msgstr ""
+"Un DIN son dos números, una letra y cuatro números. Un NYSID son ocho "
+"números, a veces con una letra al final."
+
+#, fuzzy
+msgctxt "door.helper_ask"
+msgid "Helping someone on the outside?"
+msgstr "¿Ayudas a alguien que está afuera?"
+
+#, fuzzy
+msgctxt "door.helper_link"
+msgid "Use the code from the letter"
+msgstr "Usa el código de la carta"
+
+#, fuzzy
+msgctxt "door.check_placeholder"
+msgid "A number, or the word"
+msgstr "Un número, o la palabra"
+
+#, fuzzy
+msgctxt "door.check_why"
+msgid ""
+"Asked because this is a public demonstration link. It keeps crawlers out and"
+" nothing else."
+msgstr ""
+"Se pregunta porque este es un enlace de demostración público. Sirve para "
+"mantener afuera a los programas automáticos y nada más."
+
+#, fuzzy
+msgctxt "door.other"
+msgid "Other"
+msgstr "Otro"
+
+#, fuzzy
+msgctxt "door.other_note"
+msgid ""
+"Other languages are coming. For now this app is in English and Spanish."
+msgstr ""
+"Pronto habrá otros idiomas. Por ahora esta aplicación está en inglés y "
+"español."
+
+#, fuzzy
+msgctxt "pin.title"
+msgid "Enter your PIN"
+msgstr "Escribe tu PIN"
+
+#, fuzzy
+msgctxt "pin.heading"
+msgid "Your PIN"
+msgstr "Tu PIN"
+
+#, fuzzy
+msgctxt "pin.welcome"
+msgid "Welcome back, {name}."
+msgstr "Qué bueno verte de nuevo, {name}."
+
+#, fuzzy
+msgctxt "pin.submit"
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#, fuzzy
+msgctxt "pin.forgot"
+msgid ""
+"Forgot it? Your counselor can clear it, then you pick a new one here. Nobody"
+" can tell you what your old one was."
+msgstr ""
+"¿Lo olvidaste? Tu consejero puede borrarlo y aquí eliges uno nuevo. Nadie "
+"puede decirte cuál era el anterior."
+
+#, fuzzy
+msgctxt "pin.different"
+msgid "Use a different number"
+msgstr "Usar otro número"
+
+#, fuzzy
+msgctxt "enroll.title"
+msgid "Choose a PIN"
+msgstr "Elige un PIN"
+
+#, fuzzy
+msgctxt "enroll.heading"
+msgid "Pick a PIN"
+msgstr "Elige un PIN"
+
+#, fuzzy
+msgctxt "enroll.lede"
+msgid ""
+"{n} numbers. You choose it, and nobody here can see it once you do, not even"
+" your counselor."
+msgstr ""
+"{n} números. Lo eliges tú, y nadie aquí puede verlo una vez que lo guardas, "
+"ni siquiera tu consejero."
+
+#, fuzzy
+msgctxt "enroll.new"
+msgid "Your new PIN"
+msgstr "Tu nuevo PIN"
+
+#, fuzzy
+msgctxt "enroll.again"
+msgid "Type it once more"
+msgstr "Escríbelo otra vez"
+
+#, fuzzy
+msgctxt "enroll.submit"
+msgid "Save my PIN"
+msgstr "Guardar mi PIN"
+
+#, fuzzy
+msgctxt "enroll.hands"
+msgid "Your paperwork is in a lot of hands."
+msgstr "Tus papeles pasan por muchas manos."
+
+#, fuzzy
+msgctxt "enroll.avoid"
+msgid ""
+"Don't use your birthday or any part of your own number. Anyone holding your "
+"paperwork can read those."
+msgstr ""
+"No uses tu fecha de nacimiento ni ninguna parte de tu propio número. "
+"Cualquiera que tenga tus papeles puede leerlos."
+
+#, fuzzy
+msgctxt "enroll.forgot"
+msgid ""
+"If you forget it, your counselor can clear it and you pick a new one. They "
+"never get to see or choose it."
+msgstr ""
+"Si lo olvidas, tu consejero puede borrarlo y tú eliges uno nuevo. Nunca "
+"puede ver ni elegir tu PIN."
+
+#, fuzzy
+msgctxt "nav.course"
+msgid "The course"
+msgstr "El curso"
+
+#, fuzzy
+msgctxt "nav.signout"
+msgid "Sign out"
+msgstr "Cerrar sesión"
+
+#, fuzzy
+msgctxt "nav.change"
+msgid "Change what I am doing"
+msgstr "Cambiar lo que estoy haciendo"
+
+#, fuzzy
+msgctxt "nav.lessons"
+msgid "All lessons"
+msgstr "Todas las lecciones"
+
+#, fuzzy
+msgctxt "nav.case"
+msgid "My case"
+msgstr "Mi caso"
+
+#, fuzzy
+msgctxt "nav.questions"
+msgid "Back to my questions"
+msgstr "Volver a mis preguntas"
+
+#, fuzzy
+msgctxt "nav.home"
+msgid "When you go home"
+msgstr "Cuando vuelvas a casa"
+
+#, fuzzy
+msgctxt "start.title"
+msgid "What do you want to do?"
+msgstr "¿Qué quieres hacer?"
+
+#, fuzzy
+msgctxt "start.heading"
+msgid "What do you want to do first?"
+msgstr "¿Qué quieres hacer primero?"
+
+#, fuzzy
+msgctxt "start.lede"
+msgid ""
+"Either one is fine, and you can change your mind whenever you want. Nothing "
+"you pick here closes anything off."
+msgstr ""
+"Cualquiera de las dos está bien, y puedes cambiar de idea cuando quieras. "
+"Nada de lo que elijas aquí te cierra ninguna puerta."
+
+#, fuzzy
+msgctxt "start.now"
+msgid "What you are doing now"
+msgstr "Lo que estás haciendo ahora"
+
+#, fuzzy
+msgctxt "start.foot"
+msgid ""
+"The lessons are open to you either way. Working on your credit does not mean"
+" waiting to learn about it."
+msgstr ""
+"Las lecciones están abiertas para ti de cualquier forma. Trabajar en tu "
+"crédito no significa esperar para aprender sobre él."
+
+#, fuzzy
+msgctxt "path.learn.label"
+msgid "Learn how credit works"
+msgstr "Aprender cómo funciona el crédito"
+
+#, fuzzy
+msgctxt "path.learn.blurb"
+msgid ""
+"Short lessons, one at a time. Nothing to fill in and no forms. It saves "
+"where you stop, so you can put the tablet down and come back to it."
+msgstr ""
+"Lecciones cortas, una a la vez. No hay nada que llenar ni formularios. "
+"Guarda dónde te quedaste, así que puedes dejar la tableta y volver después."
+
+#, fuzzy
+msgctxt "path.learn.cta"
+msgid "Start learning"
+msgstr "Empezar a aprender"
+
+#, fuzzy
+msgctxt "path.credit.label"
+msgid "Work on my credit"
+msgstr "Trabajar en mi crédito"
+
+#, fuzzy
+msgctxt "path.credit.blurb"
+msgid ""
+"Answer some questions about your money, then a counselor picks it up and "
+"works your case with you. You can read the lessons any time while you wait."
+msgstr ""
+"Responde algunas preguntas sobre tu dinero, y luego un consejero toma tu "
+"caso y trabaja contigo. Puedes leer las lecciones cuando quieras mientras "
+"esperas."
+
+#, fuzzy
+msgctxt "path.credit.cta"
+msgid "Start on my credit"
+msgstr "Empezar con mi crédito"
+
+#, fuzzy
+msgctxt "learn.title"
+msgid "Learn about credit"
+msgstr "Aprende sobre el crédito"
+
+#, fuzzy
+msgctxt "learn.heading"
+msgid "Learn about credit."
+msgstr "Aprende sobre el crédito."
+
+#, fuzzy
+msgctxt "learn.lede"
+msgid ""
+"{total} lessons, about {minutes} minutes in total. Take one at a time. It "
+"saves where you stop, so you can put the tablet down mid-sentence and pick "
+"it up tomorrow."
+msgstr ""
+"{total} lecciones, unos {minutes} minutos en total. Toma una a la vez. "
+"Guarda dónde te quedas, así que puedes dejar la tableta a media frase y "
+"seguir mañana."
+
+#, fuzzy
+msgctxt "learn.finished"
+msgid "You have finished all {total}."
+msgstr "Terminaste las {total}."
+
+#, fuzzy
+msgctxt "learn.progress"
+msgid "{done} of {total} done"
+msgstr "{done} de {total} completadas"
+
+#, fuzzy
+msgctxt "learn.nothing"
+msgid "Nothing started yet"
+msgstr "Todavía no has empezado"
+
+#, fuzzy
+msgctxt "learn.left"
+msgid "About {minutes} minutes left in the whole course."
+msgstr "Quedan unos {minutes} minutos en todo el curso."
+
+#, fuzzy
+msgctxt "learn.see_covered"
+msgid "See what you covered"
+msgstr "Ver lo que estudiaste"
+
+#, fuzzy
+msgctxt "learn.carry_on"
+msgid "Carry on with {title}"
+msgstr "Sigue con {title}"
+
+#, fuzzy
+msgctxt "learn.start_with"
+msgid "Start with {title}"
+msgstr "Empieza con {title}"
+
+#, fuzzy
+msgctxt "learn.done"
+msgid "Done"
+msgstr "Lista"
+
+#, fuzzy
+msgctxt "learn.place"
+msgid "{card} of {screens}"
+msgstr "{card} de {screens}"
+
+#, fuzzy
+msgctxt "learn.for_you"
+msgid "For you now"
+msgstr "Para ti ahora"
+
+#, fuzzy
+msgctxt "learn.length"
+msgid "{minutes} minutes · {screens} screens"
+msgstr "{minutes} minutos · {screens} pantallas"
+
+#, fuzzy
+msgctxt "learn.facts_heading"
+msgid "Where the facts come from"
+msgstr "De dónde salen los datos"
+
+#, fuzzy
+msgctxt "learn.facts_body"
+msgid ""
+"Every rule in this course names the law or the agency it comes from, and the"
+" date somebody checked it. Nothing here is somebody's opinion about how "
+"credit works."
+msgstr ""
+"Cada regla de este curso dice de qué ley o agencia viene, y la fecha en que "
+"alguien la revisó. Nada de esto es la opinión de nadie sobre cómo funciona "
+"el crédito."
+
+#, fuzzy
+msgctxt "learn.facts_link"
+msgid "See the full list"
+msgstr "Ver la lista completa"
+
+#, fuzzy
+msgctxt "lesson.place"
+msgid "{n} of {total}"
+msgstr "{n} de {total}"
+
+#, fuzzy
+msgctxt "lesson.saved"
+msgid "Saved as you go. Close this and it opens here again."
+msgstr "Se guarda sobre la marcha. Ciérralo y se abre aquí otra vez."
+
+#, fuzzy
+msgctxt "lesson.question"
+msgid "One question before you go."
+msgstr "Una pregunta antes de irte."
+
+#, fuzzy
+msgctxt "lesson.unscored"
+msgid ""
+"Nothing is scored and nobody sees your answer. The explanation is the same "
+"either way."
+msgstr ""
+"Nada se califica y nadie ve tu respuesta. La explicación es la misma de "
+"cualquier forma."
+
+#, fuzzy
+msgctxt "lesson.answer"
+msgid "Answer"
+msgstr "Responder"
+
+#, fuzzy
+msgctxt "lesson.source"
+msgid "Where this comes from: {source}"
+msgstr "De dónde viene esto: {source}"
+
+#, fuzzy
+msgctxt "lesson.last"
+msgid "Last one, then a question"
+msgstr "La última, y luego una pregunta"
+
+#, fuzzy
+msgctxt "lesson.next"
+msgid "Next"
+msgstr "Siguiente"
+
+#, fuzzy
+msgctxt "lesson.back"
+msgid "Back"
+msgstr "Atrás"
+
+#, fuzzy
+msgctxt "lesson.stop"
+msgid "Stop for now"
+msgstr "Parar por ahora"
+
+#, fuzzy
+msgctxt "lesson.scores"
+msgid "See every score model"
+msgstr "Ver todos los modelos de puntaje"
+
+#, fuzzy
+msgctxt "done.title"
+msgid "{title}, done"
+msgstr "{title}, lista"
+
+#, fuzzy
+msgctxt "done.count"
+msgid "That's {done} of {total}."
+msgstr "Van {done} de {total}."
+
+#, fuzzy
+msgctxt "done.saved"
+msgid "{title} is done and saved to your record."
+msgstr "{title} está lista y guardada en tu registro."
+
+#, fuzzy
+msgctxt "done.answered"
+msgid "You answered: {answer}"
+msgstr "Respondiste: {answer}"
+
+#, fuzzy
+msgctxt "done.right"
+msgid "That's the one."
+msgstr "Esa es."
+
+#, fuzzy
+msgctxt "done.worth"
+msgid "Here's the thing worth knowing."
+msgstr "Esto es lo que vale la pena saber."
+
+#, fuzzy
+msgctxt "done.next"
+msgid "Next: {title}"
+msgstr "Sigue: {title}"
+
+#, fuzzy
+msgctxt "done.minutes"
+msgid "{minutes} minutes"
+msgstr "{minutes} minutos"
+
+#, fuzzy
+msgctxt "done.keep_going"
+msgid "Keep going"
+msgstr "Seguir"
+
+#, fuzzy
+msgctxt "done.stop_heading"
+msgid "Or stop here"
+msgstr "O para aquí"
+
+#, fuzzy
+msgctxt "done.stop_body"
+msgid ""
+"{minutes} minutes left in the course, whenever you want it. It will open "
+"where you left off."
+msgstr ""
+"Quedan {minutes} minutos del curso, para cuando quieras. Se abrirá donde lo "
+"dejaste."
+
+#, fuzzy
+msgctxt "end.title"
+msgid "You finished the course"
+msgstr "Terminaste el curso"
+
+#, fuzzy
+msgctxt "end.heading"
+msgid "You finished the whole course."
+msgstr "Terminaste todo el curso."
+
+#, fuzzy
+msgctxt "end.lede"
+msgid ""
+"All {total} lessons. About {minutes} minutes of it. You know more about how "
+"credit actually works than most people who have never been inside."
+msgstr ""
+"Las {total} lecciones. Unos {minutes} minutos. Sabes más sobre cómo funciona"
+" realmente el crédito que la mayoría de la gente que nunca ha estado "
+"adentro."
+
+#, fuzzy
+msgctxt "end.cert_heading"
+msgid "This is not a certificate and it is worth more than one"
+msgstr "Esto no es un certificado y vale más que uno"
+
+#, fuzzy
+msgctxt "end.cert_body"
+msgid ""
+"Nobody can take this back off you, it does not expire, and it does not show "
+"up on any record. It is just yours now. The next time somebody tries to sell"
+" you a credit repair package, or a landlord quotes you a number, you will "
+"know what you are looking at."
+msgstr ""
+"Nadie te lo puede quitar, no vence y no aparece en ningún registro. Ahora es"
+" tuyo. La próxima vez que alguien intente venderte un paquete para arreglar "
+"el crédito, o un casero te diga un número, sabrás qué estás viendo."
+
+#, fuzzy
+msgctxt "end.covered"
+msgid "What you covered"
+msgstr "Lo que estudiaste"
+
+#, fuzzy
+msgctxt "end.reopen"
+msgid "Any of them opens again. Re-reading one does not undo anything."
+msgstr ""
+"Cualquiera de ellas se abre otra vez. Volver a leer una no deshace nada."
+
+#, fuzzy
+msgctxt "end.week_heading"
+msgid "The one thing to do with it this week"
+msgstr "Lo único que debes hacer con esto esta semana"
+
+#, fuzzy
+msgctxt "end.week_body"
+msgid ""
+"Ask your coordinator where your birth certificate and Social Security card "
+"stand. That is the first lesson, it has a real deadline, and it is the only "
+"part of this that somebody else has to start for you."
+msgstr ""
+"Pregúntale a tu coordinador cómo van tu acta de nacimiento y tu tarjeta del "
+"Seguro Social. Esa es la primera lección, tiene una fecha límite real, y es "
+"la única parte de todo esto que otra persona tiene que empezar por ti."
+
+#, fuzzy
+msgctxt "end.back_case"
+msgid "Back to my case"
+msgstr "Volver a mi caso"
+
+#, fuzzy
+msgctxt "error.wrong_answer"
+msgid "That was not the right answer. Here is another one."
+msgstr "Esa no era la respuesta correcta. Aquí tienes otra pregunta."
+
+#, fuzzy
+msgctxt "error.no_record"
+msgid ""
+"No record here for {display}. Check the number, or ask your counselor to add"
+" you."
+msgstr ""
+"Aquí no hay registro de {display}. Revisa el número, o pídele a tu consejero"
+" que te agregue."
+
+#, fuzzy
+msgctxt "error.id_empty"
+msgid "Enter your DIN or your NYSID."
+msgstr "Escribe tu DIN o tu NYSID."
+
+#, fuzzy
+msgctxt "error.id_letter"
+msgid ""
+"That looks like a DIN with the facility letter missing. A DIN is two digits,"
+" a letter, then four digits, like 98-A-0004."
+msgstr ""
+"Parece un DIN al que le falta la letra de la instalación. Un DIN son dos "
+"dígitos, una letra y cuatro dígitos, como 98-A-0004."
+
+#, fuzzy
+msgctxt "error.id_short"
+msgid ""
+"That is too short. A DIN looks like 98-A-0004. A NYSID is eight digits, "
+"sometimes with a letter on the end."
+msgstr ""
+"Es demasiado corto. Un DIN se ve como 98-A-0004. Un NYSID son ocho dígitos, "
+"a veces con una letra al final."
+
+#, fuzzy
+msgctxt "error.id_bad"
+msgid ""
+"That is not a DIN or a NYSID. A DIN is two digits, a letter, then four "
+"digits, like 98-A-0004. A NYSID is eight digits, sometimes with a letter on "
+"the end."
+msgstr ""
+"Eso no es un DIN ni un NYSID. Un DIN son dos dígitos, una letra y cuatro "
+"dígitos, como 98-A-0004. Un NYSID son ocho dígitos, a veces con una letra al"
+" final."
+
+#, fuzzy
+msgctxt "error.pin_length"
+msgid "Your PIN needs to be {n} numbers."
+msgstr "Tu PIN debe tener {n} números."
+
+#, fuzzy
+msgctxt "error.pin_same"
+msgid "Pick something other than the same number six times."
+msgstr "Elige algo distinto a repetir seis veces el mismo número."
+
+#, fuzzy
+msgctxt "error.pin_run"
+msgid "Pick something that is not just counting up or down."
+msgstr "Elige algo que no sea solo contar hacia arriba o hacia abajo."
+
+#, fuzzy
+msgctxt "error.pin_own"
+msgid ""
+"That is part of your own number, which anyone holding your paperwork can "
+"read. Pick something else."
+msgstr ""
+"Eso es parte de tu propio número, y cualquiera que tenga tus papeles puede "
+"leerlo. Elige otra cosa."
+
+#, fuzzy
+msgctxt "error.pin_has"
+msgid "This account already has a PIN."
+msgstr "Esta cuenta ya tiene un PIN."
+
+#, fuzzy
+msgctxt "error.pin_mismatch"
+msgid "Those two PINs are not the same. Try again."
+msgstr "Los dos PIN no son iguales. Inténtalo otra vez."
+
+#, fuzzy
+msgctxt "error.pin_none"
+msgid "This account has no PIN yet."
+msgstr "Esta cuenta todavía no tiene un PIN."
+
+#, fuzzy
+msgctxt "error.pin_wrong"
+msgid "That PIN is not right. {left} tries left before it locks."
+msgstr ""
+"Ese PIN no es correcto. Te quedan {left} intentos antes de que se bloquee."
+
+#, fuzzy
+msgctxt "error.locked_wait"
+msgid ""
+"Too many wrong tries. Try again in about {minutes} minutes, or ask your "
+"counselor to reset it."
+msgstr ""
+"Demasiados intentos fallidos. Inténtalo de nuevo en unos {minutes} minutos, "
+"o pídele a tu consejero que lo restablezca."
+
+#, fuzzy
+msgctxt "error.locked_now"
+msgid ""
+"That PIN was wrong too many times. The account is locked for 15 minutes. "
+"Your counselor can reset it sooner."
+msgstr ""
+"Ese PIN fue incorrecto demasiadas veces. La cuenta está bloqueada por 15 "
+"minutos. Tu consejero puede restablecerla antes."

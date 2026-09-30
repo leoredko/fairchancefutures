@@ -1,7 +1,9 @@
 # Translating the course
 
-The credit course is eleven lessons, 173 sentences. All of them are in Spanish
-now. This is how that works and how to change it.
+The credit course is eleven lessons, 173 sentences, and the screens that carry
+a person to it (the door, the PIN, the first question, the lesson list and the
+buttons inside a lesson) are another 111. All of them are in Spanish now. This
+is how that works and how to change it.
 
 ## The short version
 
@@ -71,19 +73,26 @@ read on the shelf. The code never translates them.
 
 ## Known gaps
 
-- Only the course is translated. Intake, the report walkthrough and the case
-  screens are still English.
+- Only the course and the screens on the way to it are translated. Intake, the
+  report walkthrough and the case screens are still English, and so is the
+  helper's door. The source line under a lesson card stays English on purpose.
+- Sign-in errors are raised in code that does not know the language, so the
+  screen recognises the English sentence and swaps in the Spanish. Reword one in
+  `app/auth.py` or `app/identifiers.py` and it falls back to English until its
+  line in `app/ui_strings.py` is reworded to match. A test catches this.
 - Timeline entries are written into the case file in English at the moment
   they happen, so a Spanish reader sees English history. Fixing that means
   storing a key instead of a sentence.
 
 ## For whoever maintains the code
 
-Run this after editing any lesson:
+The screen strings live in `app/ui_strings.py`, keyed, with the English beside
+the key. Run this after editing any lesson or that file:
 
     python3 scripts/i18n_extract.py
 
-It rebuilds the file from `app/lessons.py` and never discards anyone's work:
+It rebuilds the file from `app/lessons.py` and `app/ui_strings.py` and never
+discards anyone's work:
 
 | What happened | What the script does |
 | --- | --- |
@@ -96,7 +105,9 @@ It rebuilds the file from `app/lessons.py` and never discards anyone's work:
 card added without re-extracting cannot quietly become a screen nobody can
 translate.
 
-One safety rule is in the code and not adjustable: if a card's English has
+Two safety rules are in the code and not adjustable. If a card's English has
 changed since its Spanish was written, that line falls back to English on its
-own. A fluent translation of a sentence the product no longer says is worse
+own. And on a screen string, a translation that drops or renames a `{blank}`
+the screen fills in (a number, a name) falls back to English too, because a
+sentence with a hole in it reads as broken. A fluent translation of a sentence the product no longer says is worse
 than no translation, because it reads finished.

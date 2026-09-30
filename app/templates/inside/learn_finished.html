@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}You finished the course{% endblock %}
+{% block title %}{{ t('end.title') }}{% endblock %}
 
 {% block head %}
 <style>
@@ -40,32 +40,27 @@
 <div class="tablet">
   <div class="bar">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
-    <span class="who">{{ client.display_name }} &middot; The course</span>
+    <span class="who">{{ client.display_name }} &middot; {{ t('nav.course') }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/after">When you go home</a><a class="pill" href="/inside/case">My case</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/after">{{ t('nav.home') }}</a><a class="pill" href="/inside/case">{{ t('nav.case') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <div class="pane">
     <div class="card good rise" style="text-align:center">
       <div class="seal">&check;</div>
-      <h1 style="margin:0">You finished the whole course.</h1>
-      <p class="lede">All {{ standing.total }} lessons. About {{ minutes }}
-        minutes of it. You know more about how credit actually works than most
-        people who have never been inside.</p>
+      <h1 style="margin:0">{{ t('end.heading') }}</h1>
+      <p class="lede">{{ t('end.lede', total=standing.total, minutes=minutes) }}</p>
     </div>
 
     <div class="card accent rise rise-2">
-      <h3>This is not a certificate and it is worth more than one</h3>
-      <p class="small">Nobody can take this back off you, it does not expire,
-        and it does not show up on any record. It is just yours now. The next
-        time somebody tries to sell you a credit repair package, or a landlord
-        quotes you a number, you will know what you are looking at.</p>
+      <h3>{{ t('end.cert_heading') }}</h3>
+      <p class="small">{{ t('end.cert_body') }}</p>
     </div>
 
     <div class="card rise rise-3">
-      <span class="strong">What you covered</span>
+      <span class="strong">{{ t('end.covered') }}</span>
       <div class="stack">
         {% for item in curriculum %}
         <a class="rung" href="/inside/learn/lesson/{{ item.slug }}/0"
@@ -77,19 +72,15 @@
         </a>
         {% endfor %}
       </div>
-      <p class="tiny">Any of them opens again. Re-reading one does not undo
-        anything.</p>
+      <p class="tiny">{{ t('end.reopen') }}</p>
     </div>
 
     <div class="card soft">
-      <span class="strong">The one thing to do with it this week</span>
-      <span class="small">Ask your coordinator where your birth certificate and
-        Social Security card stand. That is the first lesson, it has a real
-        deadline, and it is the only part of this that somebody else has to
-        start for you.</span>
+      <span class="strong">{{ t('end.week_heading') }}</span>
+      <span class="small">{{ t('end.week_body') }}</span>
       <div class="row">
-        <a class="btn" href="/inside/case">Back to my case</a>
-        <a class="btn ghost" href="/inside/learn">All lessons</a>
+        <a class="btn" href="/inside/case">{{ t('end.back_case') }}</a>
+        <a class="btn ghost" href="/inside/learn">{{ t('nav.lessons') }}</a>
       </div>
     </div>
   </div>

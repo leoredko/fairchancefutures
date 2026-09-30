@@ -19,7 +19,8 @@
 5. **Letter draft and approval (desktop).** — built
 6. **Family task screen and report upload.** — built, minus photo-to-text
 7. **Case status timeline (tablet).** — built
-8. **The course in Spanish (tablet).** All 173 strings of the eleven lessons,
+8. **The course in Spanish (tablet).** All 173 strings of the eleven lessons
+   and the 111 on the screens between the door and the end of the course,
    chosen at the sign-in door. Not a running translator: a gettext catalog
    translated once and committed, so nothing calls a model or the network at
    request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`

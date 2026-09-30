@@ -64,10 +64,13 @@ to a law library and they have to read the way they read on the shelf.
 
 
 def wanted() -> list[tuple[str, str, bool]]:
-    """Every translatable string in the course, in reading order."""
+    """Every translatable string, lessons first, then the screens around them."""
     out: list[tuple[str, str, bool]] = []
     for lesson in CURRICULUM:
         out.extend(i18n.strings_for(lesson))
+    # The screens between the door and the end of the course, so a person who
+    # picks Español is not handed Spanish lessons behind English buttons.
+    out.extend(i18n.ui_strings())
     return out
 
 
