@@ -88,8 +88,6 @@ The four that will bite you fastest:
 2. **No camera on the tablet surface.** A test fails if an upload route appears.
 3. **Sentence case everywhere**, and no raw column name reaches a screen.
    `app/labels.py` is the registry and a test enforces it.
-4. **Rebuild the standalone files** after any change to `app/` or the shell:
-   `python3 standalone/build.py`. They are generated, never hand-edited.
 
 ## 7. Make a change and send it
 
@@ -98,7 +96,6 @@ git checkout main && git pull                 # start from current main
 git checkout -b yourname/short-description    # never commit straight to main
 # ... edit ...
 pytest -q                                     # must be green
-python3 standalone/build.py                   # if you touched app/ or the shell
 git add -A
 git commit -m "Say what changed and why, in a sentence"
 git push -u origin yourname/short-description
@@ -116,7 +113,7 @@ it. Main stays green.
 | `No module named pytest` | You skipped `pip install -r requirements.txt`, or your virtualenv is not active |
 | `Address already in use` | Something is on port 8000. `uvicorn app.main:app --reload --port 8001` |
 | Tests pass locally, CI is red | You are on a different Python. Check `python3 --version` against 3.11 / 3.12 |
-| The app looks stale after an edit | `--reload` watches `app/`. Templates and the standalone files do not always trigger it. Restart, and rebuild the standalone |
+| The app looks stale after an edit | `--reload` watches `app/`. Templates do not always trigger it. Restart |
 | Weird state in the app | The store is a JSON file under `data/`, gitignored. Delete it and it reseeds |
 
 Stuck for more than twenty minutes: say so in the group chat rather than

@@ -134,9 +134,6 @@ Chromium is at `/opt/pw-browsers/chromium`; launch Playwright with that
   are the check that matters and need a person with one. axe and the tests
   catch what a machine can; they do not tell you whether it is pleasant.
 - **Voice typing** exists only on the dispute letter, for the reasons above.
-- **The standalone build is not covered.** `standalone/shell.html` has its own
-  styles and does not use `bridge.css`, so it is dark only and none of the above
-  applies to it.
 - **The helper's and coordinator's screens** get the themes, text size, motion,
   read aloud and the structure fixes, and axe found nothing on them, but they are
   English only and have had no manual pass.

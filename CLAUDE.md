@@ -30,9 +30,8 @@ Where this is going: a progressive web app provisioned onto a facility tablet,
 not a website somebody finds and installs. How it would actually get
 there is not established, and that is in `SIMPLIFICATIONS` rather than dressed
 up as a plan. The browser build is how it is
-developed and demonstrated. `standalone/` is a demo artifact so the whole
-journey can be walked in three windows; it is not the product, and nothing in
-the app should tell a person to install anything.
+developed and demonstrated, and the deployed one on Render is what gets shown.
+Nothing in the app should tell a person to install anything.
 
 ## Two constraints everything follows from
 
@@ -157,38 +156,15 @@ next tap. Some scopes raise on construction rather than being checked later.
   display settings are cookies on the tablet, never on the case file.
 - **Never seed a PIN.** A PIN somebody else set is not a PIN.
 
-## The standalone build, and how it has bitten before
-
-`standalone/shell.html` is one shared source. `standalone/build.py` generates
-three files from it, injecting the role and the rules payload out of the Python
-modules, so the single-file version cannot quietly drift from the tested one.
-
-    python3 standalone/build.py     # after ANY change to app/ or the shell
-
-Editing that shell has gone wrong twice, both times the same way:
-
-- **Never use a regex with `.*?` across route boundaries.** It spliced
-  unrelated functions together and produced a syntax error that was painful to
-  find. Use exact string swaps in a script that `sys.exit`s on a miss, so a
-  pattern that no longer matches fails loudly instead of silently doing nothing
-  or matching the wrong thing.
-- **Syntax-check the shell after editing it**, before building. Extract the
-  `<script>` block and run `node --check` on it.
-- **Then drive the built files in a real browser.** Chromium is at
-  `/opt/pw-browsers/chromium`; launch Playwright with that `executable_path`.
-  `pytest` cannot see a broken route, a dead link, or a hash that does not
-  match. Both real bugs found this way were invisible to the test suite: a
-  router that ignored query strings, and a silent failure when `crypto.subtle`
-  was unavailable.
-- When asserting on what a page shows, read `#app`, not `page.content()`. The
-  whole script is inlined, so every string literal in the source reads as
-  "on the page" and your assertion passes or fails for the wrong reason.
-
 ## Checks before pushing
 
-    pytest -q                       # 396 tests, all should pass
-    python3 standalone/build.py     # rebuild if anything changed
+    pytest -q                       # all should pass
     ./run.sh                        # installs, tests, serves on :8000
+
+pytest cannot see a broken route, a dead link or a page that only fails in a
+browser. For anything a person clicks, drive the served app in a real browser:
+Chromium is at `/opt/pw-browsers/chromium`; launch Playwright with that
+`executable_path`.
 
 CI runs pytest on 3.11 and 3.12 on every push to main and every pull request.
 3.12 has no pytest in the cloud container, so the matrix only fully runs in CI.

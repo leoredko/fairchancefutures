@@ -817,8 +817,8 @@ def lesson(slug: str) -> Lesson:
 # progress
 # --------------------------------------------------------------------------
 #
-# Stored on the client as a plain dict so it survives in the JSON file and
-# crosses to the standalone build without a schema. One entry per lesson the
+# Stored on the client as a plain dict so it survives in the JSON file without
+# a schema. One entry per lesson the
 # person has opened; a lesson never opened has no entry, which is how "not
 # started" is told apart from "on card one".
 

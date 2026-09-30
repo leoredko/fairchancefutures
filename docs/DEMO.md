@@ -173,25 +173,18 @@ facing the audience. It is a presentation setting and not a permission, so it
 is not in `app/surfaces.py`: what a surface can do is enforced there, and a
 second copy of that in an environment variable would be a weaker one.
 
-The single-file build needs no switch. `standalone/build.py` already emits one
-application per surface, so opening `bridge-inside.html` on its own is the same
-thing: it has only the tablet door and no way to reach the other two.
+## Three windows, one caseload
 
-## Three files, one caseload
-
-`standalone/bridge-inside.html`, `bridge-family.html` and `bridge-staff.html`
-are three separate applications, the way they would be deployed separately in
-the real thing. Served from the same folder or the same host they share one
-caseload, so a client the coordinator adds appears on the tablet. Each keeps
-its own session, so signing in on one does not sign you out of another.
-
-Published to three different origins they cannot see each other. For a
-walkthrough that crosses roles, open all three from one folder or run the
-server app.
+The tablet (`/signin`), the helper's phone (`/family`) and the coordinator's desk
+(`/staff`) all read the same case, so a client the coordinator adds appears on the
+tablet. The coordinator needs no sign-in. The tablet and the helper keep their
+session in a cookie, and one browser holds one session, so signing in as the helper
+signs the tablet out. For a walkthrough that crosses roles, give the tablet and the
+helper each their own browser profile or a private window.
 
 ## Starting over
 
-**The served app, including the deployed one:** open `/demo/restart`, linked
+Open `/demo/restart`, linked
 from the bottom of the home page. Pick a person and they go back to the day
 the seed describes: the PIN they set is cleared so the next sign-in enrolls a
 new one, and the intake answers, course progress, report notes and drafted
@@ -206,7 +199,3 @@ to be there and the PIN is the thing being cleared.
 It is a demo control and it is labelled as one on the screen. A real case file
 holds a coordinator's work and a person cannot erase it from their tablet,
 which is why this is not in the capability table in `app/surfaces.py`.
-
-**The single-file build:** clear the site data for the page, or run
-`localStorage.clear()` in the browser console. The seeded caseload comes back
-on the next load.

@@ -88,8 +88,8 @@ class Client:
     # toward; it never decides what they are allowed to reach. See app/paths.py.
     path: str = ""
     # Where this person has got to in the credit course, per lesson.
-    # A plain dict so it survives the JSON round trip and crosses to the
-    # standalone build without a schema. See app/lessons.py.
+    # A plain dict so it survives the JSON round trip without a schema.
+    # See app/lessons.py.
     lesson_progress: dict = field(default_factory=dict)
     # Never rendered by any surface. Present so the redaction tests have
     # something real to withhold.
