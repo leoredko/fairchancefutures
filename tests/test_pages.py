@@ -32,7 +32,7 @@ def test_the_pages_load_nothing_from_anywhere_but_this_app(client):
     One remote font or script and a screen either fails to draw or spends a
     person's minutes on something they never asked for."""
     sign_in_inside(client)
-    urls = ["/", "/signin", "/helper", "/display", "/citations", "/roles",
+    urls = ["/", "/signin", "/helper", "/display", "/language", "/citations", "/roles",
             "/inside/start", "/inside/learn", "/inside/learn/lesson/three-papers/0",
             "/inside/case", "/inside/request", "/inside/report", "/inside/after",
             "/staff", "/staff/new", "/staff/marcus-w"]

@@ -368,3 +368,34 @@ def test_the_human_check_is_asked_and_answered_in_the_language_of_the_door():
     assert challenge.verify(ask["token"], str(total))
     assert challenge.verify(ask["token"], challenge.WORDS_ES[total])
     assert challenge.verify(ask["token"], challenge.WORDS[total])
+
+
+def test_the_language_page_is_reachable_and_changes_the_language(client):
+    page = client.get("/language", params={"back": "/inside"}).text
+    assert "Español" in page and 'href="/inside"' in page
+    out = client.post("/language", data={"lang": "es", "back": "/language"},
+                      follow_redirects=False)
+    assert out.status_code == 303
+    assert "Idioma" in client.get("/language").text
+
+
+def test_asking_for_another_language_is_recorded_and_thanked(client):
+    from app.store import STATE
+
+    out = client.post("/language/request", data={"language": "  Haitian   Creole ", "back": "/inside"},
+                      follow_redirects=True)
+    assert "Thank you for the feedback" in out.text
+    assert STATE.language_requests[-1]["language"] == "Haitian Creole"
+
+
+def test_a_blank_language_request_is_not_a_request(client):
+    from app.store import STATE
+
+    before = len(STATE.language_requests)
+    out = client.post("/language/request", data={"language": "   "}, follow_redirects=True)
+    assert "Thank you for the feedback" not in out.text
+    assert len(STATE.language_requests) == before
+
+
+def test_the_other_button_at_the_door_leads_to_the_request_form(client):
+    assert 'href="/language?back=/signin#other"' in client.get("/signin").text

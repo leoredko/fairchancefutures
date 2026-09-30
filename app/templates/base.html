@@ -60,7 +60,7 @@
 </div>
 
 {% block body %}{% endblock %}
-{% block dock %}<nav aria-label="{{ t('display.dock') }}"><a class="dock" href="/display?back={{ request.url.path|urlencode }}">{{ t('display.dock') }}</a></nav>{% endblock %}
+{% block dock %}<nav class="docks" aria-label="{{ t('display.dock') }}"><a class="dock" href="/language?back={{ request.url.path|urlencode }}">{{ t('language.dock') }}</a><a class="dock" href="/display?back={{ request.url.path|urlencode }}">{{ t('display.dock') }}</a></nav>{% endblock %}
 {# Loaded only for somebody who turned read aloud on, so a tablet that has not
    asked for it never touches the speaker. The words are handed over here
    because the script has no other way to know the language of the page. #}

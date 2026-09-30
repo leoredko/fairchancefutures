@@ -811,8 +811,9 @@ html[data-motion="reduced"] .splash { display: none !important; }
 
 /* Fixed, small and in the corner nothing else uses, and the page keeps room
    for it at the bottom so it never sits on the last button. */
+.docks { position: fixed; left: 14px; bottom: 14px; z-index: 30;
+  display: flex; gap: 8px; flex-wrap: wrap; }
 .dock {
-  position: fixed; left: 14px; bottom: 14px; z-index: 30;
   background: var(--surface-2); color: var(--ink);
   border: 2px solid var(--field-bd); border-radius: var(--r-pill);
   padding: 9px 16px; font-size: 0.875rem; font-weight: 600;
@@ -820,7 +821,7 @@ html[data-motion="reduced"] .splash { display: none !important; }
 }
 .dock:hover { border-color: var(--link); color: var(--link-hover); }
 body { padding-bottom: 68px; }
-@media print { .dock, .skip { display: none !important; } body { padding-bottom: 0; } }
+@media print { .docks, .dock, .skip { display: none !important; } body { padding-bottom: 0; } }
 
 /* ---- the display settings page ------------------------------------------ */
 

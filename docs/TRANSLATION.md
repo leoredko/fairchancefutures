@@ -31,8 +31,7 @@ Set it back to anything else, or remove it, and Spanish returns.
 ## What a person sees
 
 At the sign-in door, before anything else, three options: **English**,
-**Español**, and **Other**. Other cannot be picked and says other languages are
-coming. Somebody who reads neither should find that out on the first screen,
+**Español**, and **Other**. Other cannot be picked as a language. It opens the Language page, where a person types the language they need and gets a thank you; the asks are kept in `language_requests` in the case file. The Language link in the corner of every screen reaches the same page after sign-in. Somebody who reads neither should find that out on the first screen,
 from something that admits it, rather than after working through a course they
 cannot read.
 

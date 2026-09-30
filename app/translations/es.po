@@ -1417,6 +1417,45 @@ msgctxt "door.other"
 msgid "Other"
 msgstr "Otro"
 
+msgctxt "language.title"
+msgid "Language"
+msgstr "Idioma"
+
+msgctxt "language.heading"
+msgid "Language"
+msgstr "Idioma"
+
+msgctxt "language.lede"
+msgid ""
+"Pick the language this tablet uses. It stays until somebody changes it."
+msgstr ""
+"Elija el idioma que usa esta tableta. Se queda así hasta que alguien lo "
+"cambie."
+
+msgctxt "language.other_heading"
+msgid "Need another language?"
+msgstr "¿Necesita otro idioma?"
+
+msgctxt "language.other_body"
+msgid "Tell us which one. We keep a list of what people ask for."
+msgstr "Díganos cuál. Llevamos una lista de lo que la gente pide."
+
+msgctxt "language.other_label"
+msgid "Language"
+msgstr "Idioma"
+
+msgctxt "language.other_send"
+msgid "Send"
+msgstr "Enviar"
+
+msgctxt "language.thanks"
+msgid ""
+"Thank you for the feedback. We will work on it the best we can so it can be "
+"available for your use soon."
+msgstr ""
+"Gracias por sus comentarios. Haremos lo mejor que podamos para que pronto "
+"esté disponible para su uso."
+
 msgctxt "door.other_note"
 msgid ""
 "Other languages are coming. For now this app is in English and Spanish."
@@ -1825,16 +1864,20 @@ msgid "Back to my case"
 msgstr "Volver a mi caso"
 
 msgctxt "display.dock"
-msgid "Display"
-msgstr "Pantalla"
+msgid "Accessibility"
+msgstr "Accesibilidad"
+
+msgctxt "language.dock"
+msgid "Language"
+msgstr "Idioma"
 
 msgctxt "display.skip"
 msgid "Skip to the page"
 msgstr "Ir a la página"
 
 msgctxt "display.title"
-msgid "Display"
-msgstr "Pantalla"
+msgid "Accessibility"
+msgstr "Accesibilidad"
 
 msgctxt "display.heading"
 msgid "How this looks"

@@ -38,6 +38,16 @@ UI: dict[str, str] = {
     "door.check_why": "Asked because this is a public demonstration link. It "
                       "keeps crawlers out and nothing else.",
     "door.other": "Other",
+    "language.title": "Language",
+    "language.heading": "Language",
+    "language.lede": "Pick the language this tablet uses. It stays until "
+                     "somebody changes it.",
+    "language.other_heading": "Need another language?",
+    "language.other_body": "Tell us which one. We keep a list of what people ask for.",
+    "language.other_label": "Language",
+    "language.other_send": "Send",
+    "language.thanks": "Thank you for the feedback. We will work on it the best "
+                       "we can so it can be available for your use soon.",
     "door.other_note": "Other languages are coming. For now this app is in "
                        "English and Spanish.",
 
@@ -163,9 +173,10 @@ UI: dict[str, str] = {
     "end.back_case": "Back to my case",
 
     # -- how the tablet looks, reachable from every page --------------------
-    "display.dock": "Display",
+    "display.dock": "Accessibility",
+    "language.dock": "Language",
     "display.skip": "Skip to the page",
-    "display.title": "Display",
+    "display.title": "Accessibility",
     "display.heading": "How this looks",
     "display.lede": "These stay on this tablet until somebody changes them.",
     "display.done": "Done",
