@@ -6,9 +6,9 @@ Drawn in code rather than shipped as a binary nobody can edit. Run:
 
 The same mark the app carries: a stone arch bridge, which is also a B lying on
 its back, the deck being the spine and the two arches the bowls. The geometry
-below is the same 48x34 drawing as the `markpath` in `app/templates/base.html`
-and in the standalone shell, scaled up, so the icon on the home screen and the
-mark in the bar cannot drift apart.
+below is the same 48x34 drawing as the `markpath` in `app/templates/base.html`,
+scaled up, so the icon on the home screen and the mark in the bar cannot drift
+apart.
 
 Full bleed rather than a plate floating on white, because Android crops these
 to whatever shape the launcher wants and a plate inside a crop is a plate with

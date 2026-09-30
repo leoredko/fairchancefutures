@@ -22,10 +22,9 @@ COUNTING_WORDS = ("six question", "six answer", "answer six", "six intake")
 
 
 def screens():
-    """What a person's eyes actually land on, server-rendered and standalone."""
+    """What a person's eyes actually land on."""
     for path in sorted((ROOT / "app" / "templates").rglob("*.html")):
         yield path
-    yield ROOT / "standalone" / "shell.html"
 
 
 def test_no_screen_promises_a_number_of_questions():

@@ -30,26 +30,12 @@ uvicorn app.main:app --reload
 The server app in `app/` is the real architecture: three surfaces, one shared
 case, enforcement server-side. That is what becomes the product.
 
-`standalone/` is a demo artifact, and only that. Three single files, no server
-and no network, so the whole journey can be shown by opening three browser
-windows side by side without anybody installing anything:
-
-    standalone/bridge-inside.html    the facility tablet
-    standalone/bridge-family.html    the helper's phone
-    standalone/bridge-staff.html     the coordinator's desktop
-
-Served from the same folder or the same host all three share one caseload, so a
-client the coordinator adds appears on the tablet. Each keeps its own session,
-so signing in on one does not sign you out of another. Published to three
-different origins they cannot see each other.
-
-```bash
-python3 standalone/build.py     # regenerate all three after changing the app
-```
-
-It is generated, not hand-maintained. The four triage states, the letter
-templates, the verified facts and the bureau addresses come straight out of the
-Python modules, and `tests/test_standalone.py` fails if the two ever disagree.
+To see all three at once, run the server app (or open the deployed one) and use
+the tablet at `/signin`, the helper's phone at `/helper` and the coordinator's
+desk at `/staff`, in separate windows. The coordinator needs no sign-in. The
+tablet and the helper each keep their session in a cookie, and one browser holds
+one session, so signing in as the helper signs the tablet out. Give each its own
+browser profile or a private window.
 
 ## Signing in
 
@@ -254,7 +240,6 @@ app/labels.py          human labels, so no column name reaches a screen
 app/i18n.py            the course in Spanish, and the switch that removes it
 app/translations/      es.po, translated once and committed. No runtime model.
 app/intake.py          adding somebody to the caseload
-standalone/            the single openable file, and its build script
 app/questions.py       the two question sets, and why they differ
 app/centers.py         free counseling after release, hand-kept and sourced
 app/facilities.py      the 41 DOCCS facilities, checked, with addresses

@@ -127,9 +127,7 @@ attached to something true now.
 ## What this is built toward
 
 A progressive web app provisioned onto a facility tablet, not a website
-somebody finds. The browser build is how it is developed and shown. The three
-single files in `standalone/` are a demo artifact so the whole journey can be
-walked in three windows, and they are not the product.
+somebody finds. The browser build is how it is developed and shown.
 
 The gap between here and that, roughly in order: `app/store.py` is a JSON file
 rewritten whole on every write and has to become a database; the case plan
