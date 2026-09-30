@@ -47,10 +47,11 @@ How to work on this file:
      only when you have read the line and you are happy with it.
   4. Save. Commit the file. That is the whole deployment.
 
-An entry that is empty, or still flagged fuzzy, shows in English instead.
-That is deliberate: these lessons state law, and a confident Spanish sentence
-about somebody's rights that no Spanish speaker has read is worse than the
-English they would otherwise get.
+An entry that is empty shows in English instead, and so does one whose English
+has changed since it was translated. A flagged entry still shows: the flag is
+a bookmark for the next reader, not a gate. That fallback is deliberate: these
+lessons state law, and a confident Spanish sentence about somebody's rights
+that says something the product no longer says is worse than the English.
 
 Lines marked LEGAL sit on a card that cites a statute. Slow down on those.
 Numbers, deadlines and the phrase "120 days" carry weight: there are two

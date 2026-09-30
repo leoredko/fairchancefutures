@@ -2,8 +2,10 @@
 
 The credit course is eleven lessons, 173 sentences, and the screens that carry
 a person to it (the door, the PIN, the first question, the lesson list and the
-buttons inside a lesson) are another 111. All of them are in Spanish now. This
-is how that works and how to change it.
+buttons inside a lesson), the Display settings and the read-aloud and voice
+typing controls are another 157, 330 strings in all. All of them are in Spanish
+now, and Leo Redko approved the Spanish on 2026-09-30. This is how that works
+and how to change it.
 
 ## The short version
 
@@ -42,9 +44,10 @@ next person can change it in one tap.
 1. Get Poedit. It is free, Mac and Windows: [poedit.net](https://poedit.net)
 2. Open `app/translations/es.po`
 3. English on the left, Spanish on the right. Read it and fix what is off.
-4. Every line is currently marked **Needs work**, because it was drafted and
-   not yet checked by a person. Clear that flag as you go, so the next person
-   can see how far you got.
+4. No line is marked **Needs work** now, because the team approved the file as a
+   whole. A line whose English is reworded gets the flag back on its own, so the
+   next reader sees what changed. If you fix a line, that is a change like any
+   other: save and commit.
 5. Save, commit.
 
 **"Needs work" does not hide anything.** The Spanish shows on the tablet
