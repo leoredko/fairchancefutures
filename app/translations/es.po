@@ -2222,6 +2222,63 @@ msgid "Nothing moves on its own."
 msgstr "Nada se mueve solo."
 
 #, fuzzy
+msgctxt "display.read"
+msgid "Read aloud"
+msgstr "Lectura en voz alta"
+
+#, fuzzy
+msgctxt "display.read.off"
+msgid "Off"
+msgstr "Apagada"
+
+#, fuzzy
+msgctxt "display.read.off.note"
+msgid "Nothing is read to you."
+msgstr "No se te lee nada."
+
+#, fuzzy
+msgctxt "display.read.on"
+msgid "On"
+msgstr "Encendida"
+
+#, fuzzy
+msgctxt "display.read.on.note"
+msgid ""
+"A Listen button on each screen reads it to you. Use headphones in shared "
+"spaces."
+msgstr ""
+"Un botón Escuchar en cada pantalla te la lee. Usa audífonos en los espacios "
+"compartidos."
+
+#, fuzzy
+msgctxt "read.listen"
+msgid "Listen"
+msgstr "Escuchar"
+
+#, fuzzy
+msgctxt "read.stop"
+msgid "Stop"
+msgstr "Parar"
+
+#, fuzzy
+msgctxt "read.headphones"
+msgid "Use headphones in shared spaces."
+msgstr "Usa audífonos en los espacios compartidos."
+
+#, fuzzy
+msgctxt "read.unavailable"
+msgid ""
+"This tablet has no voice that works without a network, so read aloud is off."
+msgstr ""
+"Esta tableta no tiene una voz que funcione sin conexión a internet, así que "
+"la lectura en voz alta está desactivada."
+
+#, fuzzy
+msgctxt "read.ready"
+msgid "Read aloud is ready. The voice stays on this tablet."
+msgstr "La lectura en voz alta está lista. La voz se queda en esta tableta."
+
+#, fuzzy
 msgctxt "error.wrong_answer"
 msgid "That was not the right answer. Here is another one."
 msgstr "Esa no era la respuesta correcta. Aquí tienes otra pregunta."

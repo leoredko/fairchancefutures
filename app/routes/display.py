@@ -2,7 +2,7 @@
 
 Reachable from every screen, signed in or not, because somebody who cannot read
 the sign-in screen cannot sign in to change how it reads. It touches nothing
-but three cookies, so there is no capability for `app/surfaces.py` to
+but its cookies, so there is no capability for `app/surfaces.py` to
 withhold and no case data for it to leak.
 """
 
@@ -39,8 +39,9 @@ def choose(request: Request,
            theme: str | None = Form(None),
            size: str | None = Form(None),
            motion: str | None = Form(None),
+           read: str | None = Form(None),
            back: str = Form("/")):
-    """Take whichever of the three arrived and leave the others as they were.
+    """Take whichever of the settings arrived and leave the others as they were.
 
     Back to the settings page rather than to where they came from, so the
     change is in front of them the moment they make it. The way out is the
@@ -48,7 +49,8 @@ def choose(request: Request,
     """
     response = RedirectResponse(
         "/display?back=" + _quote(_back(back)), status_code=303)
-    for setting, value in (("theme", theme), ("size", size), ("motion", motion)):
+    for setting, value in (("theme", theme), ("size", size), ("motion", motion),
+                           ("read", read)):
         if value is None:
             continue
         response.set_cookie(

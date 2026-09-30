@@ -1,4 +1,5 @@
-"""How the tablet looks to the person holding it: colour, text size, motion.
+"""How the tablet looks to the person holding it: colour, text size, motion,
+and whether it can read a screen aloud.
 
 Same shape as the language choice and for the same reasons. It is a property of
 the device in front of somebody rather than a fact about them, so it lives in a
@@ -19,14 +20,16 @@ from __future__ import annotations
 THEMES = ("dark", "light", "contrast")
 SIZES = ("normal", "large", "xlarge")
 MOTIONS = ("full", "reduced")
+READS = ("off", "on")
 
-DEFAULTS = {"theme": "dark", "size": "normal", "motion": "full"}
-CHOICES = {"theme": THEMES, "size": SIZES, "motion": MOTIONS}
+DEFAULTS = {"theme": "dark", "size": "normal", "motion": "full", "read": "off"}
+CHOICES = {"theme": THEMES, "size": SIZES, "motion": MOTIONS, "read": READS}
 
 COOKIES = {
     "theme": "bridge_theme",
     "size": "bridge_size",
     "motion": "bridge_motion",
+    "read": "bridge_read",
 }
 
 # A year, as the language is. Chosen once by somebody who does not want to
@@ -44,7 +47,7 @@ def normalize(setting: str, value: str | None) -> str:
 
 
 def from_request(request) -> dict[str, str]:
-    """All three settings for this tablet, with anything unset or bad defaulted."""
+    """All the settings for this tablet, with anything unset or bad defaulted."""
     return {name: normalize(name, request.cookies.get(cookie))
             for name, cookie in COOKIES.items()}
 

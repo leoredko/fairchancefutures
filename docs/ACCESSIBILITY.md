@@ -9,15 +9,17 @@ actually use, and this page says so rather than implying it.
 
 A **Display** link sits in the corner of every page, signed in or not, because
 somebody who cannot read the sign-in screen cannot sign in to fix it. It opens
-`/display`, which has three groups:
+`/display`, which has four groups:
 
 | Setting | Choices | Default |
 | --- | --- | --- |
 | Color | Dark, Light, High contrast | Dark |
 | Text size | Normal, Large, Largest | Normal |
 | Motion | Normal, Less motion | Normal |
+| Read aloud | Off, On | Off |
 
-They are cookies on the tablet (`bridge_theme`, `bridge_size`, `bridge_motion`),
+They are cookies on the tablet (`bridge_theme`, `bridge_size`, `bridge_motion`,
+`bridge_read`),
 the same way the language is. They survive the idle timeout and the next person
 can change them in one tap. They are not on the case file, so a coordinator never
 sees them and nothing about how somebody reads the screen becomes a record.
@@ -29,6 +31,47 @@ touched looks exactly as it did before.
 **Not followed automatically:** the device's own light or dark preference. Dark
 is the product's look, and following the device would change what a tablet
 nobody touched looks like. `prefers-reduced-motion` is followed.
+
+## Read aloud
+
+Off until somebody turns it on. When it is on, a **Listen** button appears at the
+top of each screen and reads that screen to the person, in the language the
+tablet is set to. It is `app/static/listen.js`, loaded only when the setting is
+on, so a tablet that has not asked for it never touches the speaker.
+
+The rules it keeps, each of them a test on the script:
+
+- **Only a voice that stays on the tablet.** Many browser voices stream the text
+  to a cloud service, and the text sits next to a person's name and case. The
+  script uses a voice only if the browser says `localService` is true. With no
+  such voice for the language, the button never appears and the Display page
+  says so. Spanish needs a local Spanish voice; it does not fall back to an
+  English one reading Spanish.
+- **It listens to nothing.** No microphone, no speech recognition, no request
+  out of the file, nothing stored.
+- **It says nothing until the button is pressed,** and leaving the page ends it.
+- **It reads the content and not the chrome.** The header, buttons, the Display
+  link and the citation line under a lesson card are skipped. A citation is an
+  English source and a statute number, which is for a law library and not for the
+  ear.
+
+**Headphones cannot be enforced.** A browser cannot tell whether a jack is in
+use, so a tablet speaker in a dayroom will be heard by the room. The setting
+and the button both say to use headphones, and that is all the code can do. The
+person, or the facility, has to do the rest.
+
+**Untested on the real tablet.** It was driven in Chromium with a stand-in speech
+engine, which proves what it picks and what it says, not what the facility
+tablet's voices sound like or whether it has a local one at all.
+
+### Dictation, deliberately not built
+
+The tablet has almost nothing to dictate into: the person picks from choices, and
+the only typed fields are the DIN, the PIN and the human check. Speaking a PIN or
+a DIN in a common area is a privacy leak, and a microphone is a bigger thing to
+ask a facility for than a speaker. If the facility turns on the device's own
+voice control, the fields carry names that match what is on screen, so it can
+target them. Revisit this if a screen ever asks for free text.
 
 ## What was checked, and how
 
@@ -60,12 +103,7 @@ Chromium is at `/opt/pw-browsers/chromium`; launch Playwright with that
 - **No screen reader has been run against this.** VoiceOver, TalkBack and NVDA
   are the check that matters and need a person with one. axe and the tests
   catch what a machine can; they do not tell you whether it is pleasant.
-- **Dictation and read aloud are not built.** Both depend on the tablet's
-  hardware and the facility's rules. Browser dictation usually sends audio to a
-  cloud service, which does not belong next to a PIN and a credit file. Read
-  aloud can run on the device with no network, and should go to headphones only,
-  since a speaker in a dayroom is a privacy leak. Neither should be built until
-  somebody establishes what the tablet has and allows.
+- **Dictation is not built,** for the reasons above.
 - **The standalone build is not covered.** `standalone/shell.html` has its own
   styles and does not use `bridge.css`, so it is dark only and none of the above
   applies to it.

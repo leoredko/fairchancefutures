@@ -190,6 +190,19 @@ UI: dict[str, str] = {
     "display.motion.reduced": "Less motion",
     "display.motion.reduced.note": "Nothing moves on its own.",
 
+    "display.read": "Read aloud",
+    "display.read.off": "Off",
+    "display.read.off.note": "Nothing is read to you.",
+    "display.read.on": "On",
+    "display.read.on.note": "A Listen button on each screen reads it to you. Use "
+                            "headphones in shared spaces.",
+    "read.listen": "Listen",
+    "read.stop": "Stop",
+    "read.headphones": "Use headphones in shared spaces.",
+    "read.unavailable": "This tablet has no voice that works without a network, "
+                        "so read aloud is off.",
+    "read.ready": "Read aloud is ready. The voice stays on this tablet.",
+
     # -- what goes wrong, as the person reads it ----------------------------
     "error.wrong_answer": "That was not the right answer. Here is another one.",
     "error.no_record": "No record here for {display}. Check the number, or ask "

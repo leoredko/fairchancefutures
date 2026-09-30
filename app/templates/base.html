@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}">
+<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}" data-read="{{ display().read }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,6 +61,15 @@
 
 {% block body %}{% endblock %}
 {% block dock %}<nav aria-label="{{ t('display.dock') }}"><a class="dock" href="/display?back={{ request.url.path|urlencode }}">{{ t('display.dock') }}</a></nav>{% endblock %}
+{# Loaded only for somebody who turned read aloud on, so a tablet that has not
+   asked for it never touches the speaker. The words are handed over here
+   because the script has no other way to know the language of the page. #}
+{% if display().read == 'on' %}
+<div id="listen-config" hidden data-listen="{{ t('read.listen') }}" data-stop="{{ t('read.stop') }}"
+     data-headphones="{{ t('read.headphones') }}" data-unavailable="{{ t('read.unavailable') }}"
+     data-ready="{{ t('read.ready') }}"></div>
+<script src="/static/listen.js" defer></script>
+{% endif %}
 <script src="/static/exclusive.js" defer></script>
 <script>
   // The opening. Once a session, skippable by touching it, and skipped

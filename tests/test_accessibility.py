@@ -249,7 +249,7 @@ def test_done_goes_back_to_where_the_person_was(client):
 def test_the_page_says_which_option_is_picked_in_words_and_not_only_colour(client):
     client.post("/display", data={"size": "large"})
     page = client.get("/display").text
-    assert page.count("Selected") == 3      # one per group
+    assert page.count("Selected") == 4      # one per group
     assert 'aria-pressed="true"' in page
 
 
@@ -383,3 +383,79 @@ def test_every_field_has_a_name_a_screen_reader_can_read(client):
             # A field the door labels with a visible heading and a placeholder
             # is still a field with no name to a screen reader.
             assert named, (url, field)
+
+
+# --------------------------------------------------------------------------
+# read aloud
+#
+# The tablet has a speaker and a headphone jack, so this is buildable. What
+# makes it safe is what it refuses to do: use a voice that sends the text to a
+# service, listen to anything, or start without being asked. Those are claims
+# about the script, so they are tests on the script.
+# --------------------------------------------------------------------------
+
+LISTEN = (ROOT / "app" / "static" / "listen.js").read_text()
+
+
+def test_read_aloud_is_off_until_somebody_turns_it_on(client):
+    page = client.get("/signin").text
+    assert 'data-read="off"' in page
+    assert "listen.js" not in page
+    assert "listen-config" not in page
+
+
+def test_turning_it_on_loads_the_script_with_the_words_it_needs(client):
+    client.post("/display", data={"read": "on"})
+    page = client.get("/signin").text
+    assert 'data-read="on"' in page
+    assert "/static/listen.js" in page
+    assert 'data-listen="Listen"' in page
+    assert "headphones" in page
+
+
+def test_the_buttons_words_follow_the_language_of_the_tablet(client):
+    client.post("/display", data={"read": "on"})
+    client.post("/language", data={"lang": "es", "back": "/signin"})
+    page = client.get("/signin").text
+    assert 'data-listen="Escuchar"' in page
+    assert 'data-stop="Parar"' in page
+
+
+def test_the_script_only_ever_uses_a_voice_that_stays_on_the_tablet():
+    """Many browser voices stream the text to a cloud service, and this text is
+    next to a person's name and case. `localService` is the browser's own word
+    for which is which."""
+    assert "localService === true" in LISTEN
+    # No path picks a voice without going through that filter.
+    assert LISTEN.count("getVoices") == 2   # once to pick, once to see if any exist
+    assert "pickVoice" in LISTEN
+
+
+def test_the_script_cannot_listen_or_call_out():
+    for forbidden in ("getUserMedia", "SpeechRecognition", "webkitSpeechRecognition",
+                      "fetch(", "XMLHttpRequest", "WebSocket", "sendBeacon",
+                      "mediaDevices", "localStorage", "sessionStorage", "cookie"):
+        assert forbidden not in LISTEN, forbidden
+
+
+def test_the_script_says_nothing_until_a_button_is_pressed():
+    """The only call to `speak` is inside `start`, which only the button runs."""
+    assert LISTEN.count("synth.speak(") == 1
+    assert LISTEN.index("synth.speak(") > LISTEN.index("function start()")
+    assert 'addEventListener("click"' in LISTEN
+
+
+def test_leaving_the_page_ends_the_speech():
+    assert "pagehide" in LISTEN and "synth.cancel()" in LISTEN
+
+
+def test_a_citation_is_not_read_aloud(client):
+    """It is an English source line and a statute number, which a Spanish voice
+    would mangle and which is for a law library rather than for the ear."""
+    sign_in_inside(client)
+    for index in range(6):
+        page = client.get(f"/inside/learn/lesson/three-papers/{index}").text
+        if "Where this comes from" in page or "De dónde viene" in page:
+            assert "data-no-speech" in page
+            return
+    raise AssertionError("no card with a source was found to check")
