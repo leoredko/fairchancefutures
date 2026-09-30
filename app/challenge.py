@@ -42,13 +42,20 @@ WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven",
          "eight", "nine", "ten", "eleven", "twelve", "thirteen"]
 
 
+# Spanish for the same numbers. Both spellings are accepted whatever language
+# the question was asked in, so somebody who switches language halfway through
+# is not failed for it.
+WORDS_ES = ["cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete",
+            "ocho", "nueve", "diez", "once", "doce", "trece"]
+
+
 def enabled() -> bool:
     return os.environ.get("BRIDGE_CAPTCHA", "").strip().lower() not in (
         "", "0", "false", "no", "off"
     )
 
 
-def issue() -> dict:
+def issue(language: str = "en") -> dict:
     """A question, and a signed token that knows the answer.
 
     Small numbers and written-out words: the point is to cost a script a
@@ -60,7 +67,9 @@ def issue() -> dict:
         {"sum": left + right, "at": time.time()}, separators=(",", ":")
     ).encode()
     return {
-        "question": f"What is {WORDS[left]} plus {WORDS[right]}?",
+        "question": (f"¿Cuánto es {WORDS_ES[left]} más {WORDS_ES[right]}?"
+                     if language == "es"
+                     else f"What is {WORDS[left]} plus {WORDS[right]}?"),
         "token": sign_blob(body),
     }
 
@@ -87,6 +96,8 @@ def verify(token: str | None, answer: str | None) -> bool:
     given = answer.strip().lower()
     if given in WORDS:
         given = str(WORDS.index(given))
+    elif given in WORDS_ES:
+        given = str(WORDS_ES.index(given))
     try:
         return int(given) == expected
     except ValueError:

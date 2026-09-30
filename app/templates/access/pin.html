@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Enter your PIN{% endblock %}
+{% block title %}{{ t('pin.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar">
@@ -11,23 +11,22 @@
         action="{% if role == 'inside' %}/signin/pin{% else %}/helper/pin{% endif %}">
     <input type="hidden" name="normalized" value="{{ normalized }}">
 
-    <h1>Your PIN</h1>
+    <h1>{{ t('pin.heading') }}</h1>
     {% if account.display_name %}
-    <p class="lede">Welcome back, {{ account.display_name }}.</p>
+    <p class="lede">{{ t('pin.welcome', name=account.display_name) }}</p>
     {% endif %}
 
-    {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
+    {% if error %}<div class="denied"><span class="what">{{ tr(error) }}</span></div>{% endif %}
 
     <input class="choice" name="pin" type="password" inputmode="numeric"
            pattern="[0-9]*" maxlength="{{ pin_length }}" autocomplete="current-password"
            autofocus style="letter-spacing: .5em; font-size: 26px">
 
-    <button class="btn wide" type="submit">Sign in</button>
+    <button class="btn wide" type="submit">{{ t('pin.submit') }}</button>
 
     <div class="notes-always">
-      <p class="tiny">Forgot it? Your counselor can clear it, then you pick a
-        new one here. Nobody can tell you what your old one was.</p>
-      <p class="tiny"><a href="/signin">Use a different number</a></p>
+      <p class="tiny">{{ t('pin.forgot') }}</p>
+      <p class="tiny"><a href="/signin">{{ t('pin.different') }}</a></p>
     </div>
   </form>
 </div>

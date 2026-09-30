@@ -35,13 +35,15 @@ router = APIRouter()
 HOME = {"inside": "/inside", "family": "/family", "staff": "/staff"}
 
 
-def _ask() -> dict | None:
+def _ask(request: Request, language: str | None = None) -> dict | None:
     """A fresh human check, or None when the deployment has not asked for one.
 
     A new question every render rather than one reused: a token that comes
     back a second time is the shape of the thing this is for.
     """
-    return challenge.issue() if challenge.enabled() else None
+    if not challenge.enabled():
+        return None
+    return challenge.issue(language or i18n.from_request(request))
 
 
 def _passed(token: str, answer: str) -> bool:
@@ -74,7 +76,7 @@ def signin(request: Request, error: str | None = None):
         {"error": error,
          "languages": i18n.choices(),
          "lang": i18n.from_request(request),
-         "challenge": _ask()},
+         "challenge": _ask(request)},
     )
 
 
@@ -117,7 +119,7 @@ def signin_identify(request: Request, identifier: str = Form(""),
              "identifier": identifier,
              "languages": i18n.choices(),
              "lang": i18n.from_request(request),
-             "challenge": _ask()},
+             "challenge": _ask(request)},
             status_code=400,
         )
 
@@ -129,7 +131,7 @@ def signin_identify(request: Request, identifier: str = Form(""),
             {"error": str(exc), "identifier": identifier,
              "languages": i18n.choices(),
              "lang": i18n.from_request(request),
-             "challenge": _ask()},
+             "challenge": _ask(request)},
             status_code=400,
         )
 
@@ -145,7 +147,7 @@ def signin_identify(request: Request, identifier: str = Form(""),
                  "identifier": identifier,
                  "languages": i18n.choices(),
                  "lang": i18n.from_request(request),
-                 "challenge": _ask()},
+                 "challenge": _ask(request)},
                 status_code=404,
             )
 
@@ -280,7 +282,7 @@ def _open_a_case(parsed):
 def helper_signin(request: Request, error: str | None = None):
     return templates.TemplateResponse(
         request, "access/helper.html",
-        {"error": error, "challenge": _ask()},
+        {"error": error, "challenge": _ask(request, "en")},
     )
 
 
@@ -292,7 +294,7 @@ def helper_identify(request: Request, code: str = Form(""),
         return templates.TemplateResponse(
             request, "access/helper.html",
             {"error": "That was not the right answer. Here is another one.",
-             "code": code, "challenge": _ask()},
+             "code": code, "challenge": _ask(request, "en")},
             status_code=400,
         )
 
@@ -302,7 +304,7 @@ def helper_identify(request: Request, code: str = Form(""),
             request, "access/helper.html",
             {"error": "That code is not one of ours. It is printed on the "
                       "letter that came in the mail.", "code": code,
-             "challenge": _ask()},
+             "challenge": _ask(request, "en")},
             status_code=404,
         )
     page = "access/enroll.html" if not account.enrolled else "access/pin.html"

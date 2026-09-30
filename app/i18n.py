@@ -36,6 +36,8 @@ from __future__ import annotations
 
 import dataclasses
 import os
+import re
+import string
 from pathlib import Path
 
 import polib
@@ -283,13 +285,14 @@ def coverage(language: str) -> dict:
     done = 0
     legal_total = 0
     legal_done = 0
-    for lesson in CURRICULUM:
-        for key, english, is_legal in strings_for(lesson):
-            total += 1
-            legal_total += 1 if is_legal else 0
-            if book.get(key, english) != english:
-                done += 1
-                legal_done += 1 if is_legal else 0
+    every = [s for lesson in CURRICULUM for s in strings_for(lesson)]
+    every.extend(ui_strings())
+    for key, english, is_legal in every:
+        total += 1
+        legal_total += 1 if is_legal else 0
+        if book.get(key, english) != english:
+            done += 1
+            legal_done += 1 if is_legal else 0
     return {
         "language": language,
         "total": total,
@@ -345,3 +348,69 @@ def translate_rows(rows: list[dict], language: str) -> list[dict]:
         return rows
     return [{**row, "lesson": translate_lesson(row["lesson"], language)}
             for row in rows]
+
+
+# --------------------------------------------------------------------------
+# the screens around the course
+# --------------------------------------------------------------------------
+
+def ui_strings() -> list[tuple[str, str, bool]]:
+    """Every screen string that is not a lesson, as (key, english, is_legal).
+
+    Same shape as `strings_for` so the extract script and the coverage count
+    treat them alike. None is legal: a sentence that states a right or a
+    deadline belongs on a lesson card, with a source.
+    """
+    from app.ui_strings import UI
+
+    return [(key, english, False) for key, english in UI.items()]
+
+
+def _fields(text: str) -> set[str]:
+    return {name for _, name, _, _ in string.Formatter().parse(text) if name}
+
+
+def ui(key: str, language: str, **values) -> str:
+    """A screen string in `language`, English when there is nothing safe to show.
+
+    Three ways to land on English, all deliberate: the language is English or
+    switched off, the entry is empty or its English has moved, or the Spanish
+    dropped or renamed a `{value}` the screen fills in. That last one is a
+    translator's typo, and a sentence with a hole in it reads as broken while
+    English reads as merely English.
+    """
+    from app.ui_strings import UI
+
+    english = UI[key]
+    text = english
+    if language != SOURCE_LANGUAGE and enabled():
+        found = catalog(language).get(key, english)
+        if _fields(found) == _fields(english):
+            text = found
+    return text.format(**values)
+
+
+def translate_error(message: str | None, language: str) -> str | None:
+    """A finished error sentence, put into `language` when we know it.
+
+    The sentences are raised in modules that have no idea what language the
+    tablet is set to (`app/auth.py`, `app/identifiers.py`), and threading a
+    language through every raise would put display concerns into the checks.
+    So the screen matches the English it was handed against `error.*` and
+    says the same thing in the other language, pulling the numbers back out.
+    A sentence it does not recognise comes back untouched.
+    """
+    if not message or language == SOURCE_LANGUAGE or not enabled():
+        return message
+    from app.ui_strings import UI
+
+    for key, english in UI.items():
+        if not key.startswith("error."):
+            continue
+        pattern = "".join(
+            re.escape(literal) + (f"(?P<{name}>.+?)" if name else "")
+            for literal, name, _, _ in string.Formatter().parse(english))
+        found = re.fullmatch(pattern, message)
+        if found:
+            return ui(key, language, **found.groupdict())
+    return message

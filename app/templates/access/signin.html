@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Bridge, sign in{% endblock %}
+{% block title %}{{ t('door.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar">
     <svg class="wordmark" viewBox="-2 -2 210 52" role="img" aria-label="Bridge"><use href="#wordmark" fill="url(#markgrad)"/></svg>
-    <span class="who">New York State</span>
+    <span class="who">{{ t('door.region') }}</span>
   </div>
 
   {% if languages|length > 2 %}
@@ -16,21 +16,21 @@
           <button class="langpick{% if choice.code == lang %} on{% endif %}"
                   type="submit" name="lang" value="{{ choice.code }}">{{ choice.name }}</button>
         {% else %}
-          <span class="langpick ghost" title="{{ choice.note }}">{{ choice.name }}</span>
+          <span class="langpick ghost" title="{{ t('door.other_note') }}">{{ t('door.other') }}</span>
         {% endif %}
       {% endfor %}
     </div>
     {% for choice in languages %}{% if not choice.ready %}
-      <p class="tiny" style="margin:6px 2px 0">{{ choice.note }}</p>
+      <p class="tiny" style="margin:6px 2px 0">{{ t('door.other_note') }}</p>
     {% endif %}{% endfor %}
   </form>
   {% endif %}
 
   <form class="pane" method="post" action="/signin" autocomplete="off">
-    <h1>DIN number or NYS ID</h1>
-    <p class="lede">Either one works.</p>
+    <h1>{{ t('door.heading') }}</h1>
+    <p class="lede">{{ t('door.either') }}</p>
 
-    {% if error %}<div class="denied"><span class="what">{{ error }}</span></div>{% endif %}
+    {% if error %}<div class="denied"><span class="what">{{ tr(error) }}</span></div>{% endif %}
 
     <input class="choice" name="identifier" inputmode="text" autocapitalize="characters"
            autocomplete="off" spellcheck="false" autofocus
@@ -45,25 +45,23 @@
       <label class="small strong" for="challenge_answer">{{ challenge.question }}</label>
       <input class="choice" id="challenge_answer" name="challenge_answer"
              inputmode="numeric" autocomplete="off" spellcheck="false"
-             placeholder="A number, or the word">
+             placeholder="{{ t('door.check_placeholder') }}">
       <input type="hidden" name="challenge_token" value="{{ challenge.token }}">
-      <p class="tiny">Asked because this is a public demonstration link. It
-        keeps crawlers out and nothing else.</p>
+      <p class="tiny">{{ t('door.check_why') }}</p>
     </div>
     {% endif %}
 
-    <button class="btn wide" type="submit">Next</button>
+    <button class="btn wide" type="submit">{{ t('door.next') }}</button>
 
     <div class="card dashed">
-      <span class="strong">Dashes and spaces don't matter.</span>
-      <span class="small">A DIN is two numbers, a letter, then four numbers.
-        A NYSID is eight numbers, sometimes with a letter on the end.</span>
+      <span class="strong">{{ t('door.dashes') }}</span>
+      <span class="small">{{ t('door.format') }}</span>
     </div>
 
     {% if not tablet_only() %}
     <div class="notes-always">
-      <p class="tiny">Helping someone on the outside?
-        <a href="/helper">Use the code from the letter</a>.</p>
+      <p class="tiny">{{ t('door.helper_ask') }}
+        <a href="/helper">{{ t('door.helper_link') }}</a>.</p>
     </div>
     {% endif %}
   </form>
