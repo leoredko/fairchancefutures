@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ t('language.title') }}{% endblock %}
+{# The link to this page would be a link to itself here. #}
+{% block dock %}{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar" role="banner">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ t('language.title') }}</span>
+    <div class="right"><a class="pill" href="{{ back }}">{{ t('display.done') }}</a></div>
+  </div>
+
+  <div class="pane" role="main" id="content" tabindex="-1">
+    <h1>{{ t('language.heading') }}</h1>
+    <p class="lede">{{ t('language.lede') }}</p>
+
+    {% if languages|length > 1 %}
+    <form method="post" action="/language">
+      <input type="hidden" name="back" value="{{ here }}">
+      <div class="options">
+        {% for choice in languages %}
+        <button class="option" type="submit" name="lang" value="{{ choice.code }}"
+                aria-pressed="{{ 'true' if choice.code == lang else 'false' }}">
+          <span>{{ choice.name }}</span>
+          {% if choice.code == lang %}<span class="picked">{{ t('display.selected') }}</span>{% endif %}
+        </button>
+        {% endfor %}
+      </div>
+    </form>
+    {% endif %}
+
+    <form method="post" action="/language/request" id="other">
+      <input type="hidden" name="back" value="{{ back }}">
+      <fieldset class="stack">
+        <legend><h2>{{ t('language.other_heading') }}</h2></legend>
+        {% if thanks %}
+        <div class="card" role="status"><span class="small">{{ t('language.thanks') }}</span></div>
+        {% else %}
+        <p class="small">{{ t('language.other_body') }}</p>
+        <label class="small strong" for="language_wanted">{{ t('language.other_label') }}</label>
+        <input class="choice" id="language_wanted" name="language" maxlength="60"
+               autocomplete="off" spellcheck="false">
+        <button class="btn wide" type="submit">{{ t('language.other_send') }}</button>
+        {% endif %}
+      </fieldset>
+    </form>
+
+    <a class="btn wide" href="{{ back }}">{{ t('display.done') }}</a>
+  </div>
+</div>
+{% endblock %}

@@ -113,6 +113,9 @@ class State:
     # build assumes the tablet is online, which is a stated assumption rather
     # than a finding. The receipt for the promise intake makes on question one.
     write_log: list[dict] = field(default_factory=list)
+    # Languages people asked for under "Other". Anonymous on purpose: it is
+    # asked at the door, before anybody is known, and a name adds nothing.
+    language_requests: list[dict] = field(default_factory=list)
 
 
 STATE = State()
@@ -132,6 +135,7 @@ def _serialize() -> dict:
         "drafts": STATE.drafts,
         "review_log": STATE.review_log,
         "write_log": STATE.write_log,
+        "language_requests": STATE.language_requests,
     }
 
 
@@ -157,6 +161,7 @@ def _apply(raw: dict) -> None:
     STATE.drafts = raw.get("drafts", {})
     STATE.review_log = raw.get("review_log", {"reviewed": 0, "edited": 0})
     STATE.write_log = raw.get("write_log", raw.get("sync_queue", []))
+    STATE.language_requests = raw.get("language_requests", [])
 
 
 def load() -> bool:

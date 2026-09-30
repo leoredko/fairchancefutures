@@ -7,7 +7,7 @@ actually use, and this page says so rather than implying it.
 
 ## What a person can change
 
-A **Display** link sits in the corner of every page, signed in or not, because
+An **Accessibility** link (and a **Language** link beside it) sits in the corner of every page, signed in or not, because
 somebody who cannot read the sign-in screen cannot sign in to fix it. It opens
 `/display`, which has five groups:
 

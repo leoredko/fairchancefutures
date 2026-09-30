@@ -281,6 +281,14 @@ def test_reduced_motion_stops_the_opening_as_well_as_the_animations(client):
 def test_the_way_to_the_settings_is_on_every_page_except_the_settings(client):
     assert 'class="dock"' in client.get("/signin").text
     assert 'class="dock"' not in client.get("/display").text
+    assert 'class="dock"' not in client.get("/language").text
+
+
+def test_the_corner_links_are_called_accessibility_and_language(client):
+    page = client.get("/signin").text
+    assert ">Accessibility</a>" in page
+    assert ">Language</a>" in page
+    assert ">Display</a>" not in page
 
 
 # --------------------------------------------------------------------------

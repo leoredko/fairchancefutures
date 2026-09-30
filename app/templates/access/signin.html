@@ -16,7 +16,7 @@
           <button class="langpick{% if choice.code == lang %} on{% endif %}"
                   type="submit" name="lang" value="{{ choice.code }}">{{ choice.name }}</button>
         {% else %}
-          <span class="langpick ghost" title="{{ t('door.other_note') }}">{{ t('door.other') }}</span>
+          <a class="langpick ghost" href="/language?back=/signin#other" title="{{ t('door.other_note') }}">{{ t('door.other') }}</a>
         {% endif %}
       {% endfor %}
     </div>
