@@ -9,7 +9,7 @@ actually use, and this page says so rather than implying it.
 
 A **Display** link sits in the corner of every page, signed in or not, because
 somebody who cannot read the sign-in screen cannot sign in to fix it. It opens
-`/display`, which has four groups:
+`/display`, which has five groups:
 
 | Setting | Choices | Default |
 | --- | --- | --- |
@@ -17,9 +17,10 @@ somebody who cannot read the sign-in screen cannot sign in to fix it. It opens
 | Text size | Normal, Large, Largest | Normal |
 | Motion | Normal, Less motion | Normal |
 | Read aloud | Off, On | Off |
+| Voice typing | Off, On | Off |
 
 They are cookies on the tablet (`bridge_theme`, `bridge_size`, `bridge_motion`,
-`bridge_read`),
+`bridge_read`, `bridge_dictate`),
 the same way the language is. They survive the idle timeout and the next person
 can change them in one tap. They are not on the case file, so a coordinator never
 sees them and nothing about how somebody reads the screen becomes a record.
@@ -64,14 +65,43 @@ person, or the facility, has to do the rest.
 engine, which proves what it picks and what it says, not what the facility
 tablet's voices sound like or whether it has a local one at all.
 
-### Dictation, deliberately not built
+## Voice typing, on the coordinator's desk only
 
 The tablet has almost nothing to dictate into: the person picks from choices, and
 the only typed fields are the DIN, the PIN and the human check. Speaking a PIN or
 a DIN in a common area is a privacy leak, and a microphone is a bigger thing to
-ask a facility for than a speaker. If the facility turns on the device's own
-voice control, the fields carry names that match what is on screen, so it can
-target them. Revisit this if a screen ever asks for free text.
+ask a facility for than a speaker. So the tablet has no voice typing, and a test
+fails if a tablet template ever gains a field marked for it.
+
+On the coordinator's desk there is one field worth it: the **dispute letter**, which is
+prose the coordinator reads before approving. When voice typing is on, a
+**Dictate** button appears under it (`app/static/dictate.js`). Words go in at the
+cursor, or at the end if the coordinator never clicked in.
+
+The rules, each a test on the script:
+
+- **Recognition must run on the computer.** Most browsers send speech to a server,
+  and this audio is a person's case. The script asks the browser whether it can
+  recognize the language locally, turns `processLocally` on for every session, and
+  refuses to start if the browser did not accept it. A browser that cannot do that
+  gets no button, and the Display page says why. In practice that means a recent
+  Chrome or Edge with the language pack installed.
+- **Never on numbers.** The account lines and the Social Security field are not
+  dictatable. Speech recognition is poor at digits and pipe-separated lines, and a
+  misheard digit becomes a dispute about the wrong account, which the product
+  treats as worse than no dispute.
+- **It listens only while the button says it is listening,** shows that in words,
+  and stops when the page is left.
+
+**The helper's phone has no field suitable for it.** What a helper types is the
+account lines of a report, which are excluded for the reason above. The phone's own
+keyboard dictation works in every field regardless, and the fields carry names that
+match what is on screen, so the device's voice control can target them.
+
+**Untested against a real recognizer.** It was driven in Chromium with stand-in
+recognizers, including one that ignores `processLocally`, which proves what the
+script asks for and what it refuses. It does not prove Chrome's on-device model
+recognizes a coordinator's voice well.
 
 ## What was checked, and how
 
@@ -103,13 +133,13 @@ Chromium is at `/opt/pw-browsers/chromium`; launch Playwright with that
 - **No screen reader has been run against this.** VoiceOver, TalkBack and NVDA
   are the check that matters and need a person with one. axe and the tests
   catch what a machine can; they do not tell you whether it is pleasant.
-- **Dictation is not built,** for the reasons above.
+- **Voice typing** exists only on the dispute letter, for the reasons above.
 - **The standalone build is not covered.** `standalone/shell.html` has its own
   styles and does not use `bridge.css`, so it is dark only and none of the above
   applies to it.
-- **The helper's and coordinator's screens** get the themes and the structure
-  fixes, but they are English only and have had the same automated checks, not a
-  manual pass.
+- **The helper's and coordinator's screens** get the themes, text size, motion,
+  read aloud and the structure fixes, and axe found nothing on them, but they are
+  English only and have had no manual pass.
 - **The letters** a coordinator prints stay ink on paper whatever the theme.
 
 ## Conventions

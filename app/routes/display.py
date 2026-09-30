@@ -40,6 +40,7 @@ def choose(request: Request,
            size: str | None = Form(None),
            motion: str | None = Form(None),
            read: str | None = Form(None),
+           dictate: str | None = Form(None),
            back: str = Form("/")):
     """Take whichever of the settings arrived and leave the others as they were.
 
@@ -50,7 +51,7 @@ def choose(request: Request,
     response = RedirectResponse(
         "/display?back=" + _quote(_back(back)), status_code=303)
     for setting, value in (("theme", theme), ("size", size), ("motion", motion),
-                           ("read", read)):
+                           ("read", read), ("dictate", dictate)):
         if value is None:
             continue
         response.set_cookie(

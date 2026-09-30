@@ -2251,6 +2251,64 @@ msgstr ""
 "compartidos."
 
 #, fuzzy
+msgctxt "display.dictate"
+msgid "Voice typing"
+msgstr "Escribir con la voz"
+
+#, fuzzy
+msgctxt "display.dictate.off"
+msgid "Off"
+msgstr "Apagado"
+
+#, fuzzy
+msgctxt "display.dictate.off.note"
+msgid "Nothing listens."
+msgstr "Nada escucha."
+
+#, fuzzy
+msgctxt "display.dictate.on"
+msgid "On"
+msgstr "Encendido"
+
+#, fuzzy
+msgctxt "display.dictate.on.note"
+msgid ""
+"Adds a Dictate button to the dispute letter on the coordinator's desk. Never"
+" on the tablet, and never on account numbers."
+msgstr ""
+"Agrega un botón Dictar a la carta de disputa en el escritorio del "
+"coordinador. Nunca en la tableta, y nunca en números de cuenta."
+
+#, fuzzy
+msgctxt "dictate.start"
+msgid "Dictate"
+msgstr "Dictar"
+
+#, fuzzy
+msgctxt "dictate.stop"
+msgid "Stop dictating"
+msgstr "Dejar de dictar"
+
+#, fuzzy
+msgctxt "dictate.listening"
+msgid "Listening. The audio stays on this computer."
+msgstr "Escuchando. El audio se queda en esta computadora."
+
+#, fuzzy
+msgctxt "dictate.unavailable"
+msgid ""
+"Voice typing is off. This browser cannot recognize speech on this device "
+"without sending the audio out."
+msgstr ""
+"Escribir con la voz está apagado. Este navegador no puede reconocer la voz "
+"en este dispositivo sin enviar el audio a otro lado."
+
+#, fuzzy
+msgctxt "dictate.ready"
+msgid "Voice typing is ready. It works on this device only."
+msgstr "Escribir con la voz está listo. Funciona solo en este dispositivo."
+
+#, fuzzy
 msgctxt "read.listen"
 msgid "Listen"
 msgstr "Escuchar"

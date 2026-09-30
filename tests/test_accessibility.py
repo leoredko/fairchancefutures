@@ -249,7 +249,7 @@ def test_done_goes_back_to_where_the_person_was(client):
 def test_the_page_says_which_option_is_picked_in_words_and_not_only_colour(client):
     client.post("/display", data={"size": "large"})
     page = client.get("/display").text
-    assert page.count("Selected") == 4      # one per group
+    assert page.count("Selected") == 5      # one per group
     assert 'aria-pressed="true"' in page
 
 
@@ -459,3 +459,97 @@ def test_a_citation_is_not_read_aloud(client):
             assert "data-no-speech" in page
             return
     raise AssertionError("no card with a source was found to check")
+
+
+# --------------------------------------------------------------------------
+# voice typing, on the coordinator's desk only
+#
+# The tablet is the wrong place for it: the only typed fields there are a DIN, a
+# PIN and a human check, and speaking those in a common area is a leak. The
+# fields that are left are account lines, where a misheard digit becomes a
+# letter about the wrong account, and the dispute letter, which is prose a
+# coordinator reads before approving. So it goes on the letter and nowhere else,
+# and only with recognition that runs on the computer.
+# --------------------------------------------------------------------------
+
+DICTATE = (ROOT / "app" / "static" / "dictate.js").read_text()
+TEMPLATES = ROOT / "app" / "templates"
+
+
+def test_voice_typing_is_off_until_somebody_turns_it_on(client):
+    page = client.get("/signin").text
+    assert 'data-voice="off"' in page
+    assert "dictate.js" not in page and "dictate-config" not in page
+
+
+def test_the_setting_flag_cannot_be_mistaken_for_a_field_to_dictate_into(client):
+    """The first version put `data-dictate` on <html> as the flag, which the
+    script's own selector then matched, and it crashed trying to add a button
+    beside the page. Found by driving it, not by reading it."""
+    client.post("/display", data={"dictate": "on"})
+    page = client.get("/signin").text
+    assert 'data-voice="on"' in page
+    assert "data-dictate" not in _html_tag(page)
+    assert 'textarea[data-dictate], input[data-dictate]' in DICTATE
+
+
+def test_turning_it_on_loads_the_script_with_the_words_it_needs(client):
+    client.post("/display", data={"dictate": "on"})
+    page = client.get("/signin").text
+    assert "/static/dictate.js" in page
+    assert 'data-start="Dictate"' in page
+
+
+def test_the_only_field_that_can_be_dictated_into_is_the_dispute_letter():
+    marked = [path.relative_to(TEMPLATES).as_posix()
+              for path in TEMPLATES.rglob("*.html")
+              if re.search(r"<(?:textarea|input)[^>]*\bdata-dictate\b",
+                           path.read_text())]
+    assert marked == ["staff/client.html"], marked
+
+
+def test_the_tablet_has_nothing_to_dictate_into():
+    for path in (TEMPLATES / "inside").glob("*.html"):
+        assert "data-dictate" not in path.read_text(), path.name
+    for path in (TEMPLATES / "access").glob("*.html"):
+        assert "data-dictate" not in path.read_text(), path.name
+
+
+def test_no_number_that_becomes_a_letter_can_be_dictated():
+    """The account lines and the Social Security field. A misheard digit is a
+    dispute about the wrong account, which the product treats as worse than no
+    dispute."""
+    for name in ("staff/scan.html", "family/send_report.html"):
+        assert "data-dictate" not in (TEMPLATES / name).read_text(), name
+
+
+def test_the_script_only_listens_when_the_recognition_stays_on_the_computer():
+    assert "processLocally: true" in DICTATE
+    assert "r.processLocally = true" in DICTATE
+    # A browser that ignores the property is refused, not trusted.
+    assert "r.processLocally !== true" in DICTATE
+    assert 'state !== "available"' in DICTATE
+    # It cannot start without going through that check.
+    assert DICTATE.index("SR.available") < DICTATE.index("fields.forEach(attach)")
+
+
+def test_the_voice_typing_script_cannot_call_out_or_keep_anything():
+    for forbidden in ("fetch(", "XMLHttpRequest", "WebSocket", "sendBeacon",
+                      "localStorage", "sessionStorage", "document.cookie",
+                      "getUserMedia"):
+        assert forbidden not in DICTATE, forbidden
+
+
+def test_it_starts_only_when_the_button_is_pressed_and_stops_on_leaving():
+    assert DICTATE.count("r.start()") == 1
+    assert DICTATE.index("r.start()") > DICTATE.index("function begin()")
+    assert 'addEventListener("click"' in DICTATE
+    assert "pagehide" in DICTATE and "rec.abort()" in DICTATE
+
+
+def test_words_go_where_the_cursor_was_and_not_at_the_top_of_the_letter():
+    """Pressing the button moves focus to the button, so the place is kept from
+    the blur. The first version dropped dictated words at the start of the
+    letter."""
+    assert 'addEventListener("blur"' in DICTATE
+    assert "caret === null ? field.value.length" in DICTATE

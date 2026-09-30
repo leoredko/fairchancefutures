@@ -196,6 +196,19 @@ UI: dict[str, str] = {
     "display.read.on": "On",
     "display.read.on.note": "A Listen button on each screen reads it to you. Use "
                             "headphones in shared spaces.",
+    "display.dictate": "Voice typing",
+    "display.dictate.off": "Off",
+    "display.dictate.off.note": "Nothing listens.",
+    "display.dictate.on": "On",
+    "display.dictate.on.note": "Adds a Dictate button to the dispute letter on the "
+                               "coordinator's desk. Never on the tablet, and never "
+                               "on account numbers.",
+    "dictate.start": "Dictate",
+    "dictate.stop": "Stop dictating",
+    "dictate.listening": "Listening. The audio stays on this computer.",
+    "dictate.unavailable": "Voice typing is off. This browser cannot recognize "
+                           "speech on this device without sending the audio out.",
+    "dictate.ready": "Voice typing is ready. It works on this device only.",
     "read.listen": "Listen",
     "read.stop": "Stop",
     "read.headphones": "Use headphones in shared spaces.",

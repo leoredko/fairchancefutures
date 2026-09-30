@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}" data-read="{{ display().read }}">
+<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}" data-read="{{ display().read }}" data-voice="{{ display().dictate }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,6 +69,15 @@
      data-headphones="{{ t('read.headphones') }}" data-unavailable="{{ t('read.unavailable') }}"
      data-ready="{{ t('read.ready') }}"></div>
 <script src="/static/listen.js" defer></script>
+{% endif %}
+{# Same reasoning as read aloud: not loaded unless asked for. And it only does
+   anything to a field that carries `data-dictate`, which is on the coordinator's
+   letter and nowhere on the tablet. #}
+{% if display().dictate == 'on' %}
+<div id="dictate-config" hidden data-start="{{ t('dictate.start') }}" data-stop="{{ t('dictate.stop') }}"
+     data-listening="{{ t('dictate.listening') }}" data-unavailable="{{ t('dictate.unavailable') }}"
+     data-ready="{{ t('dictate.ready') }}"></div>
+<script src="/static/dictate.js" defer></script>
 {% endif %}
 <script src="/static/exclusive.js" defer></script>
 <script>

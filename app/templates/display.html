@@ -21,7 +21,8 @@
     {% for group, values in [('theme', ['dark', 'light', 'contrast']),
                              ('size', ['normal', 'large', 'xlarge']),
                              ('motion', ['full', 'reduced']),
-                             ('read', ['off', 'on'])] %}
+                             ('read', ['off', 'on']),
+                             ('dictate', ['off', 'on'])] %}
     <form method="post" action="/display">
       <input type="hidden" name="back" value="{{ back }}">
       <fieldset class="stack">
@@ -44,6 +45,7 @@
        voice that works without a network, and which. Nothing is said aloud
        from this page. #}
     <p class="tiny" id="listen-status" role="status"></p>
+    <p class="tiny" id="dictate-status" role="status"></p>
 
     <a class="btn wide" href="{{ back }}">{{ t('display.done') }}</a>
   </div>

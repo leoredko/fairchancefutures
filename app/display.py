@@ -21,15 +21,19 @@ THEMES = ("dark", "light", "contrast")
 SIZES = ("normal", "large", "xlarge")
 MOTIONS = ("full", "reduced")
 READS = ("off", "on")
+DICTATES = ("off", "on")
 
-DEFAULTS = {"theme": "dark", "size": "normal", "motion": "full", "read": "off"}
-CHOICES = {"theme": THEMES, "size": SIZES, "motion": MOTIONS, "read": READS}
+DEFAULTS = {"theme": "dark", "size": "normal", "motion": "full", "read": "off",
+            "dictate": "off"}
+CHOICES = {"theme": THEMES, "size": SIZES, "motion": MOTIONS, "read": READS,
+           "dictate": DICTATES}
 
 COOKIES = {
     "theme": "bridge_theme",
     "size": "bridge_size",
     "motion": "bridge_motion",
     "read": "bridge_read",
+    "dictate": "bridge_dictate",
 }
 
 # A year, as the language is. Chosen once by somebody who does not want to

@@ -120,7 +120,7 @@
         <h3 aria-level="2">Dispute letter awaiting your approval</h3>
         <p class="small">{{ draft_caption }}</p>
         <form method="post" action="/staff/{{ client.id }}/letters/{{ draft.id }}/approve">
-          <textarea class="letter" name="body" aria-label="The dispute letter, which you can edit before approving">{{ draft.body }}</textarea>
+          <textarea class="letter" name="body" data-dictate aria-label="The dispute letter, which you can edit before approving">{{ draft.body }}</textarea>
           <div class="card soft" style="margin:12px 0">
             {% for c in draft.citations %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
           </div>
