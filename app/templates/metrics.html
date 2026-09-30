@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Accuracy{% endblock %}
 {% block body %}
-<div class="bar"><span class="wordmark">Bridge</span>
+<div class="bar" role="banner"><span class="wordmark">Bridge</span>
   <span class="pill">Accuracy</span>
   <div class="right"><a class="pill" href="/signout">Sign out</a><a class="pill" href="/staff">Queue</a></div></div>
 
-<div class="desk" style="padding-top:28px; max-width:760px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px; max-width:760px">
   <h1>The one number worth reporting</h1>
   <p class="lede" style="margin:10px 0 20px">How often does the reviewer edit a
     drafted letter before approving it. If that number is high, the drafting is

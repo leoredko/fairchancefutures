@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ t('display.title') }}{% endblock %}
+{# The link to this page would be a link to itself here. #}
+{% block dock %}{% endblock %}
+{% block body %}
+<div class="tablet">
+  <div class="bar" role="banner">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ t('display.title') }}</span>
+    <div class="right"><a class="pill" href="{{ back }}">{{ t('display.done') }}</a></div>
+  </div>
+
+  <div class="pane" role="main" id="content" tabindex="-1">
+    <h1>{{ t('display.heading') }}</h1>
+    <p class="lede">{{ t('display.lede') }}</p>
+
+    {# One form per group, and each option is a button, so this works with
+       nothing but a browser: no scripts, no stored state beyond the cookie.
+       The picked one says so in words as well as in its outline, because a
+       border colour alone is not a way to say "this one". #}
+    {% for group, values in [('theme', ['dark', 'light', 'contrast']),
+                             ('size', ['normal', 'large', 'xlarge']),
+                             ('motion', ['full', 'reduced'])] %}
+    <form method="post" action="/display">
+      <input type="hidden" name="back" value="{{ back }}">
+      <fieldset class="stack">
+        <legend><h2>{{ t('display.' ~ group) }}</h2></legend>
+        <div class="options">
+          {% for value in values %}
+          <button class="option" type="submit" name="{{ group }}" value="{{ value }}"
+                  aria-pressed="{{ 'true' if current[group] == value else 'false' }}">
+            <span>{{ t('display.' ~ group ~ '.' ~ value) }}</span>
+            <span class="note">{{ t('display.' ~ group ~ '.' ~ value ~ '.note') }}</span>
+            {% if current[group] == value %}<span class="picked">{{ t('display.selected') }}</span>{% endif %}
+          </button>
+          {% endfor %}
+        </div>
+      </fieldset>
+    </form>
+    {% endfor %}
+
+    <a class="btn wide" href="{{ back }}">{{ t('display.done') }}</a>
+  </div>
+</div>
+{% endblock %}

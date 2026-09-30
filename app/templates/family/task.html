@@ -2,12 +2,12 @@
 {% block title %}Family, your one task{% endblock %}
 {% block body %}
 <div class="phone">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ auth.helper_name }} &middot; Helping {{ client.first_name }}</span>
       </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     {% if task %}
     <h1>One thing, this week.</h1>
     <div class="card">

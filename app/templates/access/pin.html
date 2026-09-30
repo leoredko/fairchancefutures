@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ t('pin.title') }}{% endblock %}
 {% block body %}
-<div class="tablet">
+<div class="tablet" role="main" id="content" tabindex="-1">
   <div class="bar">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ identifier }}</span>
@@ -11,7 +11,7 @@
         action="{% if role == 'inside' %}/signin/pin{% else %}/helper/pin{% endif %}">
     <input type="hidden" name="normalized" value="{{ normalized }}">
 
-    <h1>{{ t('pin.heading') }}</h1>
+    <h1 id="pin-title">{{ t('pin.heading') }}</h1>
     {% if account.display_name %}
     <p class="lede">{{ t('pin.welcome', name=account.display_name) }}</p>
     {% endif %}
@@ -19,6 +19,7 @@
     {% if error %}<div class="denied"><span class="what">{{ tr(error) }}</span></div>{% endif %}
 
     <input class="choice" name="pin" type="password" inputmode="numeric"
+           aria-labelledby="pin-title"
            pattern="[0-9]*" maxlength="{{ pin_length }}" autocomplete="current-password"
            autofocus style="letter-spacing: .5em; font-size: 26px">
 

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}What we checked{% endblock %}
 {% block body %}
-<div class="bar"><svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+<div class="bar" role="banner"><svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
   <span class="pill">What we checked</span>
   <div class="right"><a class="pill" href="/signout">Sign out</a><a class="pill" href="/">Home</a></div></div>
 
-<div class="desk" style="padding-top:28px; max-width:860px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px; max-width:860px">
   <h1>What we checked, and what we didn't</h1>
   <p class="lede" style="margin:10px 0 24px">Every legal sentence this app says
     comes from this list. Anything not on it renders as an open question instead

@@ -2,7 +2,7 @@
 {% block title %}{{ lesson.title }}{% endblock %}
 {% block body %}
 <div class="tablet">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ lesson.title }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
@@ -12,7 +12,7 @@
     <div class="right"><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     {# Saved-here reassurance sits above the content, because the worry it
        answers is what stops somebody starting in the first place. #}
     <div class="row" style="gap:8px;align-items:center">

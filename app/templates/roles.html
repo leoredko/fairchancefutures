@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Roles and scope{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <a class="pill" href="/staff">&larr; Queue</a>
   <span class="wordmark">Roles and scope</span>
   <div class="right"><a class="pill" href="/citations">Citations</a></div>
 </div>
 
-<div class="desk" style="padding-top:28px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px">
   <h1>Who can do what, and why not.</h1>
   <p class="lede">Rendered from <span class="mono">app/surfaces.py</span>, which
     the router asks before it does anything. This page cannot drift from the

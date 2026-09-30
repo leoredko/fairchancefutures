@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ t('door.title') }}{% endblock %}
 {% block body %}
-<div class="tablet">
+<div class="tablet" role="main" id="content" tabindex="-1">
   <div class="bar">
     <svg class="wordmark" viewBox="-2 -2 210 52" role="img" aria-label="Bridge"><use href="#wordmark" fill="url(#markgrad)"/></svg>
     <span class="who">{{ t('door.region') }}</span>
@@ -27,12 +27,15 @@
   {% endif %}
 
   <form class="pane" method="post" action="/signin" autocomplete="off">
-    <h1>{{ t('door.heading') }}</h1>
-    <p class="lede">{{ t('door.either') }}</p>
+    <h1 id="door-title">{{ t('door.heading') }}</h1>
+    <p class="lede" id="door-hint">{{ t('door.either') }}</p>
 
     {% if error %}<div class="denied"><span class="what">{{ tr(error) }}</span></div>{% endif %}
 
+    {# Named by the heading above it. The placeholder is an example, and a
+       placeholder is gone the moment somebody types, so it is not a label. #}
     <input class="choice" name="identifier" inputmode="text" autocapitalize="characters"
+           aria-labelledby="door-title" aria-describedby="door-hint"
            autocomplete="off" spellcheck="false" autofocus
            placeholder="28-A-1187" value="{{ identifier or '' }}"
            style="font-family: ui-monospace, monospace; letter-spacing: .08em">

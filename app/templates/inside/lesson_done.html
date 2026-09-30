@@ -2,7 +2,7 @@
 {% block title %}{{ t('done.title', title=lesson.title) }}{% endblock %}
 {% block body %}
 <div class="tablet">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ lesson.title }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
@@ -11,7 +11,7 @@
     <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.lessons') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     <div class="card good">
       <h1 style="margin:0">{{ t('done.count', done=standing.done, total=standing.total) }}</h1>
       <div class="track"><span style="width: {{ standing.percent }}%"></span></div>

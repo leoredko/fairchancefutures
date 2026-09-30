@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Client detail and approval{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <a class="pill" href="/staff">&larr; Queue</a>
   <span class="wordmark">{{ view.display_name }}</span>
   <span class="tag rust">{{ client.state_label }}</span>
@@ -10,11 +10,12 @@
     report sharing {{ 'on' if 'report_sharing' in client.consent_scopes else 'off' }}</span></div>
 </div>
 
-<div class="desk" style="padding-top:28px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px">
+  <h1 class="sr">Client detail and approval</h1>
   <div class="grid two" style="align-items:start">
     <div class="stack">
       <div class="card">
-        <h3>Credit picture</h3>
+        <h3 aria-level="2">Credit picture</h3>
         {% if 'report_summary' in view %}
         <p class="small strong">{{ view['report_summary'] }}</p>
         <p class="tiny">Last pulled {{ view['last_pulled'] }}, by mail</p>
@@ -34,7 +35,7 @@
          account, so their answer leads rather than sitting in a footnote. #}
       {% if client_flags %}
       <div class="card accent">
-        <h3>{{ client.first_name }} read the report and flagged
+        <h3 aria-level="2">{{ client.first_name }} read the report and flagged
           {{ client_flags|length }}
           {{ 'item' if client_flags|length == 1 else 'items' }}</h3>
         <p class="small">Check these against the paper before drafting. This is
@@ -57,7 +58,7 @@
          not a list of what Bridge is keeping back, which would be theater, but
          where these fields do stop travelling. #}
       <div class="card">
-        <h3>Where this stops</h3>
+        <h3 aria-level="2">Where this stops</h3>
         <p class="small">{{ withheld_note }}</p>
         <div class="row">
           {% for f in tablet_never_shows %}<span class="tag">{{ labels.field(f) }}</span>{% endfor %}
@@ -70,14 +71,14 @@
       </div>
 
       <div class="card accent">
-        <h3>{{ plan_name }}</h3>
+        <h3 aria-level="2">{{ plan_name }}</h3>
         <p class="tiny">Kept by the coordinator. Bridge reads it and writes
           back to the financial domain only.</p>
         <p class="small">Last reviewed {{ plan.last_reviewed }} &middot; next
           review {{ plan.next_review }} &middot;
           <span class="strong">{{ reviews_left }} review{{ "" if reviews_left == 1 else "s" }}
           left before release</span></p>
-        <h3 style="margin-top:6px">Vital documents</h3>
+        <h3 aria-level="2" style="margin-top:6px">Vital documents</h3>
         {% for doc in plan_documents %}
         <div class="row">
           <span class="tag {{ 'green' if doc.have else 'amber' }}">
@@ -94,7 +95,7 @@
          around it. What a person has in their file is knowable, is already
          reviewed quarterly, and has a real deadline. #}
       <div class="card {{ 'warn' if documents.urgent else '' }}">
-        <h3>What is blocking the ID</h3>
+        <h3 aria-level="2">What is blocking the ID</h3>
         <p class="tiny">{{ documents.days_to_release }} days to release
           &middot; the Social Security card application goes in at 120.</p>
         {% if documents.urgent %}
@@ -116,10 +117,10 @@
     <div class="stack">
       {% if draft %}
       <div class="card warn">
-        <h3>Dispute letter awaiting your approval</h3>
+        <h3 aria-level="2">Dispute letter awaiting your approval</h3>
         <p class="small">{{ draft_caption }}</p>
         <form method="post" action="/staff/{{ client.id }}/letters/{{ draft.id }}/approve">
-          <textarea class="letter" name="body">{{ draft.body }}</textarea>
+          <textarea class="letter" name="body" aria-label="The dispute letter, which you can edit before approving">{{ draft.body }}</textarea>
           <div class="card soft" style="margin:12px 0">
             {% for c in draft.citations %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
           </div>
@@ -132,7 +133,7 @@
       </div>
       {% else %}
       <div class="card">
-        <h3>No letter waiting</h3>
+        <h3 aria-level="2">No letter waiting</h3>
         {% if flagged %}
         <p class="small">{{ flagged|length }} flagged {{ "item" if flagged|length == 1 else "items" }}, no letters drafted yet. One item drafts three letters, one per bureau.</p>
         <form method="post" action="/staff/{{ client.id }}/letters/draft">
@@ -150,12 +151,12 @@
       {% endif %}
 
       <div class="card">
-        <h3>Plan progress</h3>
+        <h3 aria-level="2">Plan progress</h3>
         <p class="small">{{ plan_step }}</p>
       </div>
 
       <div class="card soft">
-        <h3>Approved so far</h3>
+        <h3 aria-level="2">Approved so far</h3>
         {% for d in approved %}
         <p class="small">&middot; {{ d.kind }} to {{ d.bureau }}, approved {{ d.approved_on }}
           {% if d.edited_before_approval %}<span class="tag rust">edited first</span>{% endif %}</p>

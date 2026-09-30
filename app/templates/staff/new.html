@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}New intake{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <a class="pill btn ghost" href="/staff" style="padding:6px 12px;font-size:13px">&larr; Queue</a>
   <span class="wordmark">New intake</span>
   <div class="right"></div>
 </div>
 
-<div class="desk" style="padding-top:28px; max-width:620px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px; max-width:620px">
   <h1>Add someone to the caseload</h1>
   <p class="lede" style="margin:10px 0 22px">You add them. They pick their own
     PIN the first time they sign in, and nobody here ever sees it.</p>
@@ -81,7 +81,7 @@
   </form>
 
   <div class="card soft" style="margin-top:22px">
-    <h3>What this creates</h3>
+    <h3 aria-level="2">What this creates</h3>
     <p class="small">A case file, a sign-in for each number you enter, and a
       code to put on the letter that goes out to whoever is helping
       from the outside.</p>

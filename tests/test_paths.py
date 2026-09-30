@@ -145,10 +145,10 @@ def test_the_tablet_nav_is_only_ever_in_the_bar(inside):
         for number, line in enumerate(template.read_text().splitlines(), 1):
             opened = line.count("<div")
             closed = line.count("</div>")
-            inside_bar = depth > 0 or '<div class="bar">' in line
+            inside_bar = depth > 0 or 'class="bar"' in line
             if 'class="pill"' in line and not inside_bar:
                 stray.append(f"{template.name}:{number}")
-            if '<div class="bar">' in line:
+            if 'class="bar"' in line:
                 depth = opened - closed
             elif depth:
                 depth = max(0, depth + opened - closed)

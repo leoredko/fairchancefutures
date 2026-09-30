@@ -38,7 +38,7 @@
 
 {% block body %}
 <div class="tablet">
-  <div class="bar">
+  <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
     <span class="who">{{ client.display_name }} &middot; {{ t('nav.course') }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
@@ -47,7 +47,7 @@
     <div class="right"><a class="pill" href="/inside/after">{{ t('nav.home') }}</a><a class="pill" href="/inside/case">{{ t('nav.case') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
-  <div class="pane">
+  <div class="pane" role="main" id="content" tabindex="-1">
     <div class="card good rise" style="text-align:center">
       <div class="seal">&check;</div>
       <h1 style="margin:0">{{ t('end.heading') }}</h1>

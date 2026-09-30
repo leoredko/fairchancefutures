@@ -18,6 +18,7 @@ short version of what a session needs to not break things.
     docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
     docs/TRANSLATION.md    how the course gets into Spanish, for a translator
+    docs/ACCESSIBILITY.md  themes, text size, motion, what was checked and what was not
 
 The product started from a wireframe deck. That deck has been deleted, and its
 references stripped out of the code and the docs, because it stopped describing
@@ -149,6 +150,11 @@ next tap. Some scopes raise on construction rather than being checked later.
   Data and only ever prints; nothing it fetches is served. `app/freshness.py`
   is what notices a check date getting old, across the facts, the bureau
   addresses and the centers together.
+- **Colours go through tokens, and a test reads them.** A colour a person reads
+  as text or as an edge lives in a token in `app/static/bridge.css`, and
+  `tests/test_accessibility.py` checks every theme against WCAG 2.2 AA straight
+  from those values. A hex typed into a rule skips the theme and the test. The
+  display settings are cookies on the tablet, never on the case file.
 - **Never seed a PIN.** A PIN somebody else set is not a PIN.
 
 ## The standalone build, and how it has bitten before

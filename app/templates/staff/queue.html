@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Caseload action queue{% endblock %}
 {% block body %}
-<div class="bar">
+<div class="bar" role="banner">
   <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
   <span class="pill">Action queue</span>
   <a class="pill" href="/staff/new">New intake</a>
@@ -11,14 +11,14 @@
     <span class="pill">{{ clients|length }} clients</span></div>
 </div>
 
-<div class="desk" style="padding-top:28px">
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:28px">
   <h1>Needs you this week</h1>
   <p class="small" style="margin:8px 0 20px">Sorted by what expires soonest, not
     alphabetically.</p>
 
   <table class="queue">
     <thead><tr>
-      <th>Client</th><th>What's needed</th><th>Clock</th><th></th>
+      <th>Client</th><th>What's needed</th><th>Clock</th><th><span class="sr">Open</span></th>
     </tr></thead>
     <tbody>
     {% for c in clients %}

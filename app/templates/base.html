@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ lang_code() }}">
+<html lang="{{ lang_code() }}" data-theme="{{ display().theme }}" data-size="{{ display().size }}" data-motion="{{ display().motion }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Bridge{% endblock %}</title>
-<meta name="theme-color" content="#08120E">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{ theme_color[display().theme] }}">
+<meta name="color-scheme" content="{{ color_scheme(display().theme) }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bridge">
@@ -16,6 +16,7 @@
 {% block head %}{% endblock %}
 </head>
 <body class="{% if show_notes %}show-notes{% endif %}">
+<a class="skip" href="#content">{{ t('display.skip') }}</a>
 
 {# The mark and the wordmark, defined once and referenced with <use>.
 
@@ -59,6 +60,7 @@
 </div>
 
 {% block body %}{% endblock %}
+{% block dock %}<nav aria-label="{{ t('display.dock') }}"><a class="dock" href="/display?back={{ request.url.path|urlencode }}">{{ t('display.dock') }}</a></nav>{% endblock %}
 <script src="/static/exclusive.js" defer></script>
 <script>
   // The opening. Once a session, skippable by touching it, and skipped
@@ -68,8 +70,9 @@
   (function () {
     var splash = document.getElementById("splash");
     if (!splash) return;
-    var calm = window.matchMedia
-      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var calm = (window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      || document.documentElement.dataset.motion === "reduced";
     var seen;
     try { seen = sessionStorage.getItem("bridge.splash"); } catch (e) { seen = "1"; }
     if (seen || calm) return;
