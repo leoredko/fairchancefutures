@@ -189,6 +189,6 @@ cannot collide with a real person in the public DOCCS lookup. Any DIN in that
 range signs in and opens a case on the spot, which is also how anybody tries
 the app. Keep new fixtures in that range.
 
-The practitioner interview in `app/sources.py` is Brianne Cornish of FinEquity,
+The practitioner interview in `app/sources.py` is Briane Cornish of finEQUITY,
 used with her permission. It is labelled as an interview wherever it is cited,
 because it is evidence and it is not the same kind of evidence as a statute.

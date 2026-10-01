@@ -161,7 +161,7 @@ DOCCS and DMV program established in 2022 that produces the ID before release.
 **Scale, and the number worth putting on a slide.** About 3,700 IDs since 2022;
 1,061 in the year to April 2026, down 15% on staffing shortages; and **493
 people declined to engage** with the application in that same year. Roughly one
-in three. That independently corroborates what Brianne Cornish told the team on
+in three. That independently corroborates what Briane Cornish told the team on
 Sep 21: engagement is the unsolved problem, not the technology.
 
 **Cadence.** Bridge reports progress on the ORC's quarterly review schedule

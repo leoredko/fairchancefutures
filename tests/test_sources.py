@@ -57,4 +57,4 @@ def test_field_evidence_is_not_mixed_into_the_legal_registry():
 
 def test_the_practitioner_interview_is_still_labelled_as_an_interview():
     who = [i["who"] for i in INTERVIEWS if isinstance(i, dict)]
-    assert any("FinEquity" in name for name in who)
+    assert any("finEQUITY" in name for name in who)

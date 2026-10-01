@@ -776,7 +776,7 @@ SURVEYS: tuple[Survey, ...] = (
 
 INTERVIEWS: tuple[dict, str] = (
     {
-        "who": "Brianne Cornish, founder, FinEquity",
+        "who": "Briane Cornish, founder and executive director, finEQUITY",
         "when": "2026-09-21",
         "claims": (
             "A credit-invisible client can go from no score to 650+ in about 6 "
