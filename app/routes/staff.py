@@ -37,6 +37,7 @@ from app.intake import (
     validate,
 )
 from app import labels
+from app import mailing
 from app.letters import draft_dispute_set
 from app.questions import STAFF_QUESTIONS
 from app.redaction import SENSITIVE as TABLET_NEVER_SHOWS
@@ -278,6 +279,9 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          "plan_step": _plan_step(client, drafts),
          "draft": pending,
          "draft_caption": caption, "approved": approved,
+         "letters": mailing.letters_for_desk(client, drafts),
+         "bad_day": bool(request.query_params.get("bad_day")),
+         "today": date.today().isoformat(),
          "flagged": client.flagged_items if "flagged_items" in view else [],
          "plan": plan,
          "plan_name": PLAN_NAME,
@@ -470,6 +474,74 @@ def draft_letter(request: Request, client_id: str, item: int = Form(0)):
         for draft in drafts:
             add_draft(draft)
     return RedirectResponse(f"/staff/{client_id}", status_code=303)
+
+
+def _letter_row(client, client_id: str, draft_id: str):
+    return next((d for d in drafts_for(client_id)
+                 if d["id"] == draft_id and d.get("kind") == "dispute"
+                 and d.get("approved_on")), None)
+
+
+@router.post("/{client_id}/letters/{draft_id}/handed")
+def letter_handed_in(request: Request, client_id: str, draft_id: str,
+                     on_date: str = Form("")):
+    """The signed letter reached the coordinator's hands.
+
+    Step one of two. The letter is not in the post yet, and the person is told
+    exactly that, with a name and a day on it. Step two is the receipt.
+    """
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.PRINT_AND_POST)
+    client = get_client(client_id)
+    row = _letter_row(client, client_id, draft_id)
+    day = mailing.clean_day(on_date)
+    if row is None or not day:
+        return RedirectResponse(f"/staff/{client_id}?bad_day=1#posting", status_code=303)
+    who = "Ms. " + coordinator.display_name.split()[-1]
+    with mutate():
+        if not mailing.letter_shipment(client, draft_id):
+            mailing.hand_in(client, draft_id=draft_id, bureau=row["bureau"],
+                            handed_to=who, on=day)
+            client.timeline.append({
+                "text": f"Your dispute letter to {row['bureau']} was handed in "
+                        f"to the coordinator",
+                "actor": who,
+                "on": date.fromisoformat(day).strftime("%B %-d"), "done": True,
+            })
+    return RedirectResponse(f"/staff/{client_id}#posting", status_code=303)
+
+
+@router.post("/{client_id}/letters/{draft_id}/mailed")
+def letter_mailed(request: Request, client_id: str, draft_id: str,
+                  on_date: str = Form(""), tracking_number: str = Form("")):
+    """The letter went into the post, with the receipt in the coordinator's hand."""
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.PRINT_AND_POST)
+    client = get_client(client_id)
+    row = _letter_row(client, client_id, draft_id)
+    day = mailing.clean_day(on_date)
+    bad_number = (tracking_number.strip()
+                  and not mailing.clean_tracking_number(tracking_number))
+    if row is None or not day or bad_number:
+        return RedirectResponse(f"/staff/{client_id}?bad_day=1#posting", status_code=303)
+    who = "Ms. " + coordinator.display_name.split()[-1]
+    _record_letter_mailed(client, row, who, day, tracking_number)
+    return RedirectResponse(f"/staff/{client_id}#posting", status_code=303)
+
+
+def _record_letter_mailed(client, row: dict, who: str, day: str,
+                          tracking_number: str) -> None:
+    number = mailing.clean_tracking_number(tracking_number)
+    with mutate():
+        mailing.mark_mailed(client, draft_id=row["id"], bureau=row["bureau"],
+                            mailed_by=who, tracking_number=number, on=day)
+        client.timeline.append({
+            "text": (f"Your dispute letter to {row['bureau']} was mailed, "
+                     f"certified, tracking number {number}" if number
+                     else f"Your dispute letter to {row['bureau']} was mailed"),
+            "actor": who,
+            "on": date.fromisoformat(day).strftime("%B %-d"), "done": True,
+        })
 
 
 @router.post("/{client_id}/documents/{document}/on-file")

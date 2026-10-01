@@ -131,11 +131,11 @@ def test_restart_is_not_a_product_capability(client):
     assert not any("restart" in name or "reset" in name for name in every)
 
 
-def test_andre_starts_with_nothing_done_so_the_journey_can_be_walked_live(client):
+def test_armando_starts_with_nothing_done_so_the_journey_can_be_walked_live(client):
     from app.store import STATE
-    andre = STATE.clients["a-torres"]
-    assert andre.path == "" and not andre.intake_answers
-    assert not any(andre.documents.values()) and len(andre.documents) == 3
+    armando = STATE.clients["a-torres"]
+    assert armando.path == "" and not armando.intake_answers
+    assert not any(armando.documents.values()) and len(armando.documents) == 3
     assert not STATE.reports.get("a-torres")
     assert all(not a.get("pin_hash") for a in STATE.accounts.values())
 
@@ -143,7 +143,7 @@ def test_andre_starts_with_nothing_done_so_the_journey_can_be_walked_live(client
 def test_marking_a_document_on_file_puts_a_named_event_on_his_timeline(client):
     from app.store import STATE
     client.post("/staff/a-torres/documents/birth_certificate/on-file")
-    andre = STATE.clients["a-torres"]
-    assert andre.documents["birth_certificate"] is True
-    assert andre.documents["social_security_card"] is False
-    assert andre.timeline[-1]["actor"] == "Ms. Reyes"
+    armando = STATE.clients["a-torres"]
+    assert armando.documents["birth_certificate"] is True
+    assert armando.documents["social_security_card"] is False
+    assert armando.timeline[-1]["actor"] == "Ms. Reyes"

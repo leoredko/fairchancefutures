@@ -79,8 +79,9 @@ read on the shelf. The code never translates them.
   the course, intake, the explanation after question two, where you stand, the
   case screen with its papers card, the report and its walkthrough, the scores
   page, the request, the authorization and when you go home, plus the landing
-  page. A test walks them all in Spanish and fails on a line that reads as
-  English.
+  page, and the In the mail card with its timeline sentences (approved
+  2026-10-01 as well). A test walks them all in Spanish and fails on a line
+  that reads as English.
 - Still English on purpose: the dispute and request letters, because they go to
   a bureau that reads English; the source line under a lesson card and every
   citation; agency names; the helper's phone and the coordinator's desk, which

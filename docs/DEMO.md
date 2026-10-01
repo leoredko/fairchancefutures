@@ -59,7 +59,7 @@ data agreement or a scraper rather than a coding job.
 | Marcus W. | DIN `28-A-1187` or NYSID `00000011L` | tablet |
 | M. Alvarez | DIN `28-B-0042` | tablet |
 | J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet, and the one seeded person who has not chosen a path, so he is who to sign in as to show the first screen |
-| A. Torres, nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see below |
+| A. Torres (Armando), nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see [Armando Torres, the journey from the front](#armando-torres-the-journey-from-the-front) |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
 | D. Reyes, coordinator | nothing, the vendor system already signed them in | desktop |
@@ -69,9 +69,9 @@ a run, and not a stretch of their own number.
 
 ## A walkthrough that shows the whole thing
 
-Start with the course if you only have five minutes. It is the part of the
-product that matters most and the part that needs no setup: sign in on the
-tablet with any DIN starting 28 and open **Learn**.
+Short on time? Use [the five-minute showcase run](#the-five-minute-showcase-run).
+The course is the part of the product that matters most and the part that needs
+no setup: sign in on the tablet with any DIN starting 28 and open **Learn**.
 
 1. **Coordinator** opens the staff app. There is no sign-in: it opens on the
    queue, because they are already signed in to the vendor case plan system.
@@ -105,79 +105,119 @@ tablet with any DIN starting 28 and open **Learn**.
 
 Close every tab and reopen them. Everything is still there.
 
-## Andre T., the journey from the front
+## Armando Torres, the journey from the front
 
-Everyone else in the seed is partway through a story. Andre starts at the
+Everyone else in the seed is partway through a story. Armando starts at the
 beginning, so the whole route can be walked live: DIN `28-E-3306`, Fishkill,
-releasing in about 140 days. He has no path, no intake, no reports and no
+releasing in about 140 days. There is no path, no intake, no reports and no
 helper signed up, and none of the three vital documents is on file. The Social
 Security card deadline (120 days before release) is about 20 days ahead, so it
-reads as something to act on rather than something already missed. His helper
-code is `BRIDGE-3306`, issued and not yet used.
+reads as something to act on rather than something already missed. The helper
+code `BRIDGE-3306` is issued and not yet used.
 
 1. **Tablet.** Sign in, choose a PIN, pick a path, read the documents lesson.
    **Your case** shows a **Your papers** card with all three documents as
    "Not yet", so the tablet alone tells the story in five minutes. It only
-   reads status: the coordinator marks a paper on file, because the tablet
-   cannot take delivery of one. Marking one at `/staff/a-torres` flips the
-   card on the next load.
+   reads status.
 2. **Coordinator.** `/staff/a-torres` shows all three documents as needed and
    what is blocking the ID application. **Mark ... on file** records each one
    with Ms. Reyes's name and the date, and the timeline picks it up. Only the
    coordinator can do this, because the tablet cannot take delivery of paper.
-3. **Coordinator.** Run triage, then **Scan a report in** to bring his credit
-   report onto the file.
-4. **Helper.** Phone, code `BRIDGE-3306`, signs the scoped form. A report sent
-   in from outside stays invisible to him until the coordinator confirms it.
-5. **Tablet.** **My reports** walks the report, section by section.
+   Marking one flips the card on the tablet on the next load.
+3. **Coordinator.** Run triage.
+4. **Post the request, with proof.** On the phone, enter `BRIDGE-3306`, sign
+   the scoped form and open **Print the packet**. The packet says to send it
+   certified, with a return receipt, and says plainly who pays: whoever posts
+   it, and from inside that is the person's own account, because DOCCS will not
+   advance the money for certified service. **I mailed it** takes the tracking
+   number from the receipt. On the tablet, **Your case** now has an **In the
+   mail** card with the number and where it is. Leave the number empty and the
+   card says there is no way to prove it went. The status behind it is a
+   stand-in, not USPS: see `SIMPLIFICATIONS`.
+5. **Get the credit report onto the file.** There are two routes, and the demo
+   should show both, because not everybody has someone outside to help. The
+   report itself is mailed to the person at the facility, who takes the paper
+   to the coordinator.
+   - **With a helper.** On the phone, send the report in (a PDF, typed, or
+     photographed). It stays invisible to Armando until the coordinator
+     confirms it.
+   - **With no one outside.** Armando carries the paper to Ms. Reyes, who uses
+     **Scan a report in** at her desk. She is reading the paper as she types, so
+     it is visible to Armando straight away. Nobody outside is needed for any
+     of this, and nothing about the route is lesser.
+6. **Tablet.** **My reports** walks the report, section by section.
+7. **Coordinator.** Flag an item, draft the dispute letters and approve them.
+   One item makes three letters, so the **Posting the approved letters** card
+   has three rows, one per bureau, each with its own envelope and its own
+   tracking number. There are two routes, and the demo shows both:
+   - **Handed to the coordinator.** Press **Handed to me** and the day is
+     recorded with Ms. Reyes's name. The tablet says "Ms. Reyes has it and will
+     post it". When it goes in the post, press **Mailed** with the day and the
+     number from the receipt, which is the second step.
+   - **Mailed directly.** On the phone, **Open the letters** shows the approved
+     letters. **I mailed it** takes the day and the receipt number, with no
+     hand-in. A day cannot be in the future.
+8. **Tablet.** **In the mail** now has a row per letter, from handed in to
+   mailed, with the number. The status is the stand-in described above.
 
 **Starting over:** `/demo/restart`, pick A. Torres.
 
-## The five-minute presentation
+## The five-minute showcase run
 
-The deck (five content slides, a trailer before it and a demo slide after) ends
-on a live walkthrough of J. Whitfield, DIN `28-A-0931`, on the deployed
-`bridge-fcf` service. This is that walkthrough, in the deck's order, so the
-slide and the app say the same thing.
-
-| Deck slide | What the room sees | Where it lives |
-| --- | --- | --- |
-| 1 of 5, start before release | The survey figure is 9 of 12 who wanted to see their report before release. One person skipped it, so the denominator is 12, not the 13 who answered. | `maine_peer_survey` in `app/sources.py`, with its limits |
-| 2 of 5, three routes, one case | Tablet, helper phone, coordinator desk. Only the tablet is toured live. | `app/surfaces.py` |
-| 3 of 5, team decisions, AI assistance | Spanish is the eleven lessons and the screens leading to them, 330 strings, approved by the team on 2026-09-30, stored in the app and never translated live. The six intake questions are Spanish, approved 2026-10-01. Every other tablet screen is Spanish too, report walkthrough included. The letters that go to a bureau stay English. | `docs/TRANSLATION.md`, `docs/SCOPE.md` item 8 |
-| 4 of 5, deployment choices and limits | Render free plan, container-local data that resets on restart. Demo data only. | `render.yaml`, `docs/DEPLOY.md` |
-| 5 of 5, live walkthrough | Choose a path, learn about credit, see the case status. | below |
+The showcase ends on a live walkthrough of Armando Torres, DIN `28-E-3306`, on
+the deployed `bridge-fcf` service. It is the same app and the same screens as
+[the journey above](#armando-torres-the-journey-from-the-front), cut down to
+what fits in five minutes. The slides live outside this repo and are still
+changing, so this describes what the app does and in what order; the slides
+should follow it, not the other way round. If a slide and this section
+disagree, check the app and fix whichever is wrong.
 
 **Before the room arrives**
 
-1. Open `/demo/restart`, pick J. Whitfield and restart him. He is the one seeded
-   person who has not chosen a path, and the first screen is the point. Do it
-   beforehand, not in front of people: the restart clears his PIN and course
-   progress.
+1. Open `/demo/restart`, pick A. Torres and restart him. He is the one seeded
+   person with nothing done, so the first screen is the point. Do it
+   beforehand, not in front of people: the restart clears his PIN, course
+   progress, helper standing and anything mailed.
 2. Sign in once yourself to check it works. Nobody's PIN is seeded, so the
    first sign-in asks you to choose one. A free instance that has slept
-   reseeds, which clears the PIN again, so check within the hour.
+   reseeds, which clears the PIN again, so check within the hour, and restart
+   him once more afterwards.
 3. The deployed sign-in asks an arithmetic question first (`BRIDGE_CAPTCHA` is
    on in `render.yaml`). It is not part of the product and it is worth knowing
    before it appears on a projector.
 4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
-   is on). The other two surfaces are reachable by URL and are not toured.
+   is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
+   and are not toured unless you choose the optional ending below.
 
 **The walkthrough**
 
-1. **Choose a path.** After the PIN he is asked what he wants to do first, in
-   two sentences. Pick **Learn how credit works**. The switch to change it is
-   in the header of every tablet screen.
+1. **Choose a path.** After the PIN, Armando is asked what to do first, in two
+   sentences. Pick **Learn how credit works**. The switch to change it is in
+   the header of every tablet screen. Switch the language once, to show the
+   Spanish is the same product and not a different one.
 2. **Learn about credit.** The course opens on *The three pieces of paper*,
-   because he releases in 21 days and is inside the 120 day window. The Social
-   Security card deadline has already passed and the screen says so. Say that
-   out loud rather than being surprised by it. Open one lesson and let it save
+   because he releases in about 140 days. The Social Security card deadline is
+   120 days before release, so it is about 20 days ahead and reads as
+   something to act on. Say the two 120-day clocks out loud: this one is
+   before release, the ID expiry is after. Open one lesson and let it save
    where you stop.
 3. **See the case status.** **Your case** in the header. It reads "People are
-   working on this while you wait", offers the course again, says his reports
-   have not arrived, and names Ms. Reyes as handling it through the program
-   because nobody outside is authorized yet. "Not yet triaged" is where a
-   coordinator has to do human review. It is not a failed automated step.
+   working on this while you wait", shows **Your papers** with all three
+   documents as "Not yet", says his reports have not arrived, and names Ms.
+   Reyes as handling it through the program because nobody outside is
+   authorized yet. "Not yet triaged" is where a coordinator has to do human
+   review. It is not a failed automated step.
+
+**Optional ending, if the room has a second screen**
+
+4. **A paper arrives.** In a window the room does not see, open `/staff/a-torres`
+   and press **Mark birth certificate on file**. Reload **Your case**: one row
+   flips, with Ms. Reyes's name and the day.
+5. **Proof that it was sent.** On a phone or private window, `/helper` with
+   code `BRIDGE-3306`, sign the form, **Print the packet**, **I mailed it**
+   with a made-up tracking number. **Your case** now has **In the mail**. Say
+   plainly that the status is a stand-in until live carrier tracking is
+   connected.
 
 If he is already past the first choice, follow the live state. If the app
 stalls, play the recording and keep talking.

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Family, mailed it{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar" role="banner">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ auth.helper_name }} &middot; Helping {{ client.first_name }}</span>
+  </div>
+
+  <div class="pane" role="main" id="content" tabindex="-1">
+    <h1>Mailed it. Now keep the proof.</h1>
+    <div class="card">
+      <span class="strong">The tracking number from your receipt</span>
+      <span class="small">{{ client.first_name }} and Ms. Reyes can then see where
+        it is. Spaces are fine.</span>
+      {% if bad %}
+      <span class="small strong" role="alert">That does not look like a tracking
+        number. Check the receipt and try again, or leave it empty.</span>
+      {% endif %}
+      <form method="post" action="/family/mailed" style="display:flex; flex-direction:column; gap:8px">
+        <label for="tracking_number" class="small">Tracking number</label>
+        <input id="tracking_number" name="tracking_number" type="text"
+               inputmode="numeric" autocomplete="off" autofocus>
+        <button class="btn" type="submit">Save it</button>
+      </form>
+    </div>
+
+    <div class="card soft">
+      <span class="strong">No tracking number?</span>
+      <span class="small">You can leave it empty, and it will be recorded as
+        mailed without tracking. That means there is no way to prove it was
+        sent. If you still have the receipt, enter the number now.</span>
+    </div>
+    <div class="right"><a class="pill" href="/family/task">Back</a></div>
+  </div>
+</div>
+{% endblock %}

@@ -2515,6 +2515,62 @@ msgid ""
 msgstr ""
 "Importa, y no va en esta lista haciéndose pasar por una tarjeta de crédito."
 
+msgctxt "mail.title"
+msgid "In the mail"
+msgstr "En el correo"
+
+msgctxt "mail.lede"
+msgid "Things sent for you, and where each one is."
+msgstr "Lo que se envió por ti y en qué punto está cada cosa."
+
+msgctxt "mail.request"
+msgid "Your request for your credit reports"
+msgstr "Tu solicitud de tus informes de crédito"
+
+msgctxt "mail.dispute"
+msgid "Your dispute letter to {bureau}"
+msgstr "Tu carta de disputa a {bureau}"
+
+msgctxt "mail.handed"
+msgid "Handed in to {who} on {when}"
+msgstr "Entregada a {who} el {when}"
+
+msgctxt "mail.with_coordinator"
+msgid "Ms. Reyes has it and will post it"
+msgstr "La Sra. Reyes la tiene y la enviará"
+
+msgctxt "mail.sent"
+msgid "Sent {when} by {who}"
+msgstr "Enviado el {when} por {who}"
+
+msgctxt "mail.number"
+msgid "Tracking number {number}"
+msgstr "Número de rastreo {number}"
+
+msgctxt "mail.accepted"
+msgid "The Post Office has it"
+msgstr "El Correo ya lo tiene"
+
+msgctxt "mail.transit"
+msgid "On its way"
+msgstr "En camino"
+
+msgctxt "mail.delivered"
+msgid "Delivered"
+msgstr "Entregado"
+
+msgctxt "mail.expected"
+msgid "Expected by {when}"
+msgstr "Se espera para el {when}"
+
+msgctxt "mail.untracked"
+msgid ""
+"Sent without a tracking number, so there is no way to prove it went. Ask Ms."
+" Reyes if you want to send it again."
+msgstr ""
+"Se envió sin número de rastreo, así que no hay forma de probar que salió. "
+"Pregunta a la Sra. Reyes si quieres enviarlo de nuevo."
+
 msgctxt "papers.title"
 msgid "Your papers"
 msgstr "Tus documentos"
@@ -3803,6 +3859,28 @@ msgstr "{name} aceptó ayudar"
 msgctxt "timeline.request_mailed"
 msgid "Request mailed to the bureaus"
 msgstr "Solicitud enviada por correo a los burós"
+
+msgctxt "timeline.dispute_handed"
+msgid "Your dispute letter to {bureau} was handed in to the coordinator"
+msgstr "Tu carta de disputa a {bureau} fue entregada a la coordinadora"
+
+msgctxt "timeline.dispute_mailed"
+msgid "Your dispute letter to {bureau} was mailed"
+msgstr "Tu carta de disputa a {bureau} fue enviada por correo"
+
+msgctxt "timeline.dispute_certified"
+msgid ""
+"Your dispute letter to {bureau} was mailed, certified, tracking number "
+"{number}"
+msgstr ""
+"Tu carta de disputa a {bureau} fue enviada por correo, certificada, número "
+"de rastreo {number}"
+
+msgctxt "timeline.request_certified"
+msgid "Request mailed to the bureaus, certified, tracking number {number}"
+msgstr ""
+"Solicitud enviada por correo a los burós, certificada, número de rastreo "
+"{number}"
 
 msgctxt "timeline.checked"
 msgid "Your {bureau} report was checked and added to your record"

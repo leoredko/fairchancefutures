@@ -98,9 +98,38 @@ title of their own mail-label document rather than from a page that was read
 directly. Re-read it by hand before a real letter goes in an envelope. These
 addresses move without announcement; re-check anything older than six months.
 
+## Certified mail, and who pays, checked 2026-10-01
+
+Everything Bridge asks a person to mail goes certified with a return receipt
+and a tracking number by default, so that there is a record of sending that
+nobody inside the product wrote. It costs money, and what a person inside can
+count on from DOCCS is narrower than "legal mail is covered".
+
+| Claim | Source |
+| --- | --- |
+| A person inside may send a certified or registered letter **at their own expense**, and is given the return receipt, if requested, after delivery | [DOCCS Directive 4422, Incarcerated Individual Correspondence Program, 07/28/2021](https://doccs.ny.gov/Directives/4422.pdf), IV-B items 19 and 20 |
+| Certified or registered mail **coming in** is signed for by the person it is addressed to; a refusal sends it back marked "Refused" | same, IV-H |
+| DOCCS can advance first-class postage for legal mail to someone with insufficient funds, up to **$20**. Advances for **special handling** (certified mail, return receipt, express mail) are **not approved** unless a statute or court rule requires it | [DOCCS Directive 2788, Collection & Repayment of Incarcerated Individual Advances & Obligations, 08/13/2026](https://doccs.ny.gov/Directives/2788.pdf), section A.1 |
+
+So a person inside who wants certified service pays for it from their own
+account, and the screens say so before they commit. A helper outside pays at
+the counter. The tracking screen is a stand-in: see `SIMPLIFICATIONS` in
+`app/sources.py`.
+
 ## Still open
 
 The app asserts none of these. Where one would be needed, the screen says so.
+
+- [ ] **Whether a bureau dispute is legal mail.** Directive 2788 is ambiguous
+      on it. The team's working understanding, from experience and not in
+      writing, is that a person can mark outgoing mail as legal mail and it
+      goes out as long as it is not addressed to a private residence, which a
+      bureau's address is not. The product states it nowhere. Certified
+      service is not advanced either way.
+- [ ] **What USPS itself says Certified Mail and a return receipt provide.**
+      The Domestic Mail Manual wording has not been read from usps.com, which
+      the tooling used to build this could not reach. Read it before the
+      product states what the receipt proves.
 
 - [ ] **What actually makes a bureau escalate past a plain signed request.** No
       public source says how often a plain request clears, and Experian asks

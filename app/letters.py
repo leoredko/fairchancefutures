@@ -54,6 +54,15 @@ Sincerely,
 
 ____________________________
 {client_name}
+
+--------------------------------------------------------------------------
+FOR WHOEVER POSTS THIS
+
+Send it certified, with a return receipt, and keep the receipt. The bureau has
+30 days from the day it receives this, so the receipt is the proof of the day it
+arrived as well as the day it left. Tear this part off before it goes in the
+envelope.
+--------------------------------------------------------------------------
 """
 
 # Built to match what the bureaus actually ask for when the request comes from
@@ -103,6 +112,10 @@ can come back.
     Send to:         Annual Credit Report Request Service
                      P.O. Box 105281
                      Atlanta, GA 30348-5281
+
+Send it certified, with a return receipt, and keep the receipt. If anyone
+later says this never arrived, the receipt and the tracking number are the
+proof that it was sent.
 --------------------------------------------------------------------------
 """
 

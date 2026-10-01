@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Family, the dispute letters{% endblock %}
+{% block body %}
+<div class="phone">
+  <div class="bar" role="banner">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    <span class="who">{{ auth.helper_name }} &middot; Helping {{ client.first_name }}</span>
+  </div>
+
+  <div class="pane" role="main" id="content" tabindex="-1">
+    <h1>The dispute letters</h1>
+    <div class="card accent">
+      <span class="strong">One envelope per bureau, each one certified</span>
+      <span class="small">Send every letter certified, with a return receipt, and
+        keep each receipt. The bureau has 30 days from the day it receives the
+        letter, so the receipt is the proof of the day it arrived as well as the
+        day it left.</span>
+      <span class="tiny">It costs extra at the counter, and whoever posts it
+        pays. If {{ client.first_name }} posts it from inside it comes out of
+        their own account, and the facility will not advance the money for
+        certified service.</span>
+      {% for c in rules %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
+    </div>
+
+    {% if bad %}
+    <p class="small strong" role="alert">That day or tracking number could not
+      be used. A day cannot be in the future. Check the receipt and try again, or
+      leave the number empty.</p>
+    {% endif %}
+
+    {% for l in letters %}
+    <div class="card">
+      <span class="strong">To {{ l.draft.bureau }}</span>
+      {% if l.stage == "mailed" %}
+      <span class="small">Mailed {{ l.shipment.mailed_on }} by
+        {{ l.shipment.mailed_by }}.
+        {% if l.shipment.tracking_number %}Tracking number
+        {{ l.shipment.tracking_number }}.{% else %}No tracking number, so
+        nothing proves it was sent.{% endif %}</span>
+      {% elif l.stage == "with_coordinator" %}
+      <span class="small">Ms. Reyes has this one since {{ l.shipment.handed_on }}
+        and will post it.</span>
+      {% else %}
+      <details>
+        <summary class="small">Show the letter to print</summary>
+        <pre class="letter">{{ l.draft.body }}</pre>
+      </details>
+      <form method="post" action="/family/disputes/{{ l.draft.id }}/mailed"
+            style="display:flex; flex-direction:column; gap:8px">
+        <label class="small" for="d-{{ l.draft.id }}">The day it went in the post</label>
+        <input id="d-{{ l.draft.id }}" name="on_date" type="date" value="{{ today }}" max="{{ today }}">
+        <label class="small" for="n-{{ l.draft.id }}">Tracking number from the receipt</label>
+        <input id="n-{{ l.draft.id }}" name="tracking_number" type="text" autocomplete="off" inputmode="numeric">
+        <button class="btn" type="submit">I mailed it</button>
+      </form>
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="card dashed">
+      <span class="small">No letters are approved yet. Ms. Reyes checks each one
+        before it comes to you.</span>
+    </div>
+    {% endfor %}
+    <div class="right"><a class="pill" href="/family/task">Back</a></div>
+  </div>
+</div>
+{% endblock %}

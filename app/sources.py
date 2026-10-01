@@ -264,6 +264,37 @@ FACTS: dict[str, Fact] = {
         url="https://doccs.ny.gov/Directives/4422.pdf",
         checked_on=date(2026, 9, 28),
     ),
+    # Certified mail is the recommended default for everything Bridge asks a
+    # person to post, so who pays and what it does inside both need a source.
+    "certified_mail_is_at_own_expense": Fact(
+        key="certified_mail_is_at_own_expense",
+        statement=(
+            "A person inside may send a certified or registered letter at "
+            "their own expense, and will be given the return receipt, if "
+            "requested, after delivery has been made. Certified or registered "
+            "mail coming in is signed for by the person it is addressed to; "
+            "if they refuse to sign, it goes back marked refused."
+        ),
+        source="DOCCS Directive 4422, Incarcerated Individual Correspondence "
+               "Program, dated 07/28/2021, items 19 and 20 and section H",
+        url="https://doccs.ny.gov/Directives/4422.pdf",
+        checked_on=date(2026, 10, 1),
+    ),
+    "special_handling_is_not_advanced": Fact(
+        key="special_handling_is_not_advanced",
+        statement=(
+            "DOCCS can advance first-class postage for legal mail to someone "
+            "with insufficient funds, up to $20. Advances for special handling "
+            "such as certified mail and return receipt are not approved unless "
+            "a statute or court rule requires it. Whether a particular item "
+            "counts as legal mail is a question for DOCCS's Office of Counsel."
+        ),
+        source="DOCCS Directive 2788, Collection and Repayment of Incarcerated "
+               "Individual Advances and Obligations, dated 08/13/2026, section "
+               "A.1",
+        url="https://doccs.ny.gov/Directives/2788.pdf",
+        checked_on=date(2026, 10, 1),
+    ),
     # Why the identity route is closed, which is a real constraint the demo
     # shows rather than a simplification.
     "the_tablet_has_no_internet": Fact(
@@ -821,9 +852,26 @@ SIMPLIFICATIONS: tuple[str, ...] = (
 
     "How Bridge would be provisioned onto a facility tablet is not "
     "established. The browser build is how it is developed and shown.",
+
+    "Mail tracking is a stand-in. `app/mailing.py` returns a status and an "
+    "expected date worked out from the mailing date, never from a carrier. "
+    "Integration with live tracking APIs for the major carriers is pending; "
+    "USPS's, for one, needs a registered application, an OAuth token and a "
+    "separate access request that this build does not have. The screen is "
+    "real and the status behind it is not.",
 )
 
 OPEN_QUESTIONS: tuple[str, ...] = (
+    "Whether a bureau dispute is legal mail. Directive 2788 is ambiguous on "
+    "it. The team's working understanding, from experience and not in "
+    "writing, is that a person can mark outgoing mail as legal mail and it "
+    "goes out as long as it is not addressed to a private residence, which a "
+    "bureau's address is not. Nothing on a screen states it. Certified service "
+    "is not advanced either way unless a statute or court rule requires it.",
+    "What USPS itself says Certified Mail and a return receipt provide. The "
+    "product recommends both so there is a record of sending that nobody "
+    "inside the product wrote, but the Domestic Mail Manual wording has not "
+    "been read from usps.com, which this build's tooling cannot reach.",
     "What actually makes a bureau escalate past a plain signed request. No "
     "public source says how often a plain request clears, and Experian asks "
     "for an ID copy with every mailed dispute regardless. This used to be "

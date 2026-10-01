@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
+from app import mailing
 from app.caseplan import (
     SSN_CARD_TRIGGER_DAYS,
     Document,
@@ -691,6 +692,41 @@ def _papers(client) -> list[dict]:
     return rows
 
 
+def _shipments(client) -> list[dict]:
+    """What was posted for this person and where it is, in words for the screen.
+
+    Read only, like the papers card: the tablet can see that something went and
+    where it is, and cannot say it did. The status is a stand-in until the USPS
+    API is behind `mailing.lookup`; see SIMPLIFICATIONS in app/sources.py.
+    """
+    def day(iso: str) -> str:
+        return date.fromisoformat(iso).strftime("%B %-d") if iso else ""
+
+    rows = []
+    for s in mailing.shipments_for_screen(client):
+        status = s["status"]
+        letter = s["what"] == mailing.DISPUTE_LETTER
+        if status:
+            state = f"mail.{status.state}"
+        elif letter and s.get("handed_on") and not s.get("mailed_on"):
+            state = "mail.with_coordinator"
+        else:
+            state = ""
+        rows.append({
+            "label": "mail.dispute" if letter else "mail.request",
+            "bureau": s.get("bureau", ""),
+            "when": day(s["mailed_on"]),
+            "handed_when": day(s.get("handed_on", "")),
+            "handed_to": s.get("handed_to", ""),
+            "who": s["mailed_by"],
+            "number": s["tracking_number"],
+            "state": state,
+            "expected": (day(status.expected_on)
+                         if status and status.state != "delivered" else ""),
+        })
+    return rows
+
+
 @router.get("/case", response_class=HTMLResponse)
 def case(request: Request):
     caller = require_role(request, "inside")
@@ -700,6 +736,7 @@ def case(request: Request):
         request, "inside/case.html",
         {"client": caller.client, "timeline": caller.client.timeline,
          "papers": _papers(caller.client),
+         "shipments": _shipments(caller.client),
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
          "next_lesson": (
