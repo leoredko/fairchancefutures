@@ -27,6 +27,23 @@
       {% endfor %}
     </div>
 
+    {# Read only. The coordinator marks a paper on file, because the tablet
+       cannot take delivery of one, so this card can only tell the truth. #}
+    {% if papers %}
+    <div class="card accent">
+      <span class="strong">Your papers</span>
+      <span class="small">The three documents your ID depends on, and where
+        each one stands.</span>
+      {% for p in papers %}
+      <div class="row">
+        <span class="tag {{ 'green' if p.have else 'amber' }}">{{ "On file" if p.have else "Not yet" }}</span>
+        <span class="small strong">{{ p.label }}</span>
+        <span class="tiny" style="flex-basis:100%">{{ p.line }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="card {{ 'good' if course.finished else 'accent' }}">
       <span class="strong">
         {% if course.finished %}You finished the credit course

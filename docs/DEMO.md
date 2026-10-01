@@ -116,6 +116,11 @@ reads as something to act on rather than something already missed. His helper
 code is `BRIDGE-3306`, issued and not yet used.
 
 1. **Tablet.** Sign in, choose a PIN, pick a path, read the documents lesson.
+   **Your case** shows a **Your papers** card with all three documents as
+   "Not yet", so the tablet alone tells the story in five minutes. It only
+   reads status: the coordinator marks a paper on file, because the tablet
+   cannot take delivery of one. Marking one at `/staff/a-torres` flips the
+   card on the next load.
 2. **Coordinator.** `/staff/a-torres` shows all three documents as needed and
    what is blocking the ID application. **Mark ... on file** records each one
    with Ms. Reyes's name and the date, and the timeline picks it up. Only the

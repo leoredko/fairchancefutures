@@ -479,3 +479,20 @@ def test_typing_a_din_at_random_usually_lands_near_the_gate():
             near += out < 365
             total += 1
     assert 0.35 < near / total < 0.55, f"{near}/{total} land inside a year"
+
+
+def test_andre_sees_his_own_papers_on_the_tablet_and_marking_one_updates_it(client):
+    from tests.conftest import sign_in_inside
+    sign_in_inside(client, "28E3306")
+    page = client.get("/inside/case").text
+    assert "Your papers" in page and page.count("Not yet") == 3
+    assert "That is" in page and "days from now" in page
+    client.post("/staff/a-torres/documents/birth_certificate/on-file")
+    page = client.get("/inside/case").text
+    assert page.count("Not yet") == 2 and "Ms. Reyes has this on file." in page
+
+
+def test_somebody_with_no_paper_status_recorded_sees_no_papers_card(client):
+    from tests.conftest import sign_in_inside
+    sign_in_inside(client, "28A1187")
+    assert "Your papers" not in client.get("/inside/case").text
