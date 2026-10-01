@@ -18,7 +18,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
 from app.caseplan import (
-    DOCUMENT_LABEL,
     SSN_CARD_TRIGGER_DAYS,
     Document,
     days_to_release,
@@ -166,7 +165,9 @@ def how_this_works(request: Request):
     return templates.TemplateResponse(
         request, "inside/how_this_works.html",
         {"client": caller.client,
-         "teaching": teaching_for(caller.client.intake_answers.get("knows_how"))},
+         "teaching": teaching_for(caller.client.intake_answers.get("knows_how")),
+         # Which length the screen is in, so it can look up the same keys.
+         "size": "short" if caller.client.intake_answers.get("knows_how") == "yes" else "long"},
     )
 
 
@@ -634,25 +635,11 @@ def where_you_stand(request: Request):
     client = caller.client
 
     if client.case_state == "credit_invisible" or not client.classification:
-        moves = [
-            {"title": "You don't have a file yet",
-             "body": "That is not the same as bad credit. Empty moves faster "
-                     "than damaged does."},
-            {"title": "One account, paid on time, starts the clock",
-             "body": "Ms. Reyes will set this up with you before you go home."},
-        ]
+        moves = ["stand.nofile", "stand.account"]
     else:
-        moves = [
-            {"title": "Your file exists and two items are disputed",
-             "body": "Ms. Reyes approved the letter. The bureaus have to answer."},
-            {"title": "One account, paid on time, keeps the clock running",
-             "body": "Set up before release, not after."},
-        ]
+        moves = ["stand.disputed", "stand.running"]
     if any(o != "none" for o in client.intake_answers.get("obligations", [])):
-        moves.append({
-            "title": "What the court ordered is tracked separately",
-            "body": "It matters, and it does not sit in this list pretending to "
-                    "be a credit card."})
+        moves.append("stand.court")
 
     return templates.TemplateResponse(
         request, "inside/where_you_stand.html",
@@ -675,22 +662,21 @@ def _papers(client) -> list[dict]:
     rows = []
     for doc in Document:
         have = bool(client.documents.get(doc.value))
+        n = None
         if have:
-            line = "Ms. Reyes has this on file."
+            line = "papers.on_file"
         elif doc is Document.SOCIAL_SECURITY_CARD:
             # Two clocks on opposite sides of release. This is the one before.
-            to_mark = left - SSN_CARD_TRIGGER_DAYS
-            line = ("The application goes in 120 days before release. "
-                    + (f"That is {to_mark} days from now."
-                       if to_mark > 0 else "That day has passed, so it is "
-                       "the first thing to do."))
+            n = left - SSN_CARD_TRIGGER_DAYS
+            line = "papers.ssn_ahead" if n > 0 else "papers.ssn_passed"
         elif doc is Document.BIRTH_CERTIFICATE:
-            line = ("Ms. Reyes requests this one. It takes weeks, and the ID "
-                    "cannot be applied for without it.")
+            line = "papers.birth"
         else:
-            line = ("Applied for once the birth certificate and the Social "
-                    "Security card are both on file.")
-        rows.append({"label": DOCUMENT_LABEL[doc], "have": have, "line": line})
+            line = "papers.id"
+        label = {Document.SOCIAL_SECURITY_CARD: "papers.ssn",
+                 Document.BIRTH_CERTIFICATE: "papers.birth_label",
+                 Document.PHOTO_ID: "papers.id_label"}[doc]
+        rows.append({"label": label, "have": have, "line": line, "n": n})
     return rows
 
 

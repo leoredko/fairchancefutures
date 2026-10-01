@@ -144,7 +144,7 @@ slide and the app say the same thing.
 | --- | --- | --- |
 | 1 of 5, start before release | The survey figure is 9 of 12 who wanted to see their report before release. One person skipped it, so the denominator is 12, not the 13 who answered. | `maine_peer_survey` in `app/sources.py`, with its limits |
 | 2 of 5, three routes, one case | Tablet, helper phone, coordinator desk. Only the tablet is toured live. | `app/surfaces.py` |
-| 3 of 5, team decisions, AI assistance | Spanish is the eleven lessons and the screens leading to them, 330 strings, approved by the team on 2026-09-30, stored in the app and never translated live. The six intake questions are Spanish, approved 2026-10-01. The explanation after question two and the report walkthrough are English. | `docs/TRANSLATION.md`, `docs/SCOPE.md` item 8 |
+| 3 of 5, team decisions, AI assistance | Spanish is the eleven lessons and the screens leading to them, 330 strings, approved by the team on 2026-09-30, stored in the app and never translated live. The six intake questions are Spanish, approved 2026-10-01. The explanation after question two, where-you-stand and the case screen are Spanish drafts awaiting review. The report walkthrough is English. | `docs/TRANSLATION.md`, `docs/SCOPE.md` item 8 |
 | 4 of 5, deployment choices and limits | Render free plan, container-local data that resets on restart. Demo data only. | `render.yaml`, `docs/DEPLOY.md` |
 | 5 of 5, live walkthrough | Choose a path, learn about credit, see the case status. | below |
 

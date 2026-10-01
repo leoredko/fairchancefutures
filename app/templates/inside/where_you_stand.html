@@ -1,43 +1,42 @@
 {% extends "base.html" %}
-{% block title %}Inside, where you stand{% endblock %}
+{% block title %}{{ t('stand.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
-    <span class="who">{{ client.display_name }} &middot; Where you stand</span>
+    <span class="who">{{ client.display_name }} &middot; {{ t('stand.title') }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
       </div>
 
   <div class="pane" role="main" id="content" tabindex="-1">
-    <h1>Here's where you're starting.</h1>
+    <h1>{{ t('stand.heading') }}</h1>
 
     <div class="row" style="gap:8px">
-      {% for step in ["Getting started", "Building", "Strong"] %}
+      {% for step in range(3) %}
       <div style="flex:1">
         <div class="track"><span style="width: {{ 100 if loop.index0 < position else 0 }}%"></span></div>
-        <div class="tiny" style="margin-top:6px">{{ step }}</div>
+        <div class="tiny" style="margin-top:6px">{{ t('stand.step.' ~ step) }}</div>
       </div>
       {% endfor %}
     </div>
-    <p class="small">No number. No grade. A position on the road, and the things
-      that move you along it.</p>
+    <p class="small">{{ t('stand.road') }}</p>
 
     <div class="stack">
       {% for item in moves %}
       <div class="event">
         <div class="dot">{{ loop.index }}</div>
         <div>
-          <div class="strong">{{ item.title }}</div>
-          <div class="small">{{ item.body }}</div>
+          <div class="strong">{{ t(item ~ '.title') }}</div>
+          <div class="small">{{ t(item ~ '.body') }}</div>
         </div>
       </div>
       {% endfor %}
     </div>
 
-    <a class="btn" href="/inside/case">See what's happening on my case</a>
+    <a class="btn" href="/inside/case">{{ t('stand.next') }}</a>
   </div>
 </div>
 {% endblock %}

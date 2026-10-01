@@ -76,10 +76,15 @@ read on the shelf. The code never translates them.
 ## Known gaps
 
 - Only the course and the screens on the way to it are translated. The six intake
-  questions are in Spanish, 35 strings the team approved on 2026-10-01. The explanation screen after question two states what
-  the law lets a person require, so it needs sources checked against the
-  Spanish before it moves. It, the report walkthrough and the case screens are
-  still English, and so is the
+  questions are in Spanish, 35 strings the team approved on 2026-10-01. The
+  explanation after question two, the where-you-stand screen and the case
+  screen (papers card included) are Spanish drafts flagged **Needs work** until
+  the team reads them. The explanation states what the law lets a person
+  require, so its Spanish is checked against `free_report_mail_route`,
+  `ssn_truncation_right` and `no_score_in_the_disclosure`. The report
+  walkthrough, the request screen, the scores page, the authorization screen
+  and the when-you-go-home screen are still English, and so are the
+  timeline events and the record labels, which are case data, and so is the
   helper's door. The source line under a lesson card stays English on purpose.
 - Sign-in errors are raised in code that does not know the language, so the
   screen recognises the English sentence and swaps in the Spanish. Reword one in

@@ -26,7 +26,8 @@
    request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`
    takes the language back out without a deploy. The six intake questions
    are Spanish too, approved 2026-10-01. The explanation after question
-   two and the report walkthrough are still English. — built
+   two, where-you-stand and the case screen are Spanish drafts awaiting review.
+   The report walkthrough is still English. — built
 
 Each one works standing alone. Stop anywhere and there is still a demo.
 

@@ -2319,3 +2319,463 @@ msgstr "Manutención de menores"
 msgctxt "intake.obligations.court_fines"
 msgid "Court fines or fees"
 msgstr "Multas o cargos de la corte"
+
+#, fuzzy
+msgctxt "teach.long.headline"
+msgid "Here is the part most people have not been told."
+msgstr "Esto es lo que a la mayoría de la gente no le han dicho."
+
+#, fuzzy
+msgctxt "teach.long.0.title"
+msgid "You can get all three reports free, by mail"
+msgstr "Puedes recibir los tres informes gratis, por correo"
+
+#, fuzzy
+msgctxt "teach.long.0.body"
+msgid ""
+"One letter to one address covers Equifax, Experian and TransUnion. No "
+"internet, no phone, no fee. We fill it in and your coordinator sends it."
+msgstr ""
+"Una carta a una dirección cubre a Equifax, Experian y TransUnion. Sin "
+"internet, sin teléfono, sin costo. Nosotros la llenamos y tu coordinador la "
+"envía."
+
+#, fuzzy
+msgctxt "teach.long.1.title"
+msgid "You can have your Social Security number blacked out"
+msgstr "Puedes pedir que tu número de Seguro Social aparezca tachado"
+
+#, fuzzy
+msgctxt "teach.long.1.body"
+msgid ""
+"You can require them to leave out the first five digits of your Social when "
+"they send your own file. That is the law, not a favour, and it is why you "
+"can read the report on this tablet at all."
+msgstr ""
+"Puedes exigir que omitan los primeros cinco dígitos de tu Seguro Social "
+"cuando te envíen tu propio expediente. Es la ley, no un favor, y es la razón"
+" por la que puedes leer el informe en esta tableta."
+
+#, fuzzy
+msgctxt "teach.long.2.title"
+msgid "It may not come with a score, and that is normal"
+msgstr "Puede que no venga con puntaje, y eso es normal"
+
+#, fuzzy
+msgctxt "teach.long.2.body"
+msgid ""
+"A free report has to show your file. It does not have to show a number. What"
+" matters here is what is on the file, not the number somebody puts on it."
+msgstr ""
+"Un informe gratis tiene que mostrar tu expediente. No tiene que mostrar un "
+"número. Lo que importa aquí es lo que hay en el expediente, no el número que"
+" alguien le pone."
+
+#, fuzzy
+msgctxt "teach.long.3.title"
+msgid "When it arrives, bring it to your coordinator"
+msgstr "Cuando llegue, llévaselo a tu coordinador"
+
+#, fuzzy
+msgctxt "teach.long.3.body"
+msgid ""
+"The reports come back on paper. Your coordinator scans them into your "
+"record, and then you can read them right here."
+msgstr ""
+"Los informes llegan en papel. Tu coordinador los escanea a tu expediente, y "
+"después puedes leerlos aquí mismo."
+
+#, fuzzy
+msgctxt "teach.short.headline"
+msgid "Quick confirmation, then we start."
+msgstr "Una confirmación rápida y empezamos."
+
+#, fuzzy
+msgctxt "teach.short.0.title"
+msgid "One letter, all three bureaus, free"
+msgstr "Una carta, los tres burós, gratis"
+
+#, fuzzy
+msgctxt "teach.short.0.body"
+msgid "We fill it in and your coordinator sends it."
+msgstr "Nosotros la llenamos y tu coordinador la envía."
+
+#, fuzzy
+msgctxt "teach.short.1.title"
+msgid "Your Social will be blacked out"
+msgstr "Tu Seguro Social aparecerá tachado"
+
+#, fuzzy
+msgctxt "teach.short.1.body"
+msgid ""
+"We ask them to leave out the first five digits, which the law lets you "
+"require."
+msgstr ""
+"Les pedimos que omitan los primeros cinco dígitos, algo que la ley te "
+"permite exigir."
+
+#, fuzzy
+msgctxt "teach.short.2.title"
+msgid "Bring the paper to your coordinator"
+msgstr "Llévale el papel a tu coordinador"
+
+#, fuzzy
+msgctxt "teach.short.2.body"
+msgid "They scan it in and then you can read it here."
+msgstr "Lo escanean y después puedes leerlo aquí."
+
+#, fuzzy
+msgctxt "teach.more.title"
+msgid "One more thing nobody tells you"
+msgstr "Algo más que nadie te dice"
+
+#, fuzzy
+msgctxt "teach.more.body"
+msgid ""
+"You do not have one credit score. You have dozens. A landlord, a car dealer "
+"and a credit card company each look at a different one, built by a different"
+" model, from a different bureau's file."
+msgstr ""
+"No tienes un solo puntaje de crédito. Tienes docenas. Un dueño de casa, un "
+"vendedor de carros y una compañía de tarjetas miran cada uno uno distinto, "
+"hecho con un modelo distinto, a partir del expediente de un buró distinto."
+
+#, fuzzy
+msgctxt "teach.more.cta"
+msgid "Show me"
+msgstr "Muéstrame"
+
+#, fuzzy
+msgctxt "teach.continue"
+msgid "Got it, keep going"
+msgstr "Entendido, sigamos"
+
+#, fuzzy
+msgctxt "stand.title"
+msgid "Where you stand"
+msgstr "Dónde estás"
+
+#, fuzzy
+msgctxt "stand.heading"
+msgid "Here's where you're starting."
+msgstr "Aquí es donde estás empezando."
+
+#, fuzzy
+msgctxt "stand.step.0"
+msgid "Getting started"
+msgstr "Empezando"
+
+#, fuzzy
+msgctxt "stand.step.1"
+msgid "Building"
+msgstr "Construyendo"
+
+#, fuzzy
+msgctxt "stand.step.2"
+msgid "Strong"
+msgstr "Sólido"
+
+#, fuzzy
+msgctxt "stand.road"
+msgid ""
+"No number. No grade. A position on the road, and the things that move you "
+"along it."
+msgstr ""
+"Sin número. Sin nota. Una posición en el camino, y las cosas que te hacen "
+"avanzar."
+
+#, fuzzy
+msgctxt "stand.next"
+msgid "See what's happening on my case"
+msgstr "Ver qué pasa con mi caso"
+
+#, fuzzy
+msgctxt "stand.nofile.title"
+msgid "You don't have a file yet"
+msgstr "Todavía no tienes un expediente"
+
+#, fuzzy
+msgctxt "stand.nofile.body"
+msgid ""
+"That is not the same as bad credit. Empty moves faster than damaged does."
+msgstr ""
+"Eso no es lo mismo que mal crédito. Un expediente vacío avanza más rápido "
+"que uno dañado."
+
+#, fuzzy
+msgctxt "stand.account.title"
+msgid "One account, paid on time, starts the clock"
+msgstr "Una cuenta, pagada a tiempo, pone a andar el reloj"
+
+#, fuzzy
+msgctxt "stand.account.body"
+msgid "Ms. Reyes will set this up with you before you go home."
+msgstr "La Sra. Reyes lo preparará contigo antes de que vuelvas a casa."
+
+#, fuzzy
+msgctxt "stand.disputed.title"
+msgid "Your file exists and two items are disputed"
+msgstr "Tu expediente existe y dos partidas están en disputa"
+
+#, fuzzy
+msgctxt "stand.disputed.body"
+msgid "Ms. Reyes approved the letter. The bureaus have to answer."
+msgstr "La Sra. Reyes aprobó la carta. Los burós tienen que responder."
+
+#, fuzzy
+msgctxt "stand.running.title"
+msgid "One account, paid on time, keeps the clock running"
+msgstr "Una cuenta, pagada a tiempo, mantiene el reloj andando"
+
+#, fuzzy
+msgctxt "stand.running.body"
+msgid "Set up before release, not after."
+msgstr "Se abre antes de la salida, no después."
+
+#, fuzzy
+msgctxt "stand.court.title"
+msgid "What the court ordered is tracked separately"
+msgstr "Lo que ordenó la corte se lleva por separado"
+
+#, fuzzy
+msgctxt "stand.court.body"
+msgid ""
+"It matters, and it does not sit in this list pretending to be a credit card."
+msgstr ""
+"Importa, y no va en esta lista haciéndose pasar por una tarjeta de crédito."
+
+#, fuzzy
+msgctxt "papers.title"
+msgid "Your papers"
+msgstr "Tus documentos"
+
+#, fuzzy
+msgctxt "papers.lede"
+msgid "The three documents your ID depends on, and where each one stands."
+msgstr ""
+"Los tres documentos de los que depende tu identificación, y en qué punto "
+"está cada uno."
+
+#, fuzzy
+msgctxt "papers.have"
+msgid "On file"
+msgstr "Archivado"
+
+#, fuzzy
+msgctxt "papers.not_yet"
+msgid "Not yet"
+msgstr "Todavía no"
+
+#, fuzzy
+msgctxt "papers.on_file"
+msgid "Ms. Reyes has this on file."
+msgstr "La Sra. Reyes lo tiene archivado."
+
+#, fuzzy
+msgctxt "papers.ssn_ahead"
+msgid ""
+"The application goes in 120 days before release. That is {n} days from now."
+msgstr ""
+"La solicitud se presenta 120 días antes de la salida. Eso es dentro de {n} "
+"días."
+
+#, fuzzy
+msgctxt "papers.ssn_passed"
+msgid ""
+"The application goes in 120 days before release. That day has passed, so it "
+"is the first thing to do."
+msgstr ""
+"La solicitud se presenta 120 días antes de la salida. Ese día ya pasó, así "
+"que es lo primero que hay que hacer."
+
+#, fuzzy
+msgctxt "papers.birth"
+msgid ""
+"Ms. Reyes requests this one. It takes weeks, and the ID cannot be applied "
+"for without it."
+msgstr ""
+"La Sra. Reyes pide este. Tarda semanas, y sin él no se puede solicitar la "
+"identificación."
+
+#, fuzzy
+msgctxt "papers.id"
+msgid ""
+"Applied for once the birth certificate and the Social Security card are both"
+" on file."
+msgstr ""
+"Se solicita cuando el certificado de nacimiento y la tarjeta del Seguro "
+"Social ya estén archivados."
+
+#, fuzzy
+msgctxt "papers.ssn"
+msgid "Social Security card"
+msgstr "Tarjeta del Seguro Social"
+
+#, fuzzy
+msgctxt "papers.birth_label"
+msgid "Birth certificate"
+msgstr "Certificado de nacimiento"
+
+#, fuzzy
+msgctxt "papers.id_label"
+msgid "Non-driver ID"
+msgstr "Identificación sin licencia de conducir"
+
+#, fuzzy
+msgctxt "case.heading"
+msgid "People are working on this while you wait."
+msgstr "Hay gente trabajando en esto mientras esperas."
+
+#, fuzzy
+msgctxt "case.title"
+msgid "What's happening on my case"
+msgstr "Qué pasa con mi caso"
+
+#, fuzzy
+msgctxt "case.suffix"
+msgid "Your case"
+msgstr "Tu caso"
+
+#, fuzzy
+msgctxt "case.synced"
+msgid "Last synced {when}"
+msgstr "Última actualización: {when}"
+
+#, fuzzy
+msgctxt "case.just_now"
+msgid "just now"
+msgstr "ahora mismo"
+
+#, fuzzy
+msgctxt "case.course.finished"
+msgid "You finished the credit course"
+msgstr "Terminaste el curso de crédito"
+
+#, fuzzy
+msgctxt "case.course.partial"
+msgid "The credit course, {done} of {total} done"
+msgstr "El curso de crédito, {done} de {total} lecciones hechas"
+
+#, fuzzy
+msgctxt "case.course.new"
+msgid "Learn how credit actually works"
+msgstr "Aprende cómo funciona el crédito de verdad"
+
+#, fuzzy
+msgctxt "case.course.all"
+msgid "All {total} lessons. Any of them opens again whenever you want it."
+msgstr "Las {total} lecciones. Cualquiera se abre de nuevo cuando quieras."
+
+#, fuzzy
+msgctxt "case.course.look_back"
+msgid "Look back over them"
+msgstr "Repasarlas"
+
+#, fuzzy
+msgctxt "case.course.minutes"
+msgid "{n} minutes · saves where you stop"
+msgstr "{n} minutos · guarda donde te quedes"
+
+#, fuzzy
+msgctxt "case.course.carry_on"
+msgid "Carry on"
+msgstr "Continuar"
+
+#, fuzzy
+msgctxt "case.course.start"
+msgid "Start the course"
+msgstr "Empezar el curso"
+
+#, fuzzy
+msgctxt "case.reports.title"
+msgid "Your credit reports"
+msgstr "Tus informes de crédito"
+
+#, fuzzy
+msgctxt "case.reports.body"
+msgid ""
+"Read them here, with your Social Security number blacked out. If they have "
+"not arrived yet, this tells you that too."
+msgstr ""
+"Léelos aquí, con tu número de Seguro Social tachado. Si todavía no han "
+"llegado, aquí también te lo dice."
+
+#, fuzzy
+msgctxt "case.reports.open"
+msgid "Open my reports"
+msgstr "Abrir mis informes"
+
+#, fuzzy
+msgctxt "case.reports.ask"
+msgid "Ask for my report"
+msgstr "Pedir mi informe"
+
+#, fuzzy
+msgctxt "case.score.title"
+msgid "There is no single credit score"
+msgstr "No existe un solo puntaje de crédito"
+
+#, fuzzy
+msgctxt "case.score.body"
+msgid ""
+"A landlord, a car dealer and a card company each look at a different one. "
+"Worth ten minutes."
+msgstr ""
+"Un dueño de casa, un vendedor de carros y una compañía de tarjetas miran "
+"cada uno uno distinto. Vale diez minutos."
+
+#, fuzzy
+msgctxt "case.score.cta"
+msgid "Learn why"
+msgstr "Ver por qué"
+
+#, fuzzy
+msgctxt "case.record.title"
+msgid "What we already have for you"
+msgstr "Lo que ya tenemos de ti"
+
+#, fuzzy
+msgctxt "case.record.body"
+msgid ""
+"Off your DIN. Nothing here was typed by you, and if any of it is wrong, tell"
+" your coordinator."
+msgstr ""
+"Sale de tu DIN. Nada de esto lo escribiste tú, y si algo está mal, díselo a "
+"tu coordinador."
+
+#, fuzzy
+msgctxt "case.helper.title"
+msgid "Who is helping you"
+msgstr "Quién te está ayudando"
+
+#, fuzzy
+msgctxt "case.helper.live"
+msgid ""
+"{name} can receive your report at their address and add it. Your own mail "
+"still comes to you. The authorization expires {expires}."
+msgstr ""
+"{name} puede recibir tu informe en su dirección y agregarlo. Tu propio "
+"correo sigue llegándote a ti. La autorización vence el {expires}."
+
+#, fuzzy
+msgctxt "case.helper.cannot"
+msgid ""
+"They cannot open an account in your name, take out credit, move money, or "
+"change your address."
+msgstr ""
+"No pueden abrir una cuenta a tu nombre, sacar crédito, mover dinero ni "
+"cambiar tu dirección."
+
+#, fuzzy
+msgctxt "case.helper.review"
+msgid "Review or cancel this"
+msgstr "Revisar o cancelar esto"
+
+#, fuzzy
+msgctxt "case.helper.none"
+msgid ""
+"Nobody outside is authorized right now. Ms. Reyes handles it through the "
+"program instead. A few steps run slower. Nothing stops."
+msgstr ""
+"Ahora mismo nadie afuera está autorizado. La Sra. Reyes lo maneja a través "
+"del programa. Algunos pasos van más lento. Nada se detiene."

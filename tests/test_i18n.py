@@ -417,3 +417,17 @@ def test_the_intake_questions_follow_the_language_chosen_at_the_door(client):
 
     client.post("/language", data={"lang": "en", "back": "/signin"})
     assert "Do you know what your credit score is?" in client.get("/inside/intake/1").text
+
+
+def test_the_explanation_where_you_stand_and_case_screens_follow_the_language(client):
+    from tests.conftest import sign_in_inside
+
+    client.post("/language", data={"lang": "es", "back": "/signin"})
+    sign_in_inside(client, "28E3306")
+    explain = client.get("/inside/how-this-works").text
+    assert "Entendido, sigamos" in explain and "Got it" not in explain
+    stand = client.get("/inside/where-you-stand").text
+    assert "Aquí es donde estás empezando." in stand and "starting" not in stand
+    case = client.get("/inside/case").text
+    assert "Tus documentos" in case and "Todavía no" in case
+    assert "Your papers" not in case and "Open my reports" not in case
