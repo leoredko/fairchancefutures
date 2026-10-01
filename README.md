@@ -262,7 +262,7 @@ Futures AI Lab, 2026. Fair Chance Futures, formerly Justice Through Code, is a
 nonprofit affiliated with Columbia University.
 
 Research, design and implementation are the team's shared work. The
-practitioner interview cited throughout is with Brianne Cornish of FinEquity,
+practitioner interview cited throughout is with Briane Cornish of finEQUITY,
 used with her permission.
 
 Bridge is an independent project. It is not affiliated with, endorsed by, or
