@@ -854,21 +854,20 @@ SIMPLIFICATIONS: tuple[str, ...] = (
     "established. The browser build is how it is developed and shown.",
 
     "Mail tracking is a stand-in. `app/mailing.py` returns a status and an "
-    "expected date worked out from the mailing date, never from USPS. The "
-    "real thing is the USPS Tracking API, which needs a registered "
-    "application, an OAuth token and a separate access request that this "
-    "build does not have. The screen is real and the status behind it is not.",
+    "expected date worked out from the mailing date, never from a carrier. "
+    "Integration with live tracking APIs for the major carriers is pending; "
+    "USPS's, for one, needs a registered application, an OAuth token and a "
+    "separate access request that this build does not have. The screen is "
+    "real and the status behind it is not.",
 )
 
 OPEN_QUESTIONS: tuple[str, ...] = (
-    "Whether DOCCS names a credit dispute as legal mail anywhere in writing. "
-    "The team knows from experience that it can be, and Directive 2788 "
-    "defines legal mail to include mail related to a potential or ongoing "
-    "legal matter, which covers it. What was not found is a DOCCS statement "
-    "that names a bureau dispute, and any doubtful item goes to the Office of "
-    "Counsel. It changes whether first-class postage can be advanced. "
-    "Certified service is not advanced either way unless a statute or court "
-    "rule requires it.",
+    "Whether a bureau dispute is legal mail. Directive 2788 is ambiguous on "
+    "it. The team's working understanding, from experience and not in "
+    "writing, is that a person can mark outgoing mail as legal mail and it "
+    "goes out as long as it is not addressed to a private residence, which a "
+    "bureau's address is not. Nothing on a screen states it. Certified service "
+    "is not advanced either way unless a statute or court rule requires it.",
     "What USPS itself says Certified Mail and a return receipt provide. The "
     "product recommends both so there is a record of sending that nobody "
     "inside the product wrote, but the Domestic Mail Manual wording has not "

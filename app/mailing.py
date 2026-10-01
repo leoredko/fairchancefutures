@@ -11,11 +11,12 @@ person inside pays from their own account, and DOCCS will not advance the
 money for certified service unless a statute or court rule requires it. Both
 halves are in `app/sources.py` and the screens say so before anybody commits.
 
-`lookup` is a stand-in. The real thing is the USPS Tracking API, which needs a
-registered application, an OAuth token and its own access request, none of
+`lookup` is a stand-in. The real thing is live tracking from the major
+carriers, and that integration is pending. USPS's own API, for one, needs a
+registered application, an OAuth token and a separate access request, none of
 which this build has. It is one function with a fixed return shape, so
 replacing it changes nothing else. The status and the expected date it returns
-are invented from the mailing date and are never real USPS data.
+are invented from the mailing date and are never real carrier data.
 """
 
 from __future__ import annotations
@@ -53,7 +54,7 @@ def clean_tracking_number(raw: str) -> str:
 
 def lookup(tracking_number: str, mailed_on: str,
            today: date | None = None) -> TrackingStatus | None:
-    """Where a piece of mail is. STUB: replace with the USPS Tracking API."""
+    """Where a piece of mail is. STUB: replace with live carrier tracking."""
     if not tracking_number:
         return None
     today = today or date.today()

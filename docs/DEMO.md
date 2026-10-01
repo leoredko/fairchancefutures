@@ -164,41 +164,60 @@ code `BRIDGE-3306` is issued and not yet used.
 
 ## The five-minute showcase run
 
-The final showcase ends on a live walkthrough of J. Whitfield, DIN `28-A-0931`,
-on the deployed `bridge-fcf` service. It is the same app and the same screens
-as the walkthroughs above, cut down to the first screen after a PIN, the
-course and the case status. The slides live outside this repo.
+The showcase ends on a live walkthrough of Armando Torres, DIN `28-E-3306`, on
+the deployed `bridge-fcf` service. It is the same app and the same screens as
+[the journey above](#armando-torres-the-journey-from-the-front), cut down to
+what fits in five minutes. The slides live outside this repo and are still
+changing, so this describes what the app does and in what order; the slides
+should follow it, not the other way round. If a slide and this section
+disagree, check the app and fix whichever is wrong.
 
 **Before the room arrives**
 
-1. Open `/demo/restart`, pick J. Whitfield and restart him. He is the one seeded
-   person who has not chosen a path, and the first screen is the point. Do it
-   beforehand, not in front of people: the restart clears his PIN and course
-   progress.
+1. Open `/demo/restart`, pick A. Torres and restart him. He is the one seeded
+   person with nothing done, so the first screen is the point. Do it
+   beforehand, not in front of people: the restart clears his PIN, course
+   progress, helper standing and anything mailed.
 2. Sign in once yourself to check it works. Nobody's PIN is seeded, so the
    first sign-in asks you to choose one. A free instance that has slept
-   reseeds, which clears the PIN again, so check within the hour.
+   reseeds, which clears the PIN again, so check within the hour, and restart
+   him once more afterwards.
 3. The deployed sign-in asks an arithmetic question first (`BRIDGE_CAPTCHA` is
    on in `render.yaml`). It is not part of the product and it is worth knowing
    before it appears on a projector.
 4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
-   is on). The other two surfaces are reachable by URL and are not toured.
+   is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
+   and are not toured unless you choose the optional ending below.
 
 **The walkthrough**
 
-1. **Choose a path.** After the PIN he is asked what he wants to do first, in
-   two sentences. Pick **Learn how credit works**. The switch to change it is
-   in the header of every tablet screen.
+1. **Choose a path.** After the PIN, Armando is asked what to do first, in two
+   sentences. Pick **Learn how credit works**. The switch to change it is in
+   the header of every tablet screen. Switch the language once, to show the
+   Spanish is the same product and not a different one.
 2. **Learn about credit.** The course opens on *The three pieces of paper*,
-   because he releases in 21 days and is inside the 120 day window. The Social
-   Security card deadline has already passed and the screen says so. Say that
-   out loud rather than being surprised by it. Open one lesson and let it save
+   because he releases in about 140 days. The Social Security card deadline is
+   120 days before release, so it is about 20 days ahead and reads as
+   something to act on. Say the two 120-day clocks out loud: this one is
+   before release, the ID expiry is after. Open one lesson and let it save
    where you stop.
 3. **See the case status.** **Your case** in the header. It reads "People are
-   working on this while you wait", offers the course again, says his reports
-   have not arrived, and names Ms. Reyes as handling it through the program
-   because nobody outside is authorized yet. "Not yet triaged" is where a
-   coordinator has to do human review. It is not a failed automated step.
+   working on this while you wait", shows **Your papers** with all three
+   documents as "Not yet", says his reports have not arrived, and names Ms.
+   Reyes as handling it through the program because nobody outside is
+   authorized yet. "Not yet triaged" is where a coordinator has to do human
+   review. It is not a failed automated step.
+
+**Optional ending, if the room has a second screen**
+
+4. **A paper arrives.** In a window the room does not see, open `/staff/a-torres`
+   and press **Mark birth certificate on file**. Reload **Your case**: one row
+   flips, with Ms. Reyes's name and the day.
+5. **Proof that it was sent.** On a phone or private window, `/helper` with
+   code `BRIDGE-3306`, sign the form, **Print the packet**, **I mailed it**
+   with a made-up tracking number. **Your case** now has **In the mail**. Say
+   plainly that the status is a stand-in until live carrier tracking is
+   connected.
 
 If he is already past the first choice, follow the live state. If the app
 stalls, play the recording and keep talking.

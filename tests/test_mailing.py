@@ -112,7 +112,7 @@ def test_the_stub_walks_through_accepted_transit_and_delivered():
 def test_the_stub_never_claims_to_be_real_usps_data():
     status = mailing.lookup("9" * 20, "2026-10-01")
     assert status.real is False
-    assert any("stand-in" in s and "USPS Tracking API" in s for s in SIMPLIFICATIONS)
+    assert any("stand-in" in s and "live tracking APIs" in s for s in SIMPLIFICATIONS)
 
 
 def test_the_two_rules_the_advice_rests_on_are_sourced_and_the_gaps_are_open():

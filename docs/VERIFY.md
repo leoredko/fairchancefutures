@@ -120,12 +120,12 @@ the counter. The tracking screen is a stand-in: see `SIMPLIFICATIONS` in
 
 The app asserts none of these. Where one would be needed, the screen says so.
 
-- [ ] **Whether DOCCS names a credit dispute as legal mail in writing.** The
-      team knows from experience that it can be. Directive 2788 defines legal
-      mail to include mail "related to a potential or ongoing legal matter",
-      which covers it, but no DOCCS text we found names a bureau dispute. It
-      decides whether first-class postage can be advanced. Certified service
-      is not advanced either way. Doubtful items go to the Office of Counsel.
+- [ ] **Whether a bureau dispute is legal mail.** Directive 2788 is ambiguous
+      on it. The team's working understanding, from experience and not in
+      writing, is that a person can mark outgoing mail as legal mail and it
+      goes out as long as it is not addressed to a private residence, which a
+      bureau's address is not. The product states it nowhere. Certified
+      service is not advanced either way.
 - [ ] **What USPS itself says Certified Mail and a return receipt provide.**
       The Domestic Mail Manual wording has not been read from usps.com, which
       the tooling used to build this could not reach. Read it before the
