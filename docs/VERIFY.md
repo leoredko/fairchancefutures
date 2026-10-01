@@ -120,9 +120,12 @@ the counter. The tracking screen is a stand-in: see `SIMPLIFICATIONS` in
 
 The app asserts none of these. Where one would be needed, the screen says so.
 
-- [ ] **Whether a dispute letter or a report request is "legal mail"** under
-      Directive 2788, which decides whether postage can be advanced. The
-      directive sends the question to the Office of Counsel. Nobody has asked.
+- [ ] **Whether DOCCS names a credit dispute as legal mail in writing.** The
+      team knows from experience that it can be. Directive 2788 defines legal
+      mail to include mail "related to a potential or ongoing legal matter",
+      which covers it, but no DOCCS text we found names a bureau dispute. It
+      decides whether first-class postage can be advanced. Certified service
+      is not advanced either way. Doubtful items go to the Office of Counsel.
 - [ ] **What USPS itself says Certified Mail and a return receipt provide.**
       The Domestic Mail Manual wording has not been read from usps.com, which
       the tooling used to build this could not reach. Read it before the

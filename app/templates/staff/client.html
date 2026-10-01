@@ -160,6 +160,50 @@
         <p class="small">{{ plan_step }}</p>
       </div>
 
+      {% if letters %}
+      <div class="card" id="posting">
+        <h3 aria-level="2">Posting the approved letters</h3>
+        <p class="small">One envelope per bureau, each certified with a return
+          receipt, each with its own tracking number. If the signed letter is
+          handed to you, mark that day, then mark the day it goes in the post
+          with the number from the receipt.</p>
+        {% if bad_day %}
+        <p class="small strong" role="alert">That day or tracking number could
+          not be used. A day cannot be in the future, and the number is the one
+          printed on the receipt.</p>
+        {% endif %}
+        {% for l in letters %}
+        <div class="stack" style="margin-top:12px">
+          <span class="strong">{{ l.draft.bureau }}</span>
+          {% if l.stage == "mailed" %}
+          <span class="small">Mailed {{ l.shipment.mailed_on }} by {{ l.shipment.mailed_by }}.
+            {% if l.shipment.tracking_number %}Tracking number
+            <b>{{ l.shipment.tracking_number }}</b>.{% else %}No tracking number,
+            so nothing proves it was sent.{% endif %}</span>
+          {% if l.shipment.handed_on %}<span class="tiny">Handed in {{ l.shipment.handed_on }}.</span>{% endif %}
+          {% else %}
+          {% if l.stage == "with_coordinator" %}
+          <span class="small">Handed in {{ l.shipment.handed_on }}. Not in the post yet.</span>
+          {% else %}
+          <form method="post" action="/staff/{{ client.id }}/letters/{{ l.draft.id }}/handed" style="display:flex; flex-direction:column; gap:6px; align-items:flex-start">
+            <label class="tiny" for="h-{{ l.draft.id }}">Day it was handed to you</label>
+            <input id="h-{{ l.draft.id }}" name="on_date" type="date" value="{{ today }}" max="{{ today }}">
+            <button class="btn quiet" type="submit">Handed to me</button>
+          </form>
+          {% endif %}
+          <form method="post" action="/staff/{{ client.id }}/letters/{{ l.draft.id }}/mailed" style="display:flex; flex-direction:column; gap:6px; align-items:flex-start">
+            <label class="tiny" for="m-{{ l.draft.id }}">Day it went in the post</label>
+            <input id="m-{{ l.draft.id }}" name="on_date" type="date" value="{{ today }}" max="{{ today }}">
+            <label class="tiny" for="n-{{ l.draft.id }}">Tracking number from the receipt</label>
+            <input id="n-{{ l.draft.id }}" name="tracking_number" type="text" autocomplete="off">
+            <button class="btn" type="submit">Mailed</button>
+          </form>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       <div class="card soft">
         <h3 aria-level="2">Approved so far</h3>
         {% for d in approved %}

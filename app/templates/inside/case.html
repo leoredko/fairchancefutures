@@ -36,13 +36,18 @@
       {% for m in shipments %}
       <div class="row">
         {% if m.state %}<span class="tag amber">{{ t(m.state) }}</span>{% endif %}
-        <span class="small strong">{{ t(m.label) }}</span>
+        <span class="small strong">{{ t(m.label, bureau=m.bureau) }}</span>
+        {% if m.handed_when %}
+        <span class="tiny" style="flex-basis:100%">{{ t('mail.handed', when=tdate(m.handed_when), who=m.handed_to) }}</span>
+        {% endif %}
+        {% if m.when %}
         <span class="tiny" style="flex-basis:100%">{{ t('mail.sent', when=tdate(m.when), who=m.who) }}</span>
         {% if m.number %}
         <span class="tiny" style="flex-basis:100%">{{ t('mail.number', number=m.number) }}</span>
         {% if m.expected %}<span class="tiny" style="flex-basis:100%">{{ t('mail.expected', when=tdate(m.expected)) }}</span>{% endif %}
         {% else %}
         <span class="tiny" style="flex-basis:100%">{{ t('mail.untracked') }}</span>
+        {% endif %}
         {% endif %}
       </div>
       {% endfor %}

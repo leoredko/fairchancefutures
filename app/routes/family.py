@@ -25,6 +25,7 @@ from app.deps import templates
 from app.report import Source, from_scan, mask_ssn, parse_accounts
 from app.session import require_role
 from app.store import (
+    drafts_for,
     get_authorization,
     mutate,
     put_authorization,
@@ -100,8 +101,23 @@ def task(request: Request):
         return RedirectResponse("/family", status_code=303)
     require_scope(auth, Scope.BE_CONTACTED_BY_STAFF)
 
-    # One task on screen. Never two.
-    if not client.report_pages and not client.family_task.get("done"):
+    # One task on screen. Never two. A dispute letter waiting to be posted
+    # comes first: the bureau's 30 days start when it receives the letter.
+    waiting = _waiting_letters(client)
+    if waiting:
+        current = {
+            "headline": f"Print the dispute letters, have {client.first_name} "
+                        "sign them, and send each one certified.",
+            "detail": f"{len(waiting)} letter{'s' if len(waiting) != 1 else ''} "
+                      "approved, one envelope for each bureau. Keep every "
+                      "receipt. If you cannot, the letters can go to Ms. "
+                      "Reyes instead.",
+            "action_url": "/family/disputes",
+            "action_label": "Open the letters",
+            "skip_url": None,
+            "skip_label": "",
+        }
+    elif not client.report_pages and not client.family_task.get("done"):
         current = {
             "headline": client.family_task.get(
                 "headline", "Print the request, have "
@@ -186,6 +202,64 @@ def mailed(request: Request, tracking_number: str = Form("")):
         return RedirectResponse("/family/mailed?bad=1", status_code=303)
     _record_mailing(request, tracking_number)
     return RedirectResponse("/family/task", status_code=303)
+
+
+def _waiting_letters(client) -> list[dict]:
+    """Approved dispute letters not yet in the post."""
+    return [l for l in mailing.letters_for_desk(client, drafts_for(client.id))
+            if l["stage"] != "mailed"]
+
+
+@router.get("/disputes", response_class=HTMLResponse)
+def disputes(request: Request, bad: int = 0):
+    """The approved dispute letters, to print, sign and post one by one.
+
+    Three letters for one item, three envelopes, three receipts. Only approved
+    letters are here: a draft the coordinator has not approved is not a letter
+    yet.
+    """
+    caller = require_role(request, "family")
+    require(Surface.FAMILY, Capability.PRINT_AND_POST)
+    client = caller.client
+    auth = get_authorization(client.id)
+    require_scope(auth, Scope.MAIL_DISPUTE_LETTER)
+    rows = mailing.letters_for_desk(client, drafts_for(client.id))
+    return templates.TemplateResponse(
+        request, "family/disputes.html",
+        {"client": client, "auth": auth, "letters": rows, "bad": bool(bad),
+         "today": date.today().isoformat(), "rules": mailing.citations()},
+    )
+
+
+@router.post("/disputes/{draft_id}/mailed")
+def dispute_mailed(request: Request, draft_id: str, on_date: str = Form(""),
+                   tracking_number: str = Form("")):
+    caller = require_role(request, "family")
+    require(Surface.FAMILY, Capability.PRINT_AND_POST)
+    client = caller.client
+    auth = get_authorization(client.id)
+    require_scope(auth, Scope.MAIL_DISPUTE_LETTER)
+    row = next((d for d in drafts_for(client.id)
+                if d["id"] == draft_id and d.get("kind") == "dispute"
+                and d.get("approved_on")), None)
+    day = mailing.clean_day(on_date)
+    bad_number = (tracking_number.strip()
+                  and not mailing.clean_tracking_number(tracking_number))
+    if row is None or not day or bad_number:
+        return RedirectResponse("/family/disputes?bad=1", status_code=303)
+    number = mailing.clean_tracking_number(tracking_number)
+    with mutate():
+        mailing.mark_mailed(client, draft_id=draft_id, bureau=row["bureau"],
+                            mailed_by=auth.helper_name,
+                            tracking_number=number, on=day)
+        client.timeline.append({
+            "text": (f"Your dispute letter to {row['bureau']} was mailed, "
+                     f"certified, tracking number {number}" if number
+                     else f"Your dispute letter to {row['bureau']} was mailed"),
+            "actor": auth.helper_name,
+            "on": date.fromisoformat(day).strftime("%B %-d"), "done": True,
+        })
+    return RedirectResponse("/family/disputes", status_code=303)
 
 
 @router.get("/packet", response_class=HTMLResponse)

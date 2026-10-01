@@ -146,6 +146,19 @@ code `BRIDGE-3306` is issued and not yet used.
      it is visible to Armando straight away. Nobody outside is needed for any
      of this, and nothing about the route is lesser.
 6. **Tablet.** **My reports** walks the report, section by section.
+7. **Coordinator.** Flag an item, draft the dispute letters and approve them.
+   One item makes three letters, so the **Posting the approved letters** card
+   has three rows, one per bureau, each with its own envelope and its own
+   tracking number. There are two routes, and the demo shows both:
+   - **Handed to the coordinator.** Press **Handed to me** and the day is
+     recorded with Ms. Reyes's name. The tablet says "Ms. Reyes has it and will
+     post it". When it goes in the post, press **Mailed** with the day and the
+     number from the receipt, which is the second step.
+   - **Mailed directly.** On the phone, **Open the letters** shows the approved
+     letters. **I mailed it** takes the day and the receipt number, with no
+     hand-in. A day cannot be in the future.
+8. **Tablet.** **In the mail** now has a row per letter, from handed in to
+   mailed, with the number. The status is the stand-in described above.
 
 **Starting over:** `/demo/restart`, pick A. Torres.
 

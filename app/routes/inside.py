@@ -699,16 +699,29 @@ def _shipments(client) -> list[dict]:
     where it is, and cannot say it did. The status is a stand-in until the USPS
     API is behind `mailing.lookup`; see SIMPLIFICATIONS in app/sources.py.
     """
+    def day(iso: str) -> str:
+        return date.fromisoformat(iso).strftime("%B %-d") if iso else ""
+
     rows = []
     for s in mailing.shipments_for_screen(client):
         status = s["status"]
+        letter = s["what"] == mailing.DISPUTE_LETTER
+        if status:
+            state = f"mail.{status.state}"
+        elif letter and s.get("handed_on") and not s.get("mailed_on"):
+            state = "mail.with_coordinator"
+        else:
+            state = ""
         rows.append({
-            "label": "mail.request",
-            "when": date.fromisoformat(s["mailed_on"]).strftime("%B %-d"),
+            "label": "mail.dispute" if letter else "mail.request",
+            "bureau": s.get("bureau", ""),
+            "when": day(s["mailed_on"]),
+            "handed_when": day(s.get("handed_on", "")),
+            "handed_to": s.get("handed_to", ""),
             "who": s["mailed_by"],
             "number": s["tracking_number"],
-            "state": f"mail.{status.state}" if status else "",
-            "expected": (date.fromisoformat(status.expected_on).strftime("%B %-d")
+            "state": state,
+            "expected": (day(status.expected_on)
                          if status and status.state != "delivered" else ""),
         })
     return rows

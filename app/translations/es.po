@@ -2531,6 +2531,21 @@ msgid "Your request for your credit reports"
 msgstr "Tu solicitud de tus informes de crédito"
 
 #, fuzzy
+msgctxt "mail.dispute"
+msgid "Your dispute letter to {bureau}"
+msgstr "Tu carta de disputa a {bureau}"
+
+#, fuzzy
+msgctxt "mail.handed"
+msgid "Handed in to {who} on {when}"
+msgstr "Entregada a {who} el {when}"
+
+#, fuzzy
+msgctxt "mail.with_coordinator"
+msgid "Ms. Reyes has it and will post it"
+msgstr "La Sra. Reyes la tiene y la enviará"
+
+#, fuzzy
 msgctxt "mail.sent"
 msgid "Sent {when} by {who}"
 msgstr "Enviado el {when} por {who}"
@@ -3857,6 +3872,25 @@ msgstr "{name} aceptó ayudar"
 msgctxt "timeline.request_mailed"
 msgid "Request mailed to the bureaus"
 msgstr "Solicitud enviada por correo a los burós"
+
+#, fuzzy
+msgctxt "timeline.dispute_handed"
+msgid "Your dispute letter to {bureau} was handed in to the coordinator"
+msgstr "Tu carta de disputa a {bureau} fue entregada a la coordinadora"
+
+#, fuzzy
+msgctxt "timeline.dispute_mailed"
+msgid "Your dispute letter to {bureau} was mailed"
+msgstr "Tu carta de disputa a {bureau} fue enviada por correo"
+
+#, fuzzy
+msgctxt "timeline.dispute_certified"
+msgid ""
+"Your dispute letter to {bureau} was mailed, certified, tracking number "
+"{number}"
+msgstr ""
+"Tu carta de disputa a {bureau} fue enviada por correo, certificada, número "
+"de rastreo {number}"
 
 #, fuzzy
 msgctxt "timeline.request_certified"

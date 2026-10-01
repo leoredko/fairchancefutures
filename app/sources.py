@@ -861,11 +861,14 @@ SIMPLIFICATIONS: tuple[str, ...] = (
 )
 
 OPEN_QUESTIONS: tuple[str, ...] = (
-    "Whether a dispute letter or a report request counts as legal mail under "
-    "DOCCS Directive 2788, which decides whether the postage can be advanced. "
-    "The directive sends that question to the Office of Counsel and nobody "
-    "here has asked. Certified service is not advanced either way unless a "
-    "statute or court rule requires it.",
+    "Whether DOCCS names a credit dispute as legal mail anywhere in writing. "
+    "The team knows from experience that it can be, and Directive 2788 "
+    "defines legal mail to include mail related to a potential or ongoing "
+    "legal matter, which covers it. What was not found is a DOCCS statement "
+    "that names a bureau dispute, and any doubtful item goes to the Office of "
+    "Counsel. It changes whether first-class postage can be advanced. "
+    "Certified service is not advanced either way unless a statute or court "
+    "rule requires it.",
     "What USPS itself says Certified Mail and a return receipt provide. The "
     "product recommends both so there is a record of sending that nobody "
     "inside the product wrote, but the Domestic Mail Manual wording has not "

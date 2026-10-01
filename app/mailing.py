@@ -28,7 +28,7 @@ from app.sources import fact
 
 # What kind of thing was mailed. A name for what it is, not for who sent it.
 REPORT_REQUEST = "report_request"
-DISPUTE_LETTERS = "dispute_letters"
+DISPUTE_LETTER = "dispute_letter"
 
 # Stand-in timings for the stub. Not a USPS service standard.
 _STUB_TRANSIT_AFTER = 2
@@ -82,11 +82,92 @@ def record(client, *, what: str, mailed_by: str, tracking_number: str = "",
     return shipment
 
 
+def clean_day(raw: str, today: date | None = None) -> str:
+    """The day something happened, as an ISO date, or "" when it cannot be one.
+
+    Blank means today, because most people mark it the day it happens. A day
+    in the future is refused: a mailing date is evidence, and a date that has
+    not come yet is not.
+    """
+    today = today or date.today()
+    if not (raw or "").strip():
+        return today.isoformat()
+    try:
+        day = date.fromisoformat(raw.strip())
+    except ValueError:
+        return ""
+    return day.isoformat() if day <= today else ""
+
+
+def _letter(client, draft_id: str) -> dict | None:
+    return next((s for s in client.shipments
+                 if s.get("what") == DISPUTE_LETTER
+                 and s.get("draft_id") == draft_id), None)
+
+
+def letter_shipment(client, draft_id: str) -> dict | None:
+    return _letter(client, draft_id)
+
+
+def hand_in(client, *, draft_id: str, bureau: str, handed_to: str,
+            on: str) -> dict:
+    """The signed letter reached the coordinator's hands. Not mailed yet.
+
+    A second step follows when the coordinator posts it and has the receipt,
+    so the file can say where the letter was on every day between approval and
+    the post office. Marking it twice changes nothing.
+    """
+    existing = _letter(client, draft_id)
+    if existing:
+        return existing
+    shipment = {
+        "what": DISPUTE_LETTER, "draft_id": draft_id, "bureau": bureau,
+        "handed_on": on, "handed_to": handed_to,
+        "mailed_on": "", "mailed_by": "", "tracking_number": "",
+    }
+    client.shipments.append(shipment)
+    return shipment
+
+
+def mark_mailed(client, *, draft_id: str, bureau: str, mailed_by: str,
+                tracking_number: str, on: str) -> dict:
+    """It went into the post. Straight from the helper, or after a hand-in."""
+    shipment = _letter(client, draft_id)
+    if shipment is None:
+        shipment = {"what": DISPUTE_LETTER, "draft_id": draft_id,
+                    "bureau": bureau, "handed_on": "", "handed_to": ""}
+        client.shipments.append(shipment)
+    shipment.update(mailed_on=on, mailed_by=mailed_by,
+                    tracking_number=clean_tracking_number(tracking_number))
+    return shipment
+
+
+def letters_for_desk(client, drafts: list[dict]) -> list[dict]:
+    """Each approved dispute letter and the stage it is at, for either desk.
+
+    Stage is one of `approved` (nothing recorded yet), `with_coordinator`
+    (handed in, not posted) or `mailed`.
+    """
+    rows = []
+    for d in drafts:
+        if d.get("kind") != "dispute" or not d.get("approved_on"):
+            continue
+        s = _letter(client, d["id"]) or {}
+        stage = ("mailed" if s.get("mailed_on")
+                 else "with_coordinator" if s.get("handed_on") else "approved")
+        rows.append({"draft": d, "shipment": s, "stage": stage,
+                     "status": lookup(s.get("tracking_number", ""),
+                                      s["mailed_on"]) if s.get("mailed_on") else None})
+    return rows
+
+
 def shipments_for_screen(client, today: date | None = None) -> list[dict]:
     """Each shipment with its status attached, newest first."""
     rows = []
     for s in reversed(client.shipments):
-        rows.append({**s, "status": lookup(s["tracking_number"], s["mailed_on"], today)})
+        status = (lookup(s["tracking_number"], s["mailed_on"], today)
+                  if s.get("mailed_on") else None)
+        rows.append({**s, "status": status})
     return rows
 
 
