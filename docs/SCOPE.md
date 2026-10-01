@@ -24,8 +24,9 @@
    chosen at the sign-in door. Not a running translator: a gettext catalog
    translated once and committed, so nothing calls a model or the network at
    request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`
-   takes the language back out without a deploy. Intake and the report
-   walkthrough are still English. — built
+   takes the language back out without a deploy. The six intake questions
+   are Spanish too, as a draft awaiting review. The explanation after question
+   two and the report walkthrough are still English. — built
 
 Each one works standing alone. Stop anywhere and there is still a demo.
 

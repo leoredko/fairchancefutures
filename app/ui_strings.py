@@ -255,3 +255,31 @@ UI: dict[str, str] = {
                         "locked for 15 minutes. Your counselor can reset it "
                         "sooner.",
 }
+
+
+def _intake() -> dict[str, str]:
+    """The six tablet questions, keyed by field, with their English read out of
+    `app/questions.py` rather than copied here.
+
+    Copying would give the wording two homes, and the staff screen already reads
+    the originals. The design notes and the constraint line are for the team and
+    never reach a person, so they are not translated.
+    """
+    from app.questions import INSIDE_QUESTIONS, SAVED_AS_YOU_GO
+
+    out = {
+        "intake.progress": "{n} of {total}",
+        "intake.back": "Back",
+        "intake.saved.title": SAVED_AS_YOU_GO["title"],
+        "intake.saved.body": SAVED_AS_YOU_GO["body"],
+    }
+    for q in INSIDE_QUESTIONS:
+        out[f"intake.{q.field}.prompt"] = q.prompt
+        if q.helper:
+            out[f"intake.{q.field}.helper"] = q.helper
+        for opt in q.options:
+            out[f"intake.{q.field}.{opt.value}"] = opt.label
+    return out
+
+
+UI.update(_intake())
