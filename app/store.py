@@ -91,6 +91,11 @@ class Client:
     # A plain dict so it survives the JSON round trip without a schema.
     # See app/lessons.py.
     lesson_progress: dict = field(default_factory=dict)
+    # Which vital documents the coordinator has on file, keyed by
+    # `caseplan.Document` value. Empty means nobody recorded any, and the plan
+    # falls back to its stand-in. Only the coordinator writes it: the tablet
+    # cannot take delivery of a document, so it cannot say one arrived.
+    documents: dict = field(default_factory=dict)
     # Never rendered by any surface. Present so the redaction tests have
     # something real to withhold.
     ssn: str = "***-**-****"
@@ -438,7 +443,7 @@ report_summary="Full file, nine collections accounts",
         ),
     ]
 
-    STATE.clients = {c.id: c for c in [marcus, *others]}
+    STATE.clients = {c.id: c for c in [marcus, *others, _demo_persona(today)]}
     STATE.authorizations = {}
     put_authorization(
         default_helper_authorization("marcus-w", "Denise", today - timedelta(days=209))
@@ -452,6 +457,42 @@ report_summary="Full file, nine collections accounts",
     STATE.write_log = []
     _seed_accounts()
     _seed_reports(today)
+
+
+def _demo_persona(today: date) -> Client:
+    """Andre T., who starts with nothing done, so the journey can be walked live.
+
+    Everything else in the seed is somewhere in the middle of its story. This
+    one is at the front of it: no path chosen, no intake, no reports, no helper
+    signed up, and none of the three vital documents on file. The Social
+    Security card deadline is still ahead of him, so the room sees it as
+    something to act on rather than something already missed.
+
+    Open on purpose. Nothing here is pre-answered, so whoever drives can take
+    him from the first screen to a report he reviews on the tablet, with the
+    coordinator and the helper each doing their part. His helper has a code
+    and no authorization yet, which is the day before she signs the form.
+    """
+    return Client(
+        id="a-torres", din="28E3306", nysid="00000066G",
+        facility="Fishkill Correctional Facility",
+        display_name="A. Torres", first_name="Andre",
+        release_date=(today + timedelta(days=140)).isoformat(),
+        case_state="not_yet_triaged", state_label="Not yet triaged",
+        needs="No report on file", clock="Releases in 140 days",
+        clock_sort=140, helper_name=None,
+        consent_recorded_on=(today - timedelta(days=6)).isoformat(),
+        plan_step="Triage session not yet held",
+        documents={
+            "social_security_card": False,
+            "birth_certificate": False,
+            "non_driver_id": False,
+        },
+        timeline=[
+            asdict(TimelineEvent("Ms. Reyes opened your case",
+                                 "Your counselor", today.strftime("%B %-d"))),
+        ],
+    )
 
 
 def _seed_reports(today: date) -> None:
@@ -578,6 +619,7 @@ def _seed_accounts() -> None:
         ("marcus-w", "BRIDGE-4417", "Denise"),
         ("m-alvarez", "BRIDGE-8802", "Rosa"),
         ("j-whitfield", "BRIDGE-2231", ""),
+        ("a-torres", "BRIDGE-3306", ""),
     ]:
         put_account(Account(
             account_id=f"family-{client_id}",

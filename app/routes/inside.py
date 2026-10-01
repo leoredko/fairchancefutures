@@ -17,6 +17,12 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
+from app.caseplan import (
+    DOCUMENT_LABEL,
+    SSN_CARD_TRIGGER_DAYS,
+    Document,
+    days_to_release,
+)
 from app.deps import templates
 from app import doccs
 from app import i18n
@@ -655,6 +661,39 @@ def where_you_stand(request: Request):
     )
 
 
+def _papers(client) -> list[dict]:
+    """The vital documents as the person reads them, or nothing.
+
+    Empty when nobody recorded any, so a person whose paper status is not
+    known sees no card rather than three false "not yet" rows. Only the
+    coordinator can mark one on file: the tablet cannot take delivery of
+    paper, so this screen reads status and never sets it.
+    """
+    if not client.documents:
+        return []
+    left = days_to_release(date.fromisoformat(client.release_date))
+    rows = []
+    for doc in Document:
+        have = bool(client.documents.get(doc.value))
+        if have:
+            line = "Ms. Reyes has this on file."
+        elif doc is Document.SOCIAL_SECURITY_CARD:
+            # Two clocks on opposite sides of release. This is the one before.
+            to_mark = left - SSN_CARD_TRIGGER_DAYS
+            line = ("The application goes in 120 days before release. "
+                    + (f"That is {to_mark} days from now."
+                       if to_mark > 0 else "That day has passed, so it is "
+                       "the first thing to do."))
+        elif doc is Document.BIRTH_CERTIFICATE:
+            line = ("Ms. Reyes requests this one. It takes weeks, and the ID "
+                    "cannot be applied for without it.")
+        else:
+            line = ("Applied for once the birth certificate and the Social "
+                    "Security card are both on file.")
+        rows.append({"label": DOCUMENT_LABEL[doc], "have": have, "line": line})
+    return rows
+
+
 @router.get("/case", response_class=HTMLResponse)
 def case(request: Request):
     caller = require_role(request, "inside")
@@ -663,6 +702,7 @@ def case(request: Request):
     return templates.TemplateResponse(
         request, "inside/case.html",
         {"client": caller.client, "timeline": caller.client.timeline,
+         "papers": _papers(caller.client),
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
          "next_lesson": lessons.next_up(caller.client),

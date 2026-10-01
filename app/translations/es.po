@@ -27,7 +27,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bridge\n"
-"PO-Revision-Date: 2026-09-30\n"
+"PO-Revision-Date: 2026-10-01\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -2160,3 +2160,162 @@ msgid ""
 msgstr ""
 "Ese PIN fue incorrecto demasiadas veces. La cuenta está bloqueada por 15 "
 "minutos. Tu consejero puede restablecerla antes."
+
+msgctxt "intake.progress"
+msgid "{n} of {total}"
+msgstr "{n} de {total}"
+
+msgctxt "intake.back"
+msgid "Back"
+msgstr "Atrás"
+
+msgctxt "intake.saved.title"
+msgid "Every answer saves as you give it."
+msgstr "Cada respuesta se guarda al momento de darla."
+
+msgctxt "intake.saved.body"
+msgid ""
+"This app is already on the tablet and it only talks to your own record. Stop"
+" halfway, hand the tablet back, come again on Thursday, and it opens on the "
+"question you were on."
+msgstr ""
+"Esta aplicación ya está en la tableta y solo habla con tu propio expediente."
+" Si te detienes a la mitad, devuelves la tableta y vuelves el jueves, se "
+"abre en la pregunta donde te quedaste."
+
+msgctxt "intake.knows_score.prompt"
+msgid "Do you know what your credit score is?"
+msgstr "¿Sabes cuál es tu puntaje de crédito?"
+
+msgctxt "intake.knows_score.helper"
+msgid "Most people don't. There is no wrong answer here."
+msgstr "La mayoría de la gente no lo sabe. No hay respuesta incorrecta."
+
+msgctxt "intake.knows_score.no"
+msgid "No"
+msgstr "No"
+
+msgctxt "intake.knows_score.roughly"
+msgid "Roughly, but not exactly"
+msgstr "Más o menos, pero no exactamente"
+
+msgctxt "intake.knows_score.yes"
+msgid "Yes"
+msgstr "Sí"
+
+msgctxt "intake.knows_how.prompt"
+msgid "Do you know how to find out?"
+msgstr "¿Sabes cómo averiguarlo?"
+
+msgctxt "intake.knows_how.helper"
+msgid "Again, no wrong answer. Most people outside don't either."
+msgstr ""
+"Otra vez, no hay respuesta incorrecta. La mayoría de la gente afuera tampoco"
+" lo sabe."
+
+msgctxt "intake.knows_how.no"
+msgid "No"
+msgstr "No"
+
+msgctxt "intake.knows_how.some_idea"
+msgid "I have some idea"
+msgstr "Tengo una idea"
+
+msgctxt "intake.knows_how.yes"
+msgid "Yes"
+msgstr "Sí"
+
+msgctxt "intake.ever_had_account.prompt"
+msgid "Have you ever had a credit card, loan, or account in your name?"
+msgstr ""
+"¿Alguna vez has tenido una tarjeta de crédito, un préstamo o una cuenta a tu"
+" nombre?"
+
+msgctxt "intake.ever_had_account.helper"
+msgid "Before you came in counts. A guess is fine, the report settles it."
+msgstr ""
+"Cuenta lo de antes de entrar. Si no estás seguro, adivina: el informe lo "
+"aclara."
+
+msgctxt "intake.ever_had_account.yes"
+msgid "Yes, at some point"
+msgstr "Sí, en algún momento"
+
+msgctxt "intake.ever_had_account.no"
+msgid "No, never"
+msgstr "No, nunca"
+
+msgctxt "intake.ever_had_account.unsure"
+msgid "I'm not sure"
+msgstr "No estoy seguro"
+
+msgctxt "intake.has_bank_account.prompt"
+msgid "Do you have a bank account right now?"
+msgstr "¿Tienes una cuenta de banco ahora mismo?"
+
+msgctxt "intake.has_bank_account.helper"
+msgid "Open, closed, frozen, joint with someone. Any of it is a yes."
+msgstr ""
+"Abierta, cerrada, congelada o compartida con alguien. Cualquiera de esas "
+"cuenta como un sí."
+
+msgctxt "intake.has_bank_account.yes"
+msgid "Yes"
+msgstr "Sí"
+
+msgctxt "intake.has_bank_account.no"
+msgid "No"
+msgstr "No"
+
+msgctxt "intake.collections.prompt"
+msgid "Is anyone chasing you for money you owe?"
+msgstr "¿Alguien te está cobrando dinero que debes?"
+
+msgctxt "intake.collections.helper"
+msgid ""
+"A collector, a hospital, an old landlord. Not court fines, those are next."
+msgstr ""
+"Un cobrador, un hospital, un dueño de casa de antes. Las multas de la corte "
+"no cuentan aquí, esas vienen después."
+
+msgctxt "intake.collections.none_found"
+msgid "Not that I know of"
+msgstr "No que yo sepa"
+
+msgctxt "intake.collections.some"
+msgid "One or two"
+msgstr "Uno o dos"
+
+msgctxt "intake.collections.many"
+msgid "More than a few"
+msgstr "Más de unos cuantos"
+
+msgctxt "intake.collections.unknown"
+msgid "I have no idea"
+msgstr "No tengo idea"
+
+msgctxt "intake.obligations.prompt"
+msgid "Do you owe anything the court ordered?"
+msgstr "¿Debes algo que ordenó la corte?"
+
+msgctxt "intake.obligations.helper"
+msgid "Restitution, child support, fines and fees. Pick all that apply."
+msgstr ""
+"Restitución, manutención de menores, multas y cargos. Marca todo lo que "
+"aplique."
+
+msgctxt "intake.obligations.none"
+msgid "None that I know of"
+msgstr "Nada que yo sepa"
+
+msgctxt "intake.obligations.restitution"
+msgid "Restitution"
+msgstr "Restitución"
+
+msgctxt "intake.obligations.child_support"
+msgid "Child support"
+msgstr "Manutención de menores"
+
+msgctxt "intake.obligations.court_fines"
+msgid "Court fines or fees"
+msgstr "Multas o cargos de la corte"

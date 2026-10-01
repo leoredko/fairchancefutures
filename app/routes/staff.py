@@ -254,7 +254,9 @@ def client_detail(request: Request, client_id: str, created: int = 0):
     client = get_client(client_id)
 
     view = for_surface(asdict(client), Surface.STAFF, set(client.consent_scopes))
-    plan = simulated_plan(client.id, coordinator.display_name, client.release_date)
+    plan = simulated_plan(client.id, coordinator.display_name,
+                          client.release_date,
+                          documents=client.documents or None)
     drafts = drafts_for(client_id)
     pending = next((d for d in drafts if d["approved_on"] is None), None)
     approved = [d for d in drafts if d["approved_on"]]
@@ -280,7 +282,7 @@ def client_detail(request: Request, client_id: str, created: int = 0):
          "plan": plan,
          "plan_name": PLAN_NAME,
          "plan_documents": [
-             {"label": DOCUMENT_LABEL[d], "note": DOCUMENT_NOTE[d],
+             {"key": d.value, "label": DOCUMENT_LABEL[d], "note": DOCUMENT_NOTE[d],
               "have": plan.has(d)} for d in Document
          ],
          "reviews_left": quarterly_reviews_left(
@@ -467,6 +469,28 @@ def draft_letter(request: Request, client_id: str, item: int = Form(0)):
     with mutate():
         for draft in drafts:
             add_draft(draft)
+    return RedirectResponse(f"/staff/{client_id}", status_code=303)
+
+
+@router.post("/{client_id}/documents/{document}/on-file")
+def document_on_file(request: Request, client_id: str, document: str):
+    """The coordinator has the paper in hand. The tablet cannot say this."""
+    coordinator = require_coordinator(request)
+    require(Surface.STAFF, Capability.MANAGE_CASELOAD)
+    client = get_client(client_id)
+    try:
+        doc = Document(document)
+    except ValueError:
+        return RedirectResponse(f"/staff/{client_id}", status_code=303)
+    if not client.documents.get(doc.value):
+        with mutate():
+            client.documents[doc.value] = True
+            client.timeline.append({
+                "text": f"Your {DOCUMENT_LABEL[doc].lower()} is on file",
+                "actor": "Ms. " + coordinator.display_name.split()[-1],
+                "on": date.today().strftime("%B %-d"),
+                "done": True,
+            })
     return RedirectResponse(f"/staff/{client_id}", status_code=303)
 
 

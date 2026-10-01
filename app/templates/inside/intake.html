@@ -12,24 +12,24 @@
     <span class="who">{{ client.display_name }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <form class="pane" method="post" action="/inside/intake/{{ q.index }}">
     <div class="progress">
       <div class="track"><span style="width: {{ (100 * q.index / total)|round|int }}%"></span></div>
-      <span class="small">{{ q.index }} of {{ total }}</span>
+      <span class="small">{{ t('intake.progress', n=q.index, total=total) }}</span>
     </div>
 
-    <h1>{{ q.prompt }}</h1>
-    {% if q.helper %}<p class="lede">{{ q.helper }}</p>{% endif %}
+    <h1>{{ t('intake.' ~ q.field ~ '.prompt') }}</h1>
+    {% if q.helper %}<p class="lede">{{ t('intake.' ~ q.field ~ '.helper') }}</p>{% endif %}
 
     <div class="choices">
       {% for opt in q.options %}
       <button class="choice {% if saved == opt.value %}selected{% endif %}"
               name="{{ q.field }}" value="{{ opt.value }}" type="submit">
-        {{ opt.label }}
+        {{ t('intake.' ~ q.field ~ '.' ~ opt.value) }}
         {% if opt.note %}<span class="note">{{ opt.note }}</span>{% endif %}
       </button>
       {% endfor %}
@@ -37,14 +37,14 @@
 
     {% if q.reassurance %}
     <div class="card dashed">
-      <span class="strong">{{ q.reassurance.title }}</span>
-      <span class="small">{{ q.reassurance.body }}</span>
+      <span class="strong">{{ t('intake.saved.title') }}</span>
+      <span class="small">{{ t('intake.saved.body') }}</span>
     </div>
     {% endif %}
 
     <div class="notes-always">
       {% if q.index > 1 %}
-      <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; Back</a>
+      <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; {{ t('intake.back') }}</a>
       {% endif %}
       {% if q.constraint %}{% endif %}
     </div>

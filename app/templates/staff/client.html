@@ -85,6 +85,11 @@
             {{ "On file" if doc.have else "Needed" }}</span>
           <span class="small strong">{{ doc.label }}</span>
           <span class="tiny" style="flex-basis:100%">{{ doc.note }}</span>
+          {% if not doc.have and client.documents %}
+          <form method="post" action="/staff/{{ client.id }}/documents/{{ doc.key }}/on-file">
+            <button class="btn ghost" type="submit">Mark {{ doc.label|lower }} on file</button>
+          </form>
+          {% endif %}
         </div>
         {% endfor %}
         <p class="small {{ 'strong' if documents.ready else '' }}">{{ documents.summary }}</p>

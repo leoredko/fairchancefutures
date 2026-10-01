@@ -319,6 +319,10 @@ def test_every_screen_string_has_a_spanish_line_that_keeps_its_blanks():
     book = i18n.catalog("es")
     for key, english in UI.items():
         spanish = book.get(key, english)
+        # "No" is the same word in both languages, so it cannot tell a
+        # translated line from a missing one.
+        if english == "No":
+            continue
         assert spanish != english, f"{key} is still English"
         assert i18n._fields(spanish) == i18n._fields(english), key
 
@@ -399,3 +403,17 @@ def test_a_blank_language_request_is_not_a_request(client):
 
 def test_the_other_button_at_the_door_leads_to_the_request_form(client):
     assert 'href="/language?back=/signin#other"' in client.get("/signin").text
+
+
+def test_the_intake_questions_follow_the_language_chosen_at_the_door(client):
+    from tests.conftest import sign_in_inside
+
+    client.post("/language", data={"lang": "es", "back": "/signin"})
+    sign_in_inside(client, "28A1967")
+    page = client.get("/inside/intake/1").text
+    assert "¿Sabes cuál es tu puntaje de crédito?" in page
+    assert "Cerrar sesión" in page and "1 de 6" in page
+    assert "Do you know" not in page and "Sign out" not in page
+
+    client.post("/language", data={"lang": "en", "back": "/signin"})
+    assert "Do you know what your credit score is?" in client.get("/inside/intake/1").text
