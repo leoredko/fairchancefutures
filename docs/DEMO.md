@@ -125,16 +125,27 @@ code `BRIDGE-3306` is issued and not yet used.
    coordinator can do this, because the tablet cannot take delivery of paper.
    Marking one flips the card on the tablet on the next load.
 3. **Coordinator.** Run triage.
-4. **Get the credit report onto the file.** There are two routes, and the demo
-   should show both, because not everybody has someone outside to help.
-   - **With a helper.** On the phone, enter `BRIDGE-3306` and sign the scoped
-     form, then send the report in (a PDF, typed, or photographed). It stays
-     invisible to Armando until the coordinator confirms it.
-   - **With no one outside.** The paper report goes to Ms. Reyes, who uses
+4. **Post the request, with proof.** On the phone, enter `BRIDGE-3306`, sign
+   the scoped form and open **Print the packet**. The packet says to send it
+   certified, with a return receipt, and says plainly who pays: whoever posts
+   it, and from inside that is the person's own account, because DOCCS will not
+   advance the money for certified service. **I mailed it** takes the tracking
+   number from the receipt. On the tablet, **Your case** now has an **In the
+   mail** card with the number and where it is. Leave the number empty and the
+   card says there is no way to prove it went. The status behind it is a
+   stand-in, not USPS: see `SIMPLIFICATIONS`.
+5. **Get the credit report onto the file.** There are two routes, and the demo
+   should show both, because not everybody has someone outside to help. The
+   report itself is mailed to the person at the facility, who takes the paper
+   to the coordinator.
+   - **With a helper.** On the phone, send the report in (a PDF, typed, or
+     photographed). It stays invisible to Armando until the coordinator
+     confirms it.
+   - **With no one outside.** Armando carries the paper to Ms. Reyes, who uses
      **Scan a report in** at her desk. She is reading the paper as she types, so
      it is visible to Armando straight away. Nobody outside is needed for any
      of this, and nothing about the route is lesser.
-5. **Tablet.** **My reports** walks the report, section by section.
+6. **Tablet.** **My reports** walks the report, section by section.
 
 **Starting over:** `/demo/restart`, pick A. Torres.
 

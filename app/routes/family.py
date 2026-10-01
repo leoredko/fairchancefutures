@@ -20,6 +20,7 @@ from app.authorization import (
     default_helper_authorization,
     require_scope,
 )
+from app import mailing
 from app.deps import templates
 from app.report import Source, from_scan, mask_ssn, parse_accounts
 from app.session import require_role
@@ -106,12 +107,13 @@ def task(request: Request):
                 "headline", "Print the request, have "
                 f"{client.first_name} sign it, mail it."),
             "detail": client.family_task.get(
-                "detail", "We filled in everything except his signature. The "
-                          "envelope prints addressed. One stamp."),
+                "detail", "We filled in everything except the signature. The "
+                          "envelope prints addressed. Send it certified, "
+                          "with a return receipt, so you can prove it went."),
             "action_url": "/family/packet",
             "action_label": "Print the packet",
-            "skip_url": "/family/task/done",
-            "skip_label": "I already mailed it",
+            "skip_url": "/family/mailed",
+            "skip_label": "I mailed it",
         }
     elif not stored_reports(client.id):
         current = {
@@ -133,19 +135,56 @@ def task(request: Request):
     )
 
 
-@router.post("/task/done")
-def task_done(request: Request):
+def _record_mailing(request, tracking_number: str):
     caller = require_role(request, "family")
     client = caller.client
     auth = get_authorization(client.id)
     require_scope(auth, Scope.MAIL_DISPUTE_LETTER)
+    number = mailing.clean_tracking_number(tracking_number)
     with mutate():
         client.family_task["done"] = True
+        mailing.record(client, what=mailing.REPORT_REQUEST,
+                       mailed_by=auth.helper_name, tracking_number=number)
         client.timeline.append({
-            "text": "Request mailed to the bureaus",
+            "text": (f"Request mailed to the bureaus, certified, tracking "
+                     f"number {number}" if number
+                     else "Request mailed to the bureaus"),
             "actor": auth.helper_name, "on": date.today().strftime("%B %-d"),
             "done": True,
         })
+    return client
+
+
+@router.post("/task/done")
+def task_done(request: Request):
+    """Mailed, with no tracking number. Kept for a helper who already posted it."""
+    _record_mailing(request, "")
+    return RedirectResponse("/family/task", status_code=303)
+
+
+@router.get("/mailed", response_class=HTMLResponse)
+def mailed_form(request: Request, bad: int = 0):
+    caller = require_role(request, "family")
+    auth = get_authorization(caller.client.id)
+    require_scope(auth, Scope.MAIL_DISPUTE_LETTER)
+    return templates.TemplateResponse(
+        request, "family/mailed.html",
+        {"client": caller.client, "auth": auth, "bad": bool(bad),
+         "rules": mailing.citations()},
+    )
+
+
+@router.post("/mailed")
+def mailed(request: Request, tracking_number: str = Form("")):
+    """Record the mailing, and the tracking number if there is one.
+
+    A number that cannot be one sends the helper back to the form rather than
+    saving a typo as proof: a wrong number is worse than none, because it looks
+    like evidence.
+    """
+    if tracking_number.strip() and not mailing.clean_tracking_number(tracking_number):
+        return RedirectResponse("/family/mailed?bad=1", status_code=303)
+    _record_mailing(request, tracking_number)
     return RedirectResponse("/family/task", status_code=303)
 
 
@@ -168,7 +207,7 @@ def packet(request: Request):
     )
     return templates.TemplateResponse(
         request, "family/packet.html",
-        {"client": client, "draft": draft},
+        {"client": client, "draft": draft, "rules": mailing.citations()},
     )
 
 # --------------------------------------------------------------------------

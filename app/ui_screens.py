@@ -222,6 +222,7 @@ STATIC: dict[str, str] = {
     'timeline.opened': 'Ms. Reyes opened your case',
     'timeline.agreed': '{name} agreed to help',
     'timeline.request_mailed': 'Request mailed to the bureaus',
+    'timeline.request_certified': 'Request mailed to the bureaus, certified, tracking number {number}',
     'timeline.checked': 'Your {bureau} report was checked and added to your record',
     'timeline.scanned': 'Your {bureau} report was scanned into your record',
     'timeline.document': 'Your {document} is on file',

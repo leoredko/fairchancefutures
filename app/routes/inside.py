@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
+from app import mailing
 from app.caseplan import (
     SSN_CARD_TRIGGER_DAYS,
     Document,
@@ -691,6 +692,28 @@ def _papers(client) -> list[dict]:
     return rows
 
 
+def _shipments(client) -> list[dict]:
+    """What was posted for this person and where it is, in words for the screen.
+
+    Read only, like the papers card: the tablet can see that something went and
+    where it is, and cannot say it did. The status is a stand-in until the USPS
+    API is behind `mailing.lookup`; see SIMPLIFICATIONS in app/sources.py.
+    """
+    rows = []
+    for s in mailing.shipments_for_screen(client):
+        status = s["status"]
+        rows.append({
+            "label": "mail.request",
+            "when": date.fromisoformat(s["mailed_on"]).strftime("%B %-d"),
+            "who": s["mailed_by"],
+            "number": s["tracking_number"],
+            "state": f"mail.{status.state}" if status else "",
+            "expected": (date.fromisoformat(status.expected_on).strftime("%B %-d")
+                         if status and status.state != "delivered" else ""),
+        })
+    return rows
+
+
 @router.get("/case", response_class=HTMLResponse)
 def case(request: Request):
     caller = require_role(request, "inside")
@@ -700,6 +723,7 @@ def case(request: Request):
         request, "inside/case.html",
         {"client": caller.client, "timeline": caller.client.timeline,
          "papers": _papers(caller.client),
+         "shipments": _shipments(caller.client),
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
          "next_lesson": (

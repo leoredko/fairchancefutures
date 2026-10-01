@@ -4,7 +4,19 @@
 <div class="desk" role="main" id="content" tabindex="-1" style="padding-top:32px; max-width:720px">
   <h1>Print this, get it signed, mail it</h1>
   <p class="lede" style="margin:10px 0 16px">One request covers all three
-    bureaus. One stamp.</p>
+    bureaus. One envelope.</p>
+  <div class="card accent" style="margin-bottom:16px">
+    <span class="strong">Send it certified, with a return receipt</span>
+    <span class="small">We recommend this strongly. If anyone ever says it never
+      arrived, the receipt and the tracking number are your proof, and nothing
+      in this app can prove it for you.</span>
+    <span class="tiny">It costs extra at the counter, and whoever posts it pays.
+      If {{ client.first_name }} posts it from inside, it comes out of their own
+      account, and the facility will not advance the money for certified
+      service. Keep the receipt and write down the tracking number. You enter it
+      when you say it is mailed.</span>
+    {% for c in rules %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
+  </div>
   <pre class="letter">{{ draft.body }}</pre>
   <div class="card soft" style="margin-top:16px">
     {% for c in draft.citations %}<span class="tiny">&middot; {{ c }}</span>{% endfor %}
@@ -12,6 +24,7 @@
   <p class="tiny" style="margin-top:12px">The SSN and date of birth lines are
     blank on purpose. They are filled in by hand on the paper copy and never
     typed into this app.</p>
-  <p style="margin-top:16px"><a class="btn" href="/family/task">Back</a></p>
+  <p style="margin-top:16px"><a class="btn" href="/family/mailed">I mailed it</a>
+    <a class="btn quiet" href="/family/task">Back</a></p>
 </div>
 {% endblock %}

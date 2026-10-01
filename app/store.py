@@ -96,6 +96,9 @@ class Client:
     # falls back to its stand-in. Only the coordinator writes it: the tablet
     # cannot take delivery of a document, so it cannot say one arrived.
     documents: dict = field(default_factory=dict)
+    # Things posted on this person's behalf, each with the tracking number that
+    # proves it. See app/mailing.py.
+    shipments: list[dict] = field(default_factory=list)
     # Never rendered by any surface. Present so the redaction tests have
     # something real to withhold.
     ssn: str = "***-**-****"

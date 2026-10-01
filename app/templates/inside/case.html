@@ -27,6 +27,28 @@
       {% endfor %}
     </div>
 
+    {# Read only, and a stand-in underneath: the status comes from
+       app/mailing.py, not from USPS. Shown so the room sees where it would be. #}
+    {% if shipments %}
+    <div class="card accent">
+      <span class="strong">{{ t('mail.title') }}</span>
+      <span class="small">{{ t('mail.lede') }}</span>
+      {% for m in shipments %}
+      <div class="row">
+        {% if m.state %}<span class="tag amber">{{ t(m.state) }}</span>{% endif %}
+        <span class="small strong">{{ t(m.label) }}</span>
+        <span class="tiny" style="flex-basis:100%">{{ t('mail.sent', when=tdate(m.when), who=m.who) }}</span>
+        {% if m.number %}
+        <span class="tiny" style="flex-basis:100%">{{ t('mail.number', number=m.number) }}</span>
+        {% if m.expected %}<span class="tiny" style="flex-basis:100%">{{ t('mail.expected', when=tdate(m.expected)) }}</span>{% endif %}
+        {% else %}
+        <span class="tiny" style="flex-basis:100%">{{ t('mail.untracked') }}</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     {# Read only. The coordinator marks a paper on file, because the tablet
        cannot take delivery of one, so this card can only tell the truth. #}
     {% if papers %}

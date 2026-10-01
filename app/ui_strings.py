@@ -341,6 +341,19 @@ UI.update({
     "stand.court.body": "It matters, and it does not sit in this list "
                         "pretending to be a credit card.",
 
+    "mail.title": "In the mail",
+    "mail.lede": "Things sent for you, and where each one is.",
+    "mail.request": "Your request for your credit reports",
+    "mail.sent": "Sent {when} by {who}",
+    "mail.number": "Tracking number {number}",
+    "mail.accepted": "The Post Office has it",
+    "mail.transit": "On its way",
+    "mail.delivered": "Delivered",
+    "mail.expected": "Expected by {when}",
+    "mail.untracked": "Sent without a tracking number, so there is no way to "
+                      "prove it went. Ask Ms. Reyes if you want to send it "
+                      "again.",
+
     "papers.title": "Your papers",
     "papers.lede": "The three documents your ID depends on, and where each one "
                    "stands.",
