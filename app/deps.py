@@ -41,6 +41,17 @@ def _tr(context, message):
 
 
 @pass_context
+def _tx(context, message):
+    """Case data (a timeline sentence, a bureau status) in this tablet's language."""
+    return _i18n.translate_text(message, _i18n.from_request(context["request"]))
+
+
+@pass_context
+def _tdate(context, text):
+    return _i18n.localize_date(text, _i18n.from_request(context["request"]))
+
+
+@pass_context
 def _lang(context) -> str:
     return _i18n.from_request(context["request"])
 
@@ -56,6 +67,8 @@ templates.env.globals["color_scheme"] = _display.color_scheme
 templates.env.globals["theme_color"] = _display.THEME_COLOR
 templates.env.globals["t"] = _t
 templates.env.globals["tr"] = _tr
+templates.env.globals["tx"] = _tx
+templates.env.globals["tdate"] = _tdate
 templates.env.globals["lang_code"] = _lang
 
 

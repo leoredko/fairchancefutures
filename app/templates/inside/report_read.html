@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}You have read your {{ report.bureau }} report{% endblock %}
+{% block title %}{{ t('readdone.title', bureau=report.bureau) }}{% endblock %}
 
 {% block head %}
 <style>
@@ -22,58 +22,50 @@
     <span class="who">{{ report.bureau }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <div class="pane" role="main" id="content" tabindex="-1">
     <div class="card good rise">
-      <h1 style="margin:0">{{ credit.headline }}</h1>
-      <p class="lede">{{ credit.body }}</p>
-      <p class="small">You have now read your own {{ report.bureau }} credit
-        report, start to finish. Whatever happens next on this case, that part
-        is done and it was the hard part.</p>
-      <p class="tiny">Pulled {{ report.pulled_on }} &middot; {{ report.source_label|lower }},
-        {{ report.scanned_on }} by {{ report.scanned_by }}</p>
+      <h1 style="margin:0">{{ t('arrival.' ~ report.source ~ '.headline') }}</h1>
+      <p class="lede">{{ t('arrival.' ~ report.source ~ '.body') }}</p>
+      <p class="small">{{ t('readdone.body', bureau=report.bureau) }}</p>
+      <p class="tiny">{{ t('readdone.pulled', pulled=report.pulled_on, source=t('source.' ~ report.source)|lower, scanned=report.scanned_on, by=report.scanned_by) }}</p>
     </div>
 
     <div class="card accent rise rise-2">
-      <h3>What you said, and what happens now</h3>
-      <p class="small">{{ what_next }}</p>
+      <h3>{{ t('readdone.said') }}</h3>
+      <p class="small">{{ t('walkdata.next.' ~ answer) if answer else '' }}</p>
       {% if flagged %}
-      <p class="small strong">You flagged {{ flagged|length }}
-        {{ 'item' if flagged|length == 1 else 'items' }}:</p>
+      <p class="small strong">{{ t('readdone.flagged.one') if flagged|length == 1 else t('readdone.flagged.many', n=flagged|length) }}</p>
       {% for a in flagged %}
       <div class="rung active">
         <div>
           <div class="small strong">{{ a.creditor }}</div>
-          <div class="tiny">{{ a.safe_number }}</div>
+          <div class="tiny">{{ t('report.ending', last4=a.last4) if a.last4 else t('report.withheld') }}</div>
         </div>
       </div>
       {% endfor %}
-      <p class="tiny">Your coordinator checks these against the paper before
-        anything is sent. That is the step that stops a letter going out about
-        the wrong account.</p>
+      <p class="tiny">{{ t('readdone.check') }}</p>
       {% endif %}
     </div>
 
     {% if unread %}
     <div class="card">
-      <span class="strong">You have another report to read</span>
-      <span class="small">Each bureau keeps its own file, and they do not
-        match. An item on this one may be missing from the next.</span>
-      <a class="btn" href="/inside/report/{{ unread[0] }}/read">Read the next one</a>
+      <span class="strong">{{ t('readdone.another.h') }}</span>
+      <span class="small">{{ t('readdone.another.b') }}</span>
+      <a class="btn" href="/inside/report/{{ unread[0] }}/read">{{ t('readdone.another.cta') }}</a>
     </div>
     {% endif %}
 
     <div class="card soft">
-      <span class="strong">Any of this can be read again</span>
-      <span class="small">Your report stays on this screen, with your Social
-        Security number blacked out, for as long as your case is open.</span>
+      <span class="strong">{{ t('readdone.again.h') }}</span>
+      <span class="small">{{ t('readdone.again.b') }}</span>
       <div class="row">
-        <a class="btn ghost" href="/inside/report">My reports</a>
-        <a class="btn ghost" href="/inside/case">My case</a>
-        <a class="btn ghost" href="/inside/learn">The course</a>
+        <a class="btn ghost" href="/inside/report">{{ t('readdone.my_reports') }}</a>
+        <a class="btn ghost" href="/inside/case">{{ t('readdone.my_case') }}</a>
+        <a class="btn ghost" href="/inside/learn">{{ t('nav.course') }}</a>
       </div>
     </div>
   </div>

@@ -18,7 +18,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.authorization import FORBIDDEN_SCOPES, STANDING_DETAIL
 from app import labels
 from app.caseplan import (
-    DOCUMENT_LABEL,
     SSN_CARD_TRIGGER_DAYS,
     Document,
     days_to_release,
@@ -166,7 +165,9 @@ def how_this_works(request: Request):
     return templates.TemplateResponse(
         request, "inside/how_this_works.html",
         {"client": caller.client,
-         "teaching": teaching_for(caller.client.intake_answers.get("knows_how"))},
+         "teaching": teaching_for(caller.client.intake_answers.get("knows_how")),
+         # Which length the screen is in, so it can look up the same keys.
+         "size": "short" if caller.client.intake_answers.get("knows_how") == "yes" else "long"},
     )
 
 
@@ -453,8 +454,10 @@ def learn_scores(request: Request):
 
     caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_LESSON)
+    # Use keys and model positions rather than English labels: the screen
+    # words them in the tablet's language.
     by_use = [
-        (scores.USE_LABEL[use], scores.models_for(use))
+        (use.value, [(i, m) for i, m in enumerate(scores.MODELS) if m.use is use])
         for use in scores.Use
         if scores.models_for(use)
     ]
@@ -462,7 +465,11 @@ def learn_scores(request: Request):
     return templates.TemplateResponse(
         request, "inside/scores.html",
         {"client": caller.client,
-         "summary": scores.summary_line(),
+         "summary": i18n.ui(
+             "scores.summary", i18n.from_request(request),
+             n=scores.how_many(), models=len(scores.MODELS),
+             b1=scores.BASE_RANGE[0], b2=scores.BASE_RANGE[1],
+             i1=scores.INDUSTRY_RANGE[0], i2=scores.INDUSTRY_RANGE[1]),
          "by_use": by_use,
          "explainers": scores.EXPLAINERS,
          "back": "/inside/case" if done_intake else "/inside/how-this-works"},
@@ -550,6 +557,11 @@ def read_walk(request: Request, index: int, at: int):
         {"client": client, "report": report, "index": index, "at": at,
          "section": sections[at] if at < len(sections) else None,
          "is_final": at == len(sections),
+         # The full lesson's title, in the tablet's language.
+         "lesson_title": next(
+             (i18n.translate_lesson(l, i18n.from_request(request)).title
+              for l in lessons.CURRICULUM
+              if at < len(sections) and l.slug == sections[at].lesson_slug), ""),
          "total": len(sections) + 1,
          "question": walkthrough.FINAL_QUESTION,
          "choices": walkthrough.FINAL_CHOICES,
@@ -634,25 +646,11 @@ def where_you_stand(request: Request):
     client = caller.client
 
     if client.case_state == "credit_invisible" or not client.classification:
-        moves = [
-            {"title": "You don't have a file yet",
-             "body": "That is not the same as bad credit. Empty moves faster "
-                     "than damaged does."},
-            {"title": "One account, paid on time, starts the clock",
-             "body": "Ms. Reyes will set this up with you before you go home."},
-        ]
+        moves = ["stand.nofile", "stand.account"]
     else:
-        moves = [
-            {"title": "Your file exists and two items are disputed",
-             "body": "Ms. Reyes approved the letter. The bureaus have to answer."},
-            {"title": "One account, paid on time, keeps the clock running",
-             "body": "Set up before release, not after."},
-        ]
+        moves = ["stand.disputed", "stand.running"]
     if any(o != "none" for o in client.intake_answers.get("obligations", [])):
-        moves.append({
-            "title": "What the court ordered is tracked separately",
-            "body": "It matters, and it does not sit in this list pretending to "
-                    "be a credit card."})
+        moves.append("stand.court")
 
     return templates.TemplateResponse(
         request, "inside/where_you_stand.html",
@@ -675,22 +673,21 @@ def _papers(client) -> list[dict]:
     rows = []
     for doc in Document:
         have = bool(client.documents.get(doc.value))
+        n = None
         if have:
-            line = "Ms. Reyes has this on file."
+            line = "papers.on_file"
         elif doc is Document.SOCIAL_SECURITY_CARD:
             # Two clocks on opposite sides of release. This is the one before.
-            to_mark = left - SSN_CARD_TRIGGER_DAYS
-            line = ("The application goes in 120 days before release. "
-                    + (f"That is {to_mark} days from now."
-                       if to_mark > 0 else "That day has passed, so it is "
-                       "the first thing to do."))
+            n = left - SSN_CARD_TRIGGER_DAYS
+            line = "papers.ssn_ahead" if n > 0 else "papers.ssn_passed"
         elif doc is Document.BIRTH_CERTIFICATE:
-            line = ("Ms. Reyes requests this one. It takes weeks, and the ID "
-                    "cannot be applied for without it.")
+            line = "papers.birth"
         else:
-            line = ("Applied for once the birth certificate and the Social "
-                    "Security card are both on file.")
-        rows.append({"label": DOCUMENT_LABEL[doc], "have": have, "line": line})
+            line = "papers.id"
+        label = {Document.SOCIAL_SECURITY_CARD: "papers.ssn",
+                 Document.BIRTH_CERTIFICATE: "papers.birth_label",
+                 Document.PHOTO_ID: "papers.id_label"}[doc]
+        rows.append({"label": label, "have": have, "line": line, "n": n})
     return rows
 
 
@@ -705,7 +702,10 @@ def case(request: Request):
          "papers": _papers(caller.client),
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
-         "next_lesson": lessons.next_up(caller.client),
+         "next_lesson": (
+             i18n.translate_lesson(lessons.next_up(caller.client),
+                                   i18n.from_request(request))
+             if lessons.next_up(caller.client) else None),
          # Their own dates, read back to them. Seeing the record come back
          # correct is how somebody knows the app has the right person before
          # they trust it with anything else. No date of birth is in here to
@@ -728,9 +728,12 @@ def authorization(request: Request):
     return templates.TemplateResponse(
         request, "inside/authorization.html",
         {"client": caller.client, "auth": auth,
-         "scopes": sorted(labels.scope(s) for s in auth.scopes) if auth else [],
-         "standing_label": STANDING_DETAIL[auth.standing]["label"] if auth else "",
-         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
+         # Keys, not labels: the screen words each one in the tablet's language.
+         "scopes": sorted((getattr(s, "value", s) for s in auth.scopes),
+                          key=labels.scope) if auth else [],
+         "standing_key": getattr(auth.standing, "value", auth.standing) if auth else "",
+         "forbidden": sorted((getattr(f, "value", f) for f in FORBIDDEN_SCOPES),
+                             key=labels.scope)},
     )
 
 

@@ -400,17 +400,57 @@ def translate_error(message: str | None, language: str) -> str | None:
     says the same thing in the other language, pulling the numbers back out.
     A sentence it does not recognise comes back untouched.
     """
+    return translate_text(message, language, ("error.",))
+
+
+# Text that is case data rather than screen copy: timeline events written when
+# something happened, and the statuses a bureau printed. Stored in English
+# because the case file is, so the screen recognises the sentence and says the
+# same thing in the other language. A sentence nobody wrote a line for comes
+# back as it was stored, which is the honest fallback for a free-text field.
+DATA_PREFIXES = ("timeline.", "data.", "error.")
+
+
+def translate_text(message: str | None, language: str,
+                   prefixes: tuple[str, ...] = DATA_PREFIXES) -> str | None:
     if not message or language == SOURCE_LANGUAGE or not enabled():
         return message
+    from app import lessons
     from app.ui_strings import UI
 
     for key, english in UI.items():
-        if not key.startswith("error."):
+        if not key.startswith(prefixes):
             continue
         pattern = "".join(
             re.escape(literal) + (f"(?P<{name}>.+?)" if name else "")
             for literal, name, _, _ in string.Formatter().parse(english))
         found = re.fullmatch(pattern, message)
-        if found:
-            return ui(key, language, **found.groupdict())
+        if not found:
+            continue
+        values = found.groupdict()
+        # A lesson named inside a sentence is looked up in the course rather
+        # than left in English beside a Spanish frame.
+        if "lesson" in values:
+            for lesson in lessons.CURRICULUM:
+                if lesson.title.lower() == values["lesson"]:
+                    values["lesson"] = translate_lesson(lesson, language).title.lower()
+        return ui(key, language, **values)
     return message
+
+
+MONTHS_ES = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+             "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+_MONTHS_EN = ("January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December")
+_DATE = re.compile(r"\b(" + "|".join(_MONTHS_EN) + r") (\d{1,2})\b")
+
+
+def localize_date(text: str | None, language: str) -> str | None:
+    """"March 18" as "18 de marzo". ISO dates are left alone: they read the
+    same in both languages and a person comparing them to paper wants them as
+    printed."""
+    if not text or language == SOURCE_LANGUAGE or not enabled():
+        return text
+    return _DATE.sub(
+        lambda m: f"{m.group(2)} de {MONTHS_ES[_MONTHS_EN.index(m.group(1))]}",
+        text)

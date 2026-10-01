@@ -269,6 +269,7 @@ def _intake() -> dict[str, str]:
 
     out = {
         "intake.progress": "{n} of {total}",
+        "intake.title": "Intake questions",
         "intake.back": "Back",
         "intake.saved.title": SAVED_AS_YOU_GO["title"],
         "intake.saved.body": SAVED_AS_YOU_GO["body"],
@@ -283,3 +284,124 @@ def _intake() -> dict[str, str]:
 
 
 UI.update(_intake())
+
+
+def _teaching() -> dict[str, str]:
+    """The screen after question two, read out of `teaching_for` so the English
+    has one home. Both lengths are keyed: somebody who said they know how this
+    works gets the short one. These sentences state what the law lets a person
+    require, and each is backed by a fact in `app/sources.py`
+    (`free_report_mail_route`, `ssn_truncation_right`,
+    `no_score_in_the_disclosure`), so the Spanish is checked against them, not
+    against the English alone."""
+    from app.questions import teaching_for
+
+    out = {}
+    for size, knows in (("long", "no"), ("short", "yes")):
+        data = teaching_for(knows)
+        out[f"teach.{size}.headline"] = data["headline"]
+        for i, point in enumerate(data["points"]):
+            out[f"teach.{size}.{i}.title"] = point["title"]
+            out[f"teach.{size}.{i}.body"] = point["body"]
+    return out
+
+
+UI.update(_teaching())
+
+UI.update({
+    "teach.title": "How this works",
+    "teach.more.title": "One more thing nobody tells you",
+    "teach.more.body": "You do not have one credit score. You have dozens. A "
+                       "landlord, a car dealer and a credit card company each "
+                       "look at a different one, built by a different model, "
+                       "from a different bureau's file.",
+    "teach.more.cta": "Show me",
+    "teach.continue": "Got it, keep going",
+
+    "stand.title": "Where you stand",
+    "stand.heading": "Here's where you're starting.",
+    "stand.step.0": "Getting started",
+    "stand.step.1": "Building",
+    "stand.step.2": "Strong",
+    "stand.road": "No number. No grade. A position on the road, and the things "
+                  "that move you along it.",
+    "stand.next": "See what's happening on my case",
+    "stand.nofile.title": "You don't have a file yet",
+    "stand.nofile.body": "That is not the same as bad credit. Empty moves "
+                         "faster than damaged does.",
+    "stand.account.title": "One account, paid on time, starts the clock",
+    "stand.account.body": "Ms. Reyes will set this up with you before you go "
+                          "home.",
+    "stand.disputed.title": "Your file exists and two items are disputed",
+    "stand.disputed.body": "Ms. Reyes approved the letter. The bureaus have to "
+                           "answer.",
+    "stand.running.title": "One account, paid on time, keeps the clock running",
+    "stand.running.body": "Set up before release, not after.",
+    "stand.court.title": "What the court ordered is tracked separately",
+    "stand.court.body": "It matters, and it does not sit in this list "
+                        "pretending to be a credit card.",
+
+    "papers.title": "Your papers",
+    "papers.lede": "The three documents your ID depends on, and where each one "
+                   "stands.",
+    "papers.have": "On file",
+    "papers.not_yet": "Not yet",
+    "papers.on_file": "Ms. Reyes has this on file.",
+    "papers.ssn_ahead": "The application goes in 120 days before release. "
+                        "That is {n} days from now.",
+    "papers.ssn_passed": "The application goes in 120 days before release. "
+                         "That day has passed, so it is the first thing to do.",
+    "papers.birth": "Ms. Reyes requests this one. It takes weeks, and the ID "
+                    "cannot be applied for without it.",
+    "papers.id": "Applied for once the birth certificate and the Social "
+                 "Security card are both on file.",
+    "papers.ssn": "Social Security card",
+    "papers.birth_label": "Birth certificate",
+    "papers.id_label": "Non-driver ID",
+    "case.heading": "People are working on this while you wait.",
+    "case.title": "What's happening on my case",
+    "case.suffix": "Your case",
+    "case.synced": "Last synced {when}",
+    "case.just_now": "just now",
+    "case.course.finished": "You finished the credit course",
+    "case.course.partial": "The credit course, {done} of {total} done",
+    "case.course.new": "Learn how credit actually works",
+    "case.course.all": "All {total} lessons. Any of them opens again whenever "
+                       "you want it.",
+    "case.course.look_back": "Look back over them",
+    "case.course.minutes": "{n} minutes · saves where you stop",
+    "case.course.carry_on": "Carry on",
+    "case.course.start": "Start the course",
+    "case.reports.title": "Your credit reports",
+    "case.reports.body": "Read them here, with your Social Security number "
+                         "blacked out. If they have not arrived yet, this "
+                         "tells you that too.",
+    "case.reports.open": "Open my reports",
+    "case.reports.ask": "Ask for my report",
+    "case.score.title": "There is no single credit score",
+    "case.score.body": "A landlord, a car dealer and a card company each look "
+                       "at a different one. Worth ten minutes.",
+    "case.score.cta": "Learn why",
+    "case.record.title": "What we already have for you",
+    "case.record.body": "Off your DIN. Nothing here was typed by you, and if "
+                        "any of it is wrong, tell your coordinator.",
+    "case.helper.title": "Who is helping you",
+    "case.helper.live": "{name} can receive your report at their address and "
+                        "add it. Your own mail still comes to you. The "
+                        "authorization expires {expires}.",
+    "case.helper.cannot": "They cannot open an account in your name, take out "
+                          "credit, move money, or change your address.",
+    "case.helper.review": "Review or cancel this",
+    "case.helper.none": "Nobody outside is authorized right now. Ms. Reyes "
+                        "handles it through the program instead. A few steps "
+                        "run slower. Nothing stops.",
+})
+
+
+def _screens() -> dict[str, str]:
+    from app.ui_screens import STATIC, generated
+
+    return {**STATIC, **generated()}
+
+
+UI.update(_screens())

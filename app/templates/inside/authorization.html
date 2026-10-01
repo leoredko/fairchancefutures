@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Inside, who is helping you{% endblock %}
+{% block title %}{{ t('auth.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar" role="banner">
@@ -7,50 +7,44 @@
     <span class="who">{{ client.display_name }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
       </div>
 
   <div class="pane" role="main" id="content" tabindex="-1">
-    <h1>Who is helping you</h1>
+    <h1>{{ t('auth.title') }}</h1>
 
     {% if auth and auth.is_live() %}
     <div class="card">
-      <span class="strong">{{ auth.helper_name }}, since {{ auth.signed_on }}</span>
-      <span class="small">Expires {{ auth.expires_on }}. Acting under a
-        {{ standing_label|lower }}.</span>
+      <span class="strong">{{ t('auth.since', name=auth.helper_name, signed=auth.signed_on) }}</span>
+      <span class="small">{{ t('auth.expires', expires=auth.expires_on, standing=t('standing.' ~ standing_key)|lower) }}</span>
       <div class="row">
-        {% for s in scopes %}<span class="tag">{{ s }}</span>{% endfor %}
+        {% for s in scopes %}<span class="tag">{{ t('scope.' ~ s) }}</span>{% endfor %}
       </div>
     </div>
 
     <div class="card dashed">
-      <span class="strong">Nobody gets more than they need</span>
-      <span class="small">Whoever helps you cannot open an account in your name,
-        take out credit, move money, or change your address. If a bureau ever
-        needs you to sign something extra, you see exactly what it says first.</span>
-      {% for f in forbidden %}<span class="tiny">&times; {{ f }}</span>{% endfor %}
+      <span class="strong">{{ t('auth.enough.title') }}</span>
+      <span class="small">{{ t('auth.enough.body') }}</span>
+      {% for f in forbidden %}<span class="tiny">&times; {{ t('scope.' ~ f) }}</span>{% endfor %}
     </div>
 
     <form method="post" action="/inside/authorization/revoke">
-      <button class="btn wide" type="submit">Cancel this authorization</button>
+      <button class="btn wide" type="submit">{{ t('auth.cancel') }}</button>
     </form>
-    <p class="small">You can cancel from this screen without telling
-      {{ auth.helper_name }} first. Ms. Reyes is told the same day.</p>
+    <p class="small">{{ t('auth.cancel_note', name=auth.helper_name) }}</p>
 
     {% else %}
     <div class="card">
-      <span class="strong">Nobody outside right now</span>
-      <span class="small">Ms. Reyes handles it through the program instead, using
-        the same form you already signed with her. A few steps run slower.
-        Nothing stops.</span>
+      <span class="strong">{{ t('auth.none.title') }}</span>
+      <span class="small">{{ t('auth.none.body') }}</span>
     </div>
     <form method="post" action="/inside/authorization/name">
       <div class="stack">
-        <label class="small" for="helper">Name someone you trust</label>
-        <input class="choice" id="helper" name="helper_name" placeholder="First name"
+        <label class="small" for="helper">{{ t('auth.name_label') }}</label>
+        <input class="choice" id="helper" name="helper_name" placeholder="{{ t('auth.name_placeholder') }}"
                style="font-size:18px" required>
-        <button class="btn wide" type="submit">Send them the invitation</button>
+        <button class="btn wide" type="submit">{{ t('auth.invite') }}</button>
       </div>
     </form>
     {% endif %}

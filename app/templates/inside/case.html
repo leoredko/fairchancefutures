@@ -1,27 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Inside, what's happening on my case{% endblock %}
+{% block title %}{{ t('case.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
-    <span class="who">{{ client.display_name }} &middot; Your case</span>
+    <span class="who">{{ client.display_name }} &middot; {{ t('case.suffix') }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/after">When you go home</a><a class="pill" href="/inside/learn">The course</a><span class="pill">Last synced {{ synced }}</span></div>
-    <div class="right"><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/after">{{ t('nav.home') }}</a><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><span class="pill">{{ t('case.synced', when=t('case.just_now')) }}</span></div>
+    <div class="right"><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <div class="pane" role="main" id="content" tabindex="-1">
-    <h1>People are working on this while you wait.</h1>
+    <h1>{{ t('case.heading') }}</h1>
 
     <div class="timeline">
       {% for e in timeline %}
       <div class="event {% if not e.done %}pending{% endif %}">
         <div class="dot">{% if e.done %}&check;{% else %}{{ loop.index }}{% endif %}</div>
         <div>
-          <div class="strong">{{ e.text }}</div>
-          <div class="small">{{ e.actor }}{% if e.on %} &middot; {{ e.on }}{% endif %}</div>
+          <div class="strong">{{ tdate(tx(e.text)) }}</div>
+          <div class="small">{{ tx(e.actor) }}{% if e.on %} &middot; {{ tdate(e.on) }}{% endif %}</div>
         </div>
       </div>
       {% endfor %}
@@ -31,14 +31,13 @@
        cannot take delivery of one, so this card can only tell the truth. #}
     {% if papers %}
     <div class="card accent">
-      <span class="strong">Your papers</span>
-      <span class="small">The three documents your ID depends on, and where
-        each one stands.</span>
+      <span class="strong">{{ t('papers.title') }}</span>
+      <span class="small">{{ t('papers.lede') }}</span>
       {% for p in papers %}
       <div class="row">
-        <span class="tag {{ 'green' if p.have else 'amber' }}">{{ "On file" if p.have else "Not yet" }}</span>
-        <span class="small strong">{{ p.label }}</span>
-        <span class="tiny" style="flex-basis:100%">{{ p.line }}</span>
+        <span class="tag {{ 'green' if p.have else 'amber' }}">{{ t('papers.have') if p.have else t('papers.not_yet') }}</span>
+        <span class="small strong">{{ t(p.label) }}</span>
+        <span class="tiny" style="flex-basis:100%">{{ t(p.line, n=p.n) if p.n is not none and p.n > 0 else t(p.line) }}</span>
       </div>
       {% endfor %}
     </div>
@@ -46,37 +45,34 @@
 
     <div class="card {{ 'good' if course.finished else 'accent' }}">
       <span class="strong">
-        {% if course.finished %}You finished the credit course
-        {% elif course.done %}The credit course, {{ course.done }} of {{ course.total }} done
-        {% else %}Learn how credit actually works{% endif %}
+        {% if course.finished %}{{ t('case.course.finished') }}
+        {% elif course.done %}{{ t('case.course.partial', done=course.done, total=course.total) }}
+        {% else %}{{ t('case.course.new') }}{% endif %}
       </span>
       <div class="track"><span style="width: {{ course.percent }}%"></span></div>
       {% if course.finished %}
-      <span class="small">All {{ course.total }} lessons. Any of them opens
-        again whenever you want it.</span>
-      <a class="btn ghost" href="/inside/learn">Look back over them</a>
+      <span class="small">{{ t('case.course.all', total=course.total) }}</span>
+      <a class="btn ghost" href="/inside/learn">{{ t('case.course.look_back') }}</a>
       {% elif next_lesson %}
       <span class="small">{{ next_lesson.hook }}</span>
       <span class="tiny">{{ next_lesson.title }} &middot;
-        {{ next_lesson.minutes }} minutes &middot; saves where you stop</span>
+        {{ t('case.course.minutes', n=next_lesson.minutes) }}</span>
       <a class="btn" href="/inside/learn/lesson/{{ next_lesson.slug }}">
-        {% if course.done %}Carry on{% else %}Start the course{% endif %}</a>
+        {% if course.done %}{{ t('case.course.carry_on') }}{% else %}{{ t('case.course.start') }}{% endif %}</a>
       {% endif %}
     </div>
 
     <div class="card accent">
-      <span class="strong">Your credit reports</span>
-      <span class="small">Read them here, with your Social Security number
-        blacked out. If they have not arrived yet, this tells you that too.</span>
-      <a class="btn ghost" href="/inside/report">Open my reports</a>
-      <a class="btn ghost" href="/inside/request">Ask for my report</a>
+      <span class="strong">{{ t('case.reports.title') }}</span>
+      <span class="small">{{ t('case.reports.body') }}</span>
+      <a class="btn ghost" href="/inside/report">{{ t('case.reports.open') }}</a>
+      <a class="btn ghost" href="/inside/request">{{ t('case.reports.ask') }}</a>
     </div>
 
     <div class="card soft">
-      <span class="strong">There is no single credit score</span>
-      <span class="small">A landlord, a car dealer and a card company each look
-        at a different one. Worth ten minutes.</span>
-      <a class="btn ghost" href="/inside/learn/lesson/no-single-score">Learn why</a>
+      <span class="strong">{{ t('case.score.title') }}</span>
+      <span class="small">{{ t('case.score.body') }}</span>
+      <a class="btn ghost" href="/inside/learn/lesson/no-single-score">{{ t('case.score.cta') }}</a>
     </div>
 
     {# Their own record, read back. Seeing it come back correct is how somebody
@@ -86,9 +82,8 @@
        tablet is the wrong place for it either way. #}
     {% if record %}
     <div class="card soft">
-      <span class="strong">What we already have for you</span>
-      <span class="small">Off your DIN. Nothing here was typed by you, and if
-        any of it is wrong, tell your coordinator.</span>
+      <span class="strong">{{ t('case.record.title') }}</span>
+      <span class="small">{{ t('case.record.body') }}</span>
       {% for row in record %}
       <div class="row">
         <span class="small">{{ row.label }}</span>
@@ -113,21 +108,16 @@
     {% endif %}
 
     <div class="card">
-      <span class="strong">Who is helping you</span>
+      <span class="strong">{{ t('case.helper.title') }}</span>
       {% if auth %}
       {# Not "can receive your mail": your mail comes to you, at the facility,
          in your name. What they can receive is a report the request routed to
          their address. #}
-      <span class="small">{{ auth.helper_name }} can receive your report at
-        their address and add it. Your own mail still comes to you. The
-        authorization expires {{ auth.expires_on }}.</span>
-      <span class="small">They cannot open an account in your name, take out
-        credit, move money, or change your address.</span>
-      <a class="btn ghost" href="/inside/authorization">Review or cancel this</a>
+      <span class="small">{{ t('case.helper.live', name=auth.helper_name, expires=auth.expires_on) }}</span>
+      <span class="small">{{ t('case.helper.cannot') }}</span>
+      <a class="btn ghost" href="/inside/authorization">{{ t('case.helper.review') }}</a>
       {% else %}
-      <span class="small">Nobody outside is authorized right now. Ms. Reyes
-        handles it through the program instead. A few steps run slower. Nothing
-        stops.</span>
+      <span class="small">{{ t('case.helper.none') }}</span>
       {% endif %}
     </div>
   </div>
