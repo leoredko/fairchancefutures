@@ -59,6 +59,7 @@ data agreement or a scraper rather than a coding job.
 | Marcus W. | DIN `28-A-1187` or NYSID `00000011L` | tablet |
 | M. Alvarez | DIN `28-B-0042` | tablet |
 | J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet, and the one seeded person who has not chosen a path, so he is who to sign in as to show the first screen |
+| A. Torres, nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see below |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
 | D. Reyes, coordinator | nothing, the vendor system already signed them in | desktop |
@@ -103,6 +104,29 @@ tablet with any DIN starting 28 and open **Learn**.
    access on their next tap.
 
 Close every tab and reopen them. Everything is still there.
+
+## Andre T., the journey from the front
+
+Everyone else in the seed is partway through a story. Andre starts at the
+beginning, so the whole route can be walked live: DIN `28-E-3306`, Fishkill,
+releasing in about 140 days. He has no path, no intake, no reports and no
+helper signed up, and none of the three vital documents is on file. The Social
+Security card deadline (120 days before release) is about 20 days ahead, so it
+reads as something to act on rather than something already missed. His helper
+code is `BRIDGE-3306`, issued and not yet used.
+
+1. **Tablet.** Sign in, choose a PIN, pick a path, read the documents lesson.
+2. **Coordinator.** `/staff/a-torres` shows all three documents as needed and
+   what is blocking the ID application. **Mark ... on file** records each one
+   with Ms. Reyes's name and the date, and the timeline picks it up. Only the
+   coordinator can do this, because the tablet cannot take delivery of paper.
+3. **Coordinator.** Run triage, then **Scan a report in** to bring his credit
+   report onto the file.
+4. **Helper.** Phone, code `BRIDGE-3306`, signs the scoped form. A report sent
+   in from outside stays invisible to him until the coordinator confirms it.
+5. **Tablet.** **My reports** walks the report, section by section.
+
+**Starting over:** `/demo/restart`, pick A. Torres.
 
 ## The five-minute presentation
 
