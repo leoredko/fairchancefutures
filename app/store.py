@@ -460,23 +460,24 @@ report_summary="Full file, nine collections accounts",
 
 
 def _demo_persona(today: date) -> Client:
-    """Andre T., who starts with nothing done, so the journey can be walked live.
+    """Armando Torres, who starts with nothing done, so the journey can be walked.
 
     Everything else in the seed is somewhere in the middle of its story. This
     one is at the front of it: no path chosen, no intake, no reports, no helper
     signed up, and none of the three vital documents on file. The Social
-    Security card deadline is still ahead of him, so the room sees it as
-    something to act on rather than something already missed.
+    Security card deadline is still ahead, so the room sees it as something to
+    act on rather than something already missed.
 
     Open on purpose. Nothing here is pre-answered, so whoever drives can take
-    him from the first screen to a report he reviews on the tablet, with the
-    coordinator and the helper each doing their part. His helper has a code
-    and no authorization yet, which is the day before she signs the form.
+    Armando from the first screen to a report reviewed on the tablet, by either
+    route: a helper sends it in, or the coordinator scans the paper because
+    there is nobody outside. The helper has a code and no authorization yet,
+    which is the day before she signs the form.
     """
     return Client(
         id="a-torres", din="28E3306", nysid="00000066G",
         facility="Fishkill Correctional Facility",
-        display_name="A. Torres", first_name="Andre",
+        display_name="A. Torres", first_name="Armando",
         release_date=(today + timedelta(days=140)).isoformat(),
         case_state="not_yet_triaged", state_label="Not yet triaged",
         needs="No report on file", clock="Releases in 140 days",

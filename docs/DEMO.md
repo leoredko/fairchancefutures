@@ -59,7 +59,7 @@ data agreement or a scraper rather than a coding job.
 | Marcus W. | DIN `28-A-1187` or NYSID `00000011L` | tablet |
 | M. Alvarez | DIN `28-B-0042` | tablet |
 | J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet, and the one seeded person who has not chosen a path, so he is who to sign in as to show the first screen |
-| A. Torres, nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see below |
+| A. Torres (Armando), nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see [Armando Torres, the journey from the front](#armando-torres-the-journey-from-the-front) |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
 | D. Reyes, coordinator | nothing, the vendor system already signed them in | desktop |
@@ -69,9 +69,9 @@ a run, and not a stretch of their own number.
 
 ## A walkthrough that shows the whole thing
 
-Start with the course if you only have five minutes. It is the part of the
-product that matters most and the part that needs no setup: sign in on the
-tablet with any DIN starting 28 and open **Learn**.
+Short on time? Use [the five-minute showcase run](#the-five-minute-showcase-run).
+The course is the part of the product that matters most and the part that needs
+no setup: sign in on the tablet with any DIN starting 28 and open **Learn**.
 
 1. **Coordinator** opens the staff app. There is no sign-in: it opens on the
    queue, because they are already signed in to the vendor case plan system.
@@ -105,48 +105,45 @@ tablet with any DIN starting 28 and open **Learn**.
 
 Close every tab and reopen them. Everything is still there.
 
-## Andre T., the journey from the front
+## Armando Torres, the journey from the front
 
-Everyone else in the seed is partway through a story. Andre starts at the
+Everyone else in the seed is partway through a story. Armando starts at the
 beginning, so the whole route can be walked live: DIN `28-E-3306`, Fishkill,
-releasing in about 140 days. He has no path, no intake, no reports and no
+releasing in about 140 days. There is no path, no intake, no reports and no
 helper signed up, and none of the three vital documents is on file. The Social
 Security card deadline (120 days before release) is about 20 days ahead, so it
-reads as something to act on rather than something already missed. His helper
-code is `BRIDGE-3306`, issued and not yet used.
+reads as something to act on rather than something already missed. The helper
+code `BRIDGE-3306` is issued and not yet used.
 
 1. **Tablet.** Sign in, choose a PIN, pick a path, read the documents lesson.
    **Your case** shows a **Your papers** card with all three documents as
    "Not yet", so the tablet alone tells the story in five minutes. It only
-   reads status: the coordinator marks a paper on file, because the tablet
-   cannot take delivery of one. Marking one at `/staff/a-torres` flips the
-   card on the next load.
+   reads status.
 2. **Coordinator.** `/staff/a-torres` shows all three documents as needed and
    what is blocking the ID application. **Mark ... on file** records each one
    with Ms. Reyes's name and the date, and the timeline picks it up. Only the
    coordinator can do this, because the tablet cannot take delivery of paper.
-3. **Coordinator.** Run triage, then **Scan a report in** to bring his credit
-   report onto the file.
-4. **Helper.** Phone, code `BRIDGE-3306`, signs the scoped form. A report sent
-   in from outside stays invisible to him until the coordinator confirms it.
+   Marking one flips the card on the tablet on the next load.
+3. **Coordinator.** Run triage.
+4. **Get the credit report onto the file.** There are two routes, and the demo
+   should show both, because not everybody has someone outside to help.
+   - **With a helper.** On the phone, enter `BRIDGE-3306` and sign the scoped
+     form, then send the report in (a PDF, typed, or photographed). It stays
+     invisible to Armando until the coordinator confirms it.
+   - **With no one outside.** The paper report goes to Ms. Reyes, who uses
+     **Scan a report in** at her desk. She is reading the paper as she types, so
+     it is visible to Armando straight away. Nobody outside is needed for any
+     of this, and nothing about the route is lesser.
 5. **Tablet.** **My reports** walks the report, section by section.
 
 **Starting over:** `/demo/restart`, pick A. Torres.
 
-## The five-minute presentation
+## The five-minute showcase run
 
-The deck (five content slides, a trailer before it and a demo slide after) ends
-on a live walkthrough of J. Whitfield, DIN `28-A-0931`, on the deployed
-`bridge-fcf` service. This is that walkthrough, in the deck's order, so the
-slide and the app say the same thing.
-
-| Deck slide | What the room sees | Where it lives |
-| --- | --- | --- |
-| 1 of 5, start before release | The survey figure is 9 of 12 who wanted to see their report before release. One person skipped it, so the denominator is 12, not the 13 who answered. | `maine_peer_survey` in `app/sources.py`, with its limits |
-| 2 of 5, three routes, one case | Tablet, helper phone, coordinator desk. Only the tablet is toured live. | `app/surfaces.py` |
-| 3 of 5, team decisions, AI assistance | Spanish is the eleven lessons and the screens leading to them, 330 strings, approved by the team on 2026-09-30, stored in the app and never translated live. The six intake questions are Spanish, approved 2026-10-01. Every other tablet screen is Spanish too, report walkthrough included. The letters that go to a bureau stay English. | `docs/TRANSLATION.md`, `docs/SCOPE.md` item 8 |
-| 4 of 5, deployment choices and limits | Render free plan, container-local data that resets on restart. Demo data only. | `render.yaml`, `docs/DEPLOY.md` |
-| 5 of 5, live walkthrough | Choose a path, learn about credit, see the case status. | below |
+The final showcase ends on a live walkthrough of J. Whitfield, DIN `28-A-0931`,
+on the deployed `bridge-fcf` service. It is the same app and the same screens
+as the walkthroughs above, cut down to the first screen after a PIN, the
+course and the case status. The slides live outside this repo.
 
 **Before the room arrives**
 

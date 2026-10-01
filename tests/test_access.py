@@ -481,7 +481,7 @@ def test_typing_a_din_at_random_usually_lands_near_the_gate():
     assert 0.35 < near / total < 0.55, f"{near}/{total} land inside a year"
 
 
-def test_andre_sees_his_own_papers_on_the_tablet_and_marking_one_updates_it(client):
+def test_armando_sees_their_own_papers_on_the_tablet_and_marking_one_updates_it(client):
     from tests.conftest import sign_in_inside
     sign_in_inside(client, "28E3306")
     page = client.get("/inside/case").text
