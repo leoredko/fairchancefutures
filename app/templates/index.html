@@ -1,24 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Bridge{% endblock %}
+{% block title %}{{ t('index.title') }}{% endblock %}
 {% block body %}
 <div role="main" id="content" tabindex="-1">
 
 <div class="hero">
   <div class="desk" style="padding-bottom:0">
-    <h1>Start the credit work before the gate opens.</h1>
-    <p class="lede">Bridge runs the credit side of the Offender Case Plan: pull
-      the reports, find the errors, dispute them, and build a file that holds
-      up the first time a landlord or an employer asks for one.</p>
+    <h1>{{ t('index.hero') }}</h1>
+    <p class="lede">{{ t('index.lede') }}</p>
   </div>
 </div>
 
 <div class="desk">
   {% if session %}
   <div class="card good" style="margin-bottom:24px">
-    <span class="strong">You are signed in.</span>
+    <span class="strong">{{ t('index.signed_in') }}</span>
     <div class="row">
-      <a class="btn" href="/{{ session.role }}">Continue</a>
-      <a class="btn ghost" href="/signout">Sign out</a>
+      <a class="btn" href="/{{ session.role }}">{{ t('index.continue') }}</a>
+      <a class="btn ghost" href="/signout">{{ t('nav.signout') }}</a>
     </div>
   </div>
   {% endif %}
@@ -28,57 +26,43 @@
      from a coordinator window nobody is looking at. #}
   <div class="grid {% if tablet_only() %}one{% else %}three{% endif %}">
     <div class="card accent">
-      <span class="tag teal">On the tablet</span>
-      <h2>If you are inside</h2>
-      <p class="small">Answer a few questions, see where you stand as a position
-        on a road rather than a score, and watch named people work your case.</p>
-      <a class="btn" href="/signin">DIN number or NYS ID</a>
+      <span class="tag teal">{{ t('index.tablet.tag') }}</span>
+      <h2>{{ t('index.tablet.h') }}</h2>
+      <p class="small">{{ t('index.tablet.body') }}</p>
+      <a class="btn" href="/signin">{{ t('index.tablet.cta') }}</a>
     </div>
 
     {% if not tablet_only() %}
     <div class="card accent">
-      <span class="tag amber">On your phone</span>
-      <h2>If you are helping</h2>
-      <p class="small">One task at a time. Print a letter, get it signed,
-        drop it in a mailbox, and send the reply in when it lands. Twenty
-        minutes over three months.</p>
-      <a class="btn amber" href="/helper">Use the code from the letter</a>
+      <span class="tag amber">{{ t('index.helper.tag') }}</span>
+      <h2>{{ t('index.helper.h') }}</h2>
+      <p class="small">{{ t('index.helper.body') }}</p>
+      <a class="btn amber" href="/helper">{{ t('index.helper.cta') }}</a>
     </div>
 
     <div class="card accent">
-      <span class="tag sky">At your desk</span>
-      <h2>If you are the coordinator</h2>
-      <p class="small">A queue sorted by what expires soonest. Triage in one
-        session, approve the letters, hold the deadline across a caseload.</p>
-      <p class="tiny">Opens inside the case plan system you are already signed
-        in to. No second password.</p>
-      <a class="btn ghost" href="/staff">Open the caseload</a>
+      <span class="tag sky">{{ t('index.staff.tag') }}</span>
+      <h2>{{ t('index.staff.h') }}</h2>
+      <p class="small">{{ t('index.staff.body') }}</p>
+      <p class="tiny">{{ t('index.staff.note') }}</p>
+      <a class="btn ghost" href="/staff">{{ t('index.staff.cta') }}</a>
     </div>
     {% endif %}
   </div>
 
   <div class="grid one" style="margin-top:28px; align-items:start">
     <div class="card">
-      <h2>It fits the plan that already exists</h2>
-      <p class="small">Bridge is one domain inside the Offender Case Plan the
-        coordinator already keeps, not a second system to maintain. Credit
-        goals go into the plan and progress comes back on the quarterly review
-        cadence.</p>
-      <p class="small">The vital documents packet reentry staff already
-        assemble is the same paperwork a credit bureau asks for, so it gets
-        used rather than collected twice.</p>
+      <h2>{{ t('index.fit.h') }}</h2>
+      <p class="small">{{ t('index.fit.p1') }}</p>
+      <p class="small">{{ t('index.fit.p2') }}</p>
     </div>
   </div>
 
-  <p class="tiny" style="margin-top:28px">Walking this more than once?
-    <a href="/demo/restart">Start somebody over</a> puts one person back to the
-    seed, so the PIN and the intake can be done again.</p>
+  <p class="tiny" style="margin-top:28px">{{ t('index.restart') }}
+    <a href="/demo/restart">{{ t('index.restart.link') }}</a> {{ t('index.restart.tail') }}</p>
 
   <div class="colophon">
-    <p>Bridge is an independent tool built for reentry programs in New York
-      State. It is not affiliated with, endorsed by, or operated by the New
-      York State Department of Corrections and Community Supervision or any
-      correctional facility.</p>
+    <p>{{ t('index.colophon') }}</p>
   </div>
 </div>
 </div>

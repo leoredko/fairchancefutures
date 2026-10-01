@@ -75,17 +75,24 @@ read on the shelf. The code never translates them.
 
 ## Known gaps
 
-- Only the course and the screens on the way to it are translated. The six intake
-  questions are in Spanish, 35 strings the team approved on 2026-10-01. The
-  explanation after question two, the where-you-stand screen and the case
-  screen (papers card included) are Spanish drafts flagged **Needs work** until
-  the team reads them. The explanation states what the law lets a person
-  require, so its Spanish is checked against `free_report_mail_route`,
-  `ssn_truncation_right` and `no_score_in_the_disclosure`. The report
-  walkthrough, the request screen, the scores page, the authorization screen
-  and the when-you-go-home screen are still English, and so are the
-  timeline events and the record labels, which are case data, and so is the
-  helper's door. The source line under a lesson card stays English on purpose.
+- Every screen on the tablet is in Spanish, approved by the team on 2026-10-01:
+  the course, intake, the explanation after question two, where you stand, the
+  case screen with its papers card, the report and its walkthrough, the scores
+  page, the request, the authorization and when you go home, plus the landing
+  page. A test walks them all in Spanish and fails on a line that reads as
+  English.
+- Still English on purpose: the dispute and request letters, because they go to
+  a bureau that reads English; the source line under a lesson card and every
+  citation; agency names; the helper's phone and the coordinator's desk, which
+  were never part of this; the page that explains why a screen is not available
+  from a surface, which a person only reaches by a wrong turn; and any
+  free-text a coordinator types (a note on an account, a name) which is shown
+  as written.
+- Case data that Bridge writes itself (timeline sentences, bureau statuses on
+  the seeded files) is recognised and shown in Spanish by `translate_text` in
+  `app/i18n.py`, matched against the `timeline.*` and `data.*` keys. A status
+  nobody wrote a line for shows as stored. Dates like "March 18" become "18 de
+  marzo"; ISO dates are left as printed.
 - Sign-in errors are raised in code that does not know the language, so the
   screen recognises the English sentence and swaps in the Spanish. Reword one in
   `app/auth.py` or `app/identifiers.py` and it falls back to English until its

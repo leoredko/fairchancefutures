@@ -140,6 +140,12 @@ class Account:
     def safe_number(self) -> str:
         return mask_account(self.number)
 
+    @property
+    def last4(self) -> str:
+        """The digits `safe_number` keeps, for a screen that words them itself."""
+        digits = re.sub(r"\D", "", self.number or "")
+        return digits[-4:] if len(digits) >= 4 else ""
+
 
 @dataclass
 class CreditReport:
@@ -181,6 +187,12 @@ class CreditReport:
         """Year only. A full date of birth is half of an identity theft."""
         match = re.search(r"(19|20)\d{2}", self.date_of_birth or "")
         return f"Born {match.group(0)}" if match else "Not shown"
+
+    @property
+    def dob_year(self) -> str:
+        """The year alone, for a screen that words it itself."""
+        match = re.search(r"(19|20)\d{2}", self.date_of_birth or "")
+        return match.group(0) if match else ""
 
     @property
     def disputed(self) -> list[Account]:

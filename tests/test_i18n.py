@@ -311,6 +311,10 @@ def test_every_string_a_template_asks_for_exists():
     assert asked <= set(UI), sorted(asked - set(UI))
 
 
+SAME_IN_BOTH = {"No", "Bridge", "Brooklyn", "Manhattan", "Queens",
+                "Staten Island", "{bureau} · {source}, {scanned}"}
+
+
 def test_every_screen_string_has_a_spanish_line_that_keeps_its_blanks():
     """`{n}` is a number the screen fills in. A translation that loses or
     renames one is thrown away at render time, so a translator's typo shows up
@@ -319,9 +323,9 @@ def test_every_screen_string_has_a_spanish_line_that_keeps_its_blanks():
     book = i18n.catalog("es")
     for key, english in UI.items():
         spanish = book.get(key, english)
-        # "No" is the same word in both languages, so it cannot tell a
+        # Words and names that are the same in both languages cannot tell a
         # translated line from a missing one.
-        if english == "No":
+        if english in SAME_IN_BOTH or key.endswith(".name"):
             continue
         assert spanish != english, f"{key} is still English"
         assert i18n._fields(spanish) == i18n._fields(english), key
@@ -431,3 +435,44 @@ def test_the_explanation_where_you_stand_and_case_screens_follow_the_language(cl
     case = client.get("/inside/case").text
     assert "Tus documentos" in case and "Todavía no" in case
     assert "Your papers" not in case and "Open my reports" not in case
+
+
+ENGLISH_WORDS = re.compile(
+    r"\b(the|your|you|and|is|are|with|for|this|that|from|will|have|not|can|"
+    r"what|when|where|about|read|report|case)\b", re.I)
+
+
+def _visible_lines(html: str) -> list[str]:
+    html = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", html, flags=re.S)
+    # The request letter goes to a bureau, which reads English.
+    html = re.sub(r"<pre.*?</pre>", " ", html, flags=re.S)
+    return [line.strip() for line in re.sub(r"<[^>]+>", "\n", html).split("\n")
+            if line.strip()]
+
+
+def test_no_tablet_screen_a_person_walks_through_is_left_in_english(client):
+    """Somebody who chose Español went through the whole journey and met
+    English on four screens nobody had listed. This walks every screen on the
+    tablet in Spanish and fails on a line that reads as English. Citations are
+    exempt, because a source line is meant to read the way it does on the shelf."""
+    from tests.conftest import sign_in_inside
+
+    client.post("/language", data={"lang": "es", "back": "/signin"})
+    sign_in_inside(client, "28A1187")
+    urls = ["/", "/inside/start", "/inside/intake/1", "/inside/intake/6",
+            "/inside/how-this-works", "/inside/learn", "/inside/learn/scores",
+            "/inside/request", "/inside/after", "/inside/after?county=Kings",
+            "/inside/after?county=Onondaga", "/inside/after?county=Albany",
+            "/inside/authorization", "/inside/report", "/inside/report/0/read/0",
+            "/inside/report/0/read/2", "/inside/report/0/read/4",
+            "/inside/where-you-stand", "/inside/case"]
+    leaks = []
+    for url in urls:
+        page = client.get(url, follow_redirects=True)
+        assert page.status_code == 200, url
+        for line in _visible_lines(page.text):
+            if "revisado el" in line or "DOCCS Directive" in line:
+                continue
+            if len(ENGLISH_WORDS.findall(line)) >= 1:
+                leaks.append((url, line))
+    assert not leaks, leaks[:10]

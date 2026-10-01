@@ -454,8 +454,10 @@ def learn_scores(request: Request):
 
     caller = require_role(request, "inside")
     require(Surface.INSIDE, Capability.VIEW_LESSON)
+    # Use keys and model positions rather than English labels: the screen
+    # words them in the tablet's language.
     by_use = [
-        (scores.USE_LABEL[use], scores.models_for(use))
+        (use.value, [(i, m) for i, m in enumerate(scores.MODELS) if m.use is use])
         for use in scores.Use
         if scores.models_for(use)
     ]
@@ -463,7 +465,11 @@ def learn_scores(request: Request):
     return templates.TemplateResponse(
         request, "inside/scores.html",
         {"client": caller.client,
-         "summary": scores.summary_line(),
+         "summary": i18n.ui(
+             "scores.summary", i18n.from_request(request),
+             n=scores.how_many(), models=len(scores.MODELS),
+             b1=scores.BASE_RANGE[0], b2=scores.BASE_RANGE[1],
+             i1=scores.INDUSTRY_RANGE[0], i2=scores.INDUSTRY_RANGE[1]),
          "by_use": by_use,
          "explainers": scores.EXPLAINERS,
          "back": "/inside/case" if done_intake else "/inside/how-this-works"},
@@ -551,6 +557,11 @@ def read_walk(request: Request, index: int, at: int):
         {"client": client, "report": report, "index": index, "at": at,
          "section": sections[at] if at < len(sections) else None,
          "is_final": at == len(sections),
+         # The full lesson's title, in the tablet's language.
+         "lesson_title": next(
+             (i18n.translate_lesson(l, i18n.from_request(request)).title
+              for l in lessons.CURRICULUM
+              if at < len(sections) and l.slug == sections[at].lesson_slug), ""),
          "total": len(sections) + 1,
          "question": walkthrough.FINAL_QUESTION,
          "choices": walkthrough.FINAL_CHOICES,
@@ -691,7 +702,10 @@ def case(request: Request):
          "papers": _papers(caller.client),
          "auth": auth if auth and auth.is_live() else None,
          "course": lessons.standing(caller.client),
-         "next_lesson": lessons.next_up(caller.client),
+         "next_lesson": (
+             i18n.translate_lesson(lessons.next_up(caller.client),
+                                   i18n.from_request(request))
+             if lessons.next_up(caller.client) else None),
          # Their own dates, read back to them. Seeing the record come back
          # correct is how somebody knows the app has the right person before
          # they trust it with anything else. No date of birth is in here to
@@ -714,9 +728,12 @@ def authorization(request: Request):
     return templates.TemplateResponse(
         request, "inside/authorization.html",
         {"client": caller.client, "auth": auth,
-         "scopes": sorted(labels.scope(s) for s in auth.scopes) if auth else [],
-         "standing_label": STANDING_DETAIL[auth.standing]["label"] if auth else "",
-         "forbidden": sorted(labels.scope(f) for f in FORBIDDEN_SCOPES)},
+         # Keys, not labels: the screen words each one in the tablet's language.
+         "scopes": sorted((getattr(s, "value", s) for s in auth.scopes),
+                          key=labels.scope) if auth else [],
+         "standing_key": getattr(auth.standing, "value", auth.standing) if auth else "",
+         "forbidden": sorted((getattr(f, "value", f) for f in FORBIDDEN_SCOPES),
+                             key=labels.scope)},
     )
 
 

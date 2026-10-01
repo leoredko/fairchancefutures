@@ -269,6 +269,7 @@ def _intake() -> dict[str, str]:
 
     out = {
         "intake.progress": "{n} of {total}",
+        "intake.title": "Intake questions",
         "intake.back": "Back",
         "intake.saved.title": SAVED_AS_YOU_GO["title"],
         "intake.saved.body": SAVED_AS_YOU_GO["body"],
@@ -308,6 +309,7 @@ def _teaching() -> dict[str, str]:
 UI.update(_teaching())
 
 UI.update({
+    "teach.title": "How this works",
     "teach.more.title": "One more thing nobody tells you",
     "teach.more.body": "You do not have one credit score. You have dozens. A "
                        "landlord, a car dealer and a credit card company each "
@@ -394,3 +396,12 @@ UI.update({
                         "handles it through the program instead. A few steps "
                         "run slower. Nothing stops.",
 })
+
+
+def _screens() -> dict[str, str]:
+    from app.ui_screens import STATIC, generated
+
+    return {**STATIC, **generated()}
+
+
+UI.update(_screens())

@@ -1,52 +1,51 @@
 {% extends "base.html" %}
-{% block title %}Your credit report{% endblock %}
+{% block title %}{{ t('report.title') }}{% endblock %}
 {% block body %}
 <div class="tablet">
   <div class="bar" role="banner">
     <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
-    <span class="who">{{ client.display_name }} &middot; Your reports</span>
+    <span class="who">{{ client.display_name }} &middot; {{ t('report.suffix') }}</span>
     {# The switch. On every tablet screen on purpose: a person who wants the
        other path should not have to remember where the question lives. #}
-    <div class="right"><a class="pill" href="/inside/start">Change what I am doing</a></div>
-    <div class="right"><a class="pill" href="/inside/learn">The course</a><a class="pill" href="/signout">Sign out</a></div>
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
   <div class="pane" role="main" id="content" tabindex="-1">
-    {% if not reports %}
-    {% if waiting %}
+    {# One block for the waiting card, used twice below. #}
+    {% macro waiting_card(tag) %}
     <div class="card good">
-      <h3>{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
-        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
-        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
+      <{{ tag }}{% if tag == 'h3' %} aria-level="2"{% endif %}>{{ t('report.waiting.one') if waiting | length == 1 else t('report.waiting.many', n=waiting | length) }}</{{ tag }}>
       {% for r in waiting %}
-      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
-        {{ r.scanned_on }}</p>
+      <p class="small">{{ t('report.waiting.line', bureau=r.bureau, source=t('source.' ~ r.source)|lower, scanned=r.scanned_on) }}</p>
       {% endfor %}
-      <p class="small">They read it against the paper before it goes on this
-        screen, because what is written here becomes a letter to a credit
-        bureau. Nothing is wrong. It is the checking step.</p>
+      <p class="small">{{ t('report.waiting.why') }}</p>
     </div>
-    {% endif %}
-    <h1>{{ 'Not on this screen yet.' if waiting else 'Nothing here yet.' }}</h1>
+    {% endmacro %}
+
+    {% macro account_line(a, show_balance) %}
+      <div class="tiny">{{ t('report.ending', last4=a.last4) if a.last4 else t('report.withheld') }}
+        {% if a.opened %}&middot; {{ t('report.opened', date=a.opened) }}{% endif %}
+        {% if a.status %}&middot; {{ tx(a.status) }}{% endif %}
+        {% if show_balance and a.balance %}&middot; {{ a.balance }}{% endif %}</div>
+    {% endmacro %}
+
+    {% if not reports %}
+    {% if waiting %}{{ waiting_card('h3') }}{% endif %}
+    <h1>{{ t('report.not_yet') if waiting else t('report.nothing') }}</h1>
     {% if not waiting %}
-    <p class="lede">Your reports come back on paper. When they arrive, bring
-      them to your coordinator and they will scan them into your record. Then
-      you can read them here.</p>
+    <p class="lede">{{ t('report.arrive') }}</p>
     <div class="card accent">
-      <span class="strong">You can ask for them yourself.</span>
-      <span class="small">You do not need anybody on the outside to do this.
-        One form covers all three bureaus, it goes out in your name, and it
-        comes back here.</span>
-      <a class="btn" href="/inside/request">Ask for my report</a>
+      <span class="strong">{{ t('report.ask.title') }}</span>
+      <span class="small">{{ t('report.ask.body') }}</span>
+      <a class="btn" href="/inside/request">{{ t('report.ask.cta') }}</a>
     </div>
     {% endif %}
     <div class="card soft">
-      <h3 aria-level="2">You do not photograph anything</h3>
-      <p class="small">There is no camera in this app and there does not need
-        to be. The paper goes to your coordinator, the coordinator scans it,
-        and it shows up here.</p>
+      <h3 aria-level="2">{{ t('report.nophoto.h') }}</h3>
+      <p class="small">{{ t('report.nophoto.b') }}</p>
     </div>
-    <a class="btn ghost" href="/inside/case">Back to my case</a>
+    <a class="btn ghost" href="/inside/case">{{ t('report.back_case') }}</a>
 
     {% else %}
 
@@ -54,9 +53,8 @@
     {# Three numbers, one screen. The course spends a whole lesson on why
        there is no such thing as your credit score; this is that lesson made
        out of this person's own file instead of an argument about it. #}
-    <h2 style="margin-bottom:4px">Your scores</h2>
-    <p class="small" style="margin-bottom:14px">Same person. Same week. Three
-      different numbers.</p>
+    <h2 style="margin-bottom:4px">{{ t('report.scores.h') }}</h2>
+    <p class="small" style="margin-bottom:14px">{{ t('report.scores.sub') }}</p>
     <div class="scores">
       {% for row in spread.rows %}
       <div class="score-card" style="--bureau: {{
@@ -65,22 +63,17 @@
         <span class="bureau">{{ row.bureau }}</span>
         <span class="number">{{ row.score }}</span>
         <span class="under">{{ row.model }}</span>
-        <span class="under">Pulled {{ row.pulled_on }}</span>
+        <span class="under">{{ t('report.pulled_card', date=row.pulled_on) }}</span>
       </div>
       {% endfor %}
     </div>
 
     <div class="card accent" style="margin-top:14px">
-      <span class="strong">{{ spread.spread }} points apart, and nothing is broken.</span>
-      <span class="small">Each bureau keeps its own file on you and yours do
-        not match.{% if spread.counts_differ %} {{ spread.most.bureau }} is
-        reporting {{ spread.most.accounts }} accounts and
-        {{ spread.fewest.bureau }} only {{ spread.fewest.accounts }}, so one of
-        them is carrying something the other has never heard of.{% endif %}
-        Whichever one a landlord or a lender pulls is the one that decides
-        about you, which is why the work is on the file rather than on chasing
-        a number.</span>
-      <a class="btn ghost" href="/inside/learn/scores">Why there is no single score</a>
+      <span class="strong">{{ t('report.apart', n=spread.spread) }}</span>
+      <span class="small">{{ t('report.apart.body') }}
+        {% if spread.counts_differ %}{{ t('report.apart.counts', most=spread.most.bureau, most_n=spread.most.accounts, fewest=spread.fewest.bureau, fewest_n=spread.fewest.accounts) }}{% endif %}
+        {{ t('report.apart.tail') }}</span>
+      <a class="btn ghost" href="/inside/learn/scores">{{ t('report.why_no_score') }}</a>
     </div>
     {% endif %}
 
@@ -88,97 +81,78 @@
        happened on this case. It interrupts. #}
     {% if arrival %}
     <div class="card good">
-      <h1 style="margin:0">{{ arrival.credit.headline }}</h1>
-      <p class="lede">{{ arrival.credit.body }}</p>
-      <p class="small">Your {{ arrival.report.bureau }} report is here and
-        nobody has read it with you yet. It takes about five minutes and it
-        explains itself as you go.</p>
-      <a class="btn wide" href="/inside/report/{{ arrival.index }}/read">Read it with me</a>
+      <h1 style="margin:0">{{ t('arrival.' ~ arrival.report.source ~ '.headline') }}</h1>
+      <p class="lede">{{ t('arrival.' ~ arrival.report.source ~ '.body') }}</p>
+      <p class="small">{{ t('report.arrival.body', bureau=arrival.report.bureau) }}</p>
+      <a class="btn wide" href="/inside/report/{{ arrival.index }}/read">{{ t('report.read_with_me') }}</a>
     </div>
     {% endif %}
 
-    <h1>Your credit reports.</h1>
+    <h1>{{ t('report.h') }}</h1>
     <div class="card good">
-      <h3 aria-level="2">Your Social Security number is blacked out</h3>
-      <p class="small">Only the last four digits appear, on every page. The
-        request asked them to leave the first five out, which the law lets you
-        require, and this screen covers them again regardless.</p>
+      <h3 aria-level="2">{{ t('report.ssn.h') }}</h3>
+      <p class="small">{{ t('report.ssn.b') }}</p>
       <p class="tiny">15 U.S.C. 1681g(a)(1)(A)</p>
     </div>
 
-    {% if waiting %}
-    <div class="card good">
-      <h3 aria-level="2">{{ waiting | length }} report{{ '' if waiting | length == 1 else 's' }}
-        {{ 'is' if waiting | length == 1 else 'are' }} here. Your counselor is
-        checking {{ 'it' if waiting | length == 1 else 'them' }}.</h3>
-      {% for r in waiting %}
-      <p class="small">{{ r.bureau }} &middot; {{ r.source_label|lower }},
-        {{ r.scanned_on }}</p>
-      {% endfor %}
-      <p class="small">They read it against the paper before it goes on this
-        screen, because what is written here becomes a letter to a credit
-        bureau. Nothing is wrong. It is the checking step.</p>
-    </div>
-    {% endif %}
+    {% if waiting %}{{ waiting_card('h3') }}{% endif %}
 
     {% for report in reports %}
     <div class="card">
       <div class="row">
         <h2>{{ report.bureau }}</h2>
-        <span class="tag teal" style="margin-left:auto">{{ report.summary }}</span>
+        <span class="tag teal" style="margin-left:auto">
+          {% if not report.accounts %}{{ t('report.sum.none') }}{% else %}
+          {{ t('report.sum.accounts.one', n=1) if report.accounts|length == 1 else t('report.sum.accounts.many', n=report.accounts|length) }}{% if report.disputed %}, {{ t('report.sum.disputed', n=report.disputed|length) }}{% endif %}{% if report.public_records %}, {{ t('report.sum.records.one', n=1) if report.public_records|length == 1 else t('report.sum.records.many', n=report.public_records|length) }}{% endif %}
+          {% endif %}</span>
       </div>
       {% set state = read_state.get(loop.index0) %}
       <div class="row">
         {% if state and state.done %}
-        <span class="tag teal">You read this on {{ state.reviewed_on }}</span>
-        <a class="btn ghost" href="/inside/report/{{ loop.index0 }}/read">Go through it again</a>
+        <span class="tag teal">{{ t('report.read_on', date=state.reviewed_on) }}</span>
+        <a class="btn ghost" href="/inside/report/{{ loop.index0 }}/read">{{ t('report.again') }}</a>
         {% else %}
-        <a class="btn" href="/inside/report/{{ loop.index0 }}/read">Read it with me</a>
+        <a class="btn" href="/inside/report/{{ loop.index0 }}/read">{{ t('report.read_with_me') }}</a>
         {% endif %}
       </div>
-      <p class="tiny">Pulled {{ report.pulled_on }} &middot; scanned in
-        {{ report.scanned_on }} by {{ report.scanned_by }}</p>
+      <p class="tiny">{{ t('report.pulled_line', pulled=report.pulled_on, scanned=report.scanned_on, by=report.scanned_by) }}</p>
 
-      <h3>About you, as they have it</h3>
+      <h3>{{ t('report.about') }}</h3>
       <p class="small">{{ report.consumer_name }}</p>
       <p class="small" style="font-family:var(--mono)">{{ report.safe_ssn }}</p>
-      <p class="small">{{ report.safe_dob }}</p>
+      <p class="small">{{ t('report.born', year=report.dob_year) if report.dob_year else t('report.not_shown') }}</p>
 
-      <h3>Score</h3>
-      <p class="small">{{ report.score_line }}</p>
+      <h3>{{ t('report.score') }}</h3>
+      <p class="small">{{ report.score if report.score else t('report.no_score') }}</p>
 
-      <h3>Accounts</h3>
+      <h3>{{ t('report.accounts') }}</h3>
       {% if report.accounts %}
         {% for a in report.accounts %}
         <div class="rung {% if a.disputed %}active{% endif %}">
           <div>
             <div class="small strong">{{ a.creditor }}</div>
-            <div class="tiny">{{ a.safe_number }}
-              {% if a.opened %}&middot; opened {{ a.opened }}{% endif %}
-              {% if a.status %}&middot; {{ a.status }}{% endif %}
-              {% if a.balance %}&middot; {{ a.balance }}{% endif %}</div>
+            {{ account_line(a, true) }}
             {% if a.disputed %}
-            <span class="tag amber">Disputed{% if a.note %}: {{ a.note }}{% endif %}</span>
+            <span class="tag amber">{{ t('report.disputed') }}{% if a.note %}: {{ tx(a.note) }}{% endif %}</span>
             {% endif %}
           </div>
         </div>
         {% endfor %}
       {% else %}
-      <p class="small">No accounts on file with this bureau. That is not the
-        same as bad credit, and it moves faster than damaged does.</p>
+      <p class="small">{{ t('report.none') }}</p>
       {% endif %}
 
       {% if report.public_records %}
-      <h3>Public records</h3>
+      <h3>{{ t('report.public') }}</h3>
       {% for r in report.public_records %}<p class="small">{{ r }}</p>{% endfor %}
       {% endif %}
     </div>
     {% endfor %}
 
     <div class="row">
-      <button class="btn" onclick="window.print()">Save as PDF</button>
-      <a class="btn ghost" href="/inside/case">Back to my case</a>
-      <a class="btn ghost" href="/inside/learn/scores">Why is there no score?</a>
+      <button class="btn" onclick="window.print()">{{ t('report.pdf') }}</button>
+      <a class="btn ghost" href="/inside/case">{{ t('report.back_case') }}</a>
+      <a class="btn ghost" href="/inside/learn/scores">{{ t('report.why_no_score_q') }}</a>
     </div>
     {% endif %}
   </div>

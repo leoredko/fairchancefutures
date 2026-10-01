@@ -25,9 +25,11 @@
    translated once and committed, so nothing calls a model or the network at
    request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`
    takes the language back out without a deploy. The six intake questions
-   are Spanish too, approved 2026-10-01. The explanation after question
-   two, where-you-stand and the case screen are Spanish drafts awaiting review.
-   The report walkthrough is still English. — built
+   are Spanish too, approved 2026-10-01. Every other tablet screen
+   is Spanish too, from the explanation after question two to the report
+   walkthrough, the scores page, the request, the authorization and when you
+   go home, approved by the team on 2026-10-01. The dispute and request
+   letters stay English, because the bureaus read them in English. — built
 
 Each one works standing alone. Stop anywhere and there is still a demo.
 

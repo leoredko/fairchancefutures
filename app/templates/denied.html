@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Not possible from this surface{% endblock %}
+{% block title %}{{ t('denied.title') }}{% endblock %}
 {% block body %}
 <div class="desk" role="main" id="content" tabindex="-1" style="padding-top:48px; max-width:640px">
   <div class="denied">
     <span class="what">{{ headline }}</span>
     <p class="small">{{ reason }}</p>
     <p class="tiny">{{ footnote }}</p>
-    <a class="btn ghost" href="/">Back</a>
+    <a class="btn ghost" href="/">{{ t('lesson.back') }}</a>
   </div>
 </div>
 {% endblock %}

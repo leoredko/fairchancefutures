@@ -20,8 +20,8 @@
       <div class="event {% if not e.done %}pending{% endif %}">
         <div class="dot">{% if e.done %}&check;{% else %}{{ loop.index }}{% endif %}</div>
         <div>
-          <div class="strong">{{ e.text }}</div>
-          <div class="small">{{ e.actor }}{% if e.on %} &middot; {{ e.on }}{% endif %}</div>
+          <div class="strong">{{ tdate(tx(e.text)) }}</div>
+          <div class="small">{{ tx(e.actor) }}{% if e.on %} &middot; {{ tdate(e.on) }}{% endif %}</div>
         </div>
       </div>
       {% endfor %}
