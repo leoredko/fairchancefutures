@@ -76,8 +76,7 @@ read on the shelf. The code never translates them.
 ## Known gaps
 
 - Only the course and the screens on the way to it are translated. The six intake
-  questions are in Spanish, 35 strings flagged **Needs work** because the team
-  has not read them yet. The explanation screen after question two states what
+  questions are in Spanish, 35 strings the team approved on 2026-10-01. The explanation screen after question two states what
   the law lets a person require, so it needs sources checked against the
   Spanish before it moves. It, the report walkthrough and the case screens are
   still English, and so is the

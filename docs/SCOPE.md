@@ -25,7 +25,7 @@
    translated once and committed, so nothing calls a model or the network at
    request time and there is nothing to fail on the day. `BRIDGE_SPANISH=off`
    takes the language back out without a deploy. The six intake questions
-   are Spanish too, as a draft awaiting review. The explanation after question
+   are Spanish too, approved 2026-10-01. The explanation after question
    two and the report walkthrough are still English. — built
 
 Each one works standing alone. Stop anywhere and there is still a demo.
