@@ -15,9 +15,16 @@
       enrolls a new one. Their intake answers, course progress, drafted
       letters and timeline are back to the seeded version.</p>
     <div class="row">
-      <a class="btn" href="/signin">Sign in as them</a>
+      <a class="btn" href="/signin?identifier={{ done_din }}">Sign in as them</a>
       <a class="btn ghost" href="/">Home</a>
     </div>
+  </div>
+  {% endif %}
+
+  {% if sampled %}
+  <div class="card good" style="margin-bottom:24px">
+    <span class="strong">Three sample reports are on {{ sampled }}'s file.</span>
+    <p class="small">They show on the tablet under My reports. Start over takes them away.</p>
   </div>
   {% endif %}
 
@@ -48,6 +55,10 @@
       <input type="hidden" name="client_id" value="{{ person.id }}">
       <button class="btn ghost" type="submit">Start over</button>
     </div>
+  </form>
+  <form method="post" action="/demo/sample-report" style="margin-top:8px">
+    <input type="hidden" name="client_id" value="{{ person.id }}">
+    <button class="btn ghost" type="submit">Load sample reports for {{ person.name }}</button>
   </form>
   {% endfor %}
 
