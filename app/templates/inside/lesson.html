@@ -51,9 +51,10 @@
     {% endif %}
 
     {% if card.cited %}
-    <div class="card soft" data-no-speech>
+    <details class="card soft" data-no-speech>
+      <summary class="tiny">{{ t('lesson.source.summary') }}</summary>
       <span class="tiny">{{ t('lesson.source', source=card.cited) }}</span>
-    </div>
+    </details>
     {% endif %}
 
     <div class="row">

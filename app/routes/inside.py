@@ -122,7 +122,7 @@ def intake(request: Request, index: int):
     question = inside_question(index)
     return templates.TemplateResponse(
         request, "inside/intake.html",
-        {"client": caller.client, "q": question, "total": len(INSIDE_QUESTIONS),
+        {"client": caller.client, "q": question, "total": len(INSIDE_QUESTIONS), "all_questions": INSIDE_QUESTIONS,
          "saved": caller.client.intake_answers.get(question.field)},
     )
 
