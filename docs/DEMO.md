@@ -67,6 +67,19 @@ data agreement or a scraper rather than a coding job.
 Everyone picks their own PIN the first time. Six digits, not all the same, not
 a run, and not a stretch of their own number.
 
+## Demo shortcuts
+
+- **Sign-in link with the DIN filled in.** `/signin?identifier=28-E-3306` opens
+  the tablet sign-in with Armando's DIN already in the box. It fills the
+  identifier and nothing else: the PIN is still his to choose, and no PIN is
+  seeded.
+- **Sample reports.** On `/demo/restart`, **Load sample reports for ...** puts
+  three confirmed files on a person's case so **My reports** has something to
+  open without waiting for paper. It is a demo control and not the product: in
+  the product a report reaches the person only after a coordinator has
+  confirmed it. Pressing it twice does not stack a second set, and **Start
+  over** takes the reports away again.
+
 ## A walkthrough that shows the whole thing
 
 Short on time? Use [the five-minute showcase run](#the-five-minute-showcase-run).

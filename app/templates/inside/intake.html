@@ -22,6 +22,14 @@
       <span class="small">{{ t('intake.progress', n=q.index, total=total) }}</span>
     </div>
 
+    {# The whole set, generated from it, so the list never disagrees with the
+       bar below it. #}
+    {% if q.index == 1 %}
+    <ol class="small steps" data-no-speech>
+      {% for sq in all_questions %}<li>{{ t('intake.' ~ sq.field ~ '.prompt') }}</li>{% endfor %}
+    </ol>
+    {% endif %}
+
     <h1>{{ t('intake.' ~ q.field ~ '.prompt') }}</h1>
     {% if q.helper %}<p class="lede">{{ t('intake.' ~ q.field ~ '.helper') }}</p>{% endif %}
 

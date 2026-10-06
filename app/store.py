@@ -500,6 +500,17 @@ def _demo_persona(today: date) -> Client:
 
 
 def _seed_reports(today: date) -> None:
+    put_sample_reports(
+        today, "marcus-w", "Marcus W.", "XXX-XX-4417", "1988-06-14",
+        ["Sing Sing Correctional Facility, Ossining NY",
+         "1194 E 224th St, Bronx NY 10466"],
+    )
+
+
+def put_sample_reports(
+    today: date, client_id: str, consumer_name: str, ssn_on_document: str,
+    date_of_birth: str, addresses: list[str],
+) -> None:
     """Three files back for one person, and they do not agree.
 
     Without these the product could show somebody asking for a report and
@@ -568,19 +579,16 @@ def _seed_reports(today: date) -> None:
     for bureau, score, accounts, inquiries, records in files:
         put_report(CreditReport(
             bureau=bureau,
-            client_id="marcus-w",
+            client_id=client_id,
             pulled_on=pulled,
             scanned_on=scanned,
             # A person, because a report that arrived from nobody is the kind
             # of event the timeline rule exists to keep off a screen.
             scanned_by="D. Reyes",
-            consumer_name="Marcus W.",
-            ssn_on_document="XXX-XX-4417",
-            date_of_birth="1988-06-14",
-            addresses=[
-                "Sing Sing Correctional Facility, Ossining NY",
-                "1194 E 224th St, Bronx NY 10466",
-            ],
+            consumer_name=consumer_name,
+            ssn_on_document=ssn_on_document,
+            date_of_birth=date_of_birth,
+            addresses=addresses,
             accounts=accounts,
             inquiries=inquiries,
             public_records=records,

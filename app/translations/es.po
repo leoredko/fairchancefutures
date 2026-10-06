@@ -1732,6 +1732,10 @@ msgctxt "lesson.answer"
 msgid "Answer"
 msgstr "Responder"
 
+msgctxt "lesson.source.summary"
+msgid "Where this comes from"
+msgstr "De dónde viene esto"
+
 msgctxt "lesson.source"
 msgid "Where this comes from: {source}"
 msgstr "De dónde viene esto: {source}"

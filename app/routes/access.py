@@ -70,10 +70,14 @@ def _start(account, response: RedirectResponse) -> RedirectResponse:
 # --------------------------------------------------------------------------
 
 @router.get("/signin", response_class=HTMLResponse)
-def signin(request: Request, error: str | None = None):
+def signin(request: Request, error: str | None = None,
+           identifier: str | None = None):
+    # An identifier in the link fills the box and nothing else. It is the
+    # number printed on a person's own paperwork, never a PIN, so a demo link
+    # can save the typing without saving anybody's way in.
     return templates.TemplateResponse(
         request, "access/signin.html",
-        {"error": error,
+        {"error": error, "identifier": identifier,
          "languages": i18n.choices(),
          "lang": i18n.from_request(request),
          "challenge": _ask(request)},
