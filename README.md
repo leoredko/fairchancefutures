@@ -1,6 +1,6 @@
 # Bridge
 
-A capstone project by a team of Fair Chance Futures AI Lab fellows, 2026.
+A capstone project by a team of Fair Chance Futures AI Lab fellows, 2026. Leo Redko Richard Castillo Roshawn Winburn
 
 A credit-repair workflow for people coming home, split across three surfaces
 because the three people involved genuinely cannot do each other's jobs.
