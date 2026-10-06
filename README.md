@@ -43,7 +43,7 @@ New York only, because the identifiers are.
 
 | Surface | What you sign in with |
 | --- | --- |
-| Inside | A DIN (`28-A-1187`) or a NYSID (`00000011L`), then a PIN you choose |
+| Inside | A DIN (`28-A-1182`) or a NYSID (`00000011L`), then a PIN you choose |
 | Family | The code printed on the letter that came in the mail, then a PIN |
 | Coordinator | Nothing. They arrive already signed in to the vendor case plan system |
 
