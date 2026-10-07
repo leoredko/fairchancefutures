@@ -82,6 +82,51 @@ def _credit_next(client) -> str:
     return "/inside/case"
 
 
+def _start_cards(client, lang: str) -> dict:
+    """What each button on the first screen should say for this person today.
+
+    The screen is also the way back to the choice, so somebody who did half the
+    course and came back to switch must not be told to "start" what they have
+    already started. Each card gets the verb that fits where they are, plus a
+    line saying how far along that is. Read straight from what is saved, so it
+    cannot drift from the course page or the intake it points at.
+    """
+    standing = lessons.standing(client)
+    mid_lesson = any(
+        lessons.progress(client, lesson.slug)["card"] > 0
+        and not lessons.is_complete(client, lesson.slug)
+        for lesson in lessons.CURRICULUM
+    )
+    learn = {"cta": "path.learn.cta", "notes": []}
+    if standing["finished"]:
+        learn = {"cta": "path.learn.cta.again",
+                 "notes": [("learn.finished", {"total": standing["total"]})]}
+    elif standing["done"] or mid_lesson:
+        notes = []
+        up_next = lessons.next_up(client)
+        # "0 of 11 done" beside "continue" reads as a contradiction, so a
+        # person partway through a first lesson is told which one instead.
+        if mid_lesson and up_next:
+            notes.append(("learn.carry_on",
+                          {"title": i18n.translate_lesson(up_next, lang).title}))
+        if standing["done"]:
+            notes.append(("learn.progress", {"done": standing["done"],
+                                             "total": standing["total"]}))
+        notes.append(("learn.left", {"minutes": standing["minutes_left"]}))
+        learn = {"cta": "path.learn.cta.continue", "notes": notes}
+
+    answered = len(client.intake_answers)
+    total = len(INSIDE_QUESTIONS)
+    credit = {"cta": "path.credit.cta", "notes": []}
+    if answered >= total:
+        credit = {"cta": "path.credit.cta.done", "notes": []}
+    elif answered:
+        credit = {"cta": "path.credit.cta.continue",
+                  "notes": [("start.questions_progress",
+                             {"n": answered, "total": total})]}
+    return {paths.LEARN.key: learn, paths.CREDIT.key: credit}
+
+
 @router.get("/start", response_class=HTMLResponse)
 def start(request: Request):
     """The one question asked before any other, and the way back to it.
@@ -95,7 +140,8 @@ def start(request: Request):
     chosen = paths.get(caller.client.path)
     return templates.TemplateResponse(
         request, "inside/start.html",
-        {"client": caller.client, "paths": paths.PATHS, "chosen": chosen},
+        {"client": caller.client, "paths": paths.PATHS, "chosen": chosen,
+         "cards": _start_cards(caller.client, i18n.from_request(request))},
     )
 
 
