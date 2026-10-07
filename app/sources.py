@@ -28,6 +28,7 @@ class Fact:
 
 
 CHECKED = date(2026, 9, 23)
+RELEASES_CHECKED = date(2026, 10, 6)
 
 FACTS: dict[str, Fact] = {
     "reinvestigation_window": Fact(
@@ -661,6 +662,42 @@ FACTS: dict[str, Fact] = {
         source="DOCCS, Inmate Information Data Definitions",
         url="https://publicapps.doccs.ny.gov/ILookup/fpmsdoc.html",
         checked_on=CHECKED,
+    ),
+    "doccs_releases_2025": Fact(
+        key="doccs_releases_2025",
+        statement=(
+            "DOCCS released 10,275 incarcerated individuals from its "
+            "facilities in calendar year 2025, 454 more (4.6%) than the 9,821 "
+            "in 2024. Of those, 9,412 went to community supervision (3,762 on "
+            "parole, 4,811 on conditional release, 839 at maximum expiration "
+            "with post-release supervision) and 863 did not. Incarcerated "
+            "parolee releases are counted separately, in a different table. "
+            "This is a count of people leaving, and says nothing about the "
+            "state of their credit."
+        ),
+        source="NYS DOCCS, Admissions and Releases, Calendar Year 2025, "
+               "Tables 4 and 8",
+        url="https://doccs.ny.gov/system/files/documents/2026/06/"
+            "admissions-and-releases-report-calendar-year-2025_final.pdf",
+        checked_on=RELEASES_CHECKED,
+    ),
+    "cany_release_file": Fact(
+        key="cany_release_file",
+        statement=(
+            "The Correctional Association of New York publishes a "
+            "de-identified, release-level file derived from DOCCS data, "
+            "January 2016 to the present, with the releasing facility, "
+            "release type and county of commitment. Summed by the team on "
+            "2026-10-06 it counts 10,042 releases in 2025 and 9,658 in 2024. "
+            "Its own data dictionary warns it does not match DOCCS's "
+            "published totals exactly (3% apart in 2022), so the DOCCS "
+            "report is the number to quote and this file is for breakdowns "
+            "such as one facility's releases."
+        ),
+        source="Correctional Association of New York, Data Portal: Releases "
+               "(CSV and data dictionary)",
+        url="https://www.correctionalassociation.org/data-download",
+        checked_on=RELEASES_CHECKED,
     ),
 
 }

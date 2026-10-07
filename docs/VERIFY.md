@@ -40,6 +40,28 @@ real answer with a real deadline on it.
 | No fee is charged when DOCCS requests a certified birth certificate in anticipation of release, and a certified copy of the sentence and commitment counts as the person's authorization, so no separate signature is needed | [N.Y. Public Health Law 4174](https://www.nysenate.gov/legislation/laws/PBH/4174) |
 | That waiver covers **New York** records. Somebody born in another state or country is not covered by it | Same statute, which governs records registered under that chapter. Stated as a limit of the statute rather than as a claim about what other states do |
 
+### How many people come home, checked 2026-10-06
+
+The scale behind the deck. These are counts of people leaving, and neither
+source says anything about their credit.
+
+| Claim | Source |
+| --- | --- |
+| **DOCCS released 10,275 incarcerated individuals in calendar year 2025**, up 454 (4.6%) from 9,821 in 2024. The twelve monthly totals in Table 8 sum to the same figure | [NYS DOCCS, Admissions and Releases, Calendar Year 2025](https://doccs.ny.gov/system/files/documents/2026/06/admissions-and-releases-report-calendar-year-2025_final.pdf), Tables 4 and 8 |
+| Of those, 9,412 went to community supervision (3,762 parole, 4,811 conditional release, 839 maximum expiration with post-release supervision) and 863 did not. Incarcerated parolee releases (378) are a separate table and are not in the 10,275 | same report, Tables 4 and 5 |
+| **A second, independent file agrees to within about 2%.** The Correctional Association of New York's release file, derived from DOCCS data, sums to 10,042 for 2025 and 9,658 for 2024. Its dictionary says it will not match DOCCS's published totals exactly (3% apart in 2022). The sums are the team's own, from the CSV downloaded 2026-10-06 | [CANY data portal](https://www.correctionalassociation.org/data-download), Releases file and data dictionary |
+
+**How to use them.** Quote the DOCCS 10,275. Use the CANY file only for
+breakdowns DOCCS does not publish in this report, such as releases by facility
+(Fishkill, where Armando is housed, shows 641 for 2025 in that file).
+
+**The one number that is an estimate and not a count.** The deck's "about 2,000
+people a year would have an error to dispute" is 10,275 multiplied by the FTC's
+one in five (an error corrected after disputing, [FTC 2013](https://www.ftc.gov/reports/section-319-fair-accurate-credit-transactions-act-2003-fifth-interim-federal-trade-commission-report)),
+a general-population rate. Nobody has measured it for people coming home, and
+`OPEN_QUESTIONS` in `app/sources.py` says so. The slide labels it an estimate;
+keep it labelled.
+
 ### What the DIN already answers, checked 2026-09-23
 
 Nobody should be asked to retype their own release date from memory on a
