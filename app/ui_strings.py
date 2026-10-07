@@ -106,8 +106,9 @@ UI: dict[str, str] = {
     # -- the course index ---------------------------------------------------
     "learn.title": "Learn about credit",
     "learn.heading": "Learn about credit.",
-    "learn.lede": "{total} lessons, about {minutes} minutes in total. Take one "
-                  "at a time. It saves where you stop, so you can put the "
+    "learn.lede": "{total} lessons, about {minutes} minutes in total, to give "
+                  "yourself a chance at closing the 50-point credit score gap. "
+                  "Take one at a time. It saves where you stop, so you can put the "
                   "tablet down mid-sentence and pick it up tomorrow.",
     "learn.more": "Read more",
     "learn.module": "Module {n}",
@@ -362,7 +363,7 @@ UI.update({
                       "again.",
 
     "papers.title": "Your papers",
-    "papers.lede": "The three documents your ID depends on, and where each one "
+    "papers.lede": "The documents your ID depends on, and where each one "
                    "stands.",
     "papers.have": "On file",
     "papers.not_yet": "Not yet",

@@ -39,8 +39,8 @@ purpose rather than hoped for:
 
 | Type this | Releases in | Opens on | Shows |
 | --- | --- | --- | --- |
-| `28-B-1111` | about 68 days | The three pieces of paper | Inside the 120-day window. The Social Security card deadline has already passed and the screen says so. |
-| `28-B-1000` | about 257 days | The three pieces of paper | Near the gate, deadline still ahead |
+| `28-B-1111` | about 68 days | Two documents to ask for now | Inside the 120-day window. The Social Security card deadline has already passed and the screen says so. |
+| `28-B-1000` | about 257 days | Two documents to ask for now | Near the gate, deadline still ahead |
 | `28-K-1000` | about 2.4 years | What a credit report actually is | The documents lesson steps aside |
 | `28-A-1111` | about 4.2 years | What a credit report actually is | Longest runway, and the course is the whole point |
 
@@ -227,7 +227,7 @@ what fits in five minutes. This describes what the app does and in what order.
    sentences. Pick **Learn how credit works**. The switch to change it is in
    the header of every tablet screen. Switch the language once, to show the
    Spanish is the same product and not a different one.
-2. **Learn about credit.** The course opens on *The three pieces of paper*,
+2. **Learn about credit.** The course opens on *Two documents to ask for now*,
    because he releases in about 140 days. The Social Security card deadline is
    120 days before release, so it is about 20 days ahead and reads as
    something to act on. Say the two 120-day clocks out loud: this one is

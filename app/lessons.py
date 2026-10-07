@@ -112,10 +112,10 @@ class Lesson:
 CURRICULUM: tuple[Lesson, ...] = (
     Lesson(
         slug="three-papers",
-        title="The three pieces of paper",
+        title="Two documents to ask for now",
         minutes=5,
-        hook="Two documents decide whether you walk out with ID. One has a "
-             "deadline near release; the other is worth starting years out.",
+        hook="You can't get a photo ID without two other documents, and they "
+             "take weeks to come back. Start them before your release date.",
         urgent_for=("not_yet_triaged", "credit_invisible", "thin_file",
                     "damaged_file", "errors_present"),
         release_dependent=True,
