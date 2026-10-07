@@ -31,18 +31,22 @@ def test_the_switch_reads_the_environment_on_every_call(monkeypatch):
     assert presentation.tablet_only() is False
 
 
-def test_the_landing_page_offers_three_doors_by_default(client):
+def test_the_landing_page_is_the_banner_the_team_and_one_way_in(client):
     body = client.get("/").text
+    assert "Start the credit work before the gate opens." in body
+    for name in ("Leo Redko", "Richard Castillo", "RoShawn Winburn"):
+        assert name in body
+    assert "Capstone AI Lab 2026" in body and "Team 2" in body
     assert 'href="/signin"' in body
-    assert 'href="/helper"' in body
-    assert 'href="/staff"' in body
 
 
-def test_tablet_only_leaves_one_door_on_the_landing_page(client, tablet_only):
-    body = client.get("/").text
-    assert 'href="/signin"' in body
-    assert 'href="/helper"' not in body
-    assert 'href="/staff"' not in body
+def test_the_landing_page_does_not_list_the_other_surfaces_in_either_mode(client, tablet_only):
+    """It is not a menu. The helper and the coordinator are reached by their own
+    addresses, and the practice links live apart from the product."""
+    for body in (client.get("/").text,):
+        assert 'href="/helper"' not in body
+        assert 'href="/staff"' not in body
+        assert 'href="/demo/restart"' not in body
 
 
 def test_tablet_only_takes_the_helper_link_off_the_sign_in_screen(client, tablet_only):

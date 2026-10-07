@@ -6,60 +6,13 @@
 <div class="hero">
   <div class="desk" style="padding-bottom:0">
     <h1>{{ t('index.hero') }}</h1>
-    <p class="lede">{{ t('index.lede') }}</p>
+    <p class="lede">Capstone AI Lab 2026 &middot; Team 2</p>
+    <p class="lede" style="margin-top:4px">Leo Redko &middot; Richard Castillo &middot; RoShawn Winburn</p>
   </div>
 </div>
 
 <div class="desk">
-  {% if session %}
-  <div class="card good" style="margin-bottom:24px">
-    <span class="strong">{{ t('index.signed_in') }}</span>
-    <div class="row">
-      <a class="btn" href="/{{ session.role }}">{{ t('index.continue') }}</a>
-      <a class="btn ghost" href="/signout">{{ t('nav.signout') }}</a>
-    </div>
-  </div>
-  {% endif %}
-
-  {# The other two doors come off the wall when the room is only being shown
-     the tablet. They stay reachable by URL, so the demo can still be driven
-     from a coordinator window nobody is looking at. #}
-  <div class="grid {% if tablet_only() %}one{% else %}three{% endif %}">
-    <div class="card accent">
-      <span class="tag teal">{{ t('index.tablet.tag') }}</span>
-      <h2>{{ t('index.tablet.h') }}</h2>
-      <p class="small">{{ t('index.tablet.body') }}</p>
-      <a class="btn" href="/signin">{{ t('index.tablet.cta') }}</a>
-    </div>
-
-    {% if not tablet_only() %}
-    <div class="card accent">
-      <span class="tag amber">{{ t('index.helper.tag') }}</span>
-      <h2>{{ t('index.helper.h') }}</h2>
-      <p class="small">{{ t('index.helper.body') }}</p>
-      <a class="btn amber" href="/helper">{{ t('index.helper.cta') }}</a>
-    </div>
-
-    <div class="card accent">
-      <span class="tag sky">{{ t('index.staff.tag') }}</span>
-      <h2>{{ t('index.staff.h') }}</h2>
-      <p class="small">{{ t('index.staff.body') }}</p>
-      <p class="tiny">{{ t('index.staff.note') }}</p>
-      <a class="btn ghost" href="/staff">{{ t('index.staff.cta') }}</a>
-    </div>
-    {% endif %}
-  </div>
-
-  <div class="grid one" style="margin-top:28px; align-items:start">
-    <div class="card">
-      <h2>{{ t('index.fit.h') }}</h2>
-      <p class="small">{{ t('index.fit.p1') }}</p>
-      <p class="small">{{ t('index.fit.p2') }}</p>
-    </div>
-  </div>
-
-  <p class="tiny" style="margin-top:28px">{{ t('index.restart') }}
-    <a href="/demo/restart">{{ t('index.restart.link') }}</a> {{ t('index.restart.tail') }}</p>
+  <a class="btn" href="/signin">{{ t('index.signin') }}</a>
 
   <div class="colophon">
     <p>{{ t('index.colophon') }}</p>

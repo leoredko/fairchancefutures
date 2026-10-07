@@ -25,7 +25,7 @@ from app.auth import (
     enroll,
     issue,
 )
-from app import challenge, i18n, practice
+from app import challenge, i18n
 from app.deps import templates
 from app.identifiers import InvalidIdentifier, is_self_service, parse
 from app.store import STATE, find_account, mutate, put_account
@@ -75,17 +75,9 @@ def signin(request: Request, error: str | None = None,
     # An identifier in the link fills the box and nothing else. It is the
     # number printed on a person's own paperwork, never a PIN, so a demo link
     # can save the typing without saving anybody's way in.
-    #
-    # With nothing in the link and BRIDGE_PRACTICE on, the box arrives with a
-    # fresh practice number instead, so a room opening one link neither types
-    # a number nor lands on somebody else's case. See app/practice.py.
-    offered = False
-    if not identifier and practice.enabled():
-        taken = {a["login_key"] for a in STATE.accounts.values()}
-        identifier, offered = practice.fresh_number(taken), True
     return templates.TemplateResponse(
         request, "access/signin.html",
-        {"error": error, "identifier": identifier, "practice": offered,
+        {"error": error, "identifier": identifier,
          "languages": i18n.choices(),
          "lang": i18n.from_request(request),
          "challenge": _ask(request)},
@@ -283,8 +275,6 @@ def _open_a_case(parsed):
                 login_key=helper_code(
                     {a["login_key"] for a in STATE.accounts.values()}),
             ))
-            if practice.enabled():
-                practice.preload(STATE.clients[client_id])
     return find_account("inside", parsed.normalized)
 
 
@@ -293,10 +283,13 @@ def _open_a_case(parsed):
 # --------------------------------------------------------------------------
 
 @router.get("/helper", response_class=HTMLResponse)
-def helper_signin(request: Request, error: str | None = None):
+def helper_signin(request: Request, error: str | None = None,
+                  code: str | None = None):
+    # A code in the link fills the box and nothing else, the same as a number
+    # does on the tablet's sign-in. It is never a PIN.
     return templates.TemplateResponse(
         request, "access/helper.html",
-        {"error": error, "challenge": _ask(request, "en")},
+        {"error": error, "code": code, "challenge": _ask(request, "en")},
     )
 
 

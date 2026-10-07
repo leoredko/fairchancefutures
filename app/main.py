@@ -23,9 +23,9 @@ from fastapi.staticfiles import StaticFiles
 from app.authorization import FORBIDDEN_SCOPES, NotAuthorized
 from app.bureaus import BUREAUS
 from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS, SIMPLIFICATIONS, SURVEYS
-from app import desk, labels
+from app import labels
 from app.deps import templates
-from app.routes import access, demo, display, family, inside, language, staff
+from app.routes import access, demo, display, family, inside, language, practice, staff
 from app.store import STATE, boot, review_log
 from app.session import NotSignedIn, current, redirect_to_signin
 from app.surfaces import CAPABILITIES, DENIAL_REASON, Surface, SurfaceDenied
@@ -43,23 +43,10 @@ app.include_router(access.router)
 app.include_router(display.router)
 app.include_router(language.router)
 app.include_router(demo.router)
+app.include_router(practice.router)
 app.include_router(inside.router)
 app.include_router(family.router)
 app.include_router(staff.router)
-
-
-@app.middleware("http")
-async def desk_key(request: Request, call_next):
-    """Keep the coordinator desk, the demo controls and metrics behind a key
-    when one is set. See app/desk.py. A no-op otherwise."""
-    if desk.required() and desk.gated(request.url.path) and not desk.has_pass(request):
-        return templates.TemplateResponse(
-            request, "desk_key.html",
-            {"next": request.url.path if request.method == "GET" else "/staff",
-             "error": None},
-            status_code=401,
-        )
-    return await call_next(request)
 
 
 @app.middleware("http")
@@ -73,25 +60,6 @@ async def keep_it_out_of_search(request: Request, call_next):
     """
     response = await call_next(request)
     response.headers["X-Robots-Tag"] = "noindex, nofollow"
-    return response
-
-
-@app.post("/desk", response_class=HTMLResponse)
-async def desk_door(request: Request):
-    """Trade the key for a cookie, then go where the person was headed."""
-    form = await request.form()
-    target = str(form.get("next", "/staff"))
-    if not target.startswith("/") or target.startswith("//") or not desk.gated(target):
-        target = "/staff"
-    if not desk.key_matches(str(form.get("key", ""))):
-        return templates.TemplateResponse(
-            request, "desk_key.html",
-            {"next": target, "error": "That is not the desk key."},
-            status_code=401,
-        )
-    response = RedirectResponse(target, status_code=303)
-    response.set_cookie(desk.COOKIE, desk.token(), max_age=desk.MAX_AGE,
-                        httponly=True, samesite="lax", path="/")
     return response
 
 

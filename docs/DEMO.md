@@ -187,6 +187,11 @@ what fits in five minutes. This describes what the app does and in what order.
 
 **Before the room arrives**
 
+0. **Wake the site five minutes before you start.** A free instance sleeps after
+   about fifteen minutes with no visits, and the first visit afterwards takes
+   thirty to sixty seconds. Open the sign-in yourself and click through a few
+   pages so it is awake when the room opens the links. Do not deploy once people
+   are in: a restart clears every case and PIN.
 1. Open `/demo/restart`, pick A. Torres and restart him. He is the one seeded
    person with nothing done, so the first screen is the point. Do it
    beforehand, not in front of people: the restart clears his PIN, course
@@ -198,18 +203,24 @@ what fits in five minutes. This describes what the app does and in what order.
 3. The deployed sign-in does not ask the arithmetic question (`BRIDGE_CAPTCHA`
    is `off` in `render.yaml` for the showcase). Set it to `1` to bring it back
    if the link starts to attract scripts.
-4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
-   is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
-   and are not toured unless you choose the optional ending below.
+4. The landing page is just the project banner and the team, with a sign-in
+   button. You do not start there: start at the sign-in with Armando already
+   filled in (`/signin?identifier=28-E-3306`). The helper and coordinator
+   surfaces are reachable by URL, `/helper` and `/staff`, and are not toured
+   unless you choose the optional ending below.
 
-5. **If the link goes to the room.** `render.yaml` already sets `BRIDGE_PRACTICE=on`, so everybody
-   who opens it gets their own practice number already typed in and their own
-   case with the three reports on it, so nobody shares your Armando and nobody
-   is sent to a demo control. It also generates `BRIDGE_DESK_KEY`, so only you can
-   reach `/staff`, `/demo` and `/metrics`: copy the key from the service's
-   Environment tab in Render and type it once at `/staff`. Sign in as Armando yourself
-   before you share the link: the first person to sign in with a number sets
-   its PIN, and his number is in this file.
+5. **If the link goes to the room.** Put three links on a slide and nothing else
+   needs explaining: `/try/tablet`, `/try/phone` and `/try/desk`. Each one sets
+   up that visitor's own practice case, with the three sample reports on it and
+   a helper code to match, and sends them to the right screen: the tablet's
+   sign-in with a practice number filled in, the phone with the code filled in,
+   the desk on their case. It is the same case in all three, remembered for
+   twelve hours, so nobody shares your Armando and nobody is sent to a demo
+   control. They are separate from the product on purpose: delete
+   `app/routes/practice.py` and its one line in `app/main.py` after the demo and
+   they are gone. Sign in as Armando yourself before you share the links: the
+   first person to sign in with a number sets its PIN, and his number is in this
+   file.
 
 **The walkthrough**
 
@@ -247,8 +258,8 @@ stalls, play the recording and keep talking.
 ## Showing the tablet on its own
 
 Some rooms only get the tablet. Set `BRIDGE_TABLET_ONLY=on` and the helper and
-coordinator doors come off the landing page and off the sign-in screen, so
-there is nothing on a projector to click into by accident.
+coordinator doors come off the sign-in screen, so there is nothing on a
+projector to click into by accident.
 
     BRIDGE_TABLET_ONLY=on ./run.sh
 

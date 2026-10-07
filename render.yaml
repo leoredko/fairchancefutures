@@ -58,20 +58,3 @@ services:
       # back. See app/presentation.py.
       - key: BRIDGE_TABLET_ONLY
         value: "on"
-      # The link to this service goes to a room. Everybody who opens it gets a
-      # fresh practice number already typed into the sign-in box, and a case
-      # opened that way starts with the three sample reports, so nobody shares
-      # one seeded person or has to be told how to get a report to read. A
-      # number in the link (the presenter's own) still wins. Delete it or set
-      # it to `off` and the sign-in goes back to an empty box. See
-      # app/practice.py.
-      - key: BRIDGE_PRACTICE
-        value: "on"
-      # The coordinator desk, the demo controls and the metrics page have no
-      # sign-in, which on a public link means anybody can press Start over on
-      # the case being presented. This puts them behind one key. Render makes
-      # the value, so the secret is never in this public file: read it under
-      # the service's Environment tab, open /staff once and type it. See
-      # app/desk.py.
-      - key: BRIDGE_DESK_KEY
-        generateValue: true
