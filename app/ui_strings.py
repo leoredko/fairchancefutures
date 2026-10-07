@@ -123,11 +123,6 @@ UI: dict[str, str] = {
     "learn.for_you": "For you now",
     "learn.length": "{minutes} minutes · {screens} screens",
     "learn.facts_heading": "Where the facts come from",
-    "learn.facts_body": "Every rule in this course names the law or the agency "
-                        "it comes from, and the date somebody checked it. "
-                        "Nothing here is somebody's opinion about how credit "
-                        "works.",
-    "learn.facts_link": "See the full list",
 
     # -- inside a lesson ----------------------------------------------------
     "lesson.place": "{n} of {total}",
