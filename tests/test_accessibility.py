@@ -341,7 +341,7 @@ def _pages(client, inside, helper, staff):
             "/inside/learn/lesson/three-papers/0", "/inside/learn/finished",
             "/inside/case", "/inside/request", "/inside/report", "/inside/after",
             "/inside/intake/1", "/family", "/family/task", "/staff", "/staff/new",
-            "/staff/j-whitfield", "/staff/j-whitfield/triage"]
+            "/staff/d-marsh", "/staff/d-marsh/triage"]
     return urls
 
 
@@ -356,7 +356,7 @@ def test_every_page_has_one_main_and_a_skip_link_that_lands_on_it(client):
                 "/inside/learn/lesson/three-papers/0", "/inside/learn/finished",
                 "/inside/case", "/inside/request", "/inside/report",
                 "/inside/after", "/inside/intake/1", "/staff", "/staff/new",
-                "/staff/j-whitfield", "/staff/j-whitfield/triage"]:
+                "/staff/d-marsh", "/staff/d-marsh/triage"]:
         response = client.get(url)
         if response.status_code != 200:
             continue
@@ -457,16 +457,16 @@ def test_leaving_the_page_ends_the_speech():
     assert "pagehide" in LISTEN and "synth.cancel()" in LISTEN
 
 
-def test_a_citation_is_not_read_aloud(client):
-    """It is an English source line and a statute number, which a Spanish voice
-    would mangle and which is for a law library rather than for the ear."""
+def test_no_lesson_card_shows_a_source_line_the_list_lives_behind_the_citations_page(client):
+    """The source behind a rule is kept in the registry and on /citations, and a
+    card cites it in data (see test_lessons). It is not printed on the card: it
+    is an English source line and a statute number, which nobody reading a
+    lesson needs and which a Spanish voice would mangle."""
     sign_in_inside(client)
     for index in range(6):
         page = client.get(f"/inside/learn/lesson/three-papers/{index}").text
-        if "Where this comes from" in page or "De dónde viene" in page:
-            assert "data-no-speech" in page
-            return
-    raise AssertionError("no card with a source was found to check")
+        assert "Where this comes from" not in page
+        assert "De dónde viene" not in page
 
 
 # --------------------------------------------------------------------------

@@ -27,7 +27,7 @@ def test_each_surface_loads_once_signed_in(client):
 
     # The coordinator surface needs no sign-in; the vendor system did it.
     for url in ["/staff", "/staff/new", "/staff/m-alvarez",
-                "/staff/j-whitfield/triage"]:
+                "/staff/d-marsh/triage"]:
         assert client.get(url).status_code == 200, url
 
 
@@ -72,7 +72,7 @@ def test_the_tablet_still_cannot_upload_or_verify_identity():
 
 
 def test_helper_with_no_signed_form_gets_the_invitation_only(client):
-    # J. Whitfield has a helper code but no authorization on file.
+    # D. Marsh has a helper code but no authorization on file.
     sign_in_helper(client, code="BRIDGE-2231")
     landing = client.get("/family")
     assert landing.status_code == 200
@@ -108,11 +108,11 @@ def test_client_revokes_from_the_tablet_and_the_helper_loses_access(client):
 
 
 def test_naming_a_helper_from_the_tablet_grants_nothing_by_itself(client):
-    sign_in_inside(client, identifier="28A0931")   # J. Whitfield
+    sign_in_inside(client, identifier="28A0931")   # D. Marsh
     client.post("/inside/authorization/name", data={"helper_name": "Andre"})
 
     import app.store as store
-    assert store.get_authorization("j-whitfield") is None
+    assert store.get_authorization("d-marsh") is None
 
     sign_in_helper(client, code="BRIDGE-2231")
     assert client.get("/family/packet").status_code == 403
@@ -125,16 +125,16 @@ def test_intake_answers_persist_and_prefill_the_staff_form(client):
     client.post("/inside/intake/3", data={"ever_had_account": "unsure"})
 
     import app.store as store
-    assert store.STATE.clients["j-whitfield"].intake_answers["ever_had_account"] == "unsure"
+    assert store.STATE.clients["d-marsh"].intake_answers["ever_had_account"] == "unsure"
 
     sign_in_staff(client)
-    html = client.get("/staff/j-whitfield/triage").text
+    html = client.get("/staff/d-marsh/triage").text
     checked = html.split('value="unsure"')[1].split(">")[0]
     assert "checked" in checked
 
 
 def test_triage_classifies_and_reorders_the_queue(staff):
-    staff.post("/staff/j-whitfield/triage", data={
+    staff.post("/staff/d-marsh/triage", data={
         "ever_had_account": "yes",
         "report_result": "thin_or_stale",
         "collections": "none_found",
@@ -143,10 +143,10 @@ def test_triage_classifies_and_reorders_the_queue(staff):
         "recognizes_everything": "some_not_mine",
     })
     import app.store as store
-    whitfield = store.STATE.clients["j-whitfield"]
-    assert whitfield.case_state == "errors_present"
+    marsh = store.STATE.clients["d-marsh"]
+    assert marsh.case_state == "errors_present"
     # Errors carry a legal clock, so he jumps ahead of the release-date ordering.
-    assert whitfield.clock_sort < 0
+    assert marsh.clock_sort < 0
 
 
 def test_the_tablet_and_the_helper_never_receive_the_sensitive_fields():
@@ -255,7 +255,7 @@ def test_every_intake_answer_is_written_and_can_be_read_back(inside):
 
 def test_none_is_exclusive_server_side(staff):
     """A checkbox group is not a control. The rule holds without the JS."""
-    staff.post("/staff/j-whitfield/triage", data={
+    staff.post("/staff/d-marsh/triage", data={
         "ever_had_account": "no",
         "report_result": "no_file_found",
         "collections": "none_found",
@@ -264,7 +264,7 @@ def test_none_is_exclusive_server_side(staff):
         "recognizes_everything": "not_reviewed_yet",
     })
     import app.store as store
-    assert store.STATE.clients["j-whitfield"].intake_answers["obligations"] == ["restitution"]
+    assert store.STATE.clients["d-marsh"].intake_answers["obligations"] == ["restitution"]
 
 
 def test_drafting_produces_a_letter_for_every_bureau(staff):
@@ -289,7 +289,7 @@ def test_the_front_page_is_not_a_demo_menu(client):
 def test_no_wireframe_annotations_survive_in_the_product(client, staff):
     for url in ["/", "/citations", "/metrics"]:
         assert "Design note:" not in client.get(url).text, url
-    for url in ["/staff", "/staff/m-alvarez", "/staff/j-whitfield/triage"]:
+    for url in ["/staff", "/staff/m-alvarez", "/staff/d-marsh/triage"]:
         assert "Design note:" not in staff.get(url).text, url
 
 
@@ -443,7 +443,7 @@ def test_a_seeded_client_with_a_live_case_lands_on_it_not_on_question_one(client
 
 
 def test_somebody_who_has_not_chosen_a_path_is_asked_before_anything_else(client):
-    """J. Whitfield is the fresh case on purpose, so he is the one who gets asked.
+    """D. Marsh is the fresh case on purpose, so he is the one who gets asked.
 
     Nobody is dropped into intake any more. Intake is one of two things a
     person can be doing here, and which one is theirs to say.

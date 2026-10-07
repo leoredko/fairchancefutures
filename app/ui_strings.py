@@ -131,8 +131,6 @@ UI: dict[str, str] = {
     "lesson.unscored": "Nothing is scored and nobody sees your answer. The "
                        "explanation is the same either way.",
     "lesson.answer": "Answer",
-    "lesson.source.summary": "Where this comes from",
-    "lesson.source": "Where this comes from: {source}",
     "lesson.last": "Last one, then a question",
     "lesson.next": "Next",
     "lesson.back": "Back",

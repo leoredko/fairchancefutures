@@ -139,4 +139,4 @@ launches instantly, plus queueing writes in IndexedDB and replaying them on
 reconnect. Both are real work and neither is done, so the worker says so rather
 than implying otherwise.
 
-So: the tablet app assumes connectivity. Say that on the slide.
+So: the tablet app assumes connectivity.

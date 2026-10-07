@@ -11,7 +11,7 @@ from app import paths
 from app.store import STATE
 from tests.conftest import sign_in_inside, sign_in_staff
 
-FRESH = "28A0931"     # J. Whitfield, the seeded person with nothing started
+FRESH = "28A0931"     # D. Marsh, the seeded person with nothing started
 MID_CASE = "28A1187"  # Marcus W., mid-dispute
 
 
@@ -108,7 +108,7 @@ def test_a_value_that_is_not_a_path_leaves_the_question_unanswered(client):
     """Not a 500, and not a silent write of nonsense into the case file."""
     signed_in = sign_in_inside(client, identifier=FRESH)
     assert choose(signed_in, "everything").status_code == 303
-    assert STATE.clients["j-whitfield"].path == ""
+    assert STATE.clients["d-marsh"].path == ""
     assert signed_in.get("/inside", follow_redirects=False
                          ).headers["location"] == "/inside/start"
 

@@ -42,13 +42,13 @@ def test_short_lines_are_forgiven():
 
 
 def test_the_coordinator_scans_and_the_person_reads_it_on_the_tablet(client):
-    form = client.post("/staff/j-whitfield/report/scan")
+    form = client.post("/staff/d-marsh/report/scan")
     assert form.status_code == 200
     assert "Check it before you save" in form.text
 
-    saved = client.post("/staff/j-whitfield/report", follow_redirects=False, data={
+    saved = client.post("/staff/d-marsh/report", follow_redirects=False, data={
         "bureau": "TransUnion",
-        "consumer_name": "J. Whitfield",
+        "consumer_name": "D. Marsh",
         "ssn_on_document": "123-45-6789",
         "pulled_on": "2026-08-01",
         "accounts": "Midland Funding | xxxx4471 | 2019-02 | Open | $1,204 | not mine",
@@ -80,13 +80,13 @@ def test_the_full_number_is_never_written_to_storage(client):
 
 
 def test_a_scanned_dispute_reason_becomes_the_flagged_item(client):
-    client.post("/staff/j-whitfield/report", data={
-        "bureau": "Equifax", "consumer_name": "J. Whitfield",
+    client.post("/staff/d-marsh/report", data={
+        "bureau": "Equifax", "consumer_name": "D. Marsh",
         "accounts": "Cavalry SPV | xxxx8802 |  | Open |  | wrong middle initial",
     })
     from app.store import STATE
 
-    flagged = STATE.clients["j-whitfield"].flagged_items
+    flagged = STATE.clients["d-marsh"].flagged_items
     assert flagged == [{"creditor": "Cavalry SPV", "last_four": "8802",
                         "reason": "wrong middle initial"}]
 

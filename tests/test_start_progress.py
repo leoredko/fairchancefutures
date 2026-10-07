@@ -9,7 +9,7 @@ from app.questions import INSIDE_QUESTIONS
 from app.store import STATE
 from tests.conftest import sign_in_inside
 
-FRESH = "28A0931"          # J. Whitfield, nothing started
+FRESH = "28A0931"          # D. Marsh, nothing started
 SLUG = lessons.CURRICULUM[0].slug
 
 
@@ -19,7 +19,7 @@ def page(client):
 
 
 def person():
-    return STATE.clients["j-whitfield"]
+    return STATE.clients["d-marsh"]
 
 
 def test_nothing_started_still_says_start(client):

@@ -42,7 +42,7 @@ real answer with a real deadline on it.
 
 ### How many people come home, checked 2026-10-06
 
-The scale behind the deck. These are counts of people leaving, and neither
+The scale behind the numbers. These are counts of people leaving, and neither
 source says anything about their credit.
 
 | Claim | Source |
@@ -55,12 +55,12 @@ source says anything about their credit.
 breakdowns DOCCS does not publish in this report, such as releases by facility
 (Fishkill, where Armando is housed, shows 641 for 2025 in that file).
 
-**The one number that is an estimate and not a count.** The deck's "about 2,000
+**The one number that is an estimate and not a count.** The "about 2,000
 people a year would have an error to dispute" is 10,275 multiplied by the FTC's
 one in five (an error corrected after disputing, [FTC 2013](https://www.ftc.gov/reports/section-319-fair-accurate-credit-transactions-act-2003-fifth-interim-federal-trade-commission-report)),
 a general-population rate. Nobody has measured it for people coming home, and
-`OPEN_QUESTIONS` in `app/sources.py` says so. The slide labels it an estimate;
-keep it labelled.
+`OPEN_QUESTIONS` in `app/sources.py` says so. Keep it labelled as an
+estimate wherever it is quoted.
 
 ### What the DIN already answers, checked 2026-09-23
 
@@ -105,7 +105,7 @@ fails if a card cites a key that is not in the registry.
 
 The team problem statement has that last one the wrong way round: it reads
 "one in five consumers has an error", which is the corrected-after-dispute
-figure. Worth fixing on the slide before anyone in the audience checks.
+figure. Worth correcting wherever it is quoted.
 
 ### Bureau dispute addresses, checked 2026-09-23
 

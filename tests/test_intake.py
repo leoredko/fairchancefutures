@@ -32,7 +32,7 @@ def ok(**over):
     ("andre  QUINONES", "Andre Quinones"),
     ("MARIA ALVAREZ", "Maria Alvarez"),
     ("marcus w.", "Marcus W."),
-    ("james whitfield iii", "James Whitfield III"),
+    ("daniel marsh iii", "Daniel Marsh III"),
     ("tom o'brien sr", "Tom O'Brien Sr."),
     ("SEAN MCDONALD", "Sean McDonald"),
     ("ana macgregor", "Ana MacGregor"),
