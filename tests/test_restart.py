@@ -136,8 +136,14 @@ def test_armando_starts_with_nothing_done_so_the_journey_can_be_walked_live(clie
     armando = STATE.clients["a-torres"]
     assert armando.path == "" and not armando.intake_answers
     assert not any(armando.documents.values()) and len(armando.documents) == 3
-    assert not STATE.reports.get("a-torres")
     assert all(not a.get("pin_hash") for a in STATE.accounts.values())
+
+
+def test_armandos_three_reports_are_on_his_case_before_anyone_signs_in(client):
+    from app.store import STATE
+    reports = STATE.reports["a-torres"]
+    assert sorted(r["bureau"] for r in reports) == ["Equifax", "Experian", "TransUnion"]
+    assert all(r["confirmed"] for r in reports)
 
 
 def test_marking_a_document_on_file_puts_a_named_event_on_his_timeline(client):
