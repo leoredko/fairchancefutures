@@ -79,13 +79,12 @@ def signin(request: Request, error: str | None = None,
     # With nothing in the link and BRIDGE_PRACTICE on, the box arrives with a
     # fresh practice number instead, so a room opening one link neither types
     # a number nor lands on somebody else's case. See app/practice.py.
-    offered = False
     if not identifier and practice.enabled():
         taken = {a["login_key"] for a in STATE.accounts.values()}
-        identifier, offered = practice.fresh_number(taken), True
+        identifier = practice.fresh_number(taken)
     return templates.TemplateResponse(
         request, "access/signin.html",
-        {"error": error, "identifier": identifier, "practice": offered,
+        {"error": error, "identifier": identifier,
          "languages": i18n.choices(),
          "lang": i18n.from_request(request),
          "challenge": _ask(request)},

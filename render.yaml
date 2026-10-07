@@ -67,11 +67,3 @@ services:
       # app/practice.py.
       - key: BRIDGE_PRACTICE
         value: "on"
-      # The coordinator desk, the demo controls and the metrics page have no
-      # sign-in, which on a public link means anybody can press Start over on
-      # the case being presented. This puts them behind one key. Render makes
-      # the value, so the secret is never in this public file: read it under
-      # the service's Environment tab, open /staff once and type it. See
-      # app/desk.py.
-      - key: BRIDGE_DESK_KEY
-        generateValue: true

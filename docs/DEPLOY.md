@@ -99,21 +99,13 @@ Environment:
   click into the wrong one. Both routes stay reachable by URL, which is how a
   walkthrough is driven from a window the room does not see. On in
   `render.yaml`, because that URL is the presentation; off everywhere else.
+  It is read per request, so changing it takes effect on the next page rather
+  than the next deploy. See `app/presentation.py`.
 - `BRIDGE_PRACTICE` — `on` is for a link shared with a room. The sign-in screen
   arrives with a fresh, unused 28 number already in the box, so nobody types
   one or lands on somebody else's case, and a case opened that way starts with
   the three sample reports. Off by default and not part of the product, and on in `render.yaml`:
   see `app/practice.py`.
-- `BRIDGE_DESK_KEY` — set it to any long string and `/staff`, `/demo` and
-  `/metrics` ask for it once, at `/desk`, and remember it for twelve hours. The
-  tablet and the helper's phone are untouched. Without it those pages have no
-  sign-in, because in the product the coordinator is already signed in to the
-  vendor system, which on a public link means anybody can press Start over on
-  the case being presented. On in `render.yaml` with a value Render generates, so the key is never in
-  this public repo: read it under the service's Environment tab. See
-  `app/desk.py`.
-  It is read per request, so changing it takes effect on the next page rather
-  than the next deploy. See `app/presentation.py`.
 
 **Changing a variable restarts the service, and on the free plan a restart
 reseeds the caseload.** Anything done in a live session goes with it: a PIN

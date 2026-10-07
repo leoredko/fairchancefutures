@@ -27,7 +27,6 @@ def test_the_box_arrives_with_a_fresh_28_number_when_practice_is_on(client, monk
     number = box(client)
     parsed = parse(number)
     assert parsed.normalized.startswith("28")
-    assert "We filled in a practice number" in client.get("/signin").text
 
 
 def test_two_visitors_are_not_handed_the_same_number(client, monkeypatch):
@@ -40,7 +39,6 @@ def test_a_number_from_the_link_still_wins_over_a_practice_one(client, monkeypat
     monkeypatch.setenv("BRIDGE_PRACTICE", "on")
     page = client.get("/signin?identifier=28-E-3306").text
     assert 'value="28-E-3306"' in page
-    assert "We filled in a practice number" not in page
 
 
 def test_the_practice_number_signs_in_and_the_case_has_three_reports(client, monkeypatch):
@@ -61,3 +59,17 @@ def test_a_case_opened_with_practice_off_starts_with_no_reports(client):
     key = "28Z0001"
     client.post("/signin", data={"identifier": key})
     assert not STATE.reports.get(f"din-{key.lower()}")
+
+
+def test_the_screen_gets_no_extra_text_the_pin_rules_show_only_when_one_is_broken(client, monkeypatch):
+    """Less on the screen, not more: no note about PINs on the sign-in. A weak
+    PIN gets its reason on the screen where it was typed."""
+    monkeypatch.setenv("BRIDGE_PRACTICE", "on")
+    number = box(client)
+    assert "PIN" not in client.get("/signin").text.split("<main")[-1].split("Next")[0]
+    key = parse(number).normalized
+    client.post("/signin", data={"identifier": number})
+    for weak, reason in [("111111", "same number six times"),
+                         ("123456", "counting up or down")]:
+        r = client.post("/signin/enroll", data={"normalized": key, "pin": weak, "confirm": weak})
+        assert reason in r.text

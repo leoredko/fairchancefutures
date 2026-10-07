@@ -205,9 +205,7 @@ what fits in five minutes. This describes what the app does and in what order.
 5. **If the link goes to the room.** `render.yaml` already sets `BRIDGE_PRACTICE=on`, so everybody
    who opens it gets their own practice number already typed in and their own
    case with the three reports on it, so nobody shares your Armando and nobody
-   is sent to a demo control. It also generates `BRIDGE_DESK_KEY`, so only you can
-   reach `/staff`, `/demo` and `/metrics`: copy the key from the service's
-   Environment tab in Render and type it once at `/staff`. Sign in as Armando yourself
+   is sent to a demo control. Sign in as Armando yourself
    before you share the link: the first person to sign in with a number sets
    its PIN, and his number is in this file.
 
