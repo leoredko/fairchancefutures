@@ -29,6 +29,7 @@
   <form class="pane" method="post" action="/signin" autocomplete="off">
     <h1 id="door-title">{{ t('door.heading') }}</h1>
     <p class="lede" id="door-hint">{{ t('door.either') }}</p>
+    {% if practice %}<p class="small strong">{{ t('door.practice') }}</p>{% endif %}
 
     {% if error %}<div class="denied"><span class="what">{{ tr(error) }}</span></div>{% endif %}
 

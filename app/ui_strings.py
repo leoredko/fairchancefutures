@@ -27,6 +27,9 @@ UI: dict[str, str] = {
     "door.title": "Bridge, sign in",
     "door.region": "New York State",
     "door.heading": "DIN number or NYS ID",
+    "door.practice": "We filled in a practice number so you can try this. It "
+                     "belongs to nobody real. When it asks, pick any six "
+                     "digits as a PIN.",
     "door.either": "Either one works.",
     "door.next": "Next",
     "door.dashes": "Dashes and spaces don't matter.",

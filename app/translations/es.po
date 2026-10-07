@@ -1373,6 +1373,16 @@ msgctxt "door.heading"
 msgid "DIN number or NYS ID"
 msgstr "Número DIN o NYS ID"
 
+#, fuzzy
+msgctxt "door.practice"
+msgid ""
+"We filled in a practice number so you can try this. It belongs to nobody "
+"real. When it asks, pick any six digits as a PIN."
+msgstr ""
+"Te pusimos un número de práctica para que pruebes esto. No pertenece a "
+"ninguna persona real. Cuando te lo pida, elige seis dígitos cualquiera como "
+"PIN."
+
 msgctxt "door.either"
 msgid "Either one works."
 msgstr "Cualquiera de los dos sirve."

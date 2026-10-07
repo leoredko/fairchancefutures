@@ -202,6 +202,14 @@ what fits in five minutes. This describes what the app does and in what order.
    is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
    and are not toured unless you choose the optional ending below.
 
+5. **If the link goes to the room.** Set `BRIDGE_PRACTICE=on` and everybody
+   who opens it gets their own practice number already typed in and their own
+   case with the three reports on it, so nobody shares your Armando and nobody
+   is sent to a demo control. Set `BRIDGE_DESK_KEY` to a long string so only
+   you can reach `/staff`, `/demo` and `/metrics`. Sign in as Armando yourself
+   before you share the link: the first person to sign in with a number sets
+   its PIN, and his number is in this file.
+
 **The walkthrough**
 
 1. **Choose a path.** After the PIN, Armando is asked what to do first, in two
