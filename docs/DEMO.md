@@ -195,18 +195,19 @@ what fits in five minutes. This describes what the app does and in what order.
    first sign-in asks you to choose one. A free instance that has slept
    reseeds, which clears the PIN again, so check within the hour, and restart
    him once more afterwards.
-3. The deployed sign-in asks an arithmetic question first (`BRIDGE_CAPTCHA` is
-   on in `render.yaml`). It is not part of the product and it is worth knowing
-   before it appears on a projector.
+3. The deployed sign-in does not ask the arithmetic question (`BRIDGE_CAPTCHA`
+   is `off` in `render.yaml` for the showcase). Set it to `1` to bring it back
+   if the link starts to attract scripts.
 4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
    is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
    and are not toured unless you choose the optional ending below.
 
-5. **If the link goes to the room.** Set `BRIDGE_PRACTICE=on` and everybody
+5. **If the link goes to the room.** `render.yaml` already sets `BRIDGE_PRACTICE=on`, so everybody
    who opens it gets their own practice number already typed in and their own
    case with the three reports on it, so nobody shares your Armando and nobody
-   is sent to a demo control. Set `BRIDGE_DESK_KEY` to a long string so only
-   you can reach `/staff`, `/demo` and `/metrics`. Sign in as Armando yourself
+   is sent to a demo control. It also generates `BRIDGE_DESK_KEY`, so only you can
+   reach `/staff`, `/demo` and `/metrics`: copy the key from the service's
+   Environment tab in Render and type it once at `/staff`. Sign in as Armando yourself
    before you share the link: the first person to sign in with a number sets
    its PIN, and his number is in this file.
 
