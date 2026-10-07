@@ -66,7 +66,7 @@ def test_the_titles_and_summaries_are_folded_not_stacked(client):
     html = client.get("/inside/learn").text
     folded = html.split('<details class="more">')[-1]
     assert lessons.CURRICULUM[0].title in folded
-    assert lessons.CURRICULUM[0].hook in folded
+    assert lessons.CURRICULUM[0].hook in htmllib.unescape(folded)
     before_the_fold = html.split('<details class="more">')[0] if html.count('<details class="more">') == 1 else html
     assert lessons.CURRICULUM[0].hook not in html.split('class="modules"')[0]
 
@@ -74,7 +74,7 @@ def test_the_titles_and_summaries_are_folded_not_stacked(client):
 def test_only_the_first_sentence_of_the_intro_shows_until_asked(client):
     sign_in_inside(client)
     html = client.get("/inside/learn").text
-    assert '<p class="lede">11 lessons, about 50 minutes in total.</p>' in html
+    assert "11 lessons, about 50 minutes in total, to give yourself" in html
     assert "pick it up tomorrow" in html          # still there, folded
 
 
