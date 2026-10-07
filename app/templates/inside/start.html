@@ -27,7 +27,12 @@
           {% endif %}
           <h2>{{ t('path.' ~ path.key ~ '.label') }}</h2>
           <p class="small">{{ t('path.' ~ path.key ~ '.blurb') }}</p>
-          <button class="btn wide" type="submit">{{ t('path.' ~ path.key ~ '.cta') }}</button>
+          {# Where they are up to, not a fresh start. Somebody who did half the
+             course and came back to this screen is not starting. #}
+          {% for note_key, note_values in cards[path.key].notes %}
+          <p class="small strong">{{ t(note_key, **note_values) }}</p>
+          {% endfor %}
+          <button class="btn wide" type="submit">{{ t(cards[path.key].cta) }}</button>
         </div>
       </form>
       {% endfor %}

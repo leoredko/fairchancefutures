@@ -27,7 +27,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bridge\n"
-"PO-Revision-Date: 2026-10-01\n"
+"PO-Revision-Date: 2026-10-07\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1610,6 +1610,31 @@ msgstr ""
 msgctxt "path.learn.cta"
 msgid "Start learning"
 msgstr "Empezar a aprender"
+
+#, fuzzy
+msgctxt "path.learn.cta.continue"
+msgid "Continue where you are up to"
+msgstr "Continuar donde te quedaste"
+
+#, fuzzy
+msgctxt "path.learn.cta.again"
+msgid "Go back over the lessons"
+msgstr "Repasar las lecciones"
+
+#, fuzzy
+msgctxt "path.credit.cta.continue"
+msgid "Continue my questions"
+msgstr "Seguir con mis preguntas"
+
+#, fuzzy
+msgctxt "path.credit.cta.done"
+msgid "See where I stand"
+msgstr "Ver cómo voy"
+
+#, fuzzy
+msgctxt "start.questions_progress"
+msgid "{n} of {total} questions answered"
+msgstr "{n} de {total} preguntas contestadas"
 
 msgctxt "path.credit.label"
 msgid "Work on my credit"

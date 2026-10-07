@@ -94,6 +94,11 @@ UI: dict[str, str] = {
                         "forms. It saves where you stop, so you can put the "
                         "tablet down and come back to it.",
     "path.learn.cta": "Start learning",
+    "path.learn.cta.continue": "Continue where you are up to",
+    "path.learn.cta.again": "Go back over the lessons",
+    "path.credit.cta.continue": "Continue my questions",
+    "path.credit.cta.done": "See where I stand",
+    "start.questions_progress": "{n} of {total} questions answered",
     "path.credit.label": "Work on my credit",
     "path.credit.blurb": "Answer some questions about your money, then a "
                          "counselor picks it up and works your case with you. "
