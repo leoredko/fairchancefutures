@@ -35,19 +35,18 @@ router = APIRouter()
 HOME = {"inside": "/inside", "family": "/family", "staff": "/staff"}
 
 
-def _ask(request: Request, language: str | None = None) -> dict | None:
+def _ask() -> dict | None:
     """A fresh human check, or None when the deployment has not asked for one.
 
-    A new question every render rather than one reused: a token that comes
-    back a second time is the shape of the thing this is for.
+    A new token every render rather than one reused.
     """
     if not challenge.enabled():
         return None
-    return challenge.issue(language or i18n.from_request(request))
+    return challenge.issue()
 
 
-def _passed(token: str, answer: str) -> bool:
-    return not challenge.enabled() or challenge.verify(token, answer)
+def _passed(token: str, ticked: str) -> bool:
+    return not challenge.enabled() or challenge.verify(token, ticked)
 
 
 def _start(account, response: RedirectResponse) -> RedirectResponse:
@@ -80,7 +79,7 @@ def signin(request: Request, error: str | None = None,
         {"error": error, "identifier": identifier,
          "languages": i18n.choices(),
          "lang": i18n.from_request(request),
-         "challenge": _ask(request)},
+         "challenge": _ask()},
     )
 
 
@@ -110,20 +109,20 @@ def set_language(request: Request, lang: str = Form("en"),
 @router.post("/signin", response_class=HTMLResponse)
 def signin_identify(request: Request, identifier: str = Form(""),
                     challenge_token: str = Form(""),
-                    challenge_answer: str = Form("")):
+                    challenge_human: str = Form("")):
     """Step one: which number. Step two happens on the next screen.
 
     Two screens instead of one because a six-digit PIN typed on the same screen
     as the number you just read off a printed sheet is how people mistype both.
     """
-    if not _passed(challenge_token, challenge_answer):
+    if not _passed(challenge_token, challenge_human):
         return templates.TemplateResponse(
             request, "access/signin.html",
-            {"error": "That was not the right answer. Here is another one.",
+            {"error": "Tick the box to show you are a person.",
              "identifier": identifier,
              "languages": i18n.choices(),
              "lang": i18n.from_request(request),
-             "challenge": _ask(request)},
+             "challenge": _ask()},
             status_code=400,
         )
 
@@ -135,7 +134,7 @@ def signin_identify(request: Request, identifier: str = Form(""),
             {"error": str(exc), "identifier": identifier,
              "languages": i18n.choices(),
              "lang": i18n.from_request(request),
-             "challenge": _ask(request)},
+             "challenge": _ask()},
             status_code=400,
         )
 
@@ -151,7 +150,7 @@ def signin_identify(request: Request, identifier: str = Form(""),
                  "identifier": identifier,
                  "languages": i18n.choices(),
                  "lang": i18n.from_request(request),
-                 "challenge": _ask(request)},
+                 "challenge": _ask()},
                 status_code=404,
             )
 
@@ -289,19 +288,19 @@ def helper_signin(request: Request, error: str | None = None,
     # does on the tablet's sign-in. It is never a PIN.
     return templates.TemplateResponse(
         request, "access/helper.html",
-        {"error": error, "code": code, "challenge": _ask(request, "en")},
+        {"error": error, "code": code, "challenge": _ask()},
     )
 
 
 @router.post("/helper", response_class=HTMLResponse)
 def helper_identify(request: Request, code: str = Form(""),
                     challenge_token: str = Form(""),
-                    challenge_answer: str = Form("")):
-    if not _passed(challenge_token, challenge_answer):
+                    challenge_human: str = Form("")):
+    if not _passed(challenge_token, challenge_human):
         return templates.TemplateResponse(
             request, "access/helper.html",
-            {"error": "That was not the right answer. Here is another one.",
-             "code": code, "challenge": _ask(request, "en")},
+            {"error": "Tick the box to show you are a person.",
+             "code": code, "challenge": _ask()},
             status_code=400,
         )
 
@@ -311,7 +310,7 @@ def helper_identify(request: Request, code: str = Form(""),
             request, "access/helper.html",
             {"error": "That code is not one of ours. It is printed on the "
                       "letter that came in the mail.", "code": code,
-             "challenge": _ask(request, "en")},
+             "challenge": _ask()},
             status_code=404,
         )
     page = "access/enroll.html" if not account.enrolled else "access/pin.html"

@@ -168,7 +168,8 @@ def intake(request: Request, index: int):
     question = inside_question(index)
     return templates.TemplateResponse(
         request, "inside/intake.html",
-        {"client": caller.client, "q": question, "total": len(INSIDE_QUESTIONS), "all_questions": INSIDE_QUESTIONS,
+        {"client": caller.client, "q": question, "total": len(INSIDE_QUESTIONS),
+         "review": request.query_params.get("from") == "review",
          "saved": caller.client.intake_answers.get(question.field)},
     )
 
@@ -195,13 +196,38 @@ async def answer(request: Request, index: int):
             "at": date.today().isoformat(),
         })
 
+    # Changing one answer from the summary goes straight back to the summary.
+    if request.query_params.get("from") == "review":
+        return RedirectResponse("/inside/review", status_code=303)
     if index >= len(INSIDE_QUESTIONS):
-        return RedirectResponse("/inside/where-you-stand", status_code=303)
+        return RedirectResponse("/inside/review", status_code=303)
     # The two knowledge questions come first, and what follows them is an
     # explanation rather than another question.
     if index == 2:
         return RedirectResponse("/inside/how-this-works", status_code=303)
     return RedirectResponse(f"/inside/intake/{index + 1}", status_code=303)
+
+
+@router.get("/review", response_class=HTMLResponse)
+def review(request: Request):
+    """Every answer in one place, with a way to change each, before it is used.
+
+    Answers are already saved as they are given, so this is a last look and
+    not a submit: leaving without pressing the button loses nothing.
+    """
+    caller = require_role(request, "inside")
+    require(Surface.INSIDE, Capability.ANSWER_INTAKE)
+    answers = caller.client.intake_answers
+    rows = []
+    for q in INSIDE_QUESTIONS:
+        given = answers.get(q.field)
+        values = given if isinstance(given, list) else [given]
+        keys = [f"intake.{q.field}.{v}" for v in values if v]
+        rows.append({"index": q.index, "prompt": f"intake.{q.field}.prompt",
+                     "answers": keys})
+    return templates.TemplateResponse(
+        request, "inside/review.html", {"client": caller.client, "rows": rows},
+    )
 
 
 @router.get("/how-this-works", response_class=HTMLResponse)

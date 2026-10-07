@@ -16,19 +16,11 @@
     <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
   </div>
 
-  <form class="pane" method="post" action="/inside/intake/{{ q.index }}">
+  <form class="pane" method="post" action="/inside/intake/{{ q.index }}{% if review %}?from=review{% endif %}">
     <div class="progress">
       <div class="track"><span style="width: {{ (100 * q.index / total)|round|int }}%"></span></div>
       <span class="small">{{ t('intake.progress', n=q.index, total=total) }}</span>
     </div>
-
-    {# The whole set, generated from it, so the list never disagrees with the
-       bar below it. #}
-    {% if q.index == 1 %}
-    <ol class="small steps" data-no-speech>
-      {% for sq in all_questions %}<li>{{ t('intake.' ~ sq.field ~ '.prompt') }}</li>{% endfor %}
-    </ol>
-    {% endif %}
 
     <h1>{{ t('intake.' ~ q.field ~ '.prompt') }}</h1>
     {% if q.helper %}<p class="lede">{{ t('intake.' ~ q.field ~ '.helper') }}</p>{% endif %}
@@ -51,7 +43,9 @@
     {% endif %}
 
     <div class="notes-always">
-      {% if q.index > 1 %}
+      {% if review %}
+      <a class="btn quiet" href="/inside/review">&larr; {{ t('intake.back') }}</a>
+      {% elif q.index > 1 %}
       <a class="btn quiet" href="/inside/intake/{{ q.index - 1 }}">&larr; {{ t('intake.back') }}</a>
       {% endif %}
       {% if q.constraint %}{% endif %}

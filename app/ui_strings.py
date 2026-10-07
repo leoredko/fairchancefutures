@@ -34,9 +34,7 @@ UI: dict[str, str] = {
                    "is eight numbers, sometimes with a letter on the end.",
     "door.helper_ask": "Helping someone on the outside?",
     "door.helper_link": "Use the code from the letter",
-    "door.check_placeholder": "A number, or the word",
-    "door.check_why": "Asked because this is a public demonstration link. It "
-                      "keeps crawlers out and nothing else.",
+    "door.check_label": "Click if you are human",
     "door.other": "Other",
     "language.title": "Language",
     "language.heading": "Language",
@@ -273,6 +271,10 @@ def _intake() -> dict[str, str]:
         "intake.progress": "{n} of {total}",
         "intake.title": "Intake questions",
         "intake.back": "Back",
+        "review.title": "Check your answers",
+        "review.lede": "Change any of them now. They are saved either way.",
+        "review.change": "Change",
+        "review.confirm": "These are right",
         "intake.saved.title": SAVED_AS_YOU_GO["title"],
         "intake.saved.body": SAVED_AS_YOU_GO["body"],
     }
