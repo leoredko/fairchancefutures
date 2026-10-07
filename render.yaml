@@ -58,12 +58,3 @@ services:
       # back. See app/presentation.py.
       - key: BRIDGE_TABLET_ONLY
         value: "on"
-      # The link to this service goes to a room. Everybody who opens it gets a
-      # fresh practice number already typed into the sign-in box, and a case
-      # opened that way starts with the three sample reports, so nobody shares
-      # one seeded person or has to be told how to get a report to read. A
-      # number in the link (the presenter's own) still wins. Delete it or set
-      # it to `off` and the sign-in goes back to an empty box. See
-      # app/practice.py.
-      - key: BRIDGE_PRACTICE
-        value: "on"

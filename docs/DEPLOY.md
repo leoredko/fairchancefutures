@@ -95,17 +95,12 @@ Environment:
   costs a room one more step; set it back to `1` there to bring it back. See
   below.
 - `BRIDGE_TABLET_ONLY` — `on` takes the helper and coordinator doors off the
-  landing page and the sign-in screen, so a room being shown the tablet cannot
-  click into the wrong one. Both routes stay reachable by URL, which is how a
+  sign-in screen, so a room being shown the tablet cannot click into the wrong
+  one. Both routes stay reachable by URL, which is how a
   walkthrough is driven from a window the room does not see. On in
   `render.yaml`, because that URL is the presentation; off everywhere else.
   It is read per request, so changing it takes effect on the next page rather
   than the next deploy. See `app/presentation.py`.
-- `BRIDGE_PRACTICE` — `on` is for a link shared with a room. The sign-in screen
-  arrives with a fresh, unused 28 number already in the box, so nobody types
-  one or lands on somebody else's case, and a case opened that way starts with
-  the three sample reports. Off by default and not part of the product, and on in `render.yaml`:
-  see `app/practice.py`.
 
 **Changing a variable restarts the service, and on the free plan a restart
 reseeds the caseload.** Anything done in a live session goes with it: a PIN

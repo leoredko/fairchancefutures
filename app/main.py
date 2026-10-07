@@ -25,7 +25,7 @@ from app.bureaus import BUREAUS
 from app.sources import FACTS, INTERVIEWS, OPEN_QUESTIONS, SIMPLIFICATIONS, SURVEYS
 from app import labels
 from app.deps import templates
-from app.routes import access, demo, display, family, inside, language, staff
+from app.routes import access, demo, display, family, inside, language, practice, staff
 from app.store import STATE, boot, review_log
 from app.session import NotSignedIn, current, redirect_to_signin
 from app.surfaces import CAPABILITIES, DENIAL_REASON, Surface, SurfaceDenied
@@ -43,6 +43,7 @@ app.include_router(access.router)
 app.include_router(display.router)
 app.include_router(language.router)
 app.include_router(demo.router)
+app.include_router(practice.router)
 app.include_router(inside.router)
 app.include_router(family.router)
 app.include_router(staff.router)
