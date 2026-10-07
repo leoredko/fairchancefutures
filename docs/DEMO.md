@@ -200,9 +200,8 @@ what fits in five minutes. This describes what the app does and in what order.
    first sign-in asks you to choose one. A free instance that has slept
    reseeds, which clears the PIN again, so check within the hour, and restart
    him once more afterwards.
-3. The deployed sign-in does not ask the arithmetic question (`BRIDGE_CAPTCHA`
-   is `off` in `render.yaml` for the showcase). Set it to `1` to bring it back
-   if the link starts to attract scripts.
+3. The deployed sign-in has one "Click if you are human" box (`BRIDGE_CAPTCHA`
+   is `1` in `render.yaml`). Everybody ticks it once per sign-in.
 4. The landing page is just the project banner and the team, with a sign-in
    button. You do not start there: start at the sign-in with Armando already
    filled in (`/signin?identifier=28-E-3306`). The helper and coordinator

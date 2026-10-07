@@ -86,3 +86,27 @@ def test_the_progress_lines_come_through_in_spanish(client):
     html = client.get("/inside/start").text
     assert "Continuar donde te quedaste" in html
     assert "Continue where you are up to" not in html
+
+
+def test_the_last_question_lands_on_a_summary_where_any_answer_can_be_changed(client):
+    """Every answer in one place before it is used, and a change goes straight
+    back to the summary rather than through the questions again."""
+    sign_in_inside(client, identifier=FRESH)
+    for q in INSIDE_QUESTIONS:
+        last = client.post(f"/inside/intake/{q.index}",
+                           data={q.field: q.options[0].value},
+                           follow_redirects=False)
+    assert last.headers["location"] == "/inside/review"
+
+    html = client.get("/inside/review").text
+    assert "Check your answers" in html
+    for q in INSIDE_QUESTIONS:
+        assert f'/inside/intake/{q.index}?from=review' in html
+        assert q.prompt.replace("'", "&#39;") in html or q.prompt in html
+
+    first = INSIDE_QUESTIONS[0]
+    changed = client.post(f"/inside/intake/{first.index}?from=review",
+                          data={first.field: first.options[-1].value},
+                          follow_redirects=False)
+    assert changed.headers["location"] == "/inside/review"
+    assert person().intake_answers[first.field] == first.options[-1].value

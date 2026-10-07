@@ -40,15 +40,11 @@ services:
       # would be signed out on every restart rather than only losing the data.
       - key: BRIDGE_SECRET
         generateValue: true
-      # Off for the showcase. This is the arithmetic question the two sign-in
-      # doors ask before they take a number: it keeps crawlers and scripts out
-      # and it is nothing like authentication, but it costs every person in a
-      # room one more step on the way to the screen they came to see. Set it
-      # back to "1" and the question returns. It is written as an explicit
-      # "off" rather than deleted so a value left over in the dashboard cannot
-      # quietly keep it on.
+      # One "Click if you are human" box on the two sign-in doors. It keeps
+      # crawlers and scripts that never load the page out, and it is nothing
+      # like authentication. Set it to "off" to remove it.
       - key: BRIDGE_CAPTCHA
-        value: "off"
+        value: "1"
       # This URL is the presentation. The room is being shown the tablet, and
       # a landing page offering a coordinator queue and a helper door is an
       # invitation to click into the wrong one on a projector. Both routes

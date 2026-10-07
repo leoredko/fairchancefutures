@@ -32,8 +32,8 @@ seeded fake clients and disqualifying for anything else.
 
 Every response carries `X-Robots-Tag: noindex, nofollow` and `/robots.txt`
 disallows everything, so it at least stays out of search results. With
-`BRIDGE_CAPTCHA` set, the sign-in doors also ask a written-out arithmetic
-question, which stops crawlers and scripted sign-ins. Neither is
+`BRIDGE_CAPTCHA` set, the sign-in doors also ask for one tick in a
+"Click if you are human" box, which stops crawlers and scripted sign-ins. Neither is
 authentication: somebody with the link can read Marcus's DIN off the
 walkthrough and be Marcus. That lives in
 `app/main.py` rather than in a host's config, so it holds wherever this runs
@@ -90,10 +90,9 @@ Environment:
   means it changes on every restart and signs everybody out.
 - `PORT` — the port to bind. Default 8000. Render assigns this, so the
   container reads it rather than hardcoding a port Render is not expecting.
-- `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask an
-  arithmetic question first. Off in `render.yaml` for the showcase, because it
-  costs a room one more step; set it back to `1` there to bring it back. See
-  below.
+- `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask for
+  one tick in a "Click if you are human" box first. On in `render.yaml`; set it
+  to `off` there to remove it.
 - `BRIDGE_TABLET_ONLY` — `on` takes the helper and coordinator doors off the
   sign-in screen, so a room being shown the tablet cannot click into the wrong
   one. Both routes stay reachable by URL, which is how a

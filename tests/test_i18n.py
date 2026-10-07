@@ -368,14 +368,10 @@ def test_an_error_nobody_wrote_a_translation_for_stays_as_it_was():
         == "That PIN is not right. 3 tries left before it locks."
 
 
-def test_the_human_check_is_asked_and_answered_in_the_language_of_the_door():
-    ask = challenge.issue("es")
-    assert ask["question"].startswith("¿Cuánto es")
-    left, right = re.findall(r"es (\w+) más (\w+)\?", ask["question"])[0]
-    total = challenge.WORDS_ES.index(left) + challenge.WORDS_ES.index(right)
-    assert challenge.verify(ask["token"], str(total))
-    assert challenge.verify(ask["token"], challenge.WORDS_ES[total])
-    assert challenge.verify(ask["token"], challenge.WORDS[total])
+def test_the_human_check_is_asked_in_the_language_of_the_door(client, monkeypatch):
+    monkeypatch.setenv("BRIDGE_CAPTCHA", "1")
+    client.cookies.set(i18n.COOKIE, "es")
+    assert "Marque la casilla si es una persona" in client.get("/signin").text
 
 
 def test_the_language_page_is_reachable_and_changes_the_language(client):

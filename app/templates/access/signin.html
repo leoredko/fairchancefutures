@@ -41,17 +41,13 @@
            style="font-family: ui-monospace, monospace; letter-spacing: .08em">
 
     {% if challenge %}
-    {# A question the server asks and the server marks, because the deployed
-       demo sits on a public URL. Words rather than a picture so a screen
-       reader can read it, and no third-party script. Off on a tablet. #}
-    <div class="card dashed">
-      <label class="small strong" for="challenge_answer">{{ challenge.question }}</label>
-      <input class="choice" id="challenge_answer" name="challenge_answer"
-             inputmode="numeric" autocomplete="off" spellcheck="false"
-             placeholder="{{ t('door.check_placeholder') }}">
-      <input type="hidden" name="challenge_token" value="{{ challenge.token }}">
-      <p class="tiny">{{ t('door.check_why') }}</p>
-    </div>
+    {# One box, ticked by the person, with a signed token proving the page was
+       loaded. Plain HTML, no third-party script. Off on a tablet. #}
+    <label class="card dashed strong">
+      <input type="checkbox" name="challenge_human" value="1">
+      {{ t('door.check_label') }}
+    </label>
+    <input type="hidden" name="challenge_token" value="{{ challenge.token }}">
     {% endif %}
 
     <button class="btn wide" type="submit">{{ t('door.next') }}</button>

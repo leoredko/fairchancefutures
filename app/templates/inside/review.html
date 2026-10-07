@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ t('review.title') }}{% endblock %}
+{% block body %}
+<div class="tablet" role="main" id="content" tabindex="-1">
+  <div class="bar">
+    <svg class="mark" viewBox="0 0 48 34" aria-hidden="true"><use href="#markpath" fill="url(#markgrad)"/></svg>
+    {# Present here too. Leaving it off the intake flow was a mistake: every
+       answer is saved as it is given, so stepping out to read something costs
+       nothing and comes straight back to this question. Somebody who does not
+       yet understand what a credit report is has more reason to reach the
+       course mid-intake than less. #}
+    <span class="who">{{ client.display_name }}</span>
+    {# The switch. On every tablet screen on purpose: a person who wants the
+       other path should not have to remember where the question lives. #}
+    <div class="right"><a class="pill" href="/inside/start">{{ t('nav.change') }}</a></div>
+    <div class="right"><a class="pill" href="/inside/learn">{{ t('nav.course') }}</a><a class="pill" href="/signout">{{ t('nav.signout') }}</a></div>
+  </div>
+
+  <div class="pane">
+    <h1>{{ t('review.title') }}</h1>
+    <p class="lede">{{ t('review.lede') }}</p>
+
+    {% for row in rows %}
+    <div class="card">
+      <span class="small">{{ t(row.prompt) }}</span>
+      <span class="strong">{% for a in row.answers %}{{ t(a) }}{% if not loop.last %}, {% endif %}{% else %}&mdash;{% endfor %}</span>
+      <a class="btn quiet" href="/inside/intake/{{ row.index }}?from=review">{{ t('review.change') }}</a>
+    </div>
+    {% endfor %}
+
+    <a class="btn wide" href="/inside/where-you-stand">{{ t('review.confirm') }}</a>
+  </div>
+</div>
+{% endblock %}
