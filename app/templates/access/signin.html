@@ -61,12 +61,17 @@
       <span class="small">{{ t('door.format') }}</span>
     </div>
 
-    {% if not tablet_only() %}
     <div class="notes-always">
+      {% if not tablet_only() %}
       <p class="tiny">{{ t('door.helper_ask') }}
         <a href="/helper">{{ t('door.helper_link') }}</a>.</p>
+      {% endif %}
+      {# Every rule in the course names its law or agency and the date it was
+         checked. The list lives here, out of the way of the lessons, because
+         nobody reading a lesson needs to see it and somebody who wants it
+         should still find it. #}
+      <p class="tiny"><a href="/citations">{{ t('learn.facts_heading') }}</a></p>
     </div>
-    {% endif %}
   </form>
 </div>
 {% endblock %}
