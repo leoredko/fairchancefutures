@@ -4,7 +4,8 @@ The credit course is eleven lessons, 173 sentences, and the screens that carry
 a person to it (the door, the PIN, the first question, the lesson list and the
 buttons inside a lesson), the Display settings and the read-aloud and voice
 typing controls are another 157, 330 strings in all. All of them are in Spanish
-now, and Leo Redko approved the Spanish on 2026-09-30. This is how that works
+now, and Leo Redko approved the Spanish on 2026-09-30, and the lines added since
+(the first-screen buttons, the module labels) on 2026-10-07. This is how that works
 and how to change it.
 
 ## The short version

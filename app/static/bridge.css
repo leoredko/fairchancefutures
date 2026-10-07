@@ -857,3 +857,24 @@ body { padding-bottom: 68px; }
    tablet has a voice that stays on the tablet. */
 .listen-row { align-self: flex-start; gap: 12px; }
 .listen-row .btn { padding: 10px 20px; }
+
+/* Collapsed text. A summary is a plain, quiet link-coloured line; the folded
+   text under it keeps the page's own type. Colours are tokens only. */
+details.more { margin: 4px 0 8px; }
+details.more > summary {
+  cursor: pointer; color: var(--link); font-weight: 600; padding: 6px 0;
+  list-style-position: inside;
+}
+details.more[open] > summary { margin-bottom: 4px; }
+
+/* The module numbers: one row of tiles instead of a stack of paragraphs. */
+.modules { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+.mod {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 48px; height: 48px; padding: 0 6px; border-radius: var(--r);
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  font-weight: 700; text-decoration: none;
+}
+.mod.done { background: var(--teal-soft); border-color: var(--teal); color: var(--teal-ink); }
+.mod.started { background: var(--amber-soft); border-color: var(--amber); color: var(--amber-ink); }
+.mod.next { outline: 2px solid var(--teal); outline-offset: 2px; }

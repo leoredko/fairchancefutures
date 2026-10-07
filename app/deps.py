@@ -15,10 +15,12 @@ from jinja2 import pass_context  # noqa: E402
 from app import display as _display  # noqa: E402
 from app import i18n as _i18n  # noqa: E402
 from app import labels as _labels  # noqa: E402
+from app import lessons as _lessons  # noqa: E402
 from app import paths as _paths  # noqa: E402
 from app import presentation as _presentation  # noqa: E402
 
 templates.env.globals["labels"] = _labels
+templates.env.globals["lead_and_rest"] = _lessons.lead_and_rest
 # A callable, not its result: the switch is read per render, so turning it on
 # takes effect on the next page rather than the next restart.
 templates.env.globals["tablet_only"] = _presentation.tablet_only

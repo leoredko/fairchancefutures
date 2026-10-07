@@ -30,6 +30,7 @@ answer first, which is what makes the explanation stick.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date
 
@@ -982,3 +983,34 @@ def index_rows(client) -> list[dict]:
                         and not (far_out and lesson_.release_dependent)),
         })
     return rows
+
+
+# How many sentences of a card or an intro stay on screen before the rest folds
+# behind "Read more". One number, so the course can be tightened or loosened
+# without touching a template. A card is one screen and its body is the lesson,
+# so this is deliberately a little more generous than "a couple".
+COLLAPSE_AFTER = 3
+
+_SENTENCE_END = re.compile(r'(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡"“(\d])')
+# An abbreviation's full stop is not the end of a sentence ("U.S.", "EE. UU.").
+_ABBREVIATION = re.compile(
+    r'(?:\b(?:U\.S|Mr|Mrs|Ms|Dr|Dra|Sr|Sra|No|Núm|vs|etc|e\.g|i\.e|St)|\bEE|\bUU)\.$')
+
+
+def lead_and_rest(text: str, keep: int = COLLAPSE_AFTER) -> tuple[str, str]:
+    """The first `keep` sentences, and whatever follows them.
+
+    Text that is already short comes back whole with nothing after it, so a
+    template can ask unconditionally and only fold what is long. Works on the
+    translated text as well, since it splits on punctuation and not on words.
+    """
+    text = (text or "").strip()
+    sentences: list[str] = []
+    for piece in _SENTENCE_END.split(text):
+        if sentences and _ABBREVIATION.search(sentences[-1]):
+            sentences[-1] = f"{sentences[-1]} {piece}"
+        else:
+            sentences.append(piece)
+    if len(sentences) <= keep:
+        return text, ""
+    return " ".join(sentences[:keep]), " ".join(sentences[keep:])

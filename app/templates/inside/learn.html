@@ -20,7 +20,11 @@
 
   <div class="pane" role="main" id="content" tabindex="-1">
     <h1>{{ t('learn.heading') }}</h1>
-    <p class="lede">{{ t('learn.lede', total=standing.total, minutes=total_minutes) }}</p>
+    {% set intro, more_intro = lead_and_rest(t('learn.lede', total=standing.total, minutes=total_minutes), 1) %}
+    <p class="lede">{{ intro }}</p>
+    {% if more_intro %}
+    <details class="more"><summary>{{ t('learn.more') }}</summary><p class="small">{{ more_intro }}</p></details>
+    {% endif %}
 
     <div class="card {{ 'good' if standing.finished else 'accent' }}">
       <div class="row">
@@ -47,25 +51,39 @@
       {% endif %}
     </div>
 
-    <div class="stack">
+    {# Eleven numbers, not eleven paragraphs. Each is a link to its module; the
+       titles and one-line summaries are one tap away below. #}
+    <nav class="modules" aria-label="{{ t('learn.modules', total=standing.total) }}">
       {% for row in rows %}
-      <a class="card {% if row.done %}soft{% endif %}"
+      <a class="mod {{ 'done' if row.done else ('started' if row.started else '') }}{{ ' next' if next_up and next_up.slug == row.lesson.slug else '' }}"
          href="/inside/learn/lesson/{{ row.lesson.slug }}"
-         style="text-decoration:none;color:inherit">
-        <div class="row">
-          <span class="strong">{{ row.lesson.title }}</span>
-          <span style="margin-left:auto">
-            {% if row.done %}<span class="tag teal">{{ t('learn.done') }}</span>
-            {% elif row.started %}<span class="tag amber">{{ t('learn.place', card=row.card, screens=row.screens) }}</span>
-            {% elif row.for_you %}<span class="tag amber">{{ t('learn.for_you') }}</span>
-            {% endif %}
-          </span>
-        </div>
-        <span class="small">{{ row.lesson.hook }}</span>
-        <span class="tiny">{{ t('learn.length', minutes=row.lesson.minutes, screens=row.screens) }}</span>
-      </a>
+         title="{{ row.lesson.title }}"
+         aria-label="{{ t('learn.module', n=loop.index) }}: {{ row.lesson.title }}{% if row.done %}, {{ t('learn.done') }}{% endif %}">{{ loop.index }}</a>
       {% endfor %}
-    </div>
+    </nav>
+
+    <details class="more">
+      <summary>{{ t('learn.modules', total=standing.total) }}</summary>
+      <div class="stack" style="margin-top:12px">
+        {% for row in rows %}
+        <a class="card {% if row.done %}soft{% endif %}"
+           href="/inside/learn/lesson/{{ row.lesson.slug }}"
+           style="text-decoration:none;color:inherit">
+          <div class="row">
+            <span class="strong">{{ t('learn.module', n=loop.index) }}: {{ row.lesson.title }}</span>
+            <span style="margin-left:auto">
+              {% if row.done %}<span class="tag teal">{{ t('learn.done') }}</span>
+              {% elif row.started %}<span class="tag amber">{{ t('learn.place', card=row.card, screens=row.screens) }}</span>
+              {% elif row.for_you %}<span class="tag amber">{{ t('learn.for_you') }}</span>
+              {% endif %}
+            </span>
+          </div>
+          <span class="small">{{ row.lesson.hook }}</span>
+          <span class="tiny">{{ t('learn.length', minutes=row.lesson.minutes, screens=row.screens) }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </details>
   </div>
 </div>
 {% endblock %}

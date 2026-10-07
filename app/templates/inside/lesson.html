@@ -42,12 +42,20 @@
 
     {% else %}
     <h1>{{ card.title }}</h1>
-    <p class="lede">{{ card.body }}</p>
+    {# The first few sentences stay; the rest folds. Still on the page, so it is
+       read aloud and found by search, and a tap away. #}
+    {% set lead, rest = lead_and_rest(card.body) %}
+    <p class="lede">{{ lead }}</p>
+    {% if rest %}
+    <details class="more"><summary>{{ t('learn.more') }}</summary>
+      <p class="lede">{{ rest }}</p>
+    </details>
+    {% endif %}
 
     {% if card.aside %}
-    <div class="card accent">
-      <span class="small">{{ card.aside }}</span>
-    </div>
+    <details class="more"><summary>{{ t('learn.more') }}</summary>
+      <div class="card accent"><span class="small">{{ card.aside }}</span></div>
+    </details>
     {% endif %}
 
     <div class="row">

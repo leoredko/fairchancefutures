@@ -111,6 +111,9 @@ UI: dict[str, str] = {
     "learn.lede": "{total} lessons, about {minutes} minutes in total. Take one "
                   "at a time. It saves where you stop, so you can put the "
                   "tablet down mid-sentence and pick it up tomorrow.",
+    "learn.more": "Read more",
+    "learn.module": "Module {n}",
+    "learn.modules": "All {total} modules",
     "learn.finished": "You have finished all {total}.",
     "learn.progress": "{done} of {total} done",
     "learn.nothing": "Nothing started yet",
