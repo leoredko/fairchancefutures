@@ -466,8 +466,10 @@ def _demo_persona(today: date) -> Client:
     """Armando Torres, who starts with nothing done, so the journey can be walked.
 
     Everything else in the seed is somewhere in the middle of its story. This
-    one is at the front of it: no path chosen, no intake, no reports, no helper
-    signed up, and none of the three vital documents on file. The Social
+    one is at the front of it: no path chosen, no intake, no helper signed up,
+    and none of the three vital documents on file. His three credit reports are
+    already on the case, so the room can see "view report" without waiting for
+    paper; the mail and scan routes are shown on anybody else. The Social
     Security card deadline is still ahead, so the room sees it as something to
     act on rather than something already missed.
 
@@ -504,6 +506,13 @@ def _seed_reports(today: date) -> None:
         today, "marcus-w", "Marcus W.", "XXX-XX-4417", "1988-06-14",
         ["Sing Sing Correctional Facility, Ossining NY",
          "1194 E 224th St, Bronx NY 10466"],
+    )
+    # Armando's three files are on his case from the start, because the five
+    # minutes in front of a room cannot spare the thirty seconds to load them.
+    # Everything else about him still starts at the front of the story.
+    put_sample_reports(
+        today, "a-torres", "A. Torres", "XXX-XX-3306", "1991-03-02",
+        ["Fishkill Correctional Facility, New York"],
     )
 
 

@@ -73,12 +73,15 @@ a run, and not a stretch of their own number.
   the tablet sign-in with Armando's DIN already in the box. It fills the
   identifier and nothing else: the PIN is still his to choose, and no PIN is
   seeded.
-- **Sample reports.** On `/demo/restart`, **Load sample reports for ...** puts
+- **Armando's reports are already there.** His three confirmed reports are in
+  the seed, so nothing needs loading before a five-minute run. **Start over**
+  puts them back, because they are part of the day the seed describes.
+- **Sample reports for anybody else.** On `/demo/restart`, **Load sample reports for ...** puts
   three confirmed files on a person's case so **My reports** has something to
   open without waiting for paper. It is a demo control and not the product: in
   the product a report reaches the person only after a coordinator has
   confirmed it. Pressing it twice does not stack a second set, and **Start
-  over** takes the reports away again.
+  over** takes them away again for anybody who was not seeded with them.
 
 ## A walkthrough that shows the whole thing
 
@@ -122,8 +125,8 @@ Close every tab and reopen them. Everything is still there.
 
 Everyone else in the seed is partway through a story. Armando starts at the
 beginning, so the whole route can be walked live: DIN `28-E-3306`, Fishkill,
-releasing in about 140 days. There is no path, no intake, no reports and no
-helper signed up, and none of the three vital documents is on file. The Social
+releasing in about 140 days. There is no path, no intake and no
+helper signed up, and none of the three vital documents is on file. His three credit reports are already on the case (see **Demo shortcuts**), so **My reports** opens the moment he asks. The Social
 Security card deadline (120 days before release) is about 20 days ahead, so it
 reads as something to act on rather than something already missed. The helper
 code `BRIDGE-3306` is issued and not yet used.

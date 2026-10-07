@@ -10,19 +10,19 @@ def test_an_identifier_in_the_signin_link_fills_the_box_and_nothing_else(client)
     assert "pin" not in page.lower().split('name="identifier"')[1].split(">")[0]
 
 
-def test_sample_reports_give_armando_something_to_read_and_do_not_stack(client):
-    assert STATE.reports.get("a-torres", []) == []
+def test_sample_reports_give_somebody_something_to_read_and_do_not_stack(client):
+    assert STATE.reports.get("j-whitfield", []) == []
     for _ in range(2):
-        assert client.post("/demo/sample-report", data={"client_id": "a-torres"}).status_code == 200
-    assert len(STATE.reports["a-torres"]) == 3
-    assert all(r["confirmed"] for r in STATE.reports["a-torres"])
-    assert all(r["ssn_on_document"] == "XXX-XX-3306" for r in STATE.reports["a-torres"])
+        assert client.post("/demo/sample-report", data={"client_id": "j-whitfield"}).status_code == 200
+    assert len(STATE.reports["j-whitfield"]) == 3
+    assert all(r["confirmed"] for r in STATE.reports["j-whitfield"])
+    assert all(r["ssn_on_document"] == "XXX-XX-0931" for r in STATE.reports["j-whitfield"])
 
 
-def test_starting_armando_over_takes_the_sample_reports_away(client):
-    client.post("/demo/sample-report", data={"client_id": "a-torres"})
-    client.post("/demo/restart", data={"client_id": "a-torres"})
-    assert STATE.reports.get("a-torres", []) == []
+def test_starting_somebody_over_takes_loaded_sample_reports_away(client):
+    client.post("/demo/sample-report", data={"client_id": "j-whitfield"})
+    client.post("/demo/restart", data={"client_id": "j-whitfield"})
+    assert STATE.reports.get("j-whitfield", []) == []
 
 
 def test_sample_reports_for_nobody_is_a_404(client):
@@ -30,6 +30,11 @@ def test_sample_reports_for_nobody_is_a_404(client):
 
 
 def test_the_sample_reports_open_on_the_tablet(client):
-    client.post("/demo/sample-report", data={"client_id": "a-torres"})
-    sign_in_inside(client, identifier="28E3306")
+    client.post("/demo/sample-report", data={"client_id": "j-whitfield"})
+    sign_in_inside(client, identifier="28A0931")
     assert client.get("/inside/report").status_code == 200
+
+
+def test_starting_armando_over_puts_his_reports_back_because_they_are_in_the_seed(client):
+    client.post("/demo/restart", data={"client_id": "a-torres"})
+    assert len(STATE.reports["a-torres"]) == 3
