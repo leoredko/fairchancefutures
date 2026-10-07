@@ -1671,6 +1671,21 @@ msgstr ""
 "Guarda dónde te quedas, así que puedes dejar la tableta a media frase y "
 "seguir mañana."
 
+#, fuzzy
+msgctxt "learn.more"
+msgid "Read more"
+msgstr "Leer más"
+
+#, fuzzy
+msgctxt "learn.module"
+msgid "Module {n}"
+msgstr "Módulo {n}"
+
+#, fuzzy
+msgctxt "learn.modules"
+msgid "All {total} modules"
+msgstr "Los {total} módulos"
+
 msgctxt "learn.finished"
 msgid "You have finished all {total}."
 msgstr "Terminaste las {total}."
