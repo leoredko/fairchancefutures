@@ -1611,27 +1611,22 @@ msgctxt "path.learn.cta"
 msgid "Start learning"
 msgstr "Empezar a aprender"
 
-#, fuzzy
 msgctxt "path.learn.cta.continue"
 msgid "Continue where you are up to"
 msgstr "Continuar donde te quedaste"
 
-#, fuzzy
 msgctxt "path.learn.cta.again"
 msgid "Go back over the lessons"
 msgstr "Repasar las lecciones"
 
-#, fuzzy
 msgctxt "path.credit.cta.continue"
 msgid "Continue my questions"
 msgstr "Seguir con mis preguntas"
 
-#, fuzzy
 msgctxt "path.credit.cta.done"
 msgid "See where I stand"
 msgstr "Ver cómo voy"
 
-#, fuzzy
 msgctxt "start.questions_progress"
 msgid "{n} of {total} questions answered"
 msgstr "{n} de {total} preguntas contestadas"
@@ -1671,17 +1666,14 @@ msgstr ""
 "Guarda dónde te quedas, así que puedes dejar la tableta a media frase y "
 "seguir mañana."
 
-#, fuzzy
 msgctxt "learn.more"
 msgid "Read more"
 msgstr "Leer más"
 
-#, fuzzy
 msgctxt "learn.module"
 msgid "Module {n}"
 msgstr "Módulo {n}"
 
-#, fuzzy
 msgctxt "learn.modules"
 msgid "All {total} modules"
 msgstr "Los {total} módulos"
