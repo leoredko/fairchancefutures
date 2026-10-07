@@ -66,8 +66,6 @@ integration assumes and `app/caseplan.py` for the code.
 What happens to somebody after they walk out, and which of the obvious answers
 the evidence rules out, is [docs/RETENTION.md](docs/RETENTION.md).
 
-Design rationale lives in [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md).
-
 Nobody is issued a PIN. Everyone sets their own at first use, and a counselor
 resetting one *clears* it rather than choosing a new one, so the only person who
 ever knows a client's PIN is the client. PINs are PBKDF2-hashed with a per-user

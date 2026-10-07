@@ -40,13 +40,15 @@ services:
       # would be signed out on every restart rather than only losing the data.
       - key: BRIDGE_SECRET
         generateValue: true
-      # This URL is public, so the two sign-in doors ask an arithmetic
-      # question before they take a number. It keeps crawlers out and it is
-      # nothing like authentication: anybody with the link can still read a
-      # DIN off the walkthrough and be that person. Unset it and the doors go
-      # back to asking nothing, which is what a facility tablet wants.
+      # Off for the showcase. This is the arithmetic question the two sign-in
+      # doors ask before they take a number: it keeps crawlers and scripts out
+      # and it is nothing like authentication, but it costs every person in a
+      # room one more step on the way to the screen they came to see. Set it
+      # back to "1" and the question returns. It is written as an explicit
+      # "off" rather than deleted so a value left over in the dashboard cannot
+      # quietly keep it on.
       - key: BRIDGE_CAPTCHA
-        value: "1"
+        value: "off"
       # This URL is the presentation. The room is being shown the tablet, and
       # a landing page offering a coordinator queue and a helper door is an
       # invitation to click into the wrong one on a projector. Both routes
@@ -56,3 +58,20 @@ services:
       # back. See app/presentation.py.
       - key: BRIDGE_TABLET_ONLY
         value: "on"
+      # The link to this service goes to a room. Everybody who opens it gets a
+      # fresh practice number already typed into the sign-in box, and a case
+      # opened that way starts with the three sample reports, so nobody shares
+      # one seeded person or has to be told how to get a report to read. A
+      # number in the link (the presenter's own) still wins. Delete it or set
+      # it to `off` and the sign-in goes back to an empty box. See
+      # app/practice.py.
+      - key: BRIDGE_PRACTICE
+        value: "on"
+      # The coordinator desk, the demo controls and the metrics page have no
+      # sign-in, which on a public link means anybody can press Start over on
+      # the case being presented. This puts them behind one key. Render makes
+      # the value, so the secret is never in this public file: read it under
+      # the service's Environment tab, open /staff once and type it. See
+      # app/desk.py.
+      - key: BRIDGE_DESK_KEY
+        generateValue: true

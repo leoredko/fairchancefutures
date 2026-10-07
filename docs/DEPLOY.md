@@ -91,13 +91,27 @@ Environment:
 - `PORT` — the port to bind. Default 8000. Render assigns this, so the
   container reads it rather than hardcoding a port Render is not expecting.
 - `BRIDGE_CAPTCHA` — set it to anything truthy and both sign-in doors ask an
-  arithmetic question first. On in `render.yaml`, off everywhere else. See
+  arithmetic question first. Off in `render.yaml` for the showcase, because it
+  costs a room one more step; set it back to `1` there to bring it back. See
   below.
 - `BRIDGE_TABLET_ONLY` — `on` takes the helper and coordinator doors off the
   landing page and the sign-in screen, so a room being shown the tablet cannot
   click into the wrong one. Both routes stay reachable by URL, which is how a
   walkthrough is driven from a window the room does not see. On in
   `render.yaml`, because that URL is the presentation; off everywhere else.
+- `BRIDGE_PRACTICE` — `on` is for a link shared with a room. The sign-in screen
+  arrives with a fresh, unused 28 number already in the box, so nobody types
+  one or lands on somebody else's case, and a case opened that way starts with
+  the three sample reports. Off by default and not part of the product, and on in `render.yaml`:
+  see `app/practice.py`.
+- `BRIDGE_DESK_KEY` — set it to any long string and `/staff`, `/demo` and
+  `/metrics` ask for it once, at `/desk`, and remember it for twelve hours. The
+  tablet and the helper's phone are untouched. Without it those pages have no
+  sign-in, because in the product the coordinator is already signed in to the
+  vendor system, which on a public link means anybody can press Start over on
+  the case being presented. On in `render.yaml` with a value Render generates, so the key is never in
+  this public repo: read it under the service's Environment tab. See
+  `app/desk.py`.
   It is read per request, so changing it takes effect on the next page rather
   than the next deploy. See `app/presentation.py`.
 
@@ -139,4 +153,4 @@ launches instantly, plus queueing writes in IndexedDB and replaying them on
 reconnect. Both are real work and neither is done, so the worker says so rather
 than implying otherwise.
 
-So: the tablet app assumes connectivity. Say that on the slide.
+So: the tablet app assumes connectivity.

@@ -218,9 +218,9 @@ def test_a_client_signs_in_with_either_of_their_numbers(client):
 
 
 def test_one_person_cannot_reach_another_persons_case(client):
-    sign_in_inside(client, identifier="28A0931")       # J. Whitfield
+    sign_in_inside(client, identifier="28A0931")       # D. Marsh
     page = client.get("/inside/case").text
-    assert "Whitfield" in page or "James" in page
+    assert "Marsh" in page or "Daniel" in page
     assert "Marcus" not in page
 
 

@@ -16,8 +16,7 @@ helper, and their authorization is scoped and expiring by design. The desktop
 belongs to the coordinator. A person walks out of a facility and walks away
 from every screen this product currently has.
 
-That is the gap. It is not hidden in the code and it should not be hidden on a
-slide.
+That is the gap. It is not hidden in the code and it should not be hidden.
 
 ## The problem is not the notification
 
@@ -35,9 +34,8 @@ where Bridge does have a surface.
 **A nudge is the wrong instrument for this population.** From the Cornish
 interview, Sep 21: automated nudges arrive on the same channels scammers use,
 so a text about connecting a bank account reads as fraud. That finding is
-already load-bearing in the product. `docs/DESIGN-NOTES.md` requires every
-timeline event to carry a person's name and a real date, for exactly this
-reason. A retention strategy built on automated messaging would contradict the
+already load-bearing in the product: every timeline event carries a person's
+name and a real date, for exactly this reason. A retention strategy built on automated messaging would contradict the
 one piece of primary practitioner evidence the team collected.
 
 So the answer is not a better notification. It is a named human, or it is a
@@ -66,8 +64,8 @@ come back, with a date attached and a specific outcome the person wants, which
 is a better retention mechanism than any reminder because the person is the one
 waiting.
 
-**The course, with a caveat.** `docs/DESIGN-NOTES.md` already says the course is
-the one thing that keeps working after somebody goes home. That is true of the
+**The course, with a caveat.** The course is the one thing that keeps working
+after somebody goes home. That is true of the
 content and not yet true of the delivery: eleven lessons that live on a facility
 tablet do not follow anybody anywhere. What makes this tractable rather than
 hypothetical is that the account already exists and the person already set the
@@ -80,7 +78,7 @@ and that is a build, not a redesign.
 | Answer | Why not |
 | --- | --- |
 | Push notifications and reminder texts | Reads as a scam to this population, per the Cornish interview. Contradicts the rule already enforced on the timeline. |
-| Gamification, streaks, points | `docs/DESIGN-NOTES.md`: position, never points. Score shaming is a known engagement killer, and the product deliberately shows a road rather than a number. |
+| Gamification, streaks, points | Position, never points. Score shaming is a known engagement killer, and the product deliberately shows a road rather than a number. |
 | A behavioral engagement score | `app/scores.py` refuses to show a number even for real FICO scores, with sources, because a number without its model and date is a guess that feels precise. |
 | Lender matching at release | Out of scope, never built past a sketch. It is a partnership and a referral pathway, not a feature, and calling it a feature now would be the fourth thing on this list the product refuses. |
 
@@ -98,7 +96,7 @@ does not get to reopen them.
 > declined a free state ID last year with a staffed human offering it. That is
 > the number we would have to move, and a reminder text is not what moves it.
 
-That answer is better than a roadmap slide because it is checkable, it names
+That answer is better than a roadmap because it is checkable, it names
 the mechanism, and it does not promise a feature nobody has built.
 
 ## What would have to be built

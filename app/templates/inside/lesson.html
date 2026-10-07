@@ -50,13 +50,6 @@
     </div>
     {% endif %}
 
-    {% if card.cited %}
-    <details class="card soft" data-no-speech>
-      <summary class="tiny">{{ t('lesson.source.summary') }}</summary>
-      <span class="tiny">{{ t('lesson.source', source=card.cited) }}</span>
-    </details>
-    {% endif %}
-
     <div class="row">
       <a class="btn wide" href="/inside/learn/lesson/{{ lesson.slug }}/{{ index + 1 }}">
         {% if index + 1 == lesson.screens - 1 %}{{ t('lesson.last') }}{% else %}{{ t('lesson.next') }}{% endif %}</a>

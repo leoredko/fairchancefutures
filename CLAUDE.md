@@ -15,16 +15,14 @@ short version of what a session needs to not break things.
     docs/SCOPE.md          what each of the three surfaces can and cannot do
     docs/VERIFY.md         every legal claim, its primary source and check date
     docs/RETENTION.md      what happens after release, and what is not answered
-    docs/DESIGN-NOTES.md   rationale, deliberately kept out of the product
     docs/DEMO.md           seeded logins and the walkthrough
     docs/TRANSLATION.md    how the course gets into Spanish, for a translator
     docs/ACCESSIBILITY.md  themes, text size, motion, what was checked and what was not
 
 The product started from a wireframe deck. That deck has been deleted, and its
 references stripped out of the code and the docs, because it stopped describing
-the product and every change was being argued against a sketch. `docs/DESIGN-NOTES.md`
-states the design principles on their own authority. Do not reintroduce a
-screen-by-screen spec.
+the product and every change was being argued against a sketch. Do not
+reintroduce a screen-by-screen spec.
 
 Where this is going: a progressive web app provisioned onto a facility tablet,
 not a website somebody finds and installs. How it would actually get

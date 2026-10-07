@@ -105,8 +105,6 @@ Facility and DOC approval, incumbent tablet vendor access, bureau data
 agreements, funding for the counselor role, and the PII compliance regime a real
 deployment would sit under.
 
-Say this on a slide rather than hoping nobody asks.
-
 ## Not assumed away
 
 A person inside cannot verify identity online, and a helper outside has no
@@ -161,7 +159,7 @@ available since October 2020 to people on public assistance, SNAP or Medicaid.
 That could not be verified and has been removed. What the sources describe is a
 DOCCS and DMV program established in 2022 that produces the ID before release.
 
-**Scale, and the number worth putting on a slide.** About 3,700 IDs since 2022;
+**Scale.** About 3,700 IDs since 2022;
 1,061 in the year to April 2026, down 15% on staffing shortages; and **493
 people declined to engage** with the application in that same year. Roughly one
 in three. That independently corroborates what Briane Cornish told the team on

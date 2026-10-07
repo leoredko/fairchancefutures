@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Coordinator desk{% endblock %}
+{% block body %}
+<div class="desk" role="main" id="content" tabindex="-1" style="padding-top:48px; max-width:520px">
+  <span class="tag amber">Coordinator desk</span>
+  <h1>This part is kept for the coordinator.</h1>
+  <p class="lede">Enter the desk key to open it. Everybody else can use the
+    tablet and the helper's phone as normal.</p>
+  {% if error %}<div class="card" style="margin-bottom:16px"><span class="strong">{{ error }}</span></div>{% endif %}
+  <form method="post" action="/desk" class="stack">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label class="small strong" for="key">Desk key</label>
+    <input class="choice" id="key" name="key" type="password" autocomplete="off" autofocus>
+    <button class="btn wide" type="submit">Open the desk</button>
+  </form>
+</div>
+{% endblock %}

@@ -400,8 +400,8 @@ report_summary="Thin file, two disputed items",
             },
         ),
         Client(
-            id="j-whitfield", din="28A0931", nysid="00000033M",
-            facility="Sing Sing Correctional Facility", display_name="J. Whitfield", first_name="James",
+            id="d-marsh", din="28A0931", nysid="00000033M",
+            facility="Sing Sing Correctional Facility", display_name="D. Marsh", first_name="Daniel",
             release_date=(today + timedelta(days=21)).isoformat(),
             case_state="not_yet_triaged", state_label="Not yet triaged",
             needs="No report on file", clock="Releases in 21 days",
@@ -639,7 +639,7 @@ def _seed_accounts() -> None:
     for client_id, code, name in [
         ("marcus-w", "BRIDGE-4417", "Denise"),
         ("m-alvarez", "BRIDGE-8802", "Rosa"),
-        ("j-whitfield", "BRIDGE-2231", ""),
+        ("d-marsh", "BRIDGE-2231", ""),
         ("a-torres", "BRIDGE-3306", ""),
     ]:
         put_account(Account(

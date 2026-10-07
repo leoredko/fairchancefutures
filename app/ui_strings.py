@@ -27,6 +27,9 @@ UI: dict[str, str] = {
     "door.title": "Bridge, sign in",
     "door.region": "New York State",
     "door.heading": "DIN number or NYS ID",
+    "door.practice": "We filled in a practice number so you can try this. It "
+                     "belongs to nobody real. When it asks, pick any six "
+                     "digits as a PIN.",
     "door.either": "Either one works.",
     "door.next": "Next",
     "door.dashes": "Dashes and spaces don't matter.",
@@ -131,8 +134,6 @@ UI: dict[str, str] = {
     "lesson.unscored": "Nothing is scored and nobody sees your answer. The "
                        "explanation is the same either way.",
     "lesson.answer": "Answer",
-    "lesson.source.summary": "Where this comes from",
-    "lesson.source": "Where this comes from: {source}",
     "lesson.last": "Last one, then a question",
     "lesson.next": "Next",
     "lesson.back": "Back",

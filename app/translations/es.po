@@ -1373,6 +1373,16 @@ msgctxt "door.heading"
 msgid "DIN number or NYS ID"
 msgstr "Número DIN o NYS ID"
 
+#, fuzzy
+msgctxt "door.practice"
+msgid ""
+"We filled in a practice number so you can try this. It belongs to nobody "
+"real. When it asks, pick any six digits as a PIN."
+msgstr ""
+"Te pusimos un número de práctica para que pruebes esto. No pertenece a "
+"ninguna persona real. Cuando te lo pida, elige seis dígitos cualquiera como "
+"PIN."
+
 msgctxt "door.either"
 msgid "Either one works."
 msgstr "Cualquiera de los dos sirve."
@@ -1742,14 +1752,6 @@ msgstr ""
 msgctxt "lesson.answer"
 msgid "Answer"
 msgstr "Responder"
-
-msgctxt "lesson.source.summary"
-msgid "Where this comes from"
-msgstr "De dónde viene esto"
-
-msgctxt "lesson.source"
-msgid "Where this comes from: {source}"
-msgstr "De dónde viene esto: {source}"
 
 msgctxt "lesson.last"
 msgid "Last one, then a question"
@@ -4488,6 +4490,14 @@ msgstr ""
 "Lo dirige Home HeadQuarters junto con la Ciudad. La elegibilidad dice "
 "residentes de la ciudad y no de todo el condado, así que alguien del condado"
 " de Onondaga fuera de la ciudad debe llamar antes de viajar."
+
+#~ msgctxt "lesson.source.summary"
+#~ msgid "Where this comes from"
+#~ msgstr "De dónde viene esto"
+
+#~ msgctxt "lesson.source"
+#~ msgid "Where this comes from: {source}"
+#~ msgstr "De dónde viene esto: {source}"
 
 #~ msgctxt "learn.facts_body"
 #~ msgid ""

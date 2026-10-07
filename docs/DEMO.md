@@ -58,7 +58,7 @@ data agreement or a scraper rather than a coding job.
 | --- | --- | --- |
 | Marcus W. | DIN `28-A-1187` or NYSID `00000011L` | tablet |
 | M. Alvarez | DIN `28-B-0042` | tablet |
-| J. Whitfield, not yet triaged | DIN `28-A-0931` | tablet, and the one seeded person who has not chosen a path, so he is who to sign in as to show the first screen |
+| D. Marsh, not yet triaged | DIN `28-A-0931` | tablet, a spare person who has not chosen a path. Not part of the five-minute run: that is Armando, below |
 | A. Torres (Armando), nothing done yet | DIN `28-E-3306` or NYSID `00000066G` | tablet, and the open one: see [Armando Torres, the journey from the front](#armando-torres-the-journey-from-the-front) |
 | Denise, helping Marcus | code `BRIDGE-4417` | phone |
 | Rosa, helping M. Alvarez | code `BRIDGE-8802` | phone |
@@ -183,10 +183,7 @@ code `BRIDGE-3306` is issued and not yet used.
 The showcase ends on a live walkthrough of Armando Torres, DIN `28-E-3306`, on
 the deployed `bridge-fcf` service. It is the same app and the same screens as
 [the journey above](#armando-torres-the-journey-from-the-front), cut down to
-what fits in five minutes. The slides live outside this repo and are still
-changing, so this describes what the app does and in what order; the slides
-should follow it, not the other way round. If a slide and this section
-disagree, check the app and fix whichever is wrong.
+what fits in five minutes. This describes what the app does and in what order.
 
 **Before the room arrives**
 
@@ -198,12 +195,21 @@ disagree, check the app and fix whichever is wrong.
    first sign-in asks you to choose one. A free instance that has slept
    reseeds, which clears the PIN again, so check within the hour, and restart
    him once more afterwards.
-3. The deployed sign-in asks an arithmetic question first (`BRIDGE_CAPTCHA` is
-   on in `render.yaml`). It is not part of the product and it is worth knowing
-   before it appears on a projector.
+3. The deployed sign-in does not ask the arithmetic question (`BRIDGE_CAPTCHA`
+   is `off` in `render.yaml` for the showcase). Set it to `1` to bring it back
+   if the link starts to attract scripts.
 4. The deployed landing page shows the tablet door only (`BRIDGE_TABLET_ONLY`
    is on). The other two surfaces are reachable by URL, `/helper` and `/staff`,
    and are not toured unless you choose the optional ending below.
+
+5. **If the link goes to the room.** `render.yaml` already sets `BRIDGE_PRACTICE=on`, so everybody
+   who opens it gets their own practice number already typed in and their own
+   case with the three reports on it, so nobody shares your Armando and nobody
+   is sent to a demo control. It also generates `BRIDGE_DESK_KEY`, so only you can
+   reach `/staff`, `/demo` and `/metrics`: copy the key from the service's
+   Environment tab in Render and type it once at `/staff`. Sign in as Armando yourself
+   before you share the link: the first person to sign in with a number sets
+   its PIN, and his number is in this file.
 
 **The walkthrough**
 
